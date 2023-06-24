@@ -5,11 +5,6 @@ import './index.css'
 import { Auth0Provider } from '@auth0/auth0-react'
 import AuthorizedApolloProvider from './providers/AuthorizedApoloPtovider.tsx'
 
-console.log('VITE_AUTH0_DOMAIN', import.meta.env.VITE_AUTH0_DOMAIN)
-console.log('VITE_AUTH0_CLIENT_ID', import.meta.env.VITE_AUTH0_CLIENT_ID)
-console.log('VITE_AUTH0_REDIRECT_URI', import.meta.env.VITE_AUTH0_REDIRECT_URI)
-console.log('VITE_AUTH0_AUDIENCE', import.meta.env.VITE_AUTH0_AUDIENCE)
-
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
   <React.StrictMode>

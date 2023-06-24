@@ -61,7 +61,7 @@ export default function Calendar() {
     if (isAuthenticated) {
         return (
             <div>
-                Hello {user.name}{' '}
+                Hello {user && user.name}{' '}
                 <button onClick={() => logout({ returnTo: window.location.origin })}>
                     Log out
                 </button>

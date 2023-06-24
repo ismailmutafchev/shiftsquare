@@ -1,8 +1,16 @@
-import { Fragment, useState } from 'react'
+import { Fragment, JSX } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline'
 
-export default function Modal({ open, setOpen, title, children }) {
+type ModalProps = {
+    open: boolean;
+    // eslint-disable-next-line no-unused-vars
+    setOpen: (open: boolean) => void;
+    title: string;
+    children: () => JSX.Element;
+};
+
+export default function Modal({ open, setOpen, title, children }: ModalProps) {
 
     const Children = children
 
@@ -18,7 +26,7 @@ export default function Modal({ open, setOpen, title, children }) {
                     leaveFrom="opacity-100"
                     leaveTo="opacity-0"
                 >
-                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+                    <div className="fixed inset-0 bg-gray-500 bg-opacity-75" />
                 </Transition.Child>
 
                 <div className="fixed inset-0 z-10 overflow-y-auto">
