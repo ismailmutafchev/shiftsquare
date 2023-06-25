@@ -11,6 +11,7 @@ import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 import Setting from './pages/Setting';
 import { useAuth0 } from '@auth0/auth0-react';
+import Login from './pages/Login';
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route path="/pricing" element={<Layout />}>
           <Route index element={<Pricing />} />
+        </Route>
+        <Route path="/login" element={<Layout />}>
+          <Route index element={<Login />} />
         </Route>
         {isAuthenticated && (
           <>

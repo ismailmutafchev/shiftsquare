@@ -139,7 +139,7 @@ export default function Calendar() {
                             <div className="ml-6 h-6 w-px bg-gray-300" />
                             <button
                                 type="button"
-                                className="ml-6 rounded-md bg-gradient-to-br from-polar-800 to-polar-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
+                                className="ml-6 rounded-md bg-gradient-to-br from-polar-800 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
                             >
                                 Add Shift
                             </button>
@@ -282,7 +282,7 @@ export default function Calendar() {
                                                 idx === days.length - 1 && 'rounded-br-lg'
                                             )} >
                                             <span>{format(day, 'E')}</span>
-                                            {/* Default: "text-gray-900", Selected: "bg-gray-900 text-white", Today (Not Selected): "text-polar-600", Today (Selected): "bg-gradient-to-br from-polar-800 to-polar-400 text-white" */}
+                                            {/* Default: "text-gray-900", Selected: "bg-gray-900 text-white", Today (Not Selected): "text-polar-600", Today (Selected): "bg-gradient-to-br from-polar-800 to-polar-300 text-white" */}
                                             <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
                                                 {format(day, 'dd')}
                                             </span>
@@ -388,7 +388,7 @@ export default function Calendar() {
                                             dateTime={day.toDateString()}
                                             className={classNames(
                                                 'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                                                isSelected && isToday(day) && 'bg-gradient-to-br from-polar-800 to-polar-400',
+                                                isSelected && isToday(day) && 'bg-gradient-to-br from-polar-800 to-polar-300',
                                                 isSelected && !isToday(day) && 'bg-gray-900'
                                             )}
                                         >

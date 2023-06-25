@@ -2,7 +2,7 @@ import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
 
 const projects = [
   { name: 'Graph API', initials: 'GA', href: '#', members: 16, bgColor: 'bg-pink-600' },
-  { name: 'Component Design', initials: 'CD', href: '#', members: 12, bgColor: 'bg-gradient-to-br from-polar-800 to-polar-400' },
+  { name: 'Component Design', initials: 'CD', href: '#', members: 12, bgColor: 'bg-gradient-to-br from-polar-800 to-polar-300' },
   { name: 'Templates', initials: 'T', href: '#', members: 16, bgColor: 'bg-yellow-500' },
   { name: 'React Components', initials: 'RC', href: '#', members: 8, bgColor: 'bg-green-500' },
 ]
@@ -36,7 +36,7 @@ export default function Positions() {
               <div className="flex-shrink-0 pr-2">
                 <button
                   type="button"
-                  className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-polar-400 focus:ring-offset-2"
+                  className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-polar-300 focus:ring-offset-2"
                 >
                   <span className="sr-only">Open options</span>
                   <EllipsisVerticalIcon className="h-5 w-5" aria-hidden="true" />

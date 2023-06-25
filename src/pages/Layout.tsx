@@ -10,7 +10,7 @@ const Layout = () => {
     const { pathname } = useLocation()
 
     if (!isAuthenticated || pathname === "/" || pathname === "/about" || pathname === "/pricing") {
-        return (<div className="bg-gradient-to-br from-polar-400 to-white pb-24">
+        return (<div className="bg-gradient-to-br from-polar-300 to-white pb-24">
             <PublicNavigation />
             <Outlet />
         </div>)

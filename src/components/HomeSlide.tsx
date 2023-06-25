@@ -1,7 +1,7 @@
 export default function HomeSlide(props: any) {
     const Animation = props.animation;
     return (
-        <div className="relative isolate snap-start mb-[20vh]">
+        <div className="relative isolate">
             <svg
                 className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
                 aria-hidden="true"
@@ -40,7 +40,7 @@ export default function HomeSlide(props: any) {
             </div>
             <div className="overflow-hidden">
                 <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-                    <div className={`mx-auto justify-center items-center max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center ${props.index % 2 !== 0 ? 'flex-row-reverse' : '' }`}>
+                    <div className={`mx-auto  justify-center items-center max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-xl lg:items-center ${props.index % 2 !== 0 ? 'flex-row-reverse' : '' }`}>
                         <div className="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
                             <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
                                 {props.title}
@@ -59,8 +59,10 @@ export default function HomeSlide(props: any) {
                                     Live demo <span aria-hidden="true">→</span>
                                 </a>
                             </div>
-                        </div>
+                        </div> 
+                        <div className='-z-20 blur-sm opacity-60'>
                         <Animation />
+                        </div>
                     </div>
                 </div>
             </div>

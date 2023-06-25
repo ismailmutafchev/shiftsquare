@@ -27,7 +27,7 @@ export default function Employees() {
         <button
           onClick={() => setShowModal(true)}
           type="button"
-          className="ml-6 rounded-md bg-gradient-to-br from-polar-800 to-polar-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
+          className="ml-6 rounded-md bg-gradient-to-br from-polar-800 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
         >
           Add Shift
         </button>
@@ -147,7 +147,7 @@ function AddUser() {
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md bg-gradient-to-br from-polar-800 to-polar-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
+          className="inline-flex justify-center rounded-md bg-gradient-to-br from-polar-800 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
         >
           Save
         </button>

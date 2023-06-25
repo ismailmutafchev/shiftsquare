@@ -58,7 +58,7 @@ export default function PublicNavigation() {
                                         <div className="hidden lg:ml-10 lg:block">
                                             <div className="flex space-x-4">
                                                 {navigation.map((item) => (
-                                                    <Link key={item.name} to={item.href} className={classNames(item.current ? 'bg-blue-700 text-white' : 'text-white hover:bg-polar-400 hover:bg-opacity-75', 'rounded-md py-2 px-3 text-sm font-medium')}>
+                                                    <Link key={item.name} to={item.href} className={classNames(item.current ? 'bg-blue-700 text-white' : 'text-white hover:bg-polar-300 hover:bg-opacity-75', 'rounded-md py-2 px-3 text-sm font-medium')}>
                                                         {item.name}
                                                     </Link>
                                                 ))}
@@ -69,7 +69,7 @@ export default function PublicNavigation() {
                                     </div>
                                     <div className="flex lg:hidden">
                                         {/* Mobile menu button */}
-                                        <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gradient-to-br from-polar-800 to-polar-400 p-2 text-blue-200 hover:bg-polar-400 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
+                                        <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gradient-to-br from-polar-800 to-polar-300 p-2 text-blue-200 hover:bg-polar-300 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
                                             <span className="sr-only">Open main menu</span>
                                             {open ? (
                                                 <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
@@ -83,7 +83,7 @@ export default function PublicNavigation() {
                                             <div className="flex items-center">
                                                 <button
                                                     type="button"
-                                                    className="flex-shrink-0 rounded-full bg-gradient-to-br from-polar-800 to-polar-400 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
+                                                    className="flex-shrink-0 rounded-full bg-gradient-to-br from-polar-800 to-polar-300 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
                                                 >
                                                     <span className="sr-only">View notifications</span>
                                                     <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -92,7 +92,7 @@ export default function PublicNavigation() {
                                                 {/* Profile dropdown */}
                                                 <Menu as="div" className="relative ml-3 flex-shrink-0">
                                                     <div>
-                                                        <Menu.Button className="flex rounded-full bg-gradient-to-br from-polar-800 to-polar-400 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
+                                                        <Menu.Button className="flex rounded-full bg-gradient-to-br from-polar-800 to-polar-300 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
                                                             <span className="sr-only">Open user menu</span>
                                                             <img className="rounded-full h-8 w-8" src="https://api.dicebear.com/6.x/fun-emoji/svg?radius=0" alt="" />
                                                         </Menu.Button>
@@ -142,7 +142,7 @@ export default function PublicNavigation() {
                                                 className={classNames(
                                                     item.current
                                                         ? 'bg-blue-700 text-white'
-                                                        : 'text-white hover:bg-polar-400 hover:bg-opacity-75',
+                                                        : 'text-white hover:bg-polar-300 hover:bg-opacity-75',
                                                     'block rounded-md py-2 px-3 text-base font-medium'
                                                 )}
                                                 aria-current={item.current ? 'page' : undefined}
@@ -161,11 +161,11 @@ export default function PublicNavigation() {
                                                 </div>
                                                 <div className="ml-3">
                                                     <div className="text-base font-medium text-white">{user?.name}</div>
-                                                    <div className="text-sm font-medium text-polar-400">{user?.email}</div>
+                                                    <div className="text-sm font-medium text-polar-300">{user?.email}</div>
                                                 </div>
                                                 <button
                                                     type="button"
-                                                    className="ml-auto flex-shrink-0 rounded-full bg-gradient-to-br from-polar-800 to-polar-400 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
+                                                    className="ml-auto flex-shrink-0 rounded-full bg-gradient-to-br from-polar-800 to-polar-300 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
                                                 >
                                                     <span className="sr-only">View notifications</span>
                              ting                       <BellIcon className="h-6 w-6" aria-hidden="true" />
@@ -177,7 +177,7 @@ export default function PublicNavigation() {
                                                         key={item.name}
                                                         as="a"
                                                         href={item.href}
-                                                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-polar-400 hover:bg-opacity-75"
+                                                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-polar-300 hover:bg-opacity-75"
                                                     >
                                                         {item.name}
                                                     </Disclosure.Button>

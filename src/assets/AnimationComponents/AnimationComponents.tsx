@@ -8,12 +8,37 @@ import optimization from '../LottieAnimations/optimization.json';
 import { useInView } from "react-intersection-observer";
 import { useEffect, useRef } from "react";
 
+export enum AnimationSize {
+    small = 'small',
+    medium = 'medium',
+    large = 'large'
+}
 
 
 
-export function ShiftBuild() {
+
+export function ShiftBuild({size}:{size:AnimationSize}) {
     const [ref, inView] = useInView();
     const animationRef = useRef<LottieRefCurrentProps>(null);
+
+    let width;
+    let height;      
+
+    switch (size) {
+        case 'small':
+            width = 200;
+            height = 200;
+            break;
+        case 'medium':
+            width = 300;
+            height = 300;
+            break;
+        case 'large':
+            width = 900;
+            height = 900;
+            break;
+    }
+
   
     useEffect(() => {
       if (inView) {
@@ -24,8 +49,8 @@ export function ShiftBuild() {
     }, [inView]);
 
     return (
-        <div ref={ref} className=' w-[80vw] md:w-[50vw]  mx-auto' >
-            <Lottie lottieRef={animationRef} animationData={shiftsLoading} loop={false} />
+        <div ref={ref} className='mx-auto ' >
+            <Lottie lottieRef={animationRef} animationData={shiftsLoading} loop={false} width={100} height={500} />
         </div>
     );
 }
