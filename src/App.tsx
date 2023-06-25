@@ -12,6 +12,7 @@ import Profile from './pages/Profile';
 import Setting from './pages/Setting';
 import { useAuth0 } from '@auth0/auth0-react';
 import Login from './pages/Login';
+import Employee from './pages/Employee';
 
 function App() {
   const { isAuthenticated } = useAuth0();
@@ -37,6 +38,9 @@ function App() {
             </Route>
             <Route path="/employees" element={<Layout />}>
               <Route index element={<Employees />} />
+            </Route>
+            <Route path="/employees/:id" element={<Layout />}>
+              <Route index element={<Employee />} />
             </Route>
             <Route path="/positions" element={<Layout />}>
               <Route index element={<Positions />} />

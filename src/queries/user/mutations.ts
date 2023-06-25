@@ -28,3 +28,17 @@ export const deleteUserById = gql` mutation deleteUserById($id: uuid!) {
         }
     }
 }`;
+
+export const updateUserById = gql` mutation updateUserById($id: uuid!, $object: user_set_input!) {
+    update_user_by_pk(pk_columns: {id: $id}, _set: $object) {
+        id
+        first_name
+        last_name
+        email
+        role{
+            role{
+                name
+            }
+        }
+    }
+}`;

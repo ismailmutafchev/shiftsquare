@@ -7,10 +7,11 @@ type ModalProps = {
     // eslint-disable-next-line no-unused-vars
     setOpen: (open: boolean) => void;
     title: string;
-    children: () => JSX.Element;
+    children: (props: any) => JSX.Element;
+    data?: any;
 };
 
-export default function Modal({ open, setOpen, title, children }: ModalProps) {
+export default function Modal({ open, setOpen, title, children, data }: ModalProps) {
 
     const Children = children
 
@@ -51,7 +52,7 @@ export default function Modal({ open, setOpen, title, children }: ModalProps) {
                                             {title}
                                         </Dialog.Title>
                                     </div>
-                                    <Children />
+                                    <Children data={data} />
                                 </div>
                             </Dialog.Panel>
                         </Transition.Child>

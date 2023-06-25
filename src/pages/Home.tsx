@@ -107,7 +107,7 @@ export default function Home() {
                   </div>
                 </div>
                 <div className='absolute -z-20 blur-md opacity-60 md:left-48 scale-125 -rotate-3 '>
-                  <ShiftBuild size={AnimationSize.small} />
+                  <ShiftBuild />
                 </div>
               </div>
 

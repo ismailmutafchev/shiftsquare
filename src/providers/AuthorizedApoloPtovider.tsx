@@ -1,6 +1,7 @@
 import { ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache, RequestHandler } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import { setContext } from 'apollo-link-context';
+import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
 
 
 
@@ -8,7 +9,7 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
     const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingAnimation />;
     } else {
         const httpLink: ApolloLink | RequestHandler = createHttpLink({
             uri: import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT, // your URI here...

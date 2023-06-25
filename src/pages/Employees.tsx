@@ -5,34 +5,49 @@ import { getEmployees } from '../queries/user/queries.ts'
 import Avatar from '../components/Avatar.tsx'
 import Modal from '../components/Modal.tsx'
 import { useForm } from 'react-hook-form'
-import { addUserOne, deleteUserById } from '../queries/user/mutations.ts'
-import { TrashIcon } from '@heroicons/react/24/outline'
+import { addUserOne, deleteUserById, updateUserById } from '../queries/user/mutations.ts'
+import { PencilSquareIcon, PlusIcon, Square2StackIcon, TrashIcon } from '@heroicons/react/24/outline'
+import { Link } from 'react-router-dom'
+import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents.tsx'
 
 export default function Employees() {
   const [showModal, setShowModal] = useState(false)
+  const [update, setUpdate] = useState({
+    isUpdate: false,
+    data: {}
+  })
   const [deleteUser] = useMutation(deleteUserById)
 
 
   const { loading, error, data } = useQuery(getEmployees)
 
+  function modalHandler(state: boolean) {
+    setShowModal(state)
+  }
 
-  if (loading) return <p>Loading...</p>
+
+  if (loading) return <LoadingAnimation />
   if (error) return <p>Error :</p>
 
   const users = data?.user
   return (
     <>
-      <div className="hidden md:ml-4 md:flex md:items-center">
-        <div className="ml-6 h-6 w-px bg-gray-300" />
-        <button
-          onClick={() => setShowModal(true)}
-          type="button"
-          className="ml-6 rounded-md bg-gradient-to-br from-polar-800 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
-        >
-          Add Shift
-        </button>
-      </div>
-      <ul role="list" className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
+        <h3 className="text-base font-semibold leading-6 text-gray-900">Employees</h3>
+        <div className="mt-3 sm:ml-4 sm:mt-0">
+          <button
+            onClick={() => {
+              setShowModal(true), setUpdate({ isUpdate: false, data: {} })
+            }}
+            type="button"
+            className="inline-flex items-center rounded-md bg-gray-900/80 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-gray-900/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900/80"
+          >
+            <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+            Add Employee
+          </button>
+        </div>
+      </div >
+      <ul role="list" className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {users.map((person: any) => (
           <li key={person.id} className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow">
             <div className="flex w-full items-center justify-between space-x-6 p-6">
@@ -53,26 +68,29 @@ export default function Employees() {
             <div>
               <div className="-mt-px flex divide-x divide-gray-200">
                 <div className="flex w-0 flex-1 overflow-clip truncate ">
-                  <a
-                    href={`mailto:${person.email}`}
+                  <Link
+                    to={`/employees/${person.id}`}
                     className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
-                    <EnvelopeIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />{person.email}
-                    Email
-                  </a>
+                    <Square2StackIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    View
+                  </Link>
                 </div>
-                <div className="-ml-px flex w-0 flex-1">
-                  <a
-                    href={`tel:${person.telephone}`}
-                    className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                <div className="flex w-0 flex-1 overflow-clip truncate ">
+                  <button
+                    onClick={() => { setShowModal(true), setUpdate({ isUpdate: true, data: person }) }}
+                    className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
-                    <PhoneIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                    Call
-                  </a>
+                    <PencilSquareIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    Edit User
+                  </button>
                 </div>
                 <div className="-ml-px flex w-0 flex-1">
                   <button
-                    onClick={() => deleteUser({ variables: { id: person.id }, refetchQueries: [{ query: getEmployees }] })}
+                    onClick={() => confirm('Are you sure you want to delete this user?')
+                      ? deleteUser({ variables: { id: person.id }, refetchQueries: [{ query: getEmployees }] })
+                      : null
+                    }
                     className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
                     <TrashIcon className="h-5 w-5 text-red-400" aria-hidden="true" />
@@ -85,19 +103,32 @@ export default function Employees() {
         ))}
       </ul>{
         showModal &&
-        <Modal open={showModal} setOpen={() => setShowModal(false)} title="Add User" children={AddUser} />
+        <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title="Add User" children={AddUser} />
       }
     </>
   )
 }
 
-function AddUser() {
+function AddUser({ data }: any) {
+
+  const update = data.isUpdate
+  const id = data?.data?.id || null
+  const { modalHandler } = data
+
   const { register, handleSubmit } = useForm();
 
   const [addUser] = useMutation(addUserOne)
+  const [updateUser] = useMutation(updateUserById)
 
   function submit(data: any) {
-    addUser({ variables: { object: data }, refetchQueries: [{ query: getEmployees }] })
+    if (update) {
+      updateUser({ variables: { id: id, object: data }, refetchQueries: [{ query: getEmployees }], onCompleted: () => modalHandler(false) })
+      return
+    }
+
+    addUser({
+      variables: { object: data }, refetchQueries: [{ query: getEmployees }], onCompleted: () => modalHandler(false)
+    })
   }
 
   return (
@@ -113,6 +144,7 @@ function AddUser() {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("first_name", { required: true })}
+                    defaultValue={data?.data?.first_name || ''}
                   />
                 </div>
               </div>
@@ -124,6 +156,7 @@ function AddUser() {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("last_name", { required: true })}
+                    defaultValue={data?.data?.last_name || ''}
                   />
                 </div>
               </div>
@@ -135,7 +168,7 @@ function AddUser() {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("email", { required: true })}
-                  />
+                    defaultValue={data?.data?.email || ''} />
                 </div>
               </div>
 
@@ -147,7 +180,7 @@ function AddUser() {
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md bg-gradient-to-br from-polar-800 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
+          className="inline-flex justify-center rounded-md bg-gradient-to-br from-polar-400 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
         >
           Save
         </button>

@@ -3,6 +3,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { addDays, addMonths, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
 import { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
+import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -27,7 +28,7 @@ export default function Calendar() {
         useAuth0();
 
     if (isLoading) {
-        return <div>Loading...</div>;
+        return <LoadingAnimation />;
     }
     if (error) {
         return <div>Oops... {error.message}</div>;
