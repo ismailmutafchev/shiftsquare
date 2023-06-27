@@ -27,7 +27,7 @@ export const colors = {
 	"pink-600": "#d81b60",
 	"pink-700": "#c2185b",
 	"pink-800": "#ad1457",
-	"pink-900": "#880e4f",,
+	"pink-900": "#880e4f",
 	"purple": "#9c27b0",
 	"purple-50": "#f3e5f5",
 	"purple-100": "#e1bee7",
@@ -523,5 +523,5 @@ export const colors = {
 	"blue-grey-600-contrast": "white",
 	"blue-grey-700-contrast": "white",
 	"blue-grey-800-contrast": "white",
-	"blue-grey-900-contrast": "white"
+	"blue-grey-900-contrast": "white",
 };
