@@ -115,7 +115,16 @@ function AddUser({ data }: any) {
   const id = data?.data?.id || null
   const { modalHandler } = data
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      first_name: data?.data?.first_name || '',
+      last_name: data?.data?.last_name || '',
+      email: data?.data?.email || '',
+      // title: data?.data?.title || '',
+      // role: data?.data?.role?.length ? data?.data?.role[0].role?.name : '',
+      // role_id: data?.data?.role?.length ? data?.data?.role[0].role?.id : '',
+    }
+  });
 
   const [addUser] = useMutation(addUserOne)
   const [updateUser] = useMutation(updateUserById)
@@ -144,7 +153,6 @@ function AddUser({ data }: any) {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("first_name", { required: true })}
-                    defaultValue={data?.data?.first_name || ''}
                   />
                 </div>
               </div>
@@ -156,7 +164,6 @@ function AddUser({ data }: any) {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("last_name", { required: true })}
-                    defaultValue={data?.data?.last_name || ''}
                   />
                 </div>
               </div>
@@ -168,7 +175,7 @@ function AddUser({ data }: any) {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("email", { required: true })}
-                    defaultValue={data?.data?.email || ''} />
+                  />
                 </div>
               </div>
 

@@ -1,7 +1,7 @@
-import { EllipsisVerticalIcon } from '@heroicons/react/20/solid'
+import { ArchiveBoxIcon, ArrowsPointingOutIcon, EllipsisVerticalIcon, Square2StackIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
 import Modal from '../components/Modal'
-import { ChevronDownIcon, PlusIcon } from '@heroicons/react/24/outline'
+import { ChevronDownIcon, PencilSquareIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { addPositionOne, deletePositionById, updatePositionById } from '../queries/position/mutations'
 import { getPositions } from '../queries/position/queries'
 import { useMutation, useQuery } from '@apollo/client'
@@ -11,6 +11,7 @@ import { SketchPicker } from 'react-color'
 import { set } from 'date-fns'
 import ColorPicker from '../components/colorPicker'
 import { Menu, Transition } from '@headlessui/react'
+import { de } from 'date-fns/locale'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -18,7 +19,6 @@ function classNames(...classes: string[]) {
 
 export default function Positions() {
   const [showModal, setShowModal] = useState(false)
-  const [showDropDown, setShowDropDown] = useState(false)
   const [update, setUpdate] = useState({
     isUpdate: false,
     data: {}
@@ -56,14 +56,17 @@ export default function Positions() {
         <h2 className="text-sm font-medium text-gray-500">Pinned Projects</h2>
         <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {positions && positions.map((position: any) => {
-            const color = `bg-[${position.bg_color}]`
             return (
               <li key={position.name} className="col-span-1 flex rounded-md shadow-sm">
                 <div
                   className={classNames(
-                    color,
                     'flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white'
                   )}
+                  style={
+                    {
+                      backgroundColor: position.bg_color
+                    }
+                  }
                 >
                   {position.name.slice(0, 2).toUpperCase()}
                 </div>
@@ -75,147 +78,111 @@ export default function Positions() {
                     <p className="text-gray-500">{position.members} Members</p>
                   </div>
                   <div className="flex-shrink-0 pr-2 relative">
-                    <button
-                      onClick={() => {
-                        setShowDropDown(!showDropDown)
-                      }}
-                      type="button"
-                      className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-transparent bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-polar-300 focus:ring-offset-2"
-                    >
-                      <span className="sr-only">Open options</span>
-                      <div>
-                        <Menu as="div" className="relative text-left">
-                          <div>
-                            <Menu.Button>
-                              <EllipsisVerticalIcon className="h-5 w-5 hover:text-gray-500" aria-hidden="true" />
-                            </Menu.Button>
+                    <span className="sr-only">Open options</span>
+                    <Menu as="div" className="relative text-left">
+                      <Menu.Button>
+                        <EllipsisVerticalIcon className="h-5 w-5 hover:text-gray-500" aria-hidden="true" />
+                      </Menu.Button>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="px-1 py-1 ">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  onClick={() => {
+                                    setShowModal(true), setUpdate({ isUpdate: true, data: { position } })
+                                  }}
+                                  className={`${active ? 'bg-gray-900/80 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                >
+                                  <PencilSquareIcon
+                                    color={position.bg_color}
+                                    className="mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                  Edit
+                                </button>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${active ? 'bg-gray-900/80 text-white' : 'text-gray-900'
+                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                >
+                                  <Square2StackIcon
+                                    color={position.bg_color}
+                                    className="mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                  Duplicate
+                                </button>
+                              )}
+                            </Menu.Item>
                           </div>
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
-                          >
-                            <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="px-1 py-1 ">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900' } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      {active ? (
-                                        <EditActiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <EditInactiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                      Edit
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      {active ? (
-                                        <DuplicateActiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <DuplicateInactiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                      Duplicate
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                              <div className="px-1 py-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      {active ? (
-                                        <ArchiveActiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <ArchiveInactiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                      Archive
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      {active ? (
-                                        <MoveActiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <MoveInactiveIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                      Move
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                              <div className="px-1 py-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${active ? 'bg-violet-500 text-white' : 'text-gray-900'
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      {active ? (
-                                        <DeleteActiveIcon
-                                          className="mr-2 h-5 w-5 text-violet-400"
-                                          aria-hidden="true"
-                                        />
-                                      ) : (
-                                        <DeleteInactiveIcon
-                                          className="mr-2 h-5 w-5 text-violet-400"
-                                          aria-hidden="true"
-                                        />
-                                      )}
-                                      Delete
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
-                      </div>
-                    </button>
-
+                          <div className="px-1 py-1">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${active ? 'bg-gray-900/80 text-white' : 'text-gray-900'
+                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                >
+                                  <ArchiveBoxIcon
+                                    color={position.bg_color}
+                                    className="mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                  Archive
+                                </button>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${active ? 'bg-gray-900/80 text-white' : 'text-gray-900'
+                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                >
+                                  <ArrowsPointingOutIcon
+                                    color={position.bg_color}
+                                    className="mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                  Move
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </div>
+                          <div className="px-1 py-1">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  onClick={() => confirm('Are you sure you want to delete this position?')
+                                    ? deletePosition({ variables: { id: position.id }, refetchQueries: [{ query: getPositions }] })
+                                    : null
+                                  }
+                                  className={`${active ? 'bg-gray-900/80 text-white' : 'text-gray-900'
+                                    } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                >
+                                  <TrashIcon
+                                    color={position.bg_color}
+                                    className="mr-2 h-5 w-5"
+                                    aria-hidden="true"
+                                  />
+                                  Delete
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
                   </div>
                 </div>
               </li>
@@ -233,17 +200,22 @@ export default function Positions() {
 function AddPosition({ data }: any) {
 
   const update = data.isUpdate
-  const id = data?.data?.id || null
-  const { modalHandler } = data
+  const id = data?.data?.position?.id || null
+  const { modalHandler, isUpdate } = data
 
-  const { register, handleSubmit, setValue, watch } = useForm();
+  const { register, handleSubmit, setValue, watch } = useForm({
+    defaultValues: {
+      name: isUpdate ? data?.data?.position?.name : '',
+      bg_color: isUpdate ? data?.data?.position?.bg_color : '#000000',
+    }
+  });
 
   const [addUser] = useMutation(addPositionOne)
-  const [updateUser] = useMutation(updatePositionById)
+  const [updatePosition] = useMutation(updatePositionById)
 
   function submit(data: any) {
     if (update) {
-      updateUser({ variables: { id: id, object: data }, refetchQueries: [{ query: getPositions }], onCompleted: () => modalHandler(false) })
+      updatePosition({ variables: { id: id, object: data }, refetchQueries: [{ query: getPositions }], onCompleted: () => modalHandler(false) })
       return
     }
 
@@ -267,7 +239,6 @@ function AddPosition({ data }: any) {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("name", { required: true })}
-                    defaultValue={data?.data?.name || ''}
                   />
                 </div>
               </div>
@@ -279,19 +250,16 @@ function AddPosition({ data }: any) {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     {...register("bg_color", { required: true })}
-                    defaultValue={data?.data?.bg_color || ''}
                   />
                 </div>
               </div>
               <SketchPicker
                 color={color}
                 onChangeComplete={(color: any) => {
-                  console.log(color, 'color')
                   setValue('bg_color', color.hex)
                 }
                 }
               />
-              <ColorPicker />
             </div>
           </div>
         </div>
@@ -306,227 +274,5 @@ function AddPosition({ data }: any) {
         </button>
       </div>
     </form>
-  )
-}
-
-function EditInactiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-    </svg>
-  )
-}
-
-function EditActiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-    </svg>
-  )
-}
-
-function DuplicateInactiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 4H12V12H4V4Z"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-      <path
-        d="M8 8H16V16H8V8Z"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-    </svg>
-  )
-}
-
-function DuplicateActiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 4H12V12H4V4Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-      <path
-        d="M8 8H16V16H8V8Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-    </svg>
-  )
-}
-
-function ArchiveInactiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect
-        x="5"
-        y="8"
-        width="10"
-        height="8"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-      <rect
-        x="4"
-        y="4"
-        width="12"
-        height="4"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-      <path d="M8 12H12" stroke="#A78BFA" strokeWidth="2" />
-    </svg>
-  )
-}
-
-function ArchiveActiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect
-        x="5"
-        y="8"
-        width="10"
-        height="8"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-      <rect
-        x="4"
-        y="4"
-        width="12"
-        height="4"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-      <path d="M8 12H12" stroke="#A78BFA" strokeWidth="2" />
-    </svg>
-  )
-}
-
-function MoveInactiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M10 4H16V10" stroke="#A78BFA" strokeWidth="2" />
-      <path d="M16 4L8 12" stroke="#A78BFA" strokeWidth="2" />
-      <path d="M8 6H4V16H14V12" stroke="#A78BFA" strokeWidth="2" />
-    </svg>
-  )
-}
-
-function MoveActiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M10 4H16V10" stroke="#C4B5FD" strokeWidth="2" />
-      <path d="M16 4L8 12" stroke="#C4B5FD" strokeWidth="2" />
-      <path d="M8 6H4V16H14V12" stroke="#C4B5FD" strokeWidth="2" />
-    </svg>
-  )
-}
-
-function DeleteInactiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect
-        x="5"
-        y="6"
-        width="10"
-        height="10"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-      <path d="M3 6H17" stroke="#A78BFA" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#A78BFA" strokeWidth="2" />
-    </svg>
-  )
-}
-
-function DeleteActiveIcon(props: any) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <rect
-        x="5"
-        y="6"
-        width="10"
-        height="10"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-      <path d="M3 6H17" stroke="#C4B5FD" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#C4B5FD" strokeWidth="2" />
-    </svg>
   )
 }
