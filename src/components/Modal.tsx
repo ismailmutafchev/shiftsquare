@@ -45,9 +45,9 @@ export default function Modal({ open, setOpen, title, children, data }: ModalPro
                         >
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
                                 <div className=''>
-                                    <XMarkIcon onClick={() => setOpen(false)} className='absolute top-5 right-5 h-6 w-6 text-gray-500 cursor-pointer' />
+                                    <XMarkIcon onClick={() => setOpen(false)} className='absolute top-5 right-5 h-6 w-6 text-polar-800 cursor-pointer' />
                                     <div className="mt-3 text-center sm:mt-5">
-                                        <Dialog.Title as="h3" className="text-lg  font-semibold leading-6 text-gray-900">
+                                        <Dialog.Title as="h3" className="py-1 mx-[25%] text-lg border-b-4 bg-polar-400/20 border-r-4 border-t border-l rounded-md border-polar-800/90 border-opacity-50  font-semibold leading-6 text-polar-800">
                                             {title}
                                         </Dialog.Title>
                                     </div>

@@ -39,7 +39,7 @@ export default function Employees() {
               setShowModal(true), setUpdate({ isUpdate: false, data: {} })
             }}
             type="button"
-            className="inline-flex items-center rounded-md bg-gray-900/80 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-gray-900/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-gray-900/80"
+            className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
           >
             <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
             Add Employee
@@ -103,7 +103,7 @@ export default function Employees() {
       </ul>{
         showModal &&
         <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} {
-        ...update.isUpdate ? { title: 'Update User' } : { title: 'Add User' }
+          ...update.isUpdate ? { title: 'Update User' } : { title: 'Add User' }
         } children={AddUser} />
       }
     </>
@@ -145,49 +145,51 @@ function AddUser({ data }: any) {
     <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12 sm:space-y-16">
         <div>
-            <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
-              <div className="sm:grid sm:grid-rows-2 sm:items-start sm:gap-1 sm:py-6">
-                <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                  First name
-                </label>
-                  <input
-                  className='m-0.5 w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-700'
-                    {...register("first_name", { required: true })}
-                  />
-              </div>
-
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                <label htmlFor="last-name" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                  Last name
-                </label>
-                <div className="mt-2 sm:col-span-2 sm:mt-0">
-                  <input
-                    {...register("last_name", { required: true })}
-                  />
-                </div>
-              </div>
-
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
-                <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                  Email address
-                </label>
-                <div className="mt-2 sm:col-span-2 sm:mt-0">
-                  <input
-                    {...register("email", { required: true })}
-                  />
-                </div>
-              </div>
-
+          <div className="mt-10 space-y-8 pb-12 sm:space-y-0 sm:divide-y sm:pb-0">
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                First name
+              </label>
+              <input
+                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                {...register("first_name", { required: true })}
+              />
             </div>
+
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label htmlFor="last-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                Last name
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                <input
+                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                  {...register("last_name", { required: true })}
+                />
+              </div>
+            </div>
+
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                Email address
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                <input
+                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                  {...register("email", { required: true })}
+                />
+              </div>
+            </div>
+
+          </div>
         </div>
       </div>
 
       <div className="mt-6 flex items-center justify-end gap-x-6">
         <button
           type="submit"
-          className="inline-flex justify-center rounded-md bg-gradient-to-br from-polar-400 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
+          className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
         >
-          Save
+          Sunmit
         </button>
       </div>
     </form>
