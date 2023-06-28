@@ -16,6 +16,7 @@
     "@headlessui/react": "^1.7.14",
     "@heroicons/react": "^2.0.18",
     "@splinetool/react-spline": "^2.2.6",
+    "@types/react-color": "^3.0.6",
     "@types/react-lottie": "^1.2.6",
     "apollo-link-context": "^1.0.20",
     "auth0": "^3.4.0",

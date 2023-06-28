@@ -1,14 +1,16 @@
 import { Fragment, JSX } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { CheckIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { XMarkIcon } from '@heroicons/react/24/outline'
 
 type ModalProps = {
     open: boolean;
     // eslint-disable-next-line no-unused-vars
     setOpen: (open: boolean) => void;
     title: string;
+    // eslint-disable-next-line no-unused-vars
     children: (props: any) => JSX.Element;
     data?: any;
+    type?: string;
 };
 
 export default function Modal({ open, setOpen, title, children, data }: ModalProps) {
@@ -17,7 +19,7 @@ export default function Modal({ open, setOpen, title, children, data }: ModalPro
 
     return (
         <Transition.Root show={open} as={Fragment}>
-            <Dialog as="div" className="relative z-10" onClose={setOpen}>
+            <Dialog as="div" className="relative z-10 border" onClose={setOpen}>
                 <Transition.Child
                     as={Fragment}
                     enter="ease-out duration-300"
@@ -42,13 +44,10 @@ export default function Modal({ open, setOpen, title, children, data }: ModalPro
                             leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
                         >
                             <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
-                                <div className='relative'>
-                                    <XMarkIcon onClick={() => setOpen(false)} className='absolute top-2 right-2 h-6 w-6 text-gray-500 cursor-pointer' />
-                                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-                                        <CheckIcon className="h-6 w-6 text-green-600" aria-hidden="true" />
-                                    </div>
+                                <div className=''>
+                                    <XMarkIcon onClick={() => setOpen(false)} className='absolute top-5 right-5 h-6 w-6 text-gray-500 cursor-pointer' />
                                     <div className="mt-3 text-center sm:mt-5">
-                                        <Dialog.Title as="h3" className="text-base font-semibold leading-6 text-gray-900">
+                                        <Dialog.Title as="h3" className="text-lg  font-semibold leading-6 text-gray-900">
                                             {title}
                                         </Dialog.Title>
                                     </div>

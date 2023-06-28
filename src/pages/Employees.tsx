@@ -1,6 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client'
 import { useState } from 'react'
-import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/20/solid'
 import { getEmployees } from '../queries/user/queries.ts'
 import Avatar from '../components/Avatar.tsx'
 import Modal from '../components/Modal.tsx'
@@ -82,7 +81,7 @@ export default function Employees() {
                     className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
                   >
                     <PencilSquareIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-                    Edit User
+                    Update
                   </button>
                 </div>
                 <div className="-ml-px flex w-0 flex-1">
@@ -103,7 +102,9 @@ export default function Employees() {
         ))}
       </ul>{
         showModal &&
-        <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title="Add User" children={AddUser} />
+        <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} {
+        ...update.isUpdate ? { title: 'Update User' } : { title: 'Add User' }
+        } children={AddUser} />
       }
     </>
   )
@@ -144,17 +145,15 @@ function AddUser({ data }: any) {
     <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12 sm:space-y-16">
         <div>
-          <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
-              <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+              <div className="sm:grid sm:grid-rows-2 sm:items-start sm:gap-1 sm:py-6">
                 <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                   First name
                 </label>
-                <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
+                  className='m-0.5 w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-700'
                     {...register("first_name", { required: true })}
                   />
-                </div>
               </div>
 
               <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
@@ -180,7 +179,6 @@ function AddUser({ data }: any) {
               </div>
 
             </div>
-          </div>
         </div>
       </div>
 

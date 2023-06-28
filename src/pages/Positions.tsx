@@ -1,17 +1,14 @@
 import { ArchiveBoxIcon, ArrowsPointingOutIcon, EllipsisVerticalIcon, Square2StackIcon, TrashIcon } from '@heroicons/react/20/solid'
 import { Fragment, useState } from 'react'
 import Modal from '../components/Modal'
-import { ChevronDownIcon, PencilSquareIcon, PlusIcon } from '@heroicons/react/24/solid'
+import { PencilSquareIcon, PlusIcon } from '@heroicons/react/24/solid'
 import { addPositionOne, deletePositionById, updatePositionById } from '../queries/position/mutations'
 import { getPositions } from '../queries/position/queries'
 import { useMutation, useQuery } from '@apollo/client'
 import { useForm } from 'react-hook-form'
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents'
 import { SketchPicker } from 'react-color'
-import { set } from 'date-fns'
-import ColorPicker from '../components/colorPicker'
 import { Menu, Transition } from '@headlessui/react'
-import { de } from 'date-fns/locale'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -78,9 +75,8 @@ export default function Positions() {
                     <p className="text-gray-500">{position.members} Members</p>
                   </div>
                   <div className="flex-shrink-0 pr-2 relative">
-                    <span className="sr-only">Open options</span>
                     <Menu as="div" className="relative text-left">
-                      <Menu.Button>
+                      <Menu.Button className="flex">
                         <EllipsisVerticalIcon className="h-5 w-5 hover:text-gray-500" aria-hidden="true" />
                       </Menu.Button>
                       <Transition
@@ -190,7 +186,9 @@ export default function Positions() {
           })}
         </ul>
         {showModal &&
-          <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title="Add User" children={AddPosition} />
+          <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title={
+            update.isUpdate ? 'Update Position' : 'Add Position'
+          } children={AddPosition} />
         }
       </div>
     </>
@@ -230,7 +228,6 @@ function AddPosition({ data }: any) {
     <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12 sm:space-y-16">
         <div>
-          <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
             <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
               <div className="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
                 <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
@@ -261,7 +258,6 @@ function AddPosition({ data }: any) {
                 }
               />
             </div>
-          </div>
         </div>
       </div>
 
