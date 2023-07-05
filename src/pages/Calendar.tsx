@@ -26,14 +26,13 @@ export default function Calendar() {
         end: new Date(endOfWeek(endOfMonth(selectedMonth))),
     })
 
+
     const { loading, data } = useQuery(getShifts, {
         variables: {
-            start: startOfDay(selectedMonth),
-            end: endOfDay(selectedMonth),
+            start: startOfDay(selectedDay),
+            end: endOfDay(selectedDay),
         },
     })
-
-    console.log(data, 'xx23')
 
     const { isLoading, isAuthenticated, error, user, logout } =
         useAuth0();
@@ -45,19 +44,7 @@ export default function Calendar() {
         return <div>Oops... {error.message}</div>;
     }
 
-    const startTimeStr = data.shift[0].start
-    const finishTimeStr = data.shift[0].end
 
-    let startHour = getHours(new Date(startTimeStr)) * 12
-    let startMinute = getMinutes(new Date(startTimeStr)) / 5
-
-
-    const startNumber = startHour + startMinute + 2
-
-    let endHour = getHours(new Date(finishTimeStr)) * 12
-    let endMinute = getMinutes(new Date(finishTimeStr)) / 5
-
-    const endNumber = (endHour + endMinute + 2) - startNumber
 
     const timeSlots = eachMinuteOfInterval({
         start: startOfDay(selectedDay),
@@ -147,109 +134,6 @@ export default function Calendar() {
                             Add Shift
                         </button>
                     </div>
-                    {/* <Menu as="div" className="relative ml-6 md:hidden">
-                                <Menu.Button className="-mx-2 flex items-center rounded-full border border-transparent p-2 text-gray-400 hover:text-gray-500">
-                                    <span className="sr-only">Open menu</span>
-                                    <EllipsisHorizontalIcon className="h-5 w-5" aria-hidden="true" />
-                                </Menu.Button>
-        
-                                <Transition
-                                    as={Fragment}
-                                    enter="transition ease-out duration-100"
-                                    enterFrom="transform opacity-0 scale-95"
-                                    enterTo="transform opacity-100 scale-100"
-                                    leave="transition ease-in duration-75"
-                                    leaveFrom="transform opacity-100 scale-100"
-                                    leaveTo="transform opacity-0 scale-95"
-                                >
-                                    <Menu.Items className="absolute right-0 z-10 mt-3 w-36 origin-top-right divide-y divide-gray-100 overflow-hidden rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                        <div className="py-1">
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        Create event
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                        </div>
-                                        <div className="py-1">
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        Go to today
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                        </div>
-                                        <div className="py-1">
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        Day view
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        Week view
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        Month view
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                            <Menu.Item>
-                                                {({ active }) => (
-                                                    <a
-                                                        href="#"
-                                                        className={classNames(
-                                                            active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                                                            'block px-4 py-2 text-sm'
-                                                        )}
-                                                    >
-                                                        Year view
-                                                    </a>
-                                                )}
-                                            </Menu.Item>
-                                        </div>
-                                    </Menu.Items>
-                                </Transition>
-                            </Menu> */}
                 </div>
             </header>
             <div className="isolate flex flex-auto overflow-y-scroll bg-white h-[65vh]">
@@ -321,16 +205,33 @@ export default function Calendar() {
                                     gridTemplateRows: 'repeat(12, minmax(0, 1fr))',
                                 }}
                             >
-                                <li className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
+                                <li className="relative mt-px flex" style={{ gridColumn: `${110} / span ${96}` }}>
                                 </li >
-                                <li className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
-                                    <a
-                                        href="#"
-                                        className="group items-center justify-center absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-red-50 p-2 text-xs leading-5 hover:bg-red-100"
-                                    >
-                                        <p className="font-semibold text-polar-900 text-base ">Elwira</p>
-                                    </a>
-                                </li>
+                                {data?.shift.map((shift, idx) => {
+                                        const startTimeStr = shift.start
+                                        const finishTimeStr = shift.end
+                                    
+                                        let startHour = getHours(new Date(startTimeStr)) * 12
+                                        let startMinute = getMinutes(new Date(startTimeStr)) / 5
+                                    
+                                    
+                                        const startNumber = startHour + startMinute + 2
+                                    
+                                        let endHour = getHours(new Date(finishTimeStr)) * 12
+                                        let endMinute = getMinutes(new Date(finishTimeStr)) / 5
+                                    
+                                        const endNumber = (endHour + endMinute + 2) - startNumber
+                                    return (
+                                        <li key={shift.id} className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
+                                            <a
+                                                href="#"
+                                                className="group items-center justify-center absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-red-50 p-2 text-xs leading-5 hover:bg-red-100"
+                                            >
+                                                <p className="font-semibold text-polar-900 text-base ">Elwira</p>
+                                            </a>
+                                        </li>
+                                    )
+                                })}
                             </ol >
                         </div >
                     </div >
