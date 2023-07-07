@@ -18,8 +18,8 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
       }}
     >
       <AuthorizedApolloProvider>
-        <App />
+          <App />
       </AuthorizedApolloProvider>
     </Auth0Provider>
-  </React.StrictMode>,
+  </React.StrictMode >,
 )

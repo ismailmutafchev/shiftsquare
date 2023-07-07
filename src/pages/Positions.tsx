@@ -187,11 +187,9 @@ export default function Positions() {
             )
           })}
         </ul>
-        {showModal &&
           <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title={
             update.isUpdate ? 'Edit Position' : 'Add Position'
           } children={AddPosition} />
-        }
       </div>
     </>
   )

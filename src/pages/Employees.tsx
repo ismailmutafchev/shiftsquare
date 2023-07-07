@@ -30,7 +30,7 @@ export default function Employees() {
 
   const users = data?.user
   return (
-    <>
+    <div>
       <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
         <h3 className="text-base font-semibold leading-6 text-gray-900">Employees</h3>
         <div className="mt-3 sm:ml-4 sm:mt-0">
@@ -100,13 +100,12 @@ export default function Employees() {
             </div>
           </li>
         ))}
-      </ul>{
-        showModal &&
-        <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} {
-          ...update.isUpdate ? { title: 'Update User' } : { title: 'Add User' }
-        } children={AddUser} />
-      }
-    </>
+      </ul>
+      <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} {
+        ...update.isUpdate ? { title: 'Update User' } : { title: 'Add User' }
+      } children={AddUser} />
+
+    </div>
   )
 }
 
@@ -162,7 +161,7 @@ function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
-                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
                   {...register("last_name", { required: true })}
                 />
               </div>
@@ -174,7 +173,7 @@ function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
-                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
                   {...register("email", { required: true })}
                 />
               </div>

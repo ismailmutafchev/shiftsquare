@@ -5,7 +5,12 @@ import { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
 import { getShifts } from '../queries/shift/queries';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import Modal from '../components/Modal';
+import { useForm } from 'react-hook-form';
+import { PlusIcon } from '@heroicons/react/24/outline';
+import { useSession } from '../providers/Session';
+import { addShiftOne, updateShiftById } from '../queries/shift/mutations';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -20,6 +25,11 @@ export default function Calendar() {
     const container = useRef(null)
     const containerNav = useRef(null)
     const containerOffset = useRef(null)
+    const [showModal, setShowModal] = useState(false)
+    const [update, setUpdate] = useState({
+        isUpdate: false,
+        data: {}
+    })
 
     const days = eachDayOfInterval({
         start: new Date(startOfWeek(startOfMonth(selectedMonth))),
@@ -44,8 +54,6 @@ export default function Calendar() {
         return <div>Oops... {error.message}</div>;
     }
 
-
-
     const timeSlots = eachMinuteOfInterval({
         start: startOfDay(selectedDay),
         end: endOfDay(selectedDay),
@@ -55,6 +63,10 @@ export default function Calendar() {
         start: startOfWeek(selectedDay),
         end: endOfWeek(selectedDay),
     })
+
+    function modalHandler(state: boolean) {
+        setShowModal(state)
+    }
 
 
 
@@ -128,9 +140,13 @@ export default function Calendar() {
                     <div className="hidden md:ml-4 md:flex md:items-center">
                         <div className="ml-6 h-6 w-px bg-gray-300" />
                         <button
+                            onClick={() => {
+                                setShowModal(true), setUpdate({ isUpdate: false, data: {} })
+                            }}
                             type="button"
-                            className="ml-6 rounded-md bg-gradient-to-br from-polar-800 to-polar-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-polar-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-600"
+                            className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
                         >
+                            <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
                             Add Shift
                         </button>
                     </div>
@@ -208,19 +224,19 @@ export default function Calendar() {
                                 <li className="relative mt-px flex" style={{ gridColumn: `${110} / span ${96}` }}>
                                 </li >
                                 {data?.shift.map((shift, idx) => {
-                                        const startTimeStr = shift.start
-                                        const finishTimeStr = shift.end
-                                    
-                                        let startHour = getHours(new Date(startTimeStr)) * 12
-                                        let startMinute = getMinutes(new Date(startTimeStr)) / 5
-                                    
-                                    
-                                        const startNumber = startHour + startMinute + 2
-                                    
-                                        let endHour = getHours(new Date(finishTimeStr)) * 12
-                                        let endMinute = getMinutes(new Date(finishTimeStr)) / 5
-                                    
-                                        const endNumber = (endHour + endMinute + 2) - startNumber
+                                    const startTimeStr = shift.start
+                                    const finishTimeStr = shift.end
+
+                                    let startHour = getHours(new Date(startTimeStr)) * 12
+                                    let startMinute = getMinutes(new Date(startTimeStr)) / 5
+
+
+                                    const startNumber = startHour + startMinute + 2
+
+                                    let endHour = getHours(new Date(finishTimeStr)) * 12
+                                    let endMinute = getMinutes(new Date(finishTimeStr)) / 5
+
+                                    const endNumber = (endHour + endMinute + 2) - startNumber
                                     return (
                                         <li key={shift.id} className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
                                             <a
@@ -305,6 +321,149 @@ export default function Calendar() {
                     </div>
                 </div>
             </div >
+            <Modal data={{ ...update, modalHandler, selectedDay }} open={showModal} setOpen={() => { setShowModal(false) }} {
+                ...update.isUpdate ? { title: 'Edit Shift' } : { title: 'Add Shift' }
+            } children={AddShift} />
         </div >
+    )
+}
+
+
+function AddShift({ data }: any) {
+
+    const update = data.isUpdate
+    const id = data?.data?.id || null
+    const { modalHandler } = data
+    const { selectedDay } = data
+    const { employees, positions } = useSession();
+
+    const { register, handleSubmit } = useForm({
+        defaultValues: {
+            position: data?.data?.position || '',
+            employee: data?.data?.last_name || '',
+            date: data?.data?.date || '',
+            start: data?.data?.start || '',
+            end: data?.data?.end || '',
+            // title: data?.data?.title || '',
+            // role: data?.data?.role?.length ? data?.data?.role[0].role?.name : '',
+            // role_id: data?.data?.role?.length ? data?.data?.role[0].role?.id : '',
+        }
+    });
+
+    const [addShift] = useMutation(addShiftOne)
+    const [updateShift] = useMutation(updateShiftById)
+
+    function submit(data: any) {
+        if (update) {
+            updateShift({ variables: { id: id, object: data }, refetchQueries: [{ query: getShifts }], onCompleted: () => modalHandler(false) })
+            return
+        }
+
+        addShift({
+            variables: {
+                object: {
+                    start: new Date(data.date + 'T' + data.start).toISOString(),
+                    end: new Date(data.date + 'T' + data.end).toISOString(),
+                    employee_id: data.employee,
+                    position_id: data.position,
+                }
+            }, refetchQueries: [{
+                query: getShifts, variables: {
+                    start: startOfDay(selectedDay),
+                    end: endOfDay(selectedDay),
+                }
+            }], onCompleted: () => modalHandler(false)
+        })
+    }
+
+    return (
+        <form onSubmit={handleSubmit(submit)}>
+            <div className="space-y-12 sm:space-y-16">
+                <div>
+                    <div className="mt-10 space-y-8 pb-12 sm:space-y-0 sm:divide-y sm:pb-0">
+                        <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                            <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                Position
+                            </label>
+                            <select
+                                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                                {...register("position", { required: true })}
+                            >
+                                {
+                                    positions?.map((position: any) => (
+                                        <option key={position.id} value={position.id}>{position.name}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+
+                        <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                            <label htmlFor="last-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                Employee
+                            </label>
+                            <div className="mt-2 sm:col-span-2 sm:mt-0">
+                                <select
+                                    className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                                    {...register("employee", { required: true })}
+                                >
+                                    {
+                                        employees?.map((employee: any) => (
+                                            <option key={employee.id} value={employee.id}>{employee.last_name}, {employee.first_name}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+                        </div>
+
+                        <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                            <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                Date
+                            </label>
+                            <div className="mt-2 sm:col-span-2 sm:mt-0">
+                                <input
+                                    type='date'
+                                    className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                                    {...register("date", { required: true })}
+                                />
+                            </div>
+                        </div>
+                        <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                            <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                Start
+                            </label>
+                            <div className="mt-2 sm:col-span-2 sm:mt-0">
+                                <input
+                                    type='time'
+                                    className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                                    {...register("start", { required: true })}
+                                />
+                            </div>
+                        </div>
+                        <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                            <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                End
+                            </label>
+                            <div className="mt-2 sm:col-span-2 sm:mt-0">
+                                <input
+                                    type='time'
+                                    className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
+                                    {...register("end", { required: true })}
+                                />
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div className="mt-6 flex items-center justify-end gap-x-6">
+                <button
+                    type="submit"
+                    className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
+                >
+                    Submit
+                </button>
+            </div>
+        </form>
     )
 }
