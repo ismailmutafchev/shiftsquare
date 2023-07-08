@@ -20,8 +20,8 @@ export const deletePositionById = gql` mutation deletePositionById($id: uuid!) {
 }`;
 
 export const updateShiftById = gql` 
-    mutation updateShiftById($id: uuid!, $start: timestamptz!, $end: timestamptz!, $position_id: uuid!) {
-        update_shift_by_pk(pk_columns: {id: $id}, _set: {start: $start, end: $end, position_id: $position_id}) {
+    mutation updateShiftById($id: uuid!, $start: timestamptz!, $end: timestamptz!, $position_id: uuid!, $employee_id: uuid!) {
+        update_shift_by_pk(pk_columns: {id: $id}, _set: {start: $start, end: $end, position_id: $position_id, employee_id: $employee_id}) {
             id
             start
             end

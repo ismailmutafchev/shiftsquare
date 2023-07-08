@@ -6,5 +6,12 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
         start
         end
         position_id
+        employee_id
+        employee {
+            first_name
+        }
+        position {
+            bg_color
+        }
 }
 }`;

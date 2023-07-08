@@ -223,7 +223,7 @@ export default function Calendar() {
                             >
                                 <li className="relative mt-px flex" style={{ gridColumn: `${110} / span ${96}` }}>
                                 </li >
-                                {data?.shift.map((shift, idx) => {
+                                {data?.shift.map((shift: any) => {
                                     const startTimeStr = shift.start
                                     const finishTimeStr = shift.end
 
@@ -239,12 +239,15 @@ export default function Calendar() {
                                     const endNumber = (endHour + endMinute + 2) - startNumber
                                     return (
                                         <li key={shift.id} className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
-                                            <a
-                                                href="#"
-                                                className="group items-center justify-center absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-red-50 p-2 text-xs leading-5 hover:bg-red-100"
+                                            <button
+                                                onClick={() => { setShowModal(true), setUpdate({ isUpdate: true, data: shift }) }}
+                                                style={{ backgroundColor: shift.position.bg_color }}
+                                                className="group items-center justify-center absolute inset-1 flex flex-col overflow-y-auto rounded-lg opacity-80 p-2 text-xs leading-5 hover:opacity-100 focus:opacity-100 focus:outline-none"
                                             >
-                                                <p className="font-semibold text-polar-900 text-base ">Elwira</p>
-                                            </a>
+                                                <p className="font-semibold text-black text-base ">{
+                                                    shift.employee.first_name
+                                                }</p>
+                                            </button>
                                         </li>
                                     )
                                 })}
@@ -337,16 +340,15 @@ function AddShift({ data }: any) {
     const { selectedDay } = data
     const { employees, positions } = useSession();
 
+    console.log(data)
+
     const { register, handleSubmit } = useForm({
         defaultValues: {
-            position: data?.data?.position || '',
-            employee: data?.data?.last_name || '',
-            date: data?.data?.date || '',
-            start: data?.data?.start || '',
-            end: data?.data?.end || '',
-            // title: data?.data?.title || '',
-            // role: data?.data?.role?.length ? data?.data?.role[0].role?.name : '',
-            // role_id: data?.data?.role?.length ? data?.data?.role[0].role?.id : '',
+            position: data?.data?.position_id || '',
+            employee: data?.data?.employee_id || '',
+            date: data.data.start ? format(new Date(data.data.start), 'yyyy-MM-dd') : '',
+            start: data.data.start ? format(new Date(data.data.start), 'HH:mm') : '',
+            end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : ''
         }
     });
 
@@ -355,7 +357,20 @@ function AddShift({ data }: any) {
 
     function submit(data: any) {
         if (update) {
-            updateShift({ variables: { id: id, object: data }, refetchQueries: [{ query: getShifts }], onCompleted: () => modalHandler(false) })
+            updateShift({
+                variables: {
+                    id: id,
+                    start: new Date(data.date + 'T' + data.start).toISOString(),
+                    end: new Date(data.date + 'T' + data.end).toISOString(),
+                    employee_id: data.employee,
+                    position_id: data.position,
+                }, refetchQueries: [{
+                    query: getShifts, variables: {
+                        start: startOfDay(selectedDay),
+                        end: endOfDay(selectedDay),
+                    }
+                }], onCompleted: () => modalHandler(false)
+            })
             return
         }
 
