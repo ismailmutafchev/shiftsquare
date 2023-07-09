@@ -11,12 +11,14 @@ export const addShiftOne = gql`
     }
 `;
 
-export const deletePositionById = gql` mutation deletePositionById($id: uuid!) {
-    delete_position_by_pk(id: $id) {
-        id
-        name
-        bg_color
-    }
+export const deleteShiftById = gql`
+    mutation deleteShiftById($id: uuid!) {
+        delete_shift_by_pk(id: $id) {
+            id
+            start
+            end
+            position_id
+        }
 }`;
 
 export const updateShiftById = gql` 

@@ -7,7 +7,7 @@ import AuthorizedApolloProvider from './providers/AuthorizedApoloPtovider.tsx'
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
 
-  <React.StrictMode>
+  // <React.StrictMode>
     <Auth0Provider
       domain={import.meta.env.VITE_AUTH0_DOMAIN as string}
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID as string}
@@ -21,5 +21,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
           <App />
       </AuthorizedApolloProvider>
     </Auth0Provider>
-  </React.StrictMode >,
+  // </React.StrictMode >
 )

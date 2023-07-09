@@ -12,6 +12,7 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
         }
         position {
             bg_color
+            name
         }
 }
 }`;
