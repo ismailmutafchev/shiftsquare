@@ -8,11 +8,10 @@ import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm } from 'react-hook-form';
-import { CalendarDaysIcon, CheckIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import { Listbox, Popover, Transition } from '@headlessui/react';
+import { Popover, Transition } from '@headlessui/react';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -411,7 +410,7 @@ export default function Calendar() {
         }
       </div >
 
-      <Modal data={{ ...update, modalHandler, selectedDay }} open={showModal} setOpen={() => { setShowModal(false) }} {
+      <Modal data={{ ...update, modalHandler, selectedDay,shifts: data?.shift }} open={showModal} setOpen={() => { setShowModal(false) }} {
         ...update.isUpdate ? { title: 'Edit Shift' } : { title: 'Add Shift' }
       } children={AddShift} />
     </div >
@@ -423,8 +422,7 @@ function AddShift({ data }: any) {
 
   const update = data.isUpdate
   const id = data?.data?.id || null
-  const { modalHandler } = data
-  const { selectedDay } = data
+  const { modalHandler, selectedDay, shifts } = data
   const { employees, positions } = useSession();
 
   const { register, handleSubmit } = useForm({
@@ -441,6 +439,13 @@ function AddShift({ data }: any) {
   const [updateShift] = useMutation(updateShiftById)
 
   function submit(data: any) {
+    const employeeBusy = shifts?.some((shift: any) => {
+      if (update && shift.id === id) return false
+      return shift.employee_id === data.employee && (
+        (new Date(shift.start) <= new Date(data.date + 'T' + data.start) && new Date(shift.end) >= new Date(data.date + 'T' + data.start)) ||
+        (new Date(shift.start) <= new Date(data.date + 'T' + data.end) && new Date(shift.end) >= new Date(data.date + 'T' + data.end))
+      )
+    })
     if (update) {
       updateShift({
         variables: {
@@ -459,6 +464,10 @@ function AddShift({ data }: any) {
       return
     }
 
+    if (employeeBusy) {
+      alert('Employee is busy')
+      return
+    }
     addShift({
       variables: {
         object: {
