@@ -32,3 +32,11 @@ export const updateShiftById = gql`
     }
     
 `;
+
+export const deleteShiftsByPositionId = gql`
+    mutation deleteShiftsByPositionId($position_id: uuid!) {
+        delete_shift(where: {position_id: {_eq: $position_id}}) {
+            affected_rows
+        }
+    }
+`;

@@ -9,7 +9,10 @@ import { useForm } from 'react-hook-form'
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents'
 import { SketchPicker } from 'react-color'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
-import {  ChevronRightIcon } from '@heroicons/react/24/outline'
+import { ChevronRightIcon } from '@heroicons/react/24/outline'
+import { deleteShiftsByPositionId } from '../queries/shift/mutations'
+import { getShifts } from '../queries/shift/queries'
+import { endOfMonth, startOfMonth } from 'date-fns'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -22,8 +25,19 @@ export default function Positions() {
     data: {}
   })
 
-  const { loading, error, data } = useQuery(getPositions)
+  const { loading, error, data, client } = useQuery(getPositions)
   const [deletePosition] = useMutation(deletePositionById, { refetchQueries: [{ query: getPositions }] })
+  const [deleteShiftsByPosition] = useMutation(deleteShiftsByPositionId, {
+    refetchQueries: [
+      {
+        query: getShifts,
+        variables: {
+          start: startOfMonth(new Date()),
+          end: endOfMonth(new Date()),
+        },
+      },
+    ],
+  })
 
   if (loading) return <LoadingAnimation />
   if (error) return <p>Error :(</p>;
@@ -33,6 +47,15 @@ export default function Positions() {
   function modalHandler(state: boolean) {
     setShowModal(state)
   }
+
+  async function deleteHandler(id: string) {
+    const result = await deleteShiftsByPosition({ variables: { position_id: id } });
+    if (result) {
+      deletePosition({ variables: { id } });
+      client.resetStore();
+    }
+  }
+
   return (
     <>
       <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
@@ -162,7 +185,7 @@ export default function Positions() {
                               {({ active }) => (
                                 <button
                                   onClick={() => confirm('Are you sure you want to delete this position?')
-                                    ? deletePosition({ variables: { id: position.id }, refetchQueries: [{ query: getPositions }] })
+                                    ? deleteHandler(position.id)
                                     : null
                                   }
                                   className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'
@@ -187,9 +210,9 @@ export default function Positions() {
             )
           })}
         </ul>
-          <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title={
-            update.isUpdate ? 'Edit Position' : 'Add Position'
-          } children={AddPosition} />
+        <Modal data={{ ...update, modalHandler }} open={showModal} setOpen={() => { setShowModal(false) }} title={
+          update.isUpdate ? 'Edit Position' : 'Add Position'
+        } children={AddPosition} />
       </div>
     </>
   )

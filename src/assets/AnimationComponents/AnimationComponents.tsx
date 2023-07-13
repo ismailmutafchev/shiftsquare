@@ -123,7 +123,7 @@ export function OptimiseAnimation() {
 
 export function LoadingAnimation() {
   return (
-    <div className=' w-[80vw] h-[100vh] md:w-[50vw]  mx-auto flex items-center justify-center'>
+    <div className=' w-[80vw] h-[80vh] md:w-[50vw]  mx-auto flex items-center justify-center'>
       <div className=' mx-auto' >
         <Lottie animationData={loading} loop={true} />
       </div>

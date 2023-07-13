@@ -15,4 +15,5 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
             name
         }
 }
-}`;
+},
+`;

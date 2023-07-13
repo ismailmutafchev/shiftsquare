@@ -12,6 +12,7 @@ import { CalendarDaysIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroic
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
 import { Popover, Transition } from '@headlessui/react';
+// import { Redirect } from 'react-router-dom';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -27,11 +28,11 @@ export default function Calendar() {
   const containerNav = useRef(null)
   const containerOffset = useRef(null)
   const [showModal, setShowModal] = useState(false)
+  const [showCalendar, setShowCalendar] = useState(false)
   const [update, setUpdate] = useState({
     isUpdate: false,
     data: {}
   })
-  const { positions, employees } = useSession();
 
   const days = eachDayOfInterval({
     start: new Date(startOfWeek(startOfMonth(selectedMonth))),
@@ -51,21 +52,19 @@ export default function Calendar() {
   })
 
 
-  const { loading, data } = useQuery(getShifts, {
+  const { loading, data, error: dataError } = useQuery(getShifts, {
     variables: {
       start: startOfDay(selectedDay),
       end: endOfDay(selectedDay),
     },
   })
 
-  const { isLoading, isAuthenticated, error, user, logout } =
+  const { isLoading, error } =
     useAuth0();
 
-  if (isLoading) {
-    return <LoadingAnimation />;
-  }
-  if (error) {
-    return <div>Oops... {error.message}</div>;
+
+  if (error || dataError) {
+    return <div>Oops... {dataError?.message}</div>;
   }
 
   const timeSlots = eachMinuteOfInterval({
@@ -81,8 +80,6 @@ export default function Calendar() {
   function modalHandler(state: boolean) {
     setShowModal(state)
   }
-
-  const [showCalendar, setShowCalendar] = useState(false)
 
   return (
     <div className="flex h-full flex-col">
@@ -178,239 +175,247 @@ export default function Calendar() {
           </div>
         </div>
       </header>
-      <div className="isolate flex flex-auto overflow-y-scroll bg-white h-[65vh]">
-        <div ref={container} className="flex flex-auto flex-col overflow-auto">
-          <div
-            ref={containerNav}
-            className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
-          >
-            {
-              weekDays.map((day, idx) => {
-                const isSelected = selectedDay && isSameDay(selectedDay, day)
-                return (
-                  <button key={day.toDateString() + idx} onClick={
-                    () => {
-                      setSelectedDay(day)
-                      setSelectedMonth(day)
-                      if (!isSameMonth(day, selectedMonth)) {
-                        setSelectedMonth(day)
-                      }
-                    }
-                  } type="button" className={
-                    classNames(
-                      'py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center',
-                      isSameMonth(day, selectedMonth) ? 'bg-white' : 'bg-gray-50',
-                      (isToday(day) || isSelected) && 'font-semibold',
-                      isSelected && 'font-semibold text-polar-600',
-                      !isSelected && isSameMonth(day, selectedMonth) && !isToday(day) && 'text-gray-900',
-                      !isSelected && !isSameMonth(day, selectedMonth) && !isToday(day) && 'text-gray-400',
-                      isToday(day) && !isSelected && 'text-polar-600',
-                      idx === 0 && 'rounded-tl-lg',
-                      idx === 6 && 'rounded-tr-lg',
-                      idx === days.length - 7 && 'rounded-bl-lg',
-                      idx === days.length - 1 && 'rounded-br-lg'
-                    )} >
-                    <span>{format(day, 'E')}</span>
-                    {/* Default: "text-gray-900", Selected: "bg-gray-900 text-white", Today (Not Selected): "text-polar-600", Today (Selected): "bg-gradient-to-br from-polar-800 to-polar-300 text-white" */}
-                    <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
-                      {format(day, 'dd')}
-                    </span>
-                  </button>
-                )
-              })
-            }
-
+      {
+        isLoading || loading ? (
+          <div>
+            <LoadingAnimation />
           </div>
-          <div className="flex w-full flex-auto">
-            <div className="h-10  bg-white ring-gray-100" />
-            <div className="grid flex-row grid-cols-3 grid-rows-1">
-              {/* Vertical lines */}
+        ) : (
+          <div className="isolate flex flex-auto overflow-y-scroll bg-white h-[65vh]">
+            <div ref={container} className="flex flex-auto flex-col overflow-auto">
               <div
-                className="row-start-1 col-start-1 grid divide-x divide-gray-100"
-                style={{ gridTemplateColumns: 'repeat(48, minmax(3.6rem, 1fr))' }}
+                ref={containerNav}
+                className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
               >
-                <div ref={containerOffset} className="col-end-1 h-7"></div>
-                {timeSlots.map((timeSlot, idx) => (
-                  <div key={timeSlot.toString() + idx}>
-                    <div className="sticky w-10 items-center justify-center bg-white border flex text-xs leading-5 text-gray-400">
-                      {format(timeSlot, 'H:mm')}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Events */}
-              <ol
-                className="col-start-1 col-end-4 row-start-1 grid grid-cols-12"
-                style={{
-                  gridTemplateColumns: '0 repeat(288, minmax(0.6rem, 1fr)) auto',
-                  gridTemplateRows: 'repeat(15, minmax(0, 1fr))',
-                }}
-              >
-                <li className="relative mt-px flex" style={{ gridColumn: `${110} / span ${96}` }}>
-                </li >
-                {data?.shift.map((shift: any) => {
-                  const startTimeStr = shift.start
-                  const finishTimeStr = shift.end
-
-                  let startHour = getHours(new Date(startTimeStr)) * 12
-                  let startMinute = getMinutes(new Date(startTimeStr)) / 5
-
-
-                  const startNumber = startHour + startMinute + 2
-
-                  let endHour = getHours(new Date(finishTimeStr)) * 12
-                  let endMinute = getMinutes(new Date(finishTimeStr)) / 5
-
-                  const endNumber = (endHour + endMinute + 2) - startNumber
-                  return (
-                    <Popover key={shift.id} className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
-                      {({ open }) => (
-                        <>
-                          <Popover.Button
-                            style={{ backgroundColor: shift.position.bg_color }}
-                            className="group no-scrollbar min-h-10 items-center justify-center absolute inset-1 flex flex-col overflow-y-auto rounded-lg opacity-80 p-2 text-xs  hover:opacity-100"
-                          >
-                            <p className="font-semibold text-black text-base">{
-                              `${shift.employee.first_name} (${shift?.position?.name}) `
-                            }</p>
-                          </Popover.Button>
-                          <Transition
-                            show={open}
-                            as={Fragment}
-                            enter="transition ease-out duration-200"
-                            enterFrom="opacity-0 translate-y-1"
-                            enterTo="opacity-100 translate-y-0"
-                            leave="transition ease-in duration-150"
-                            leaveFrom="opacity-100 translate-y-0"
-                            leaveTo="opacity-0 translate-y-1"
-                          >
-                            <Popover.Panel
-                              static
-                              className="absolute z-10 max-w-sm px-2 -top-8 transform -translate-x-1/2 left-1/2 sm:px-0 "
-                            >
-                              <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                                <div className="relative grid gap-6 bg-white p-1">
-                                  <div className="flex space-x-6 justify-evenly">
-
-
-                                    <div className='flex items-center col-span-1'>
-                                      <button
-                                        type="button"
-                                        onClick={() => {
-                                          setShowModal(true), setUpdate({ isUpdate: true, data: shift })
-                                        }}
-                                        className="inline-flex items-center rounded-md bg-polar-900/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-900/90 hover:ring-1 ring-polar-900/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-900/90"
-
-                                      >
-                                        <PencilSquareIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                                        Edit
-                                      </button>
-                                    </div>
-                                    <div className='flex items-center col-span-1'>
-                                      <button
-                                        type="button"
-                                        onClick={() => confirm('Are you sure you want to delete this shift?')
-                                          ? deleteShift({ variables: { id: shift.id } })
-                                          : null
-                                        }
-                                        className="inline-flex items-center rounded-md bg-red-600/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-red-600/90 hover:ring-1 ring-red-600/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600/90"
-
-                                      >
-                                        <TrashIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-                                        Remove
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </Popover.Panel>
-                          </Transition>
-
-                        </>
-                      )}
-                    </Popover>
-                  )
-                })}
-              </ol >
-            </div >
-          </div >
-        </div >
-        {
-          showCalendar && (
-            <div className="hidden w-1/2 max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
-              <div className="flex items-center text-center text-gray-900">
-                <button
-                  type="button"
-                  onClick={() => setSelectedMonth(subMonths(selectedMonth, 1))}
-                  className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">Previous month</span>
-                  <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-                <div className="flex-auto text-sm font-semibold">{format(selectedMonth, 'MMMM yyyy')}</div>
-                <button
-                  type="button"
-                  onClick={() => setSelectedMonth(addMonths(selectedMonth, 1))}
-                  className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">Next month</span>
-                  <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
-                </button>
-              </div>
-              <div className="mt-6 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
-                <div>S</div>
-                <div>M</div>
-                <div>T</div>
-                <div>W</div>
-                <div>T</div>
-                <div>F</div>
-                <div>S</div>
-              </div>
-              <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
-                {days.map((day, dayIdx) => {
-                  const isSelected = selectedDay && isSameDay(selectedDay, day)
-                  return (
-                    <button
-                      key={day.toDateString()}
-                      onClick={() => setSelectedDay(day)}
-                      type="button"
-                      className={
+                {
+                  weekDays.map((day, idx) => {
+                    const isSelected = selectedDay && isSameDay(selectedDay, day)
+                    return (
+                      <button key={day.toDateString() + idx} onClick={
+                        () => {
+                          setSelectedDay(day)
+                          setSelectedMonth(day)
+                          if (!isSameMonth(day, selectedMonth)) {
+                            setSelectedMonth(day)
+                          }
+                        }
+                      } type="button" className={
                         classNames(
-                          'py-1.5 hover:bg-gray-100 focus:z-10',
+                          'py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center',
                           isSameMonth(day, selectedMonth) ? 'bg-white' : 'bg-gray-50',
                           (isToday(day) || isSelected) && 'font-semibold',
-                          isSelected && 'text-white',
+                          isSelected && 'font-semibold text-polar-600',
                           !isSelected && isSameMonth(day, selectedMonth) && !isToday(day) && 'text-gray-900',
                           !isSelected && !isSameMonth(day, selectedMonth) && !isToday(day) && 'text-gray-400',
                           isToday(day) && !isSelected && 'text-polar-600',
-                          dayIdx === 0 && 'rounded-tl-lg',
-                          dayIdx === 6 && 'rounded-tr-lg',
-                          dayIdx === days.length - 7 && 'rounded-bl-lg',
-                          dayIdx === days.length - 1 && 'rounded-br-lg'
-                        )}
-                    >
-                      <time
-                        dateTime={day.toDateString()}
-                        className={classNames(
-                          'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
-                          isSelected && isToday(day) && 'bg-gradient-to-br from-polar-800 to-polar-300',
-                          isSelected && !isToday(day) && 'bg-gray-900'
-                        )}
-                      >
-                        {format(day, 'd')}
-                      </time>
-                    </button>
+                          idx === 0 && 'rounded-tl-lg',
+                          idx === 6 && 'rounded-tr-lg',
+                          idx === days.length - 7 && 'rounded-bl-lg',
+                          idx === days.length - 1 && 'rounded-br-lg'
+                        )} >
+                        <span>{format(day, 'E')}</span>
+                        {/* Default: "text-gray-900", Selected: "bg-gray-900 text-white", Today (Not Selected): "text-polar-600", Today (Selected): "bg-gradient-to-br from-polar-800 to-polar-300 text-white" */}
+                        <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
+                          {format(day, 'dd')}
+                        </span>
+                      </button>
+                    )
+                  })
+                }
 
-                  )
-                })}
               </div>
-            </div>
-          )
-        }
-      </div >
+              <div className="flex w-full flex-auto">
+                <div className="h-10  bg-white ring-gray-100" />
+                <div className="grid flex-row grid-cols-3 grid-rows-1">
+                  {/* Vertical lines */}
+                  <div
+                    className="row-start-1 col-start-1 grid divide-x divide-gray-100"
+                    style={{ gridTemplateColumns: 'repeat(48, minmax(3.6rem, 1fr))' }}
+                  >
+                    <div ref={containerOffset} className="col-end-1 h-7"></div>
+                    {timeSlots.map((timeSlot, idx) => (
+                      <div key={timeSlot.toString() + idx}>
+                        <div className="sticky w-10 items-center justify-center bg-white border flex text-xs leading-5 text-gray-400">
+                          {format(timeSlot, 'H:mm')}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
 
-      <Modal data={{ ...update, modalHandler, selectedDay,shifts: data?.shift }} open={showModal} setOpen={() => { setShowModal(false) }} {
+                  {/* Events */}
+                  <ol
+                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12"
+                    style={{
+                      gridTemplateColumns: '0 repeat(288, minmax(0.6rem, 1fr)) auto',
+                      gridTemplateRows: 'repeat(15, minmax(0, 1fr))',
+                    }}
+                  >
+                    <li className="relative mt-px flex" style={{ gridColumn: `${110} / span ${96}` }}>
+                    </li >
+                    {data?.shift.map((shift: any) => {
+                      const startTimeStr = shift.start
+                      const finishTimeStr = shift.end
+
+                      let startHour = getHours(new Date(startTimeStr)) * 12
+                      let startMinute = getMinutes(new Date(startTimeStr)) / 5
+
+
+                      const startNumber = startHour + startMinute + 2
+
+                      let endHour = getHours(new Date(finishTimeStr)) * 12
+                      let endMinute = getMinutes(new Date(finishTimeStr)) / 5
+
+                      const endNumber = (endHour + endMinute + 2) - startNumber
+                      return (
+                        <Popover key={shift.id} className="relative mt-px flex" style={{ gridColumn: `${startNumber} / span ${endNumber}` }}>
+                          {({ open }) => (
+                            <>
+                              <Popover.Button
+                                style={{ backgroundColor: shift.position.bg_color }}
+                                className="group no-scrollbar min-h-10 items-center justify-center absolute inset-1 flex flex-col overflow-y-auto rounded-lg opacity-80 p-2 text-xs  hover:opacity-100"
+                              >
+                                <p className="font-semibold text-black text-base">{
+                                  `${shift.employee.first_name} (${shift?.position?.name}) `
+                                }</p>
+                              </Popover.Button>
+                              <Transition
+                                show={open}
+                                as={Fragment}
+                                enter="transition ease-out duration-200"
+                                enterFrom="opacity-0 translate-y-1"
+                                enterTo="opacity-100 translate-y-0"
+                                leave="transition ease-in duration-150"
+                                leaveFrom="opacity-100 translate-y-0"
+                                leaveTo="opacity-0 translate-y-1"
+                              >
+                                <Popover.Panel
+                                  static
+                                  className="absolute z-10 max-w-sm px-2 -top-8 transform -translate-x-1/2 left-1/2 sm:px-0 "
+                                >
+                                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                                    <div className="relative grid gap-6 bg-white p-1">
+                                      <div className="flex space-x-6 justify-evenly">
+
+
+                                        <div className='flex items-center col-span-1'>
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setShowModal(true), setUpdate({ isUpdate: true, data: shift })
+                                            }}
+                                            className="inline-flex items-center rounded-md bg-polar-900/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-900/90 hover:ring-1 ring-polar-900/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-900/90"
+
+                                          >
+                                            <PencilSquareIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                            Edit
+                                          </button>
+                                        </div>
+                                        <div className='flex items-center col-span-1'>
+                                          <button
+                                            type="button"
+                                            onClick={() => confirm('Are you sure you want to delete this shift?')
+                                              ? deleteShift({ variables: { id: shift.id } })
+                                              : null
+                                            }
+                                            className="inline-flex items-center rounded-md bg-red-600/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-red-600/90 hover:ring-1 ring-red-600/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600/90"
+
+                                          >
+                                            <TrashIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+                                            Remove
+                                          </button>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </Popover.Panel>
+                              </Transition>
+
+                            </>
+                          )}
+                        </Popover>
+                      )
+                    })}
+                  </ol >
+                </div >
+              </div >
+            </div >
+            {
+              showCalendar && (
+                <div className="hidden w-1/2 max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
+                  <div className="flex items-center text-center text-gray-900">
+                    <button
+                      type="button"
+                      onClick={() => setSelectedMonth(subMonths(selectedMonth, 1))}
+                      className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                    >
+                      <span className="sr-only">Previous month</span>
+                      <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                    <div className="flex-auto text-sm font-semibold">{format(selectedMonth, 'MMMM yyyy')}</div>
+                    <button
+                      type="button"
+                      onClick={() => setSelectedMonth(addMonths(selectedMonth, 1))}
+                      className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                    >
+                      <span className="sr-only">Next month</span>
+                      <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
+                    </button>
+                  </div>
+                  <div className="mt-6 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
+                    <div>S</div>
+                    <div>M</div>
+                    <div>T</div>
+                    <div>W</div>
+                    <div>T</div>
+                    <div>F</div>
+                    <div>S</div>
+                  </div>
+                  <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+                    {days.map((day, dayIdx) => {
+                      const isSelected = selectedDay && isSameDay(selectedDay, day)
+                      return (
+                        <button
+                          key={day.toDateString()}
+                          onClick={() => setSelectedDay(day)}
+                          type="button"
+                          className={
+                            classNames(
+                              'py-1.5 hover:bg-gray-100 focus:z-10',
+                              isSameMonth(day, selectedMonth) ? 'bg-white' : 'bg-gray-50',
+                              (isToday(day) || isSelected) && 'font-semibold',
+                              isSelected && 'text-white',
+                              !isSelected && isSameMonth(day, selectedMonth) && !isToday(day) && 'text-gray-900',
+                              !isSelected && !isSameMonth(day, selectedMonth) && !isToday(day) && 'text-gray-400',
+                              isToday(day) && !isSelected && 'text-polar-600',
+                              dayIdx === 0 && 'rounded-tl-lg',
+                              dayIdx === 6 && 'rounded-tr-lg',
+                              dayIdx === days.length - 7 && 'rounded-bl-lg',
+                              dayIdx === days.length - 1 && 'rounded-br-lg'
+                            )}
+                        >
+                          <time
+                            dateTime={day.toDateString()}
+                            className={classNames(
+                              'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
+                              isSelected && isToday(day) && 'bg-gradient-to-br from-polar-800 to-polar-300',
+                              isSelected && !isToday(day) && 'bg-gray-900'
+                            )}
+                          >
+                            {format(day, 'd')}
+                          </time>
+                        </button>
+
+                      )
+                    })}
+                  </div>
+                </div>
+              )
+            }
+          </div >
+        )
+      }
+
+      <Modal data={{ ...update, modalHandler, selectedDay, shifts: data?.shift }} open={showModal} setOpen={() => { setShowModal(false) }} {
         ...update.isUpdate ? { title: 'Edit Shift' } : { title: 'Add Shift' }
       } children={AddShift} />
     </div >
