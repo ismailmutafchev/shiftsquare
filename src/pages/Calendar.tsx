@@ -8,10 +8,10 @@ import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm } from 'react-hook-form';
-import { CalendarDaysIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
-import { Popover, Transition } from '@headlessui/react';
+import { Dialog, Popover, Transition } from '@headlessui/react';
 // import { Redirect } from 'react-router-dom';
 
 //@ts-ignore
@@ -250,7 +250,7 @@ export default function Calendar() {
                       gridTemplateRows: 'repeat(15, minmax(0, 1fr))',
                     }}
                   >
-                    <li className="relative mt-px flex" style={{ gridColumn: `${110} / span ${96}` }}>
+                    <li className="relative mt-px flex" style={{ gridColumn: `${1} / span ${220}` }}>
                     </li >
                     {data?.shift.map((shift: any) => {
                       const startTimeStr = shift.start
@@ -414,7 +414,6 @@ export default function Calendar() {
           </div >
         )
       }
-
       <Modal data={{ ...update, modalHandler, selectedDay, shifts: data?.shift }} open={showModal} setOpen={() => { setShowModal(false) }} {
         ...update.isUpdate ? { title: 'Edit Shift' } : { title: 'Add Shift' }
       } children={AddShift} />
