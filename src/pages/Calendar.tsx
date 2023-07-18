@@ -7,11 +7,11 @@ import { LoadingAnimation } from '../assets/AnimationComponents/AnimationCompone
 import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
-import { useForm } from 'react-hook-form';
-import { CalendarDaysIcon, PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useForm, Controller } from 'react-hook-form';
+import { CalendarDaysIcon, CheckIcon, ChevronUpDownIcon, PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
-import { Dialog, Popover, Transition } from '@headlessui/react';
+import { Listbox, Popover, Transition } from '@headlessui/react';
 // import { Redirect } from 'react-router-dom';
 
 //@ts-ignore
@@ -429,7 +429,7 @@ function AddShift({ data }: any) {
   const { modalHandler, selectedDay, shifts } = data
   const { employees, positions } = useSession();
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, watch, control } = useForm({
     defaultValues: {
       position: data?.data?.position_id || '',
       employee: data?.data?.employee_id || '',
@@ -489,12 +489,20 @@ function AddShift({ data }: any) {
     })
   }
 
+  const selectedPosition = watch('position')
+
+  console.log(watch())
+
+  console.log(selectedPosition)
+
+  const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedPosition)
+
   return (
     <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12 sm:space-y-16">
         <div>
           <div className="mt-10 space-y-8 pb-12 sm:space-y-0 sm:divide-y sm:pb-0">
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            {/* <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
               <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                 Position
               </label>
@@ -504,11 +512,64 @@ function AddShift({ data }: any) {
               >
                 {
                   positions?.map((position: any) => (
-                    <option key={position.id} value={position.id}>{position.name}</option>
+                    <option className='
+
+                    ' key={position.id} value={position.id}>{position.name}</option>
                   ))
                 }
               </select>
-            </div>
+            </div> */}
+            <Controller name="position" control={control} rules={{ required: true }} render={({ field: {onChange} }) => (
+
+              <Listbox value="TEST" onChange={onChange}>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate">{selectedPositionDisplay && selectedPositionDisplay.name || "TEST"}</span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {positions && positions.map((position: any) => (
+                        <Listbox.Option
+                          key={position.id}
+                          className={({ active }) =>
+                            `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
+                            }`
+                          }
+                          value={position.id}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                  }`}
+                              >
+                                {position.name}
+                              </span>
+                              {selected ? (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
+            )} />
 
             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
               <label htmlFor="last-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
