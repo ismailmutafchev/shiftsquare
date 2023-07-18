@@ -431,8 +431,8 @@ function AddShift({ data }: any) {
 
   const { register, handleSubmit, watch, control } = useForm({
     defaultValues: {
-      position: data?.data?.position_id || '',
-      employee: data?.data?.employee_id || '',
+      position: data?.data?.position_id || positions && positions[0].id || '',
+      employee: data?.data?.employee_id || employees && employees[0].id || '',
       date: data.data.start ? format(new Date(data.data.start), 'yyyy-MM-dd') : '',
       start: data.data.start ? format(new Date(data.data.start), 'HH:mm') : '',
       end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : ''
@@ -489,89 +489,75 @@ function AddShift({ data }: any) {
     })
   }
 
-  const selectedPosition = watch('position')
+  const selectedValues = watch()
 
-  console.log(watch())
 
-  console.log(selectedPosition)
-
-  const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedPosition)
+  const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedValues.position)
+  const selectedEmployeeDisplay = employees && employees.find((employee: any) => employee.id === selectedValues.employee)
 
   return (
     <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12 sm:space-y-16">
         <div>
-          <div className="mt-10 space-y-8 pb-12 sm:space-y-0 sm:divide-y sm:pb-0">
-            {/* <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+          <div className="mt-10 space-y-8 pb-8 sm:space-y-0 sm:divide-y sm:pb-0">
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
               <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                 Position
               </label>
-              <select
-                className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                {...register("position", { required: true })}
-              >
-                {
-                  positions?.map((position: any) => (
-                    <option className='
+              <Controller name="position" control={control} rules={{ required: true }} render={({ field: { onChange } }) => (
 
-                    ' key={position.id} value={position.id}>{position.name}</option>
-                  ))
-                }
-              </select>
-            </div> */}
-            <Controller name="position" control={control} rules={{ required: true }} render={({ field: {onChange} }) => (
-
-              <Listbox value="TEST" onChange={onChange}>
-                <div className="relative mt-1">
-                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                    <span className="block truncate">{selectedPositionDisplay && selectedPositionDisplay.name || "TEST"}</span>
-                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                      <ChevronUpDownIcon
-                        className="h-5 w-5 text-gray-400"
-                        aria-hidden="true"
-                      />
-                    </span>
-                  </Listbox.Button>
-                  <Transition
-                    as={Fragment}
-                    leave="transition ease-in duration-100"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                      {positions && positions.map((position: any) => (
-                        <Listbox.Option
-                          key={position.id}
-                          className={({ active }) =>
-                            `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-amber-100 text-amber-900' : 'text-gray-900'
-                            }`
-                          }
-                          value={position.id}
-                        >
-                          {({ selected }) => (
-                            <>
-                              <span
-                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                  }`}
-                              >
-                                {position.name}
-                              </span>
-                              {selected ? (
-                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                <Listbox onChange={onChange}>
+                  <div className="relative mt-1">
+                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <span className="block truncate">{selectedPositionDisplay && selectedPositionDisplay.name || positions && positions[0].name}</span>
+                      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                        <ChevronUpDownIcon
+                          className="h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Listbox.Button>
+                    <Transition
+                      as={Fragment}
+                      leave="transition ease-in duration-100"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        {positions && positions.map((position: any) => (
+                          <Listbox.Option
+                            key={position.id}
+                            className={({ active }) =>
+                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-polar-100 text-polar-900/80' : 'text-polar-900'
+                              }`
+                            }
+                            value={position.id}
+                          >
+                            {({ selected }) => (
+                              <>
+                                <span
+                                  className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                    }`}
+                                >
+                                  {position.name}
                                 </span>
-                              ) : null}
-                            </>
-                          )}
-                        </Listbox.Option>
-                      ))}
-                    </Listbox.Options>
-                  </Transition>
-                </div>
-              </Listbox>
-            )} />
+                                {selected ? (
+                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
+                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                  </span>
+                                ) : null}
+                              </>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </Transition>
+                  </div>
+                </Listbox>
+              )} />
+            </div>
 
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            {/* <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
               <label htmlFor="last-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                 Employee
               </label>
@@ -587,6 +573,61 @@ function AddShift({ data }: any) {
                   }
                 </select>
               </div>
+            </div> */}
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                Employee
+              </label>
+              <Controller name="employee" control={control} rules={{ required: true }} render={({ field: { onChange } }) => (
+                <Listbox onChange={onChange}>
+                  <div className="relative mt-1">
+                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <span className="block truncate">{selectedEmployeeDisplay && selectedEmployeeDisplay.name || employees && employees[0].name}</span>
+                      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                        <ChevronUpDownIcon
+                          className="h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </Listbox.Button>
+                    <Transition
+                      as={Fragment}
+                      leave="transition ease-in duration-100"
+                      leaveFrom="opacity-100"
+                      leaveTo="opacity-0"
+                    >
+                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                        {employees && employees.map((employee: any) => (
+                          <Listbox.Option
+                            key={employee.id}
+                            className={({ active }) =>
+                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-polar-100 text-polar-900/80' : 'text-polar-900'
+                              }`
+                            }
+                            value={employee.id}
+                          >
+                            {({ selected }) => (
+                              <>
+                                <span
+                                  className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                    }`}
+                                >
+                                  {employee.name}
+                                </span>
+                                {selected ? (
+                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
+                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                  </span>
+                                ) : null}
+                              </>
+                            )}
+                          </Listbox.Option>
+                        ))}
+                      </Listbox.Options>
+                    </Transition>
+                  </div>
+                </Listbox>
+              )} />
             </div>
 
             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
