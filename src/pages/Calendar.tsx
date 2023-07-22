@@ -1,6 +1,6 @@
 import { Fragment, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
-import { addDays, addMonths, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, set, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
+import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, minutesToHours, set, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
 import { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
@@ -8,11 +8,10 @@ import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm, Controller } from 'react-hook-form';
-import { CalendarDaysIcon, CheckIcon, ChevronUpDownIcon, PencilSquareIcon, PlusIcon, TrashIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { CalendarDaysIcon, CheckIcon, ChevronUpDownIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
 import { Listbox, Popover, Transition } from '@headlessui/react';
-// import { Redirect } from 'react-router-dom';
 
 //@ts-ignore
 function classNames(...classes) {
@@ -214,7 +213,6 @@ export default function Calendar() {
                           idx === days.length - 1 && 'rounded-br-lg'
                         )} >
                         <span>{format(day, 'E')}</span>
-                        {/* Default: "text-gray-900", Selected: "bg-gray-900 text-white", Today (Not Selected): "text-polar-600", Today (Selected): "bg-gradient-to-br from-polar-800 to-polar-300 text-white" */}
                         <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
                           {format(day, 'dd')}
                         </span>
@@ -435,7 +433,8 @@ function AddShift({ data }: any) {
       employee: data?.data?.employee_id || employees && employees[0].id || '',
       date: data.data.start ? format(new Date(data.data.start), 'yyyy-MM-dd') : '',
       start: data.data.start ? format(new Date(data.data.start), 'HH:mm') : '',
-      end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : ''
+      end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : '',
+      length: data.data.length || 0
     }
   });
 
@@ -450,6 +449,9 @@ function AddShift({ data }: any) {
         (new Date(shift.start) <= new Date(data.date + 'T' + data.end) && new Date(shift.end) >= new Date(data.date + 'T' + data.end))
       )
     })
+
+    const shiftLength = (differenceInMinutes(new Date(data.date + 'T' + data.end), new Date(data.date + 'T' + data.start)) / 60).toFixed(2)
+ 
     if (update) {
       updateShift({
         variables: {
@@ -458,6 +460,7 @@ function AddShift({ data }: any) {
           end: new Date(data.date + 'T' + data.end).toISOString(),
           employee_id: data.employee,
           position_id: data.position,
+          length: shiftLength,
         }, refetchQueries: [{
           query: getShifts, variables: {
             start: startOfDay(selectedDay),
@@ -479,6 +482,7 @@ function AddShift({ data }: any) {
           end: new Date(data.date + 'T' + data.end).toISOString(),
           employee_id: data.employee,
           position_id: data.position,
+          length: shiftLength
         }
       }, refetchQueries: [{
         query: getShifts, variables: {
@@ -494,6 +498,7 @@ function AddShift({ data }: any) {
 
   const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedValues.position)
   const selectedEmployeeDisplay = employees && employees.find((employee: any) => employee.id === selectedValues.employee)
+
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -582,7 +587,7 @@ function AddShift({ data }: any) {
                 <Listbox onChange={onChange}>
                   <div className="relative mt-1">
                     <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                      <span className="block truncate">{selectedEmployeeDisplay && selectedEmployeeDisplay.name || employees && employees[0].name}</span>
+                      <span className="block truncate">{selectedEmployeeDisplay && selectedEmployeeDisplay.first_name + ' ' + selectedEmployeeDisplay.last_name || employees && employees[0].first_name + ' ' + employees[0].last_name}</span>
                       <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                         <ChevronUpDownIcon
                           className="h-5 w-5 text-gray-400"
@@ -612,7 +617,7 @@ function AddShift({ data }: any) {
                                   className={`block truncate ${selected ? 'font-medium' : 'font-normal'
                                     }`}
                                 >
-                                  {employee.name}
+                                  {employee.first_name} {employee.last_name}
                                 </span>
                                 {selected ? (
                                   <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
