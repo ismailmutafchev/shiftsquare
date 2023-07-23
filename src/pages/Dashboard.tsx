@@ -8,8 +8,8 @@ import { LoadingAnimation } from "../assets/AnimationComponents/AnimationCompone
 export default function Dashboard() {
     const [datesRange, setDatesRange] = useState(
         {
-            startDate: startOfWeek(new Date()),
-            endDate: endOfWeek(new Date()),
+            startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
+            endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
         }
     )
 
@@ -37,8 +37,6 @@ export default function Dashboard() {
     if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />
 
     const totalHoursSum = totalHours?.shift_aggregate?.aggregate?.sum?.length || 0
-
-    console.log(hoursByPosition)
 
     return (
         <div>

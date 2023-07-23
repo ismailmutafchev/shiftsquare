@@ -1,6 +1,6 @@
 import { Fragment, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
-import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, minutesToHours, set, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
+import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
 import { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
@@ -34,8 +34,8 @@ export default function Calendar() {
   })
 
   const days = eachDayOfInterval({
-    start: new Date(startOfWeek(startOfMonth(selectedMonth))),
-    end: new Date(endOfWeek(endOfMonth(selectedMonth))),
+    start: new Date(startOfWeek(startOfMonth(selectedMonth), { weekStartsOn: 1 })),
+    end: new Date(endOfWeek(endOfMonth(selectedMonth), { weekStartsOn: 1 })),
   })
 
   const [deleteShift] = useMutation(deleteShiftById, {
@@ -72,8 +72,8 @@ export default function Calendar() {
   }, { step: 30 })
 
   const weekDays = eachDayOfInterval({
-    start: startOfWeek(selectedDay),
-    end: endOfWeek(selectedDay),
+    start: startOfWeek(selectedDay, { weekStartsOn: 3 }),
+    end: endOfWeek(selectedDay, { weekStartsOn: 3 }),
   })
 
   function modalHandler(state: boolean) {
