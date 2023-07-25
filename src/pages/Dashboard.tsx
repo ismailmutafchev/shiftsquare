@@ -2,29 +2,42 @@ import { useQuery } from "@apollo/client"
 import { endOfDay, endOfWeek, format, startOfDay, startOfWeek } from "date-fns"
 import { useState } from "react"
 import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
-import { useSession } from "../providers/Session"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 import Datepicker from "tailwind-datepicker-react"
+import { CalendarIcon } from "@heroicons/react/24/outline"
 
-
+type DatesType = {
+    startDate: Date,
+    endDate: Date
+}
 
 export default function Dashboard() {
-    const [datesRange, setDatesRange] = useState(
+    const [datesRange, setDatesRange] = useState<DatesType>(
         {
             startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
             endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
         }
     )
-    const [show, setShow] = useState<boolean>(false)
-    const handleChange = (selectedDate: Date) => {
-        console.log(selectedDate)
+    const [showStart, setShowStart] = useState<boolean>(false)
+    const [showEnd, setShowEnd] = useState<boolean>(false)
+    const handleStartChange = (selectedDate: Date) => {
+       setDatesRange({
+              ...datesRange,
+              startDate: selectedDate
+         })
     }
-    const handleClose = (state: boolean) => {
-        setShow(state)
+    const handleEndChange = (selectedDate: Date) => {
+        setDatesRange({
+            ...datesRange,
+            endDate: selectedDate
+        })
     }
-
-    const { positions } = useSession()
-
+    const handleCloseStart = (state: boolean) => {
+        setShowStart(state)
+    }
+    const handleCloseEnd = (state: boolean) => {
+        setShowEnd(state)
+    }
 
 
     const { loading: totalHoursLoading, data: totalHours, error: totalHoursError } = useQuery(getWorkingHours, {
@@ -33,7 +46,6 @@ export default function Dashboard() {
             end: endOfDay(datesRange.endDate),
             position_id: '8c91c4d2-581e-4d14-800c-df32d3f1a482'
         },
-        fetchPolicy: "network-only",
     })
 
     const { loading: hoursByPositionLoading, data: hoursByPosition, error: hoursByPositionError } = useQuery(getHoursByPosition, {
@@ -41,7 +53,6 @@ export default function Dashboard() {
             start: startOfDay(datesRange.startDate),
             end: endOfDay(datesRange.endDate),
         },
-        fetchPolicy: "network-only",
     })
 
     if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />
@@ -59,7 +70,22 @@ export default function Dashboard() {
                     </h1>
                     <p className="mt-1 text-sm text-gray-500">{format(datesRange.startDate, 'iiii')}</p>
                 </div>
-                <Datepicker options={options} onChange={handleChange} show={show} setShow={handleClose} />
+                <Datepicker options={options} onChange={handleStartChange} show={showStart} setShow={handleCloseStart} >
+                <div>
+					<div>
+						<CalendarIcon className="w-5" />
+					</div>
+					<input type="text" className="..." placeholder="Select Date" value={datesRange.startDate.toDateString()} onFocus={() => setShowStart(true)} readOnly />
+				</div>
+                </Datepicker>
+                <Datepicker options={options} onChange={handleEndChange} show={showEnd} setShow={handleCloseEnd} >
+                <div >
+					<div>
+						<CalendarIcon className="w-5" />
+					</div>
+					<input type="text" placeholder="Select Date" value={datesRange.endDate.toDateString()} onFocus={() => setShowEnd(true)} readOnly />
+				</div>
+                </Datepicker>
 
             </header>
             <div>
@@ -92,12 +118,12 @@ const options = {
     maxDate: new Date("2030-01-01"),
     minDate: new Date("1950-01-01"),
     theme: {
-        background: "bg-gray-700 dark:bg-gray-800",
+        background: "bg-white-700 dark:bg-gray-800",
         todayBtn: "",
         clearBtn: "",
         icons: "",
         text: "",
-        disabledText: "bg-red-500",
+        disabledText: "bg-gray-100",
         input: "",
         inputIcon: "",
         selected: "",
@@ -108,6 +134,6 @@ const options = {
         next: () => <span>Next</span>,
     },
     datepickerClassNames: "top-12",
-    defaultDate: new Date("2022-01-01"),
+    defaultDate: new Date() as Date | string | null,
     language: "en",
 }
