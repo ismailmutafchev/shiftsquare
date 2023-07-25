@@ -4,7 +4,7 @@ import { useState } from "react"
 import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 import Datepicker from "tailwind-datepicker-react"
-import { CalendarIcon } from "@heroicons/react/24/outline"
+import { CalendarDaysIcon, CalendarIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
 
 type DatesType = {
     startDate: Date,
@@ -21,10 +21,10 @@ export default function Dashboard() {
     const [showStart, setShowStart] = useState<boolean>(false)
     const [showEnd, setShowEnd] = useState<boolean>(false)
     const handleStartChange = (selectedDate: Date) => {
-       setDatesRange({
-              ...datesRange,
-              startDate: selectedDate
-         })
+        setDatesRange({
+            ...datesRange,
+            startDate: selectedDate
+        })
     }
     const handleEndChange = (selectedDate: Date) => {
         setDatesRange({
@@ -64,28 +64,30 @@ export default function Dashboard() {
     return (
         <div>
             <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
-                <div>
+                <div className="">
                     <h1 className="text-base font-semibold leading-6 text-gray-900">
-                        {format(new Date(datesRange.startDate), 'd MMMM yyyy')}
+                        {format(new Date(), 'd MMMM yyyy')}
                     </h1>
                     <p className="mt-1 text-sm text-gray-500">{format(datesRange.startDate, 'iiii')}</p>
                 </div>
-                <Datepicker options={options} onChange={handleStartChange} show={showStart} setShow={handleCloseStart} >
-                <div>
-					<div>
-						<CalendarIcon className="w-5" />
-					</div>
-					<input type="text" className="..." placeholder="Select Date" value={datesRange.startDate.toDateString()} onFocus={() => setShowStart(true)} readOnly />
-				</div>
-                </Datepicker>
-                <Datepicker options={options} onChange={handleEndChange} show={showEnd} setShow={handleCloseEnd} >
-                <div >
-					<div>
-						<CalendarIcon className="w-5" />
-					</div>
-					<input type="text" placeholder="Select Date" value={datesRange.endDate.toDateString()} onFocus={() => setShowEnd(true)} readOnly />
-				</div>
-                </Datepicker>
+                <div className="flex">
+                    <Datepicker options={options} onChange={handleStartChange} show={showStart} setShow={handleCloseStart} >
+                        <div className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
+                            <div>
+                                <CalendarDaysIcon className="w-5 text-white" />
+                            </div>
+                            <input type="text" className="bg-transparent text-white font-semibold" placeholder="Select Date" value={datesRange.startDate.toDateString()} onFocus={() => setShowStart(true)} readOnly />
+                        </div>
+                    </Datepicker>
+                    <Datepicker options={options} onChange={handleEndChange} show={showEnd} setShow={handleCloseEnd} onBlur={() => setShowEnd(false)} >
+                        <div className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
+                            <div>
+                            <CalendarDaysIcon className="w-5 text-white" />
+                            </div>
+                            <input type="text" className="bg-transparent text-white font-semibold"  placeholder="Select Date" value={datesRange.endDate.toDateString()} onFocus={() => setShowEnd(true)} readOnly />
+                        </div>
+                    </Datepicker>
+                </div>
 
             </header>
             <div>
@@ -111,14 +113,14 @@ export default function Dashboard() {
 }
 
 const options = {
-    title: "Demo Title",
+    title: "",
     autoHide: true,
     todayBtn: false,
-    clearBtn: true,
+    clearBtn: false,
     maxDate: new Date("2030-01-01"),
     minDate: new Date("1950-01-01"),
     theme: {
-        background: "bg-white-700 dark:bg-gray-800",
+        background: "bg-white dark:bg-gray-800",
         todayBtn: "",
         clearBtn: "",
         icons: "",
@@ -130,10 +132,10 @@ const options = {
     },
     icons: {
         // () => ReactElement | JSX.Element
-        prev: () => <span>Previous</span>,
-        next: () => <span>Next</span>,
+        prev: () => <ChevronLeftIcon className="w-5" />,
+        next: () => <ChevronLeftIcon className="w-5 transform rotate-180" />,
     },
-    datepickerClassNames: "top-12",
+    datepickerClassNames: "top-40 z-50",
     defaultDate: new Date() as Date | string | null,
     language: "en",
 }
