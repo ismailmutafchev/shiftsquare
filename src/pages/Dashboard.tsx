@@ -3,8 +3,9 @@ import { endOfDay, endOfWeek, format, startOfDay, startOfWeek } from "date-fns"
 import { useState } from "react"
 import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
-import Datepicker from "tailwind-datepicker-react"
+// import Datepicker from "tailwind-datepicker-react"
 import { CalendarDaysIcon, CalendarIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import Datepicker from "../components/Datepicker"
 
 type DatesType = {
     startDate: Date,
@@ -71,43 +72,47 @@ export default function Dashboard() {
                     <p className="mt-1 text-sm text-gray-500">{format(datesRange.startDate, 'iiii')}</p>
                 </div>
                 <div className="flex">
-                    <Datepicker options={options} onChange={handleStartChange} show={showStart} setShow={handleCloseStart} >
+                    {/* <Datepicker options={options} onChange={handleStartChange} show={showStart} setShow={handleCloseStart} >
                         <div className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
                             <div>
                                 <CalendarDaysIcon className="w-5 text-white" />
                             </div>
                             <input type="text" className="bg-transparent text-white font-semibold" placeholder="Select Date" value={datesRange.startDate.toDateString()} onFocus={() => setShowStart(true)} readOnly />
                         </div>
-                    </Datepicker>
-                    <Datepicker options={options} onChange={handleEndChange} show={showEnd} setShow={handleCloseEnd} onBlur={() => setShowEnd(false)} >
-                        <div className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
+                    </Datepicker> */}
+                    {/* <Datepicker onBlur={() => setShowEnd(false)} options={options} onChange={handleEndChange} show={showEnd} setShow={handleCloseEnd}>
+                        <div  className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
                             <div>
-                            <CalendarDaysIcon className="w-5 text-white" />
+                                <CalendarDaysIcon className="w-5 text-white" />
                             </div>
-                            <input type="text" className="bg-transparent text-white font-semibold"  placeholder="Select Date" value={datesRange.endDate.toDateString()} onFocus={() => setShowEnd(true)} readOnly />
+                            <input type="text" className="bg-transparent text-white font-semibold" placeholder="Select Date" value={datesRange.endDate.toDateString()} onFocus={() => setShowEnd(true)} readOnly />
                         </div>
-                    </Datepicker>
+                    </Datepicker> */}
+                    {/* <Datepicker selectedDay={datesRange.startDate} setSelectedDay={setDatesRange}> */}
                 </div>
 
             </header>
-            <div>
-                <h1>Total Hours: {totalHoursSum}</h1>
-                {
-                    hoursByPosition && hoursByPosition.shift && hoursByPosition.shift.map((shift: any) => {
-                        return (
-                            <div key={shift.position.id}>
-                                <h2
-                                    style={{
-                                        color: shift.position.bg_color
-                                    }}
-                                >
-                                    {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
-                                </h2>
-                            </div>
-                        )
-                    })
-                }
-            </div >
+            {
+                totalHoursLoading || hoursByPositionLoading ? <LoadingAnimation /> : <div>
+                    <h1>Total Hours: {totalHoursSum}</h1>
+                    {
+                        hoursByPosition && hoursByPosition.shift && hoursByPosition.shift.map((shift: any) => {
+                            return (
+                                <div key={shift.position.id}>
+                                    <h2
+                                        style={{
+                                            color: shift.position.bg_color
+                                        }}
+                                    >
+                                        {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
+                                    </h2>
+                                </div>
+                            )
+                        })
+                    }
+                </div >
+            }
+
         </div>
     )
 }
@@ -118,10 +123,10 @@ const options = {
     todayBtn: false,
     clearBtn: false,
     maxDate: new Date("2030-01-01"),
-    minDate: new Date("1950-01-01"),
+    minDate: new Date("2023-01-01"),
     theme: {
         background: "bg-white dark:bg-gray-800",
-        todayBtn: "",
+        todayBtn: "bg-red-400",
         clearBtn: "",
         icons: "",
         text: "",
