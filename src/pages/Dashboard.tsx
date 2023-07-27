@@ -1,58 +1,53 @@
 import { useQuery } from "@apollo/client"
 import { endOfDay, endOfWeek, format, startOfDay, startOfWeek } from "date-fns"
-import { useState } from "react"
+import { Fragment, useState } from "react"
 import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 // import Datepicker from "tailwind-datepicker-react"
-import { CalendarDaysIcon, CalendarIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { CalendarDaysIcon, ChevronDownIcon, ChevronLeftIcon, XMarkIcon } from "@heroicons/react/24/outline"
 import Datepicker from "../components/Datepicker"
+import { Menu, Transition } from "@headlessui/react"
 
-type DatesType = {
-    startDate: Date,
-    endDate: Date
-}
 
 export default function Dashboard() {
-    const [datesRange, setDatesRange] = useState<DatesType>(
-        {
-            startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
-            endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
-        }
-    )
+    // const [datesRange, setDatesRange] = useState<DatesType>(
+    //     {
+    //         startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
+    //         endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
+    //     }
+    // )
+    const [startDate, setStartDate] = useState<Date>(new Date())
+    const [endDate, setEndDate] = useState<Date>(new Date())
     const [showStart, setShowStart] = useState<boolean>(false)
     const [showEnd, setShowEnd] = useState<boolean>(false)
     const handleStartChange = (selectedDate: Date) => {
-        setDatesRange({
-            ...datesRange,
-            startDate: selectedDate
-        })
+        setStartDate(selectedDate)
     }
     const handleEndChange = (selectedDate: Date) => {
-        setDatesRange({
-            ...datesRange,
-            endDate: selectedDate
-        })
+        setEndDate(selectedDate)
     }
     const handleCloseStart = (state: boolean) => {
         setShowStart(state)
+        setShowEnd(false)
     }
     const handleCloseEnd = (state: boolean) => {
         setShowEnd(state)
+        setShowStart(false)
     }
 
 
     const { loading: totalHoursLoading, data: totalHours, error: totalHoursError } = useQuery(getWorkingHours, {
         variables: {
-            start: startOfDay(datesRange.startDate),
-            end: endOfDay(datesRange.endDate),
+            start: startOfDay(startDate),
+            end: endOfDay(endDate),
             position_id: '8c91c4d2-581e-4d14-800c-df32d3f1a482'
         },
     })
 
     const { loading: hoursByPositionLoading, data: hoursByPosition, error: hoursByPositionError } = useQuery(getHoursByPosition, {
         variables: {
-            start: startOfDay(datesRange.startDate),
-            end: endOfDay(datesRange.endDate),
+            start: startOfDay(startDate),
+            end: endOfDay(endDate),
         },
     })
 
@@ -69,26 +64,69 @@ export default function Dashboard() {
                     <h1 className="text-base font-semibold leading-6 text-gray-900">
                         {format(new Date(), 'd MMMM yyyy')}
                     </h1>
-                    <p className="mt-1 text-sm text-gray-500">{format(datesRange.startDate, 'iiii')}</p>
+                    <p className="mt-1 text-sm text-gray-500">{format(startDate, 'iiii')}</p>
                 </div>
                 <div className="flex">
-                    {/* <Datepicker options={options} onChange={handleStartChange} show={showStart} setShow={handleCloseStart} >
-                        <div className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
+                    <div className="top-16 w-56 text-right">
+                        <Menu as="div" className="relative inline-block text-left">
                             <div>
-                                <CalendarDaysIcon className="w-5 text-white" />
+                                <Menu.Button className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90">
+                                    {startDate.toDateString()}
+                                    <ChevronDownIcon
+                                        className="ml-2 -mr-1 h-5 w-5"
+                                        aria-hidden="true"
+                                    />
+                                </Menu.Button>
                             </div>
-                            <input type="text" className="bg-transparent text-white font-semibold" placeholder="Select Date" value={datesRange.startDate.toDateString()} onFocus={() => setShowStart(true)} readOnly />
-                        </div>
-                    </Datepicker> */}
-                    {/* <Datepicker onBlur={() => setShowEnd(false)} options={options} onChange={handleEndChange} show={showEnd} setShow={handleCloseEnd}>
-                        <div  className="border rounded-md p-2 bg-polar-800/90  flex space-x-2 items-center">
+                            <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                            >
+                                <Menu.Items static>
+                                    <div className="relative">
+                                        <div className="absolute w-[220%] top-6 -left-32">
+                                            <Datepicker selectedDay={startDate} setSelectedDay={setStartDate} />
+                                        </div>
+                                    </div>
+                                </Menu.Items>
+                            </Transition>
+                        </Menu>
+                    </div>
+                    <div className="top-16 w-56 text-right">
+                        <Menu as="div" className="relative inline-block text-left">
                             <div>
-                                <CalendarDaysIcon className="w-5 text-white" />
+                                <Menu.Button className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90">
+                                    {endDate.toDateString()}
+                                    <ChevronDownIcon
+                                        className="ml-2 -mr-1 h-5 w-5"
+                                        aria-hidden="true"
+                                    />
+                                </Menu.Button>
                             </div>
-                            <input type="text" className="bg-transparent text-white font-semibold" placeholder="Select Date" value={datesRange.endDate.toDateString()} onFocus={() => setShowEnd(true)} readOnly />
-                        </div>
-                    </Datepicker> */}
-                    {/* <Datepicker selectedDay={datesRange.startDate} setSelectedDay={setDatesRange}> */}
+                            <Transition
+                                as={Fragment}
+                                enter="transition ease-out duration-100"
+                                enterFrom="transform opacity-0 scale-95"
+                                enterTo="transform opacity-100 scale-100"
+                                leave="transition ease-in duration-75"
+                                leaveFrom="transform opacity-100 scale-100"
+                                leaveTo="transform opacity-0 scale-95"
+                            >
+                                <Menu.Items static>
+                                    <div className="relative">
+                                        <div className="absolute w-[220%] top-6 -left-32">
+                                            <Datepicker selectedDay={endDate} setSelectedDay={setEndDate} />
+                                        </div>
+                                    </div>
+                                </Menu.Items>
+                            </Transition>
+                        </Menu>
+                    </div>
                 </div>
 
             </header>

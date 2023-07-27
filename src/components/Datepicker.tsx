@@ -10,8 +10,8 @@ function classNames(...classes) {
 type DatepickerProps = {
     selectedDay: Date,
     setSelectedDay: React.Dispatch<React.SetStateAction<Date>>,
-    firstDayInRange: Date,
-    setFirstDayInRange: React.Dispatch<React.SetStateAction<Date>>,
+    firstDayInRange?: Date,
+    setFirstDayInRange?: React.Dispatch<React.SetStateAction<Date>>,
     firstDateInRange?: Date,
     lastDateInRange?: Date,
 }
@@ -27,8 +27,9 @@ export default function Datepicker({
         start: new Date(startOfWeek(startOfMonth(selectedMonth), { weekStartsOn: 1 })),
         end: new Date(endOfWeek(endOfMonth(selectedMonth), { weekStartsOn: 1 })),
     })
+
     return (
-        <div className="hidden w-1/2 max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
+        <div className=" backdrop-blur-sm border  rounded-lg hidden max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
             <div className="flex items-center text-center text-gray-900">
                 <button
                     type="button"
@@ -97,5 +98,6 @@ export default function Datepicker({
                 })}
             </div>
         </div>
+
     )
 }
