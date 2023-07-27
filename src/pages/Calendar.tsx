@@ -164,32 +164,41 @@ export default function Calendar() {
           <div className="hidden md:ml-4 md:flex md:items-center">
             <div className="top-16 w-56 text-right z-10">
               <Menu as="div" className="relative inline-block text-left">
-                <div>
-                  <Menu.Button className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90">
-                    {selectedDay.toDateString()}
-                    <ChevronDownIcon
-                      className="ml-2 -mr-1 h-5 w-5"
-                      aria-hidden="true"
-                    />
-                  </Menu.Button>
-                </div>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items static>
-                    <div className="relative">
-                      <div className="absolute w-[220%] top-6 right-0">
-                        <Datepicker selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
-                      </div>
+                {({ open }) => (
+                  <>
+                    <div>
+                      <Menu.Button className={`inline-flex items-center rounded-md
+                        px-3 py-2 text-sm font-semibold 
+                        shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1
+                         ring-polar-800/90 focus-visible:outline focus-visible:outline-2
+                          focus-visible:outline-offset-2 focus-visible:outline-polar-800/90
+                          ${open ? 'bg-gray-200 ring-1 text-polar-800/90' : 'bg-polar-800/90 text-white'}`}>
+                        {selectedDay.toDateString()}
+                        <ChevronDownIcon
+                          className="ml-2 -mr-1 h-5 w-5"
+                          aria-hidden="true"
+                        />
+                      </Menu.Button>
                     </div>
-                  </Menu.Items>
-                </Transition>
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-100"
+                      enterFrom="transform opacity-0 scale-95"
+                      enterTo="transform opacity-100 scale-100"
+                      leave="transition ease-in duration-75"
+                      leaveFrom="transform opacity-100 scale-100"
+                      leaveTo="transform opacity-0 scale-95"
+                    >
+                      <Menu.Items static>
+                        <div className="relative">
+                          <div className="absolute w-[220%] top-6 right-0">
+                            <Datepicker selectedDay={selectedDay} setSelectedDay={setSelectedDay} />
+                          </div>
+                        </div>
+                      </Menu.Items>
+                    </Transition>
+                  </>
+                )}
               </Menu>
             </div>
           </div>
