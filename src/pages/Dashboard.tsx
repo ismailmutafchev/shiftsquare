@@ -1,42 +1,21 @@
 import { useQuery } from "@apollo/client"
-import { endOfDay, endOfWeek, format, startOfDay, startOfWeek } from "date-fns"
+import { endOfDay, format, startOfDay, startOfWeek } from "date-fns"
 import { Fragment, useState } from "react"
 import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 // import Datepicker from "tailwind-datepicker-react"
-import { CalendarDaysIcon, ChevronDownIcon, ChevronLeftIcon, XMarkIcon } from "@heroicons/react/24/outline"
+import { ChevronDownIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
 import Datepicker from "../components/Datepicker"
 import { Menu, Transition } from "@headlessui/react"
+import { Cell, Pie, PieChart, Sector } from "recharts"
 
 
 export default function Dashboard() {
-    // const [datesRange, setDatesRange] = useState<DatesType>(
-    //     {
-    //         startDate: startOfWeek(new Date(), { weekStartsOn: 1 }),
-    //         endDate: endOfWeek(new Date(), { weekStartsOn: 1 }),
-    //     }
-    // )
-    const [startDate, setStartDate] = useState<Date>(new Date())
+    const [startDate, setStartDate] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 }))
     const [endDate, setEndDate] = useState<Date>(new Date())
-    const [showStart, setShowStart] = useState<boolean>(false)
-    const [showEnd, setShowEnd] = useState<boolean>(false)
-    const handleStartChange = (selectedDate: Date) => {
-        setStartDate(selectedDate)
-    }
-    const handleEndChange = (selectedDate: Date) => {
-        setEndDate(selectedDate)
-    }
-    const handleCloseStart = (state: boolean) => {
-        setShowStart(state)
-        setShowEnd(false)
-    }
-    const handleCloseEnd = (state: boolean) => {
-        setShowEnd(state)
-        setShowStart(false)
-    }
+    const [selectedCell, setSectedCell] = useState<any>(null)
 
-
-    const { loading: totalHoursLoading, data: totalHours, error: totalHoursError } = useQuery(getWorkingHours, {
+    const { loading: totalHoursLoading, data: totalHours } = useQuery(getWorkingHours, {
         variables: {
             start: startOfDay(startDate),
             end: endOfDay(endDate),
@@ -44,7 +23,7 @@ export default function Dashboard() {
         },
     })
 
-    const { loading: hoursByPositionLoading, data: hoursByPosition, error: hoursByPositionError } = useQuery(getHoursByPosition, {
+    const { loading: hoursByPositionLoading, data: hoursByPosition } = useQuery(getHoursByPosition, {
         variables: {
             start: startOfDay(startDate),
             end: endOfDay(endDate),
@@ -55,7 +34,10 @@ export default function Dashboard() {
 
     const totalHoursSum = totalHours?.shift_aggregate?.aggregate?.sum?.length || 0
 
-
+    const onPieEnter = (data: any, index: number) => {
+        console.log(data)
+        setSectedCell(data)
+    }
 
     return (
         <div>
@@ -153,6 +135,29 @@ export default function Dashboard() {
             {
                 totalHoursLoading || hoursByPositionLoading ? <LoadingAnimation /> : <div>
                     <h1>Total Hours: {totalHoursSum}</h1>
+                    {
+                        hoursByPosition && hoursByPosition.shift &&
+                        <PieChart width={400} height={400}>
+                            <Pie 
+                                data={hoursByPosition.shift}
+                                cx={120}
+                                cy={200}
+                                innerRadius={60}
+                                outerRadius={80}
+                                fill="#8884d8"
+                                paddingAngle={5}
+                                dataKey="position.shift_aggregate.aggregate.sum.length"
+                                onMouseEnter={onPieEnter}
+                                activeShape={() => <p>test</p>}
+                            > 
+                                {
+                                    hoursByPosition.shift.map((shift: any) => {
+                                        return <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                                    })
+                                }
+                            </Pie>
+                        </PieChart>
+                    }
                     {
                         hoursByPosition && hoursByPosition.shift && hoursByPosition.shift.map((shift: any) => {
                             return (
