@@ -4,10 +4,10 @@ import { Fragment, useState } from "react"
 import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 // import Datepicker from "tailwind-datepicker-react"
-import { ChevronDownIcon, ChevronLeftIcon } from "@heroicons/react/24/outline"
+import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import Datepicker from "../components/Datepicker"
 import { Menu, Transition } from "@headlessui/react"
-import { Cell, Pie, PieChart, Sector } from "recharts"
+import { Cell, Pie, PieChart, } from "recharts"
 
 
 export default function Dashboard() {
@@ -34,22 +34,20 @@ export default function Dashboard() {
 
     const totalHoursSum = totalHours?.shift_aggregate?.aggregate?.sum?.length || 0
 
-    const onPieEnter = (data: any, index: number) => {
-        console.log(data)
+    const onPieEnter = (data: any,) => {
         setSectedCell(data)
     }
 
     return (
         <div>
-            <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
-                <div className="">
-                    <h1 className="text-base font-semibold leading-6 text-gray-900">
-                        {format(new Date(), 'd MMMM yyyy')}
+            <header className="flex flex-none items-center space-x-5 justify-between border-b border-gray-200 px-6 py-4">
+                <div>
+                    <h1 className="text-2xl font-bold leading-6 text-polar-900/80">
+                        Dashboard
                     </h1>
-                    <p className="mt-1 text-sm text-gray-500">{format(startDate, 'iiii')}</p>
                 </div>
-                <div className="flex">
-                    <div className="top-16 w-56 text-right">
+                <div className="flex space-x-5">
+                    <div className="top-16 w-auto text-right">
                         <Menu as="div" className="relative inline-block text-left">
                             {({ open }) =>
                                 <>
@@ -78,7 +76,7 @@ export default function Dashboard() {
                                     >
                                         <Menu.Items static>
                                             <div className="relative">
-                                                <div className="absolute w-[220%] top-6 -left-32">
+                                                <div className="absolute z[999] w-[220%] top-6 -left-32">
                                                     <Datepicker selectedDay={startDate} setSelectedDay={setStartDate} />
                                                 </div>
                                             </div>
@@ -89,7 +87,7 @@ export default function Dashboard() {
 
                         </Menu>
                     </div>
-                    <div className="top-16 w-56 text-right">
+                    <div className="top-16 w-auto text-right">
                         <Menu as="div" className="relative inline-block text-left">
                             {
                                 ({ open }) =>
@@ -132,78 +130,185 @@ export default function Dashboard() {
                 </div>
 
             </header>
-            {
-                totalHoursLoading || hoursByPositionLoading ? <LoadingAnimation /> : <div>
-                    <h1>Total Hours: {totalHoursSum}</h1>
-                    {
-                        hoursByPosition && hoursByPosition.shift &&
-                        <PieChart width={400} height={400}>
-                            <Pie 
-                                data={hoursByPosition.shift}
-                                cx={120}
-                                cy={200}
-                                innerRadius={60}
-                                outerRadius={80}
-                                fill="#8884d8"
-                                paddingAngle={5}
-                                dataKey="position.shift_aggregate.aggregate.sum.length"
-                                onMouseEnter={onPieEnter}
-                                activeShape={() => <p>test</p>}
-                            > 
-                                {
-                                    hoursByPosition.shift.map((shift: any) => {
-                                        return <Cell key={shift.position.id} fill={shift.position.bg_color} />
-                                    })
-                                }
-                            </Pie>
-                        </PieChart>
-                    }
-                    {
-                        hoursByPosition && hoursByPosition.shift && hoursByPosition.shift.map((shift: any) => {
-                            return (
-                                <div key={shift.position.id}>
-                                    <h2
-                                        style={{
-                                            color: shift.position.bg_color
-                                        }}
-                                    >
-                                        {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
-                                    </h2>
-                                </div>
-                            )
-                        })
-                    }
-                </div >
-            }
 
+            {
+                totalHoursLoading || hoursByPositionLoading ? <LoadingAnimation /> :
+                    <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 items-center justify-center">
+                        {
+                            hoursByPosition && hoursByPosition.shift &&
+                            <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
+                                <div className="border flex flex-col items-start">
+                                    <h1>Hours by Position</h1>
+                                    {hoursByPosition.shift.map((shift: any) => {
+                                        return (
+                                            <div key={shift.position.id}>
+                                                <h2
+                                                    style={{
+                                                        color: shift.position.bg_color
+                                                    }}
+                                                >
+                                                    {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
+                                                </h2>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <PieChart width={200} height={200} className="-z-10">
+                                    <Pie
+                                        data={hoursByPosition.shift}
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        paddingAngle={5}
+                                        dataKey="position.shift_aggregate.aggregate.sum.length"
+                                        onMouseEnter={onPieEnter}
+                                    >
+                                        {
+                                            hoursByPosition.shift.map((shift: any) => {
+                                                return (
+                                                    <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                                                )
+                                            })
+                                        }
+                                    </Pie>
+                                </PieChart>
+                            </div>
+                        }
+                        {
+                            hoursByPosition && hoursByPosition.shift &&
+                            <div className="min-w-[400px] flex items-center justify-between m-3 rounded-2xl bg-polar-200/30 -z-20">
+                                <div className="flex flex-col space-y-10 pl-5">
+                                    <h1 className="text-2xl font-bold text-polar-700/80">Hours by Position</h1>
+                                    <div className="flex items-start flex-col">
+                                        {hoursByPosition.shift.map((shift: any) => {
+                                            return (
+                                                <div key={shift.position.id} className="flex justify-between w-full border-b ">
+                                                    <div className="flex items-center space-x-1">
+                                                        <div style={{
+                                                            backgroundColor: shift.position.bg_color,
+                                                            width: '10px',
+                                                            height: '10px',
+                                                            borderRadius: '50%'
+
+                                                        }}>
+
+                                                        </div>
+                                                        <p
+                                                            className="text-lg font-semibold text-polar-700/80"
+                                                        >
+                                                            {shift.position.name}
+                                                        </p>
+                                                    </div>
+                                                    <p className="text-lg font-semibold text-polar-700/80">{shift.position.shift_aggregate.aggregate.sum.length}</p>
+                                                </div>
+                                            )
+                                        })}
+                                    </div>
+                                </div>
+                                <PieChart width={200} height={200} className="-z-10 xl:right-10">
+                                    <Pie
+                                        data={hoursByPosition.shift}
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        paddingAngle={5}
+                                        dataKey="position.shift_aggregate.aggregate.sum.length"
+                                        onMouseEnter={onPieEnter}
+                                    >
+                                        {
+                                            hoursByPosition.shift.map((shift: any) => {
+                                                return (
+                                                    <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                                                )
+                                            })
+                                        }
+                                    </Pie>
+                                </PieChart>
+                            </div>
+                        }
+                        {
+                            hoursByPosition && hoursByPosition.shift &&
+                            <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
+                                <div className="border flex flex-col items-start">
+                                    <h1>Hours by Position</h1>
+                                    {hoursByPosition.shift.map((shift: any) => {
+                                        return (
+                                            <div key={shift.position.id}>
+                                                <h2
+                                                    style={{
+                                                        color: shift.position.bg_color
+                                                    }}
+                                                >
+                                                    {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
+                                                </h2>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <PieChart width={200} height={200} className="-z-10">
+                                    <Pie
+                                        data={hoursByPosition.shift}
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        paddingAngle={5}
+                                        dataKey="position.shift_aggregate.aggregate.sum.length"
+                                        onMouseEnter={onPieEnter}
+                                    >
+                                        {
+                                            hoursByPosition.shift.map((shift: any) => {
+                                                return (
+                                                    <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                                                )
+                                            })
+                                        }
+                                    </Pie>
+                                </PieChart>
+                            </div>
+                        }
+                        {
+                            hoursByPosition && hoursByPosition.shift &&
+                            <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
+                                <div className="border flex flex-col items-start">
+                                    <h1>Hours by Position</h1>
+                                    {hoursByPosition.shift.map((shift: any) => {
+                                        return (
+                                            <div key={shift.position.id}>
+                                                <h2
+                                                    style={{
+                                                        color: shift.position.bg_color
+                                                    }}
+                                                >
+                                                    {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
+                                                </h2>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <PieChart width={200} height={200} className="-z-10">
+                                    <Pie
+                                        data={hoursByPosition.shift}
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        paddingAngle={5}
+                                        dataKey="position.shift_aggregate.aggregate.sum.length"
+                                        onMouseEnter={onPieEnter}
+                                    >
+                                        {
+                                            hoursByPosition.shift.map((shift: any) => {
+                                                return (
+                                                    <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                                                )
+                                            })
+                                        }
+                                    </Pie>
+                                </PieChart>
+                            </div>
+                        }
+
+                    </div >
+            }
         </div>
     )
-}
-
-const options = {
-    title: "",
-    autoHide: true,
-    todayBtn: false,
-    clearBtn: false,
-    maxDate: new Date("2030-01-01"),
-    minDate: new Date("2023-01-01"),
-    theme: {
-        background: "bg-white dark:bg-gray-800",
-        todayBtn: "bg-red-400",
-        clearBtn: "",
-        icons: "",
-        text: "",
-        disabledText: "bg-gray-100",
-        input: "",
-        inputIcon: "",
-        selected: "",
-    },
-    icons: {
-        // () => ReactElement | JSX.Element
-        prev: () => <ChevronLeftIcon className="w-5" />,
-        next: () => <ChevronLeftIcon className="w-5 transform rotate-180" />,
-    },
-    datepickerClassNames: "top-40 z-50",
-    defaultDate: new Date() as Date | string | null,
-    language: "en",
 }
