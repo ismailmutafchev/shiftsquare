@@ -7,7 +7,7 @@ import { LoadingAnimation } from "../assets/AnimationComponents/AnimationCompone
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
 import Datepicker from "../components/Datepicker"
 import { Menu, Transition } from "@headlessui/react"
-import { Cell, Pie, PieChart, } from "recharts"
+import { Cell, Pie, PieChart, Tooltip, } from "recharts"
 
 
 export default function Dashboard() {
@@ -34,9 +34,11 @@ export default function Dashboard() {
 
     const totalHoursSum = totalHours?.shift_aggregate?.aggregate?.sum?.length || 0
 
-    const onPieEnter = (data: any,) => {
+    const onPieEnter = (data: any) => {
+        console.log(data)
         setSectedCell(data)
     }
+
 
     return (
         <div>
@@ -161,7 +163,7 @@ export default function Dashboard() {
                                         fill="#8884d8"
                                         paddingAngle={5}
                                         dataKey="position.shift_aggregate.aggregate.sum.length"
-                                        onMouseEnter={onPieEnter}
+                                        // onMouseEnter={onPieEnter}
                                     >
                                         {
                                             hoursByPosition.shift.map((shift: any) => {
@@ -176,7 +178,7 @@ export default function Dashboard() {
                         }
                         {
                             hoursByPosition && hoursByPosition.shift &&
-                            <div className="min-w-[400px] flex items-center justify-between m-3 rounded-2xl bg-polar-200/30 -z-20">
+                            <div className="min-w-[400px] flex items-center justify-between m-3 rounded-2xl bg-polar-200/30 -z-10">
                                 <div className="flex flex-col space-y-10 pl-5">
                                     <h1 className="text-2xl font-bold text-polar-700/80">Hours by Position</h1>
                                     <div className="flex items-start flex-col">
@@ -205,7 +207,7 @@ export default function Dashboard() {
                                         })}
                                     </div>
                                 </div>
-                                <PieChart width={200} height={200} className="-z-10 xl:right-10">
+                                <PieChart width={200} height={200} className=" xl:right-10" onMouseEnter={onPieEnter}>
                                     <Pie
                                         data={hoursByPosition.shift}
                                         innerRadius={60}
@@ -214,6 +216,47 @@ export default function Dashboard() {
                                         paddingAngle={5}
                                         dataKey="position.shift_aggregate.aggregate.sum.length"
                                         onMouseEnter={onPieEnter}
+                                    >
+                                        {
+                                            hoursByPosition.shift.map((shift: any) => {
+                                                return (
+                                                    <Cell key={shift.position.id} fill={shift.position.bg_color}/>
+                                                )
+                                            })
+                                        }
+                                    </Pie>
+                                    <Tooltip/>
+                                </PieChart>
+                            </div>
+                        }
+                        {
+                            hoursByPosition && hoursByPosition.shift &&
+                            <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
+                                <div className="border flex flex-col items-start">
+                                    <h1>Hours by Position</h1>
+                                    {hoursByPosition.shift.map((shift: any) => {
+                                        return (
+                                            <div key={shift.position.id}>
+                                                <h2
+                                                    style={{
+                                                        color: shift.position.bg_color
+                                                    }}
+                                                >
+                                                    {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
+                                                </h2>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                                <PieChart width={200} height={200} className="-z-10">
+                                    <Pie
+                                        data={hoursByPosition.shift}
+                                        innerRadius={60}
+                                        outerRadius={80}
+                                        fill="#8884d8"
+                                        paddingAngle={5}
+                                        dataKey="position.shift_aggregate.aggregate.sum.length"
+                                        // onMouseEnter={onPieEnter}
                                     >
                                         {
                                             hoursByPosition.shift.map((shift: any) => {
@@ -253,47 +296,7 @@ export default function Dashboard() {
                                         fill="#8884d8"
                                         paddingAngle={5}
                                         dataKey="position.shift_aggregate.aggregate.sum.length"
-                                        onMouseEnter={onPieEnter}
-                                    >
-                                        {
-                                            hoursByPosition.shift.map((shift: any) => {
-                                                return (
-                                                    <Cell key={shift.position.id} fill={shift.position.bg_color} />
-                                                )
-                                            })
-                                        }
-                                    </Pie>
-                                </PieChart>
-                            </div>
-                        }
-                        {
-                            hoursByPosition && hoursByPosition.shift &&
-                            <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
-                                <div className="border flex flex-col items-start">
-                                    <h1>Hours by Position</h1>
-                                    {hoursByPosition.shift.map((shift: any) => {
-                                        return (
-                                            <div key={shift.position.id}>
-                                                <h2
-                                                    style={{
-                                                        color: shift.position.bg_color
-                                                    }}
-                                                >
-                                                    {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
-                                                </h2>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                                <PieChart width={200} height={200} className="-z-10">
-                                    <Pie
-                                        data={hoursByPosition.shift}
-                                        innerRadius={60}
-                                        outerRadius={80}
-                                        fill="#8884d8"
-                                        paddingAngle={5}
-                                        dataKey="position.shift_aggregate.aggregate.sum.length"
-                                        onMouseEnter={onPieEnter}
+                                        // onMouseEnter={onPieEnter}
                                     >
                                         {
                                             hoursByPosition.shift.map((shift: any) => {
@@ -309,6 +312,7 @@ export default function Dashboard() {
 
                     </div >
             }
+            
         </div>
     )
 }

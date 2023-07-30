@@ -29,7 +29,7 @@ export default function Datepicker({
     })
 
     return (
-        <div className=" backdrop-blur-sm border  rounded-lg hidden max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
+        <div className="backdrop-blur-sm border  rounded-lg hidden max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
             <div className="flex items-center text-center text-gray-900">
                 <button
                     type="button"
