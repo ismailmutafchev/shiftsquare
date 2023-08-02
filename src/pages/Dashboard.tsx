@@ -1,7 +1,7 @@
 import { useQuery } from "@apollo/client"
-import { endOfDay, format, startOfDay, startOfWeek } from "date-fns"
-import { Fragment, useState } from "react"
-import { getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
+import { endOfDay, startOfDay, startOfWeek } from "date-fns"
+import { Fragment, useEffect, useState } from "react"
+import { getHoursByEmployee, getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 // import Datepicker from "tailwind-datepicker-react"
 import { ChevronDownIcon } from "@heroicons/react/24/outline"
@@ -30,6 +30,22 @@ export default function Dashboard() {
     },
   })
 
+  const { loading: hoursByEmployeeLoading, data: hoursByEmployee } = useQuery(getHoursByEmployee, {
+    variables: {
+      start: startOfDay(startDate),
+      end: endOfDay(endDate),
+    },
+    onCompleted: (data) => {
+      console.log(data)
+    }
+  })
+
+  const employeesWithColors = hoursByEmployee?.shift?.map((employee: any) => {
+    const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
+    return { ...employee, color }
+  })
+
+
   if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />
 
   const totalHoursSum = totalHours?.shift_aggregate?.aggregate?.sum?.length || 0
@@ -41,6 +57,10 @@ export default function Dashboard() {
   const onPieLeave = () => {
     setSectedCell(null)
   }
+
+
+
+
 
   return (
     <div>
@@ -139,38 +159,48 @@ export default function Dashboard() {
         totalHoursLoading || hoursByPositionLoading ? <LoadingAnimation /> :
           <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 items-center justify-center">
             {
-              hoursByPosition && hoursByPosition.shift &&
-              <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
-                <div className="border flex flex-col items-start">
-                  <h1>Hours by Position</h1>
-                  {hoursByPosition.shift.map((shift: any) => {
-                    return (
-                      <div key={shift.position.id}>
-                        <h2
-                          style={{
-                            color: shift.position.bg_color
-                          }}
-                        >
-                          {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
-                        </h2>
-                      </div>
-                    )
-                  })}
+              hoursByEmployee && hoursByEmployee.shift &&
+              <div className="min-w-[400px] flex items-center justify-between m-3 rounded-2xl bg-polar-200/30">
+                <div className="flex flex-col space-y-10 pl-5">
+                  <h1 className="text-2xl font-bold text-polar-700/80">Hours by Employee</h1>
+                  <div className="flex items-start flex-col">
+                    {employeesWithColors.map((shift: any, idx: number) => {
+                      return (
+                        <div key={shift.employee.id} className="flex justify-between w-full border-b ">
+                          <div className={`flex items-center space-x-1 transition duration-100 `}>
+                            <div style={{
+                              backgroundColor: shift.color,
+                              width: '10px',
+                              height: '10px',
+                              borderRadius: '50%',
+                            }}>
+
+                            </div>
+                            <p
+                              className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                            >
+                              {shift.employee.first_name} {shift.employee.last_name}
+                            </p>
+                          </div>
+                          <p className={`text-lg font-semibold text-polar-700/80 transition duration-100`}>{shift.employee.shift_aggregate.aggregate.sum.length}</p>
+                        </div>
+                      )
+                    })}
+                  </div>
                 </div>
                 <PieChart width={200} height={200} className="-z-10">
                   <Pie
-                    data={hoursByPosition.shift}
+                    data={hoursByEmployee.shift}
                     innerRadius={60}
                     outerRadius={80}
                     fill="#8884d8"
                     paddingAngle={5}
-                    dataKey="position.shift_aggregate.aggregate.sum.length"
-                  // onMouseEnter={onPieEnter}
+                    dataKey="employee.shift_aggregate.aggregate.sum.length"
                   >
                     {
-                      hoursByPosition.shift.map((shift: any) => {
+                      employeesWithColors.map((shift: any, idx: number) => {
                         return (
-                          <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                          <Cell key={shift.employee.id} fill={shift.color} />
                         )
                       })
                     }
@@ -227,7 +257,7 @@ export default function Dashboard() {
                       })
                     }
                   </Pie>
-                  <Tooltip content={<CustomTooltip payload={selectedCell} total={totalHoursSum}/>} />
+                  <Tooltip content={<CustomTooltip payload={selectedCell} total={totalHoursSum} />} />
                 </PieChart>
               </div>
             }
@@ -325,7 +355,7 @@ const CustomTooltip = ({ active, payload, total }: any) => {
     return (
       <div className="bg-polar-200/80 p-2 rounded-lg">
         <p className="text-polar-700/80">{payload[0].payload.position.name}</p>
-        <p className="text-polar-700/80">{`${payload[0].value} hours (${(payload[0].value / (total) * 100).toFixed(2) }%)`}</p>
+        <p className="text-polar-700/80">{`${payload[0].value} hours (${(payload[0].value / (total) * 100).toFixed(2)}%)`}</p>
 
       </div>
     );

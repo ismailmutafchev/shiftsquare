@@ -8,7 +8,7 @@ import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm, Controller } from 'react-hook-form';
-import { CalendarDaysIcon, CheckIcon, ChevronDownIcon, ChevronUpDownIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ChevronDownIcon, ChevronUpDownIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
 import { Listbox, Menu, Popover, Transition } from '@headlessui/react';
@@ -28,7 +28,6 @@ export default function Calendar() {
   const containerNav = useRef(null)
   const containerOffset = useRef(null)
   const [showModal, setShowModal] = useState(false)
-  const [showCalendar, setShowCalendar] = useState(false)
   const [update, setUpdate] = useState({
     isUpdate: false,
     data: {}
