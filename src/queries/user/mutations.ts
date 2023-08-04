@@ -6,11 +6,10 @@ export const addUserOne = gql` mutation addUserOne($object: user_insert_input!) 
         first_name
         last_name
         email
-        role{
             role{
                 name
             }
-        }
+
     }
 }
 `;
@@ -21,11 +20,10 @@ export const deleteUserById = gql` mutation deleteUserById($id: uuid!) {
         first_name
         last_name
         email
-        role{
             role{
                 name
             }
-        }
+
     }
 }`;
 
@@ -35,10 +33,8 @@ export const updateUserById = gql` mutation updateUserById($id: uuid!, $object: 
         first_name
         last_name
         email
-        role{
             role{
                 name
             }
-        }
     }
 }`;

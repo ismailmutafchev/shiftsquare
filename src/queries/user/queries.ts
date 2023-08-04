@@ -7,9 +7,7 @@ export const getEmployees = gql` query {
             last_name
             email
             role{
-              role{
                 name
-              }
             }
         }
     }
@@ -21,11 +19,15 @@ export const getEmployee = gql` query($id: uuid!) {
         first_name
         last_name
         email
-        role{
           role{
             name
-          }
         }
+    }
+}
+`;
+export const getProfile = gql` query($auth_id: String!) {
+    user(where: {auth_id: {_eq: $auth_id}}) {
+        email
     }
 }
 `;

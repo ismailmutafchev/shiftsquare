@@ -57,7 +57,7 @@ export default function Employees() {
                     <p className="truncate text-sm font-medium text-gray-300">{person.email}</p>
                   </div>
                   <span className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
-                    {person.role.length ? person.role[0].role?.name.toUpperCase() : 'No Role'}
+                    {person ? person.role?.name.toUpperCase() : 'No Role'}
                   </span>
                 </div>
                 <p className="mt-1 truncate text-sm text-gray-500">{person.title}</p>
