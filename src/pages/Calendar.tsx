@@ -1,4 +1,5 @@
-import { Fragment, useRef } from 'react'
+
+import React, { Fragment, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
 import { useState } from 'react'
@@ -18,6 +19,33 @@ import Datepicker from '../components/Datepicker';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
+
+  const inputStyles:React.CSSProperties = {
+    border: 'none',
+    boxShadow: '0px 4px 3px 0px rgba(191,191,191,0.4)',
+    WebkitAlignContent: 'start',
+    fontSize: '0.875rem',
+    lineHeight: '1.25rem',
+    padding: '0.5rem ',
+    width: '100%',
+    borderRadius: '0.375rem',
+    WebkitAppearance: 'none',
+    MozAppearance: 'none',
+    appearance: 'none',
+    backgroundColor: '#fff',
+    backgroundImage: 'none',
+    color: '#111827',
+    cursor: 'pointer',
+    display: 'inline-flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    transitionProperty: 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
+    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    transitionDuration: '150ms',
+    transitionDelay: '0ms',
+  }
+
 
 
 
@@ -79,6 +107,7 @@ export default function Calendar() {
   function modalHandler(state: boolean) {
     setShowModal(state)
   }
+
 
   return (
     <div className="flex h-full flex-col">
@@ -487,7 +516,7 @@ function AddShift({ data }: any) {
                       leaveFrom="opacity-100"
                       leaveTo="opacity-0"
                     >
-                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
                         {positions && positions.map((position: any) => (
                           <Listbox.Option
                             key={position.id}
@@ -520,24 +549,6 @@ function AddShift({ data }: any) {
                 </Listbox>
               )} />
             </div>
-
-            {/* <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-              <label htmlFor="last-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                Employee
-              </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <select
-                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("employee", { required: true })}
-                >
-                  {
-                    employees?.map((employee: any) => (
-                      <option key={employee.id} value={employee.id}>{employee.last_name}, {employee.first_name}</option>
-                    ))
-                  }
-                </select>
-              </div>
-            </div> */}
             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
               <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                 Employee
@@ -601,6 +612,7 @@ function AddShift({ data }: any) {
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
                   type='date'
+                  style={inputStyles}
                   className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
                   {...register("date", { required: true })}
                 />
@@ -613,6 +625,8 @@ function AddShift({ data }: any) {
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
                   type='time'
+                  style={inputStyles}
+                  step={300}
                   className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
                   {...register("start", { required: true })}
                 />
@@ -625,6 +639,8 @@ function AddShift({ data }: any) {
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
                   type='time'
+                  style={inputStyles}
+                  step={300}
                   className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
                   {...register("end", { required: true })}
                 />
