@@ -14,37 +14,39 @@ import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
 import { Listbox, Menu, Popover, Transition } from '@headlessui/react';
 import Datepicker from '../components/Datepicker';
+import { shiftSchema } from '../validations/shift';
+import { yupResolver } from '@hookform/resolvers/yup';
 
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-  const inputStyles:React.CSSProperties = {
-    border: 'none',
-    boxShadow: '0px 4px 3px 0px rgba(191,191,191,0.4)',
-    WebkitAlignContent: 'start',
-    fontSize: '0.875rem',
-    lineHeight: '1.25rem',
-    padding: '0.5rem ',
-    width: '100%',
-    borderRadius: '0.375rem',
-    WebkitAppearance: 'none',
-    MozAppearance: 'none',
-    appearance: 'none',
-    backgroundColor: '#fff',
-    backgroundImage: 'none',
-    color: '#111827',
-    cursor: 'pointer',
-    display: 'inline-flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    transitionProperty: 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
-    transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-    transitionDuration: '150ms',
-    transitionDelay: '0ms',
-  }
+const inputStyles: React.CSSProperties = {
+  border: 'none',
+  boxShadow: '0px 4px 3px 0px rgba(191,191,191,0.4)',
+  WebkitAlignContent: 'start',
+  fontSize: '0.875rem',
+  lineHeight: '1.25rem',
+  padding: '0.5rem ',
+  width: '100%',
+  borderRadius: '0.375rem',
+  WebkitAppearance: 'none',
+  MozAppearance: 'none',
+  appearance: 'none',
+  backgroundColor: '#fff',
+  backgroundImage: 'none',
+  color: '#111827',
+  cursor: 'pointer',
+  display: 'inline-flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'space-between',
+  transitionProperty: 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
+  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  transitionDuration: '150ms',
+  transitionDelay: '0ms',
+}
 
 
 
@@ -415,63 +417,44 @@ function AddShift({ data }: any) {
   const { modalHandler, selectedDay, shifts } = data
   const { employees, positions } = useSession();
 
-  const { register, handleSubmit, watch, control } = useForm({
-    defaultValues: {
-      position: data?.data?.position_id || positions && positions[0].id || '',
-      employee: data?.data?.employee_id || employees && employees[0].id || '',
-      date: data.data.start ? format(new Date(data.data.start), 'yyyy-MM-dd') : '',
-      start: data.data.start ? format(new Date(data.data.start), 'HH:mm') : '',
-      end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : '',
-      length: data.data.length || 0
-    }
-  });
+  const { register, handleSubmit, watch, control, formState
+} = useForm({
+  defaultValues: {
+    position: data?.data?.position_id || positions && positions[0].id || '',
+    employee: data?.data?.employee_id || employees && employees[0].id || '',
+    date: data.data.start ? format(new Date(data.data.start), 'yyyy-MM-dd') : '',
+    start: data.data.start ? format(new Date(data.data.start), 'HH:mm') : '',
+    end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : '',
+    length: data.data.length || 0
+  },
+  resolver: yupResolver(shiftSchema)
+});
 
-  const [addShift] = useMutation(addShiftOne)
-  const [updateShift] = useMutation(updateShiftById)
+const [addShift] = useMutation(addShiftOne)
+const [updateShift] = useMutation(updateShiftById)
 
-  function submit(data: any) {
-    const employeeBusy = shifts?.some((shift: any) => {
-      if (update && shift.id === id) return false
-      return shift.employee_id === data.employee && (
-        (new Date(shift.start) <= new Date(data.date + 'T' + data.start) && new Date(shift.end) >= new Date(data.date + 'T' + data.start)) ||
-        (new Date(shift.start) <= new Date(data.date + 'T' + data.end) && new Date(shift.end) >= new Date(data.date + 'T' + data.end))
-      )
-    })
+const formErrors = formState.errors 
 
-    const shiftLength = (differenceInMinutes(new Date(data.date + 'T' + data.end), new Date(data.date + 'T' + data.start)) / 60).toFixed(2)
+function submit(data: any) {
+  const employeeBusy = shifts?.some((shift: any) => {
+    if (update && shift.id === id) return false
+    return shift.employee_id === data.employee && (
+      (new Date(shift.start) <= new Date(data.date + 'T' + data.start) && new Date(shift.end) >= new Date(data.date + 'T' + data.start)) ||
+      (new Date(shift.start) <= new Date(data.date + 'T' + data.end) && new Date(shift.end) >= new Date(data.date + 'T' + data.end))
+    )
+  })
 
-    if (update) {
-      updateShift({
-        variables: {
-          id: id,
-          start: new Date(data.date + 'T' + data.start).toISOString(),
-          end: new Date(data.date + 'T' + data.end).toISOString(),
-          employee_id: data.employee,
-          position_id: data.position,
-          length: shiftLength,
-        }, refetchQueries: [{
-          query: getShifts, variables: {
-            start: startOfDay(selectedDay),
-            end: endOfDay(selectedDay),
-          }
-        }], onCompleted: () => modalHandler(false)
-      })
-      return
-    }
+  const shiftLength = (differenceInMinutes(new Date(data.date + 'T' + data.end), new Date(data.date + 'T' + data.start)) / 60).toFixed(2)
 
-    if (employeeBusy) {
-      alert('Employee is busy')
-      return
-    }
-    addShift({
+  if (update) {
+    updateShift({
       variables: {
-        object: {
-          start: new Date(data.date + 'T' + data.start).toISOString(),
-          end: new Date(data.date + 'T' + data.end).toISOString(),
-          employee_id: data.employee,
-          position_id: data.position,
-          length: shiftLength
-        }
+        id: id,
+        start: new Date(data.date + 'T' + data.start).toISOString(),
+        end: new Date(data.date + 'T' + data.end).toISOString(),
+        employee_id: data.employee,
+        position_id: data.position,
+        length: shiftLength,
       }, refetchQueries: [{
         query: getShifts, variables: {
           start: startOfDay(selectedDay),
@@ -479,186 +462,214 @@ function AddShift({ data }: any) {
         }
       }], onCompleted: () => modalHandler(false)
     })
+    return
   }
 
-  const selectedValues = watch()
+  if (employeeBusy) {
+    alert('Employee is busy')
+    return
+  }
+  addShift({
+    variables: {
+      object: {
+        start: new Date(data.date + 'T' + data.start).toISOString(),
+        end: new Date(data.date + 'T' + data.end).toISOString(),
+        employee_id: data.employee,
+        position_id: data.position,
+        length: shiftLength
+      }
+    }, refetchQueries: [{
+      query: getShifts, variables: {
+        start: startOfDay(selectedDay),
+        end: endOfDay(selectedDay),
+      }
+    }], onCompleted: () => modalHandler(false)
+  })
+}
+
+const selectedValues = watch()
 
 
-  const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedValues.position)
-  const selectedEmployeeDisplay = employees && employees.find((employee: any) => employee.id === selectedValues.employee)
+const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedValues.position)
+const selectedEmployeeDisplay = employees && employees.find((employee: any) => employee.id === selectedValues.employee)
 
 
-  return (
-    <form onSubmit={handleSubmit(submit)}>
-      <div className="space-y-12 sm:space-y-16">
-        <div>
-          <div className="mt-10 space-y-8 pb-8 sm:space-y-0 sm:divide-y sm:pb-0">
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-              <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                Position
-              </label>
-              <Controller name="position" control={control} rules={{ required: true }} render={({ field: { onChange } }) => (
+return (
+  <form onSubmit={handleSubmit(submit)}>
+    <div className="space-y-12 sm:space-y-16">
+      <div>
+        <div className="mt-10 space-y-8 pb-8 sm:space-y-0 sm:divide-y sm:pb-0">
+          <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              Position
+            </label>
+            <Controller name="position" control={control} rules={{ required: true }} render={({ field: { onChange } }) => (
 
-                <Listbox onChange={onChange}>
-                  <div className="relative mt-1">
-                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                      <span className="block truncate">{selectedPositionDisplay && selectedPositionDisplay.name || positions && positions[0].name}</span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                        <ChevronUpDownIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </span>
-                    </Listbox.Button>
-                    <Transition
-                      as={Fragment}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
-                        {positions && positions.map((position: any) => (
-                          <Listbox.Option
-                            key={position.id}
-                            className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-polar-100 text-polar-900/80' : 'text-polar-900'
-                              }`
-                            }
-                            value={position.id}
-                          >
-                            {({ selected }) => (
-                              <>
-                                <span
-                                  className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                    }`}
-                                >
-                                  {position.name}
+              <Listbox onChange={onChange}>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate">{selectedPositionDisplay && selectedPositionDisplay.name || positions && positions[0].name}</span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
+                      {positions && positions.map((position: any) => (
+                        <Listbox.Option
+                          key={position.id}
+                          className={({ active }) =>
+                            `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-polar-100 text-polar-900/80' : 'text-polar-900'
+                            }`
+                          }
+                          value={position.id}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                  }`}
+                              >
+                                {position.name}
+                              </span>
+                              {selected ? (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
                                 </span>
-                                {selected ? (
-                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
-                </Listbox>
-              )} />
-            </div>
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-              <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                Employee
-              </label>
-              <Controller name="employee" control={control} rules={{ required: true }} render={({ field: { onChange } }) => (
-                <Listbox onChange={onChange}>
-                  <div className="relative mt-1">
-                    <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                      <span className="block truncate">{selectedEmployeeDisplay && selectedEmployeeDisplay.first_name + ' ' + selectedEmployeeDisplay.last_name || employees && employees[0].first_name + ' ' + employees[0].last_name}</span>
-                      <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                        <ChevronUpDownIcon
-                          className="h-5 w-5 text-gray-400"
-                          aria-hidden="true"
-                        />
-                      </span>
-                    </Listbox.Button>
-                    <Transition
-                      as={Fragment}
-                      leave="transition ease-in duration-100"
-                      leaveFrom="opacity-100"
-                      leaveTo="opacity-0"
-                    >
-                      <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                        {employees && employees.map((employee: any) => (
-                          <Listbox.Option
-                            key={employee.id}
-                            className={({ active }) =>
-                              `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-polar-100 text-polar-900/80' : 'text-polar-900'
-                              }`
-                            }
-                            value={employee.id}
-                          >
-                            {({ selected }) => (
-                              <>
-                                <span
-                                  className={`block truncate ${selected ? 'font-medium' : 'font-normal'
-                                    }`}
-                                >
-                                  {employee.first_name} {employee.last_name}
-                                </span>
-                                {selected ? (
-                                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
-                                    <CheckIcon className="h-5 w-5" aria-hidden="true" />
-                                  </span>
-                                ) : null}
-                              </>
-                            )}
-                          </Listbox.Option>
-                        ))}
-                      </Listbox.Options>
-                    </Transition>
-                  </div>
-                </Listbox>
-              )} />
-            </div>
-
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-              <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                Date
-              </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <input
-                  type='date'
-                  style={inputStyles}
-                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("date", { required: true })}
-                />
-              </div>
-            </div>
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-              <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                Start
-              </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <input
-                  type='time'
-                  style={inputStyles}
-                  step={300}
-                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("start", { required: true })}
-                />
-              </div>
-            </div>
-            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-              <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                End
-              </label>
-              <div className="mt-2 sm:col-span-2 sm:mt-0">
-                <input
-                  type='time'
-                  style={inputStyles}
-                  step={300}
-                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("end", { required: true })}
-                />
-              </div>
-            </div>
-
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
+            )} />
           </div>
+          <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            <label htmlFor="first-name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              Employee
+            </label>
+            <Controller name="employee" control={control} rules={{ required: true, }} render={({ field: { onChange } }) => (
+              <Listbox onChange={onChange}>
+                <div className="relative mt-1">
+                  <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                    <span className="block truncate">{selectedEmployeeDisplay && selectedEmployeeDisplay.first_name + ' ' + selectedEmployeeDisplay.last_name || employees && employees[0].first_name + ' ' + employees[0].last_name}</span>
+                    <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                      <ChevronUpDownIcon
+                        className="h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Listbox.Button>
+                  <Transition
+                    as={Fragment}
+                    leave="transition ease-in duration-100"
+                    leaveFrom="opacity-100"
+                    leaveTo="opacity-0"
+                  >
+                    <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                      {employees && employees.map((employee: any) => (
+                        <Listbox.Option
+                          key={employee.id}
+                          className={({ active }) =>
+                            `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-polar-100 text-polar-900/80' : 'text-polar-900'
+                            }`
+                          }
+                          value={employee.id}
+                        >
+                          {({ selected }) => (
+                            <>
+                              <span
+                                className={`block truncate ${selected ? 'font-medium' : 'font-normal'
+                                  }`}
+                              >
+                                {employee.first_name} {employee.last_name}
+                              </span>
+                              {selected ? (
+                                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
+                                  <CheckIcon className="h-5 w-5" aria-hidden="true" />
+                                </span>
+                              ) : null}
+                            </>
+                          )}
+                        </Listbox.Option>
+                      ))}
+                    </Listbox.Options>
+                  </Transition>
+                </div>
+              </Listbox>
+            )} />
+          </div>
+
+          <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              Date
+            </label>
+            <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+              <input
+                type='date'
+                // style={inputStyles}
+                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ${formErrors.date && 'shadow-red-300/50'}`}
+                {...register("date", { required: true })}
+              />{
+                formErrors.date && <span className="text-red-500 absolute top-10 left-5 bg-red-200/50 py-0.5 px-1 rounded-b-md text-xs">{formErrors.date.message}</span>
+              }
+            </div>
+          </div>
+          <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              Start
+            </label>
+            <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+              <input
+                type='time'
+                step={300}
+                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm ${formErrors.start && 'shadow-red-300/50'}`}
+                {...register("start", { required: true })}
+              />{
+                formErrors.start && <span className="text-red-500 absolute top-11 left-5 bg-red-200/50 py-0.5 px-1 rounded-b-md text-xs">{formErrors.start.message}</span>
+              }
+            </div>
+          </div>
+          <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+            <label htmlFor="email" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              End
+            </label>
+            <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+              <input
+                type='time'
+                step={300}
+                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm ${formErrors.end && 'shadow-red-300/50'}`}
+
+                {...register("end", { required: true })}
+              />{
+                formErrors.end && <span className="text-red-500 absolute top-10 left-5 bg-red-200/50 py-0.5 px-1 rounded-b-md text-xs">{formErrors.end.message}</span>
+              }
+            </div>
+          </div>
+
         </div>
       </div>
+    </div>
 
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="submit"
-          className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
-  )
+    <div className="mt-6 flex items-center justify-end gap-x-6">
+      <button
+        type="submit"
+        className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
+      >
+        Submit
+      </button>
+    </div>
+  </form>
+)
 }

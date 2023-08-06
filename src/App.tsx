@@ -13,13 +13,9 @@ import Setting from './pages/Setting';
 import { useAuth0 } from '@auth0/auth0-react';
 import Login from './pages/Login';
 import Employee from './pages/Employee';
-import { useSession } from './providers/Session';
 
 function App() {
   const { isAuthenticated, } = useAuth0();
-  const { profile } = useSession();
-
-  console.log(profile, 'profile')
 
   return (
     <BrowserRouter>

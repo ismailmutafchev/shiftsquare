@@ -35,9 +35,6 @@ export default function Dashboard() {
       start: startOfDay(startDate),
       end: endOfDay(endDate),
     },
-    onCompleted: (data) => {
-      console.log(data)
-    }
   })
 
   const employeesWithColors = hoursByEmployee?.shift?.map((employee: any) => {
