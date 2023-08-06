@@ -188,7 +188,7 @@ function AddUser({ data }: any) {
           type="submit"
           className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
         >
-          Sunmit
+          Submit
         </button>
       </div>
     </form>

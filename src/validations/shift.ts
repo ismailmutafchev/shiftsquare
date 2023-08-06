@@ -1,4 +1,4 @@
-import { object, string, number, date, InferType } from 'yup';
+import { object, string, number } from 'yup';
 
 export const shiftSchema = object().shape({
     employee: string().required('Please select Employee'),

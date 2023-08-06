@@ -28,6 +28,10 @@ export const getEmployee = gql` query($id: uuid!) {
 export const getProfile = gql` query($auth_id: String!) {
     user(where: {auth_id: {_eq: $auth_id}}) {
         email
+        organization_id
+        first_name
+        last_name
+        onboarded
     }
 }
 `;

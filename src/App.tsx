@@ -13,6 +13,7 @@ import Setting from './pages/Setting';
 import { useAuth0 } from '@auth0/auth0-react';
 import Login from './pages/Login';
 import Employee from './pages/Employee';
+import Onboarding from './pages/Onboarding';
 
 function App() {
   const { isAuthenticated, } = useAuth0();
@@ -48,6 +49,9 @@ function App() {
             </Route>
             <Route path="/dashboard" element={<Layout />}>
               <Route index element={<Dashboard />} />
+            </Route>
+            <Route path="/onboarding" element={<Layout />}>
+              <Route index element={<Onboarding />} />
             </Route>
             <Route path="/profile" element={<Layout />}>
               <Route index element={<Profile />} />
