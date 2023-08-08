@@ -5,6 +5,7 @@ import { updateUserById } from "../queries/user/mutations";
 import { getOrganizationByName } from "../queries/organization/quieries";
 import { CheckBadgeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getProfile } from "../queries/user/queries";
+import { set } from "date-fns";
 
 export default function Onboarding() {
     const { profile } = useSession();
@@ -73,6 +74,9 @@ export default function Onboarding() {
                             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
                                 <label htmlFor="organization" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                                     What is the name of your organization?
+                                    <span onClick={() => {
+                                        console.log('clicked')
+                                    }} className="text-blue-500 underline cursor-pointer">I don't have comapny name </span>
                                 </label>
                                 <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
                                     <input
@@ -81,6 +85,31 @@ export default function Onboarding() {
                                         className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
 
                                         {...register("organization", { required: true })}
+                                    />
+                                    {
+                                        organizationData && organizationData.organization && organizationData.organization.length > 0 ?
+                                            <span>
+                                                <CheckBadgeIcon className="h-6 w-6 absolute right-2 top-2 text-green-500" aria-hidden="true" />
+                                            </span>
+                                            : <span>
+                                                <XMarkIcon className="h-6 w-6 absolute right-2 top-2 text-red-500" aria-hidden="true" />
+                                            </span>
+                                    }
+
+
+                                </div>
+                            </div>
+                            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                                <label htmlFor="organization" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                    Woulkd you like to register new company ?
+                                </label>
+                                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                                    <input
+                                        type='checkbox'
+                                        step={300}
+                                        className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
+
+                                        {...register("admin", { required: true })}
                                     />
                                     {
                                         organizationData && organizationData.organization && organizationData.organization.length > 0 ?

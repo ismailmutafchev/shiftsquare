@@ -1,11 +1,10 @@
-import { ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache, RequestHandler, useQuery } from '@apollo/client';
+import { ApolloClient, ApolloLink, ApolloProvider, createHttpLink, InMemoryCache, RequestHandler } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import { setContext } from 'apollo-link-context';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
-import { getProfile } from '../queries/user/queries';
 
 const AuthorizedApolloProvider = ({ children }: { children: any }) => {
-    const { getAccessTokenSilently, isAuthenticated, isLoading, user } = useAuth0();
+    const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
 
     if (isLoading) {
         return <LoadingAnimation />;

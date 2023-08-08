@@ -1,5 +1,5 @@
 
-import React, { Fragment, useRef } from 'react'
+import { Fragment, useRef } from 'react'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/20/solid'
 import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteOfInterval, endOfDay, endOfMonth, endOfWeek, format, getHours, getMinutes, isSameDay, isSameMonth, isToday, startOfDay, startOfMonth, startOfWeek, subDays, subMonths } from 'date-fns'
 import { useState } from 'react'
@@ -21,35 +21,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
-
-const inputStyles: React.CSSProperties = {
-  border: 'none',
-  boxShadow: '0px 4px 3px 0px rgba(191,191,191,0.4)',
-  WebkitAlignContent: 'start',
-  fontSize: '0.875rem',
-  lineHeight: '1.25rem',
-  padding: '0.5rem ',
-  width: '100%',
-  borderRadius: '0.375rem',
-  WebkitAppearance: 'none',
-  MozAppearance: 'none',
-  appearance: 'none',
-  backgroundColor: '#fff',
-  backgroundImage: 'none',
-  color: '#111827',
-  cursor: 'pointer',
-  display: 'inline-flex',
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  transitionProperty: 'background-color, border-color, color, fill, stroke, opacity, box-shadow, transform',
-  transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
-  transitionDuration: '150ms',
-  transitionDelay: '0ms',
-}
-
-
-
 
 export default function Calendar() {
   const [selectedMonth, setSelectedMonth] = useState(new Date())
