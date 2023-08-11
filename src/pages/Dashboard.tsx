@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client"
-import { endOfDay, startOfDay, startOfWeek } from "date-fns"
+import { endOfDay, set, startOfDay, startOfWeek } from "date-fns"
 import { Fragment, useEffect, useState } from "react"
 import { getHoursByEmployee, getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
@@ -14,6 +14,7 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 }))
   const [endDate, setEndDate] = useState<Date>(new Date())
   const [selectedCell, setSectedCell] = useState<any>(null)
+  const [employeesWithColors , setEmployeesWithColors] = useState<any>([])
 
   const { loading: totalHoursLoading, data: totalHours } = useQuery(getWorkingHours, {
     variables: {
@@ -37,10 +38,8 @@ export default function Dashboard() {
     },
   })
 
-  const employeesWithColors = hoursByEmployee?.shift?.map((employee: any) => {
-    const color = "#" + Math.floor(Math.random() * 16777215).toString(16);
-    return { ...employee, color }
-  })
+
+  console.log(hoursByEmployee)
 
 
   if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />
@@ -163,7 +162,7 @@ export default function Dashboard() {
                   <div className="flex items-start flex-col">
                     {employeesWithColors.map((shift: any, idx: number) => {
                       return (
-                        <div key={shift.employee.id} className="flex justify-between w-full border-b ">
+                        <div key={shift?.employee?.id} className="flex justify-between w-full border-b ">
                           <div className={`flex items-center space-x-1 transition duration-100 `}>
                             <div style={{
                               backgroundColor: shift.color,
@@ -176,10 +175,10 @@ export default function Dashboard() {
                             <p
                               className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
                             >
-                              {shift.employee.first_name} {shift.employee.last_name}
+                              {shift?.employee?.first_name} {shift?.employee?.last_name}
                             </p>
                           </div>
-                          <p className={`text-lg font-semibold text-polar-700/80 transition duration-100`}>{shift.employee.shift_aggregate.aggregate.sum.length}</p>
+                          <p className={`text-lg font-semibold text-polar-700/80 transition duration-100`}>{shift?.employee?.shift_aggregate.aggregate.sum.length}</p>
                         </div>
                       )
                     })}
@@ -197,7 +196,7 @@ export default function Dashboard() {
                     {
                       employeesWithColors.map((shift: any, idx: number) => {
                         return (
-                          <Cell key={shift.employee.id} fill={shift.color} />
+                          <Cell key={shift?.employee?.id} fill={shift.color} />
                         )
                       })
                     }
@@ -213,10 +212,10 @@ export default function Dashboard() {
                   <div className="flex items-start flex-col">
                     {hoursByPosition.shift.map((shift: any) => {
                       return (
-                        <div key={shift.position.id} className="flex justify-between w-full border-b ">
-                          <div className={`flex items-center space-x-1 transition duration-100  ${selectedCell && selectedCell.payload.position.id === shift.position.id && 'text-polar-700 scale-110'}`}>
+                        <div key={shift?.position?.id} className="flex justify-between w-full border-b ">
+                          <div className={`flex items-center space-x-1 transition duration-100  ${selectedCell && selectedCell.payload?.position?.id === shift?.position?.id && 'text-polar-700 scale-110'}`}>
                             <div style={{
-                              backgroundColor: shift.position.bg_color,
+                              backgroundColor: shift?.position?.bg_color,
                               width: '10px',
                               height: '10px',
                               borderRadius: '50%',
@@ -226,10 +225,10 @@ export default function Dashboard() {
                             <p
                               className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
                             >
-                              {shift.position.name}
+                              {shift?.position?.name}
                             </p>
                           </div>
-                          <p className={`text-lg font-semibold text-polar-700/80 transition duration-100`}>{shift.position.shift_aggregate.aggregate.sum.length}</p>
+                          <p className={`text-lg font-semibold text-polar-700/80 transition duration-100`}>{shift?.position?.shift_aggregate?.aggregate?.sum.length}</p>
                         </div>
                       )
                     })}
@@ -247,9 +246,10 @@ export default function Dashboard() {
                     onMouseLeave={onPieLeave}
                   >
                     {
+                      hoursByPosition && hoursByPosition.shift &&
                       hoursByPosition.shift.map((shift: any) => {
                         return (
-                          <Cell key={shift.position.id} fill={shift.position.bg_color} />
+                          <Cell key={shift?.position?.id} fill={shift?.position?.bg_color} />
                         )
                       })
                     }
@@ -258,87 +258,6 @@ export default function Dashboard() {
                 </PieChart>
               </div>
             }
-            {
-              hoursByPosition && hoursByPosition.shift &&
-              <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
-                <div className="border flex flex-col items-start">
-                  <h1>Hours by Position</h1>
-                  {hoursByPosition.shift.map((shift: any) => {
-                    return (
-                      <div key={shift.position.id}>
-                        <h2
-                          style={{
-                            color: shift.position.bg_color
-                          }}
-                        >
-                          {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
-                        </h2>
-                      </div>
-                    )
-                  })}
-                </div>
-                <PieChart width={200} height={200} className="-z-10">
-                  <Pie
-                    data={hoursByPosition.shift}
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="position.shift_aggregate.aggregate.sum.length"
-                  // onMouseEnter={onPieEnter}
-                  >
-                    {
-                      hoursByPosition.shift.map((shift: any) => {
-                        return (
-                          <Cell key={shift.position.id} fill={shift.position.bg_color} />
-                        )
-                      })
-                    }
-                  </Pie>
-                </PieChart>
-              </div>
-            }
-            {
-              hoursByPosition && hoursByPosition.shift &&
-              <div className="border  flex items-center justify-center m-3 rounded-2xl bg-polar-200 -z-20">
-                <div className="border flex flex-col items-start">
-                  <h1>Hours by Position</h1>
-                  {hoursByPosition.shift.map((shift: any) => {
-                    return (
-                      <div key={shift.position.id}>
-                        <h2
-                          style={{
-                            color: shift.position.bg_color
-                          }}
-                        >
-                          {shift.position.name} : {shift.position.shift_aggregate.aggregate.sum.length}
-                        </h2>
-                      </div>
-                    )
-                  })}
-                </div>
-                <PieChart width={200} height={200} className="-z-10">
-                  <Pie
-                    data={hoursByPosition.shift}
-                    innerRadius={60}
-                    outerRadius={80}
-                    fill="#8884d8"
-                    paddingAngle={5}
-                    dataKey="position.shift_aggregate.aggregate.sum.length"
-                  // onMouseEnter={onPieEnter}
-                  >
-                    {
-                      hoursByPosition.shift.map((shift: any) => {
-                        return (
-                          <Cell key={shift.position.id} fill={shift.position.bg_color} />
-                        )
-                      })
-                    }
-                  </Pie>
-                </PieChart>
-              </div>
-            }
-
           </div >
       }
 

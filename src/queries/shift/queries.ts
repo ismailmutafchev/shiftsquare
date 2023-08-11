@@ -49,6 +49,7 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
 
   export const getHoursByEmployee = gql`query($start: timestamptz!, $end: timestamptz!){
     shift(distinct_on: [employee_id], where: {start: {_gte: $start}, end: {_lte: $end}}) {
+      id
       employee {
         shift_aggregate {
           aggregate {
