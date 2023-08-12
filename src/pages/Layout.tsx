@@ -10,9 +10,7 @@ const Layout = () => {
     const { isAuthenticated } = useAuth0();
     const { profile } = useSession();
 
-    const { pathname } = useLocation()
-
-    console.log(profile?.data?.user[0]?.onboarded)
+    const { pathname } = useLocation();
 
     if (!isAuthenticated || pathname === "/" || pathname === "/about" || pathname === "/pricing") {
         return (<div className="bg-gradient-to-br from-polar-300 to-white pb-24">

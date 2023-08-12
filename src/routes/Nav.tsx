@@ -1,7 +1,7 @@
 import { Fragment } from 'react'
 import React from 'react'
 import { Dialog, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, CalendarDaysIcon, ChevronDownIcon, Cog6ToothIcon, MagnifyingGlassIcon, Square3Stack3DIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import { Bars3Icon, BellIcon, CalendarDaysIcon, ChevronDownIcon, Cog6ToothIcon, MagnifyingGlassIcon, Square3Stack3DIcon, SquaresPlusIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import { Link, useLocation } from 'react-router-dom'
 import { useState } from 'react'
 import LogoutButton from '../components/LogoutButton'
@@ -24,6 +24,7 @@ export default function Navigation({ children }: { children: React.JSX.Element }
         { name: 'Calendar', href: '/calendar', current: pathname === '/calendar', icon: CalendarDaysIcon },
         { name: 'Employees', href: '/employees', current: pathname === '/employees', icon: UsersIcon },
         { name: 'Positions', href: '/positions', current: pathname === '/positions', icon: Square3Stack3DIcon },
+        { name: 'Templates', href: '/templates', current: pathname === '/templates', icon: SquaresPlusIcon },
     ]
 
     const [sidebarOpen, setSidebarOpen] = useState(false)
