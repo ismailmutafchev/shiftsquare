@@ -6,7 +6,7 @@ import { getTemplate, getTemplates } from "../queries/templates/queries"
 import { deleteTemplateById, insertTemplate, updateTemplateById } from "../queries/templates/mutations"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
-import { useForm } from 'react-hook-form'
+import { useFieldArray, useForm } from 'react-hook-form'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -18,6 +18,15 @@ export default function Templates() {
     isUpdate: false,
     data: {}
   })
+
+  const { control, register } = useForm();
+  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormContext)
+    name: "Monday", // unique name for your Field Array
+  },
+  );
+
+  console.log(fields)
 
   const { loading, error, data } = useQuery(getTemplates)
   const [deleteTemplate] = useMutation(deleteTemplateById, { refetchQueries: [{ query: getTemplate }] })
@@ -53,6 +62,9 @@ export default function Templates() {
         </div>
       </div >
       <div>
+        <button onClick={() => {
+          append({ position: "Front Grill", start: "8:00", end: "16:00", break: "12:00", hours: "8:00", rate: "10.00" })
+        }}>Append</button>
         <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {templates && templates.map((template: any) => {
             return (
@@ -218,16 +230,6 @@ function AddPosition({ data }: any) {
     })
   }
 
-  const days = [
-    { name: 'Monday', value: 'monday' },
-    { name: 'Tuesday', value: 'tuesday' },
-    { name: 'Wednesday', value: 'wednesday' },
-    { name: 'Thursday', value: 'thursday' },
-    { name: 'Friday', value: 'friday' },
-    { name: 'Saturday', value: 'saturday' },
-    { name: 'Sunday', value: 'sunday' },
-  ]
-
   return (
     <form onSubmit={handleSubmit(submit)}>
       <div className="space-y-12 sm:space-y-16">
@@ -245,7 +247,7 @@ function AddPosition({ data }: any) {
               </div>
               <div className="w-full px-4 pt-16">
                 <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2 overflow-scroll max-h-96">
-                  {days.map((day, index) => {
+                  {/* {days.map((day) => {
                     return (
                   <Disclosure>
                     {({ open }) => (
@@ -269,7 +271,7 @@ function AddPosition({ data }: any) {
                     )}
                   </Disclosure>
                     )
-                  })}
+                  })} */}
                 </div>
               </div>
             </div>
