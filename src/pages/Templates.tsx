@@ -1,24 +1,51 @@
-import { ArchiveBoxIcon, ArrowsPointingOutIcon, ChevronUpIcon, EllipsisVerticalIcon, PencilSquareIcon, PlusIcon, Square2StackIcon, TrashIcon } from "@heroicons/react/24/outline"
-import Modal from "../components/Modal"
+import { ArchiveBoxIcon, ArrowsPointingOutIcon, EllipsisVerticalIcon, PencilSquareIcon, PlusIcon, Square2StackIcon, TrashIcon } from "@heroicons/react/24/outline"
 import { Fragment, useState } from "react"
 import { useMutation, useQuery } from "@apollo/client"
 import { getTemplate, getTemplates } from "../queries/templates/queries"
-import { deleteTemplateById, insertTemplate, updateTemplateById } from "../queries/templates/mutations"
+import { deleteTemplateById} from "../queries/templates/mutations"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
-import { Disclosure, Menu, Transition } from "@headlessui/react"
+import { Menu, Transition } from "@headlessui/react"
 import { useFieldArray, useForm } from 'react-hook-form'
 import { useSession } from "../providers/Session"
-import { fi } from "date-fns/locale"
 
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday'
+type ShiftType = 'mondayShifts' | 'tuesdatShifts'
 
 type FormValues = {
-  shift: {
-    day: Day;
+  mondayShifts: {
     position: string;
     start: string;
     end: string;
-  } [];
+  } [], 
+  tuesdayShifts: {
+    position: string;
+    start: string;
+    end: string;
+  } [],
+  wednesdayShifts: {
+    position: string;
+    start: string;
+    end: string;
+  } [],
+  thursdayShifts: {
+    position: string;
+    start: string;
+    end: string;
+  } [],
+  fridayShifts: {
+    position: string;
+    start: string;
+    end: string;
+  } [],
+  saturdayShifts: {
+    position: string;
+    start: string;
+    end: string;
+  } [],
+  sundayShifts: {
+    position: string;
+    start: string;
+    end: string;
+  } [],
 }
 
 function classNames(...classes: string[]) {
@@ -40,15 +67,39 @@ export default function Templates() {
     formState: { errors }
   } = useForm<FormValues>({
     defaultValues: {
-      shift: []
+      shifts: []
     },
     mode: "onBlur"
   });
-  const { fields, append, prepend, remove, swap, move, insert } = useFieldArray({
-    name: "shift", // unique name for your Field Array
+  const { fields: monday, append:appendMonday, prepend: prependMonday, remove: removeMonday, swap: swapMonday, move: moveMonday, insert: insertMonday } = useFieldArray({
+    name: "mondayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
-  },
-  );
+  });
+  const { fields: tuesday, append:appendTuesday, prepend: prependTuesday, remove: removeTuesday, swap: swapTuesday, move: moveTuesday, insert: insertTuesday } = useFieldArray({
+    name: "tuesdayShifts", // unique name for your Field Array
+    control, // control props comes from useForm (optional: if you are using FormContext)
+  });
+  const { fields: wednesday, append:appendWednesday, prepend: prependWednesday, remove: removeWednesday, swap: swapWednesday, move: moveWednesday, insert: insertWednesday } = useFieldArray({
+    name: "wednesdayShifts", // unique name for your Field Array
+    control, // control props comes from useForm (optional: if you are using FormContext)
+  });
+  const { fields: thursday, append:appendThursday, prepend: prependThursday, remove: removeThursday, swap: swapThursday, move: moveThursday, insert: insertThursday } = useFieldArray({
+    name: "thursdayShifts", // unique name for your Field Array
+    control, // control props comes from useForm (optional: if you are using FormContext)
+  });
+  const { fields: friday, append:appendFriday, prepend: prependFriday, remove: removeFriday, swap: swapFriday, move: moveFriday, insert: insertFriday } = useFieldArray({
+    name: "fridayShifts", // unique name for your Field Array
+    control, // control props comes from useForm (optional: if you are using FormContext)
+  });
+  const { fields: saturday, append:appendSaturday, prepend: prependSaturday, remove: removeSaturday, swap: swapSaturday, move: moveSaturday, insert: insertSaturday } = useFieldArray({
+    name: "saturdayShifts", // unique name for your Field Array
+    control, // control props comes from useForm (optional: if you are using FormContext)
+  });
+  const { fields: sunday, append:appendSunday, prepend: prependSunday, remove: removeSunday, swap: swapSunday, move: moveSunday, insert: insertSunday } = useFieldArray({
+    name: "sundayShifts", // unique name for your Field Array
+    control, // control props comes from useForm (optional: if you are using FormContext)
+  });
+
 
   const { positions } = useSession()
 
@@ -69,11 +120,60 @@ export default function Templates() {
     deleteTemplate({ variables: { id } })
   }
 
-  const days:Day[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+  const allDays = [{
+    day: "Monday",
+    shifts: monday,
+    append: appendMonday,
+    remove: removeMonday
+  },
+  {
+    day: "Tuesday",
+    shifts: tuesday,
+    append: appendTuesday,
+    remove: removeTuesday 
+  },
+  {
+    day: "Wednesday",
+    shifts: wednesday,
+    append: appendWednesday,
+    remove: removeWednesday
+ },
+  {
+    day: "Thursday",
+    shifts: thursday,
+    append: appendThursday,
+    remove: removeThursday
+  },
+  {
+    day: "Friday",
+    shifts: friday,
+    append: appendFriday,
+    remove:removeFriday
+  },
+  {
+    day: "Saturday",
+    shifts: saturday,
+    append: appendSaturday,
+    remove: removeSaturday
+  },
+  {
+    day: "Sunday",
+    shifts: sunday,
+    append: appendSunday,
+    remove: removeSunday
+  }
+]
 
-  console.log(fields)
+  console.log(JSON.stringify({
+    monday,
+    tuesday,
+    wednesday,
+    thursday,
+    friday,
+    saturday,
+    sunday
+  }))
 
- const shift = watch("shift");
   return (
     <>
       <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
@@ -92,105 +192,53 @@ export default function Templates() {
         </div>
       </div >
       {
-        showBuilder ? <div>
+        showBuilder ? 
+        <div>
           <h1>
             {update.isUpdate ? "Update Template" : "Build Template"}
           </h1>
           <div>
-      <form
-      //  onSubmit={handleSubmit(onSubmit)}
-       >
-        {days.map((day:Day, index) => {
-          return (
-            <>
-            <div key={day}>
-              <h2>{day}</h2>
-              {
-                fields.map((field, index) => {
-                  return (
-                    <div key={field.id}>
-                      <input
-                        placeholder="start"
-                        type="time"
-                        {...register(`shift.${index}.start` as const, {
-                          valueAsNumber: false,
-                          required: true
-                        })}
-                      />
-                      <input
-                        placeholder="end"
-                        type="time"
-                        {...register(`shift.${index}.end` as const, {
-                          valueAsNumber: false,
-                          required: true
-                        })}
-                      />
-                    </div>
-                  )
-                })
-              }
-              <section className={"section"} key={day}>
-                <select
-                  {...register(`shift.${index}.position` as const, {
-                    required: true
-                  })}
-
-                >
-                  {positions && positions.map((position: any) => {
-                    return (
-                      <option value={position.name}>{position.name}</option>
-                    )
-                  })}
-                </select>
-                <input
-                  placeholder="start"
-                  type="time"
-                  {...register(`shift.${index}.start` as const, {
-                    valueAsNumber: false,
-                    required: true
-                  })}
-                />
-                <input
-                  placeholder="end"
-                  type="time"
-                  {...register(`shift.${index}.end` as const, {
-                    valueAsNumber: false,
-                    required: true
-                  })}
-                />
-                <button type="button" onClick={() => remove(index)}>
-                  DELETE
-                </button>
-        <button
-          type="button"
-          onClick={() =>
-            append({
-              day: day,
-              position: shift[index].position,
-              start: shift[index].start,
-              end: shift[index].end,
-            })
-          }
-        >
-          APPEND
-        </button>
-              </section>
-            </div>
-            </>
-          );
-        })}
-
-        {/* <Total control={control} /> */}
-
-        <input type="submit" />
-      </form>
-    </div>
+            {
+              allDays.map((day, index) => {
+                return (
+                  <div key={index}>
+                    <h1>
+                      {day.day}
+                    </h1>
+                    <div>
+                      <button onClick={() => day.append({
+                        position: "",
+                        start: "",
+                        end: ""
+                      })}>Add Shift</button>
+                      {day.shifts.map((shift, index) => {
+                        const toRegPosition = `${day.day.toLowerCase()}Shifts.${index}.position` as "mondayShifts.0.position" | "tuesdayShifts.0.position" | "wednesdayShifts.0.position" | "thursdayShifts.0.position" | "fridayShifts.0.position" | "saturdayShifts.0.position" | "sundayShifts.0.position"
+                        const toRegStart = `${day.day.toLowerCase()}Shifts.${index}.start` as "mondayShifts.0.start" | "tuesdayShifts.0.start" | "wednesdayShifts.0.start" | "thursdayShifts.0.start" | "fridayShifts.0.start" | "saturdayShifts.0.start" | "sundayShifts.0.start"
+                        const toRegEnd = `${day.day.toLowerCase()}Shifts.${index}.end` as "mondayShifts.0.end" | "tuesdayShifts.0.end" | "wednesdayShifts.0.end" | "thursdayShifts.0.end" | "fridayShifts.0.end" | "saturdayShifts.0.end" | "sundayShifts.0.end"
+                        return (
+                          <div key={shift.id}>
+                            <select {...register(toRegPosition)} >
+                              {positions && positions.map((position: any) => {
+                                return (
+                                  <option key={position.id} value={position.id}>{position.name}</option>
+                                )
+                              })}
+                            </select>
+                            <input type="time" step={300} {...register(toRegStart)} />
+                            <input type="time" step={300} {...register(toRegEnd)} />
+                            <button onClick={() => day.remove(index)}>Delete</button>
+                          </div>
+                        )
+                      })}
+                      </div>
+                  </div>
+                )
+              })
+            }
+          </div>
         </div>
         :
       <div>
-        <button onClick={() => {
-          append({ position: "Front Grill", start: "8:00", end: "16:00", break: "12:00", hours: "8:00", rate: "10.00" })
-        }}>Append</button>
         <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {templates && templates.map((template: any) => {
             return (
