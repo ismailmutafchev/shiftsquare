@@ -61,9 +61,6 @@ export default function Templates() {
     register,
     control,
   } = useForm<FormValues>({
-    defaultValues: {
-      shifts: []
-    },
     mode: "onBlur"
   });
   const { fields: monday, append:appendMonday, remove: removeMonday } = useFieldArray({
