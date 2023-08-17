@@ -8,8 +8,6 @@ import { Menu, Transition } from "@headlessui/react"
 import { useFieldArray, useForm } from 'react-hook-form'
 import { useSession } from "../providers/Session"
 
-type ShiftType = 'mondayShifts' | 'tuesdatShifts'
-
 type FormValues = {
   mondayShifts: {
     position: string;
@@ -62,40 +60,37 @@ export default function Templates() {
   const {
     register,
     control,
-    handleSubmit,
-    watch,
-    formState: { errors }
   } = useForm<FormValues>({
     defaultValues: {
       shifts: []
     },
     mode: "onBlur"
   });
-  const { fields: monday, append:appendMonday, prepend: prependMonday, remove: removeMonday, swap: swapMonday, move: moveMonday, insert: insertMonday } = useFieldArray({
+  const { fields: monday, append:appendMonday, remove: removeMonday } = useFieldArray({
     name: "mondayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
-  const { fields: tuesday, append:appendTuesday, prepend: prependTuesday, remove: removeTuesday, swap: swapTuesday, move: moveTuesday, insert: insertTuesday } = useFieldArray({
+  const { fields: tuesday, append:appendTuesday, remove: removeTuesday } = useFieldArray({
     name: "tuesdayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
-  const { fields: wednesday, append:appendWednesday, prepend: prependWednesday, remove: removeWednesday, swap: swapWednesday, move: moveWednesday, insert: insertWednesday } = useFieldArray({
+  const { fields: wednesday, append:appendWednesday, remove: removeWednesday} = useFieldArray({
     name: "wednesdayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
-  const { fields: thursday, append:appendThursday, prepend: prependThursday, remove: removeThursday, swap: swapThursday, move: moveThursday, insert: insertThursday } = useFieldArray({
+  const { fields: thursday, append:appendThursday, remove: removeThursday } = useFieldArray({
     name: "thursdayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
-  const { fields: friday, append:appendFriday, prepend: prependFriday, remove: removeFriday, swap: swapFriday, move: moveFriday, insert: insertFriday } = useFieldArray({
+  const { fields: friday, append:appendFriday, remove: removeFriday } = useFieldArray({
     name: "fridayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
-  const { fields: saturday, append:appendSaturday, prepend: prependSaturday, remove: removeSaturday, swap: swapSaturday, move: moveSaturday, insert: insertSaturday } = useFieldArray({
+  const { fields: saturday, append:appendSaturday, remove: removeSaturday } = useFieldArray({
     name: "saturdayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
-  const { fields: sunday, append:appendSunday, prepend: prependSunday, remove: removeSunday, swap: swapSunday, move: moveSunday, insert: insertSunday } = useFieldArray({
+  const { fields: sunday, append:appendSunday, remove: removeSunday } = useFieldArray({
     name: "sundayShifts", // unique name for your Field Array
     control, // control props comes from useForm (optional: if you are using FormContext)
   });
@@ -163,16 +158,6 @@ export default function Templates() {
     remove: removeSunday
   }
 ]
-
-  console.log(JSON.stringify({
-    monday,
-    tuesday,
-    wednesday,
-    thursday,
-    friday,
-    saturday,
-    sunday
-  }))
 
   return (
     <>
@@ -283,7 +268,7 @@ export default function Templates() {
                               {({ active }) => (
                                 <button
                                   onClick={() => {
-                                    setShowModal(true), setUpdate({ isUpdate: true, data: { template } })
+                                    setShowBuilder(true), setUpdate({ isUpdate: true, data: { template } })
                                   }}
                                   className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
