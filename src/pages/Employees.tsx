@@ -53,7 +53,7 @@ export default function Employees() {
               <div className="flex-1 truncate">
                 <div className="flex items-center space-x-3">
                   <div className='flex flex-col items-start'>
-                    <h3 className="truncate text-sm font-medium text-gray-900">{person.first_name}{' '}{person.last_name}</h3>
+                    <h3 className="truncate text-sm font-medium text-gray-900">{person.firstName}{' '}{person.lastName}</h3>
                     <p className="truncate text-sm font-medium text-gray-300">{person.email}</p>
                   </div>
                   <span className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
@@ -62,7 +62,7 @@ export default function Employees() {
                 </div>
                 <p className="mt-1 truncate text-sm text-gray-500">{person.title}</p>
               </div>
-              <Avatar size={10} firstName={person.first_name} lastName={person.last_name} />
+              <Avatar size={10} firstName={person.firstName} lastName={person.lastName} />
             </div>
             <div>
               <div className="-mt-px flex divide-x divide-gray-200">
@@ -117,8 +117,8 @@ function AddUser({ data }: any) {
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      first_name: data?.data?.first_name || '',
-      last_name: data?.data?.last_name || '',
+      firstName: data?.data?.firstName || '',
+      lastName: data?.data?.lastName || '',
       email: data?.data?.email || '',
       // title: data?.data?.title || '',
       // role: data?.data?.role?.length ? data?.data?.role[0].role?.name : '',
@@ -151,7 +151,7 @@ function AddUser({ data }: any) {
               </label>
               <input
                 className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                {...register("first_name", { required: true })}
+                {...register("firstName", { required: true })}
               />
             </div>
 
@@ -162,7 +162,7 @@ function AddUser({ data }: any) {
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
                   className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("last_name", { required: true })}
+                  {...register("lastName", { required: true })}
                 />
               </div>
             </div>

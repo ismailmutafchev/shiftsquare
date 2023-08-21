@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "console": "cd ../shiftsquare-infrastructure/rm_migrations && hasura console"
+    "console": "cd ../shiftsquare-infrastructure/rm_migrations && hasura console",
+    "deploy-fns": "cd ../functions-sq && serverless deploy --aws-profile default"
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",

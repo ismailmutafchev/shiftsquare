@@ -3,8 +3,8 @@ import { gql } from '@apollo/client'
 export const getEmployees = gql` query {    
         user {
             id
-            first_name
-            last_name
+            firstName
+            lastName
             email
             role{
                 name

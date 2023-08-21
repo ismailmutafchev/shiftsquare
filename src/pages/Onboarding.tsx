@@ -26,8 +26,8 @@ export default function Onboarding() {
         updateUser({
             variables: {
                 id: user?.id, object: {
-                    first_name: data.first_name,
-                    last_name: data.last_name,
+                    firstName: data.firstName,
+                    lastName: data.lastName,
                     organization_id: organizationData?.organization[0]?.id,
                     onboarded: true
                 }
@@ -43,7 +43,7 @@ export default function Onboarding() {
                         <div className="mt-10 space-y-8 pb-8 sm:space-y-0 sm:divide-y sm:pb-0">
 
                             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-                                <label htmlFor="first_name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                <label htmlFor="firstName" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                                     What is your first name?
                                 </label>
                                 <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
@@ -51,13 +51,13 @@ export default function Onboarding() {
                                         type='text'
                                         // style={inputStyles}
                                         className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm `}
-                                        {...register("first_name", { required: true })}
+                                        {...register("firstName", { required: true })}
                                     />{
                                     }
                                 </div>
                             </div>
                             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
-                                <label htmlFor="last_name" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+                                <label htmlFor="lastName" className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                                     What is your last name?
                                 </label>
                                 <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
@@ -65,7 +65,7 @@ export default function Onboarding() {
                                         type='text'
                                         step={300}
                                         className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm`}
-                                        {...register("last_name", { required: true })}
+                                        {...register("lastName", { required: true })}
                                     />{
                                         // formErrors.start && <span className="text-red-500 absolute top-11 left-5 bg-red-200/50 py-0.5 px-1 rounded-b-md text-xs">{formErrors.start.message}</span>
                                     }

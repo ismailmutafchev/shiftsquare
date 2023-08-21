@@ -175,7 +175,7 @@ export default function Dashboard() {
                             <p
                               className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
                             >
-                              {shift?.employee?.first_name} {shift?.employee?.last_name}
+                              {shift?.employee?.firstName} {shift?.employee?.lastName}
                             </p>
                           </div>
                           <p className={`text-lg font-semibold text-polar-700/80 transition duration-100`}>{shift?.employee?.shift_aggregate.aggregate.sum.length}</p>
@@ -215,7 +215,7 @@ export default function Dashboard() {
                         <div key={shift?.position?.id} className="flex justify-between w-full border-b ">
                           <div className={`flex items-center space-x-1 transition duration-100  ${selectedCell && selectedCell.payload?.position?.id === shift?.position?.id && 'text-polar-700 scale-110'}`}>
                             <div style={{
-                              backgroundColor: shift?.position?.bg_color,
+                              backgroundColor: shift?.position?.bgColor,
                               width: '10px',
                               height: '10px',
                               borderRadius: '50%',
@@ -249,7 +249,7 @@ export default function Dashboard() {
                       hoursByPosition && hoursByPosition.shift &&
                       hoursByPosition.shift.map((shift: any) => {
                         return (
-                          <Cell key={shift?.position?.id} fill={shift?.position?.bg_color} />
+                          <Cell key={shift?.position?.id} fill={shift?.position?.bgColor} />
                         )
                       })
                     }

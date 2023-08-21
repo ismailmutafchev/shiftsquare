@@ -85,7 +85,7 @@ export default function Positions() {
                   )}
                   style={
                     {
-                      backgroundColor: position.bg_color,
+                      backgroundColor: position.bgColor,
                       opacity: 0.8
                     }
                   }
@@ -124,7 +124,7 @@ export default function Positions() {
                                   className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <PencilSquareIcon
-                                    color={position.bg_color}
+                                    color={position.bgColor}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -139,7 +139,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <Square2StackIcon
-                                    color={position.bg_color}
+                                    color={position.bgColor}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -156,7 +156,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <ArchiveBoxIcon
-                                    color={position.bg_color}
+                                    color={position.bgColor}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -171,7 +171,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <ArrowsPointingOutIcon
-                                    color={position.bg_color}
+                                    color={position.bgColor}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -192,7 +192,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <TrashIcon
-                                    color={position.bg_color}
+                                    color={position.bgColor}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -227,7 +227,7 @@ function AddPosition({ data }: any) {
   const { register, handleSubmit, setValue, watch } = useForm({
     defaultValues: {
       name: isUpdate ? data?.data?.position?.name : '',
-      bg_color: isUpdate ? data?.data?.position?.bg_color : '#000000',
+      bgColor: isUpdate ? data?.data?.position?.bgColor : '#000000',
     }
   });
 
@@ -245,7 +245,7 @@ function AddPosition({ data }: any) {
     })
   }
 
-  const color = watch('bg_color')
+  const color = watch('bgColor')
 
   return (
     <form onSubmit={handleSubmit(submit)}>
@@ -265,13 +265,13 @@ function AddPosition({ data }: any) {
             </div>
 
             <div className="sm:grid sm:grid-rows-10 sm:items-start">
-              <label htmlFor="bg_color" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
+              <label htmlFor="bgColor" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
                 Identify Color
               </label>
               <div className="mt-2 sm:row-span-2 sm:mt-0 py-1">
                 <input
                   className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("bg_color", { required: true })}
+                  {...register("bgColor", { required: true })}
                 />
                 <div className='row-span-3'>
                   <Disclosure>
@@ -326,7 +326,7 @@ function AddPosition({ data }: any) {
                                 }}
                                 color={color}
                                 onChangeComplete={(color: any) => {
-                                  setValue('bg_color', color.hex)
+                                  setValue('bgColor', color.hex)
                                 }
                                 }
                               />

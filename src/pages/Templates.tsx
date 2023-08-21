@@ -231,7 +231,7 @@ export default function Templates() {
                   )}
                   style={
                     {
-                      backgroundColor: template.bg_color,
+                      backgroundColor: template.bgColor,
                       opacity: 0.8
                     }
                   }
