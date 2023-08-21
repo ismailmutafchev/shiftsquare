@@ -4,7 +4,7 @@ export const addPositionOne = gql` mutation addPositionOne($object: position_ins
     insert_position_one(object: $object) {
         id
         name
-        bg_color
+        bgColor
     }
 }
 `;
@@ -13,7 +13,7 @@ export const deletePositionById = gql` mutation deletePositionById($id: uuid!) {
     delete_position_by_pk(id: $id) {
         id
         name
-        bg_color
+        bgColor
     }
 }`;
 
@@ -21,6 +21,6 @@ export const updatePositionById = gql` mutation updatePositionById($id: uuid!, $
     update_position_by_pk(pk_columns: {id: $id}, _set: $object) {
         id
         name
-        bg_color
+        bgColor
     }
 }`;

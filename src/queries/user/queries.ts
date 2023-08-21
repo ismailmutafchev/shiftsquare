@@ -16,8 +16,8 @@ export const getEmployees = gql` query {
 export const getEmployee = gql` query($id: uuid!) {
     user_by_pk(id: $id) {
         id
-        first_name
-        last_name
+        firstName
+        lastName
         email
           role{
             name
@@ -25,13 +25,13 @@ export const getEmployee = gql` query($id: uuid!) {
     }
 }
 `;
-export const getProfile = gql` query($auth_id: String!) {
-    user(where: {auth_id: {_eq: $auth_id}}) {
+export const getProfile = gql` query($authId: String!) {
+    user(where: {authId: {_eq: $authId}}) {
         id
         email
-        organization_id
-        first_name
-        last_name
+        organizationId
+        firstName
+        lastName
         onboarded
         auth_id
     }

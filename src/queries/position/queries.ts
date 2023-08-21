@@ -4,7 +4,7 @@ export const getPositions = gql` query {
     position {
         id
         name
-        bg_color
+        bgColor
     }
 }
 
@@ -14,7 +14,7 @@ export const getPosition = gql` query($id: uuid!) {
     position_by_pk(id: $id) {
         id
         name
-        bg_color
+        bgColor
     }
 }
 `;

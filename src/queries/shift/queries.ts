@@ -5,14 +5,14 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
         id
         start
         end
-        position_id
-        employee_id
+        positionId
+        employeeId
         length
         employee {
-            first_name
+            firstName
         }
         position {
-            bg_color
+            bgColor
             name
         }
 }
@@ -31,7 +31,7 @@ export const getWorkingHours = gql` query($start: timestamptz!, $end: timestampt
 `;
 
 export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestamptz!){
-    shift(distinct_on: [position_id], where: {start: {_gte: $start}, end: {_lte: $end}}) {
+    shift(distinct_on: [positionId], where: {start: {_gte: $start}, end: {_lte: $end}}) {
       position {
         shift_aggregate {
           aggregate {
@@ -42,13 +42,13 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
         }
         name
         id
-        bg_color
+        bgColor
       }
     }
   }`
 
   export const getHoursByEmployee = gql`query($start: timestamptz!, $end: timestamptz!){
-    shift(distinct_on: [employee_id], where: {start: {_gte: $start}, end: {_lte: $end}}) {
+    shift(distinct_on: [employeeId], where: {start: {_gte: $start}, end: {_lte: $end}}) {
       id
       employee {
         shift_aggregate {
@@ -58,8 +58,8 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
             }
           }
         }
-        first_name
-        last_name
+        firstName
+        lastName
         id
       }
     }

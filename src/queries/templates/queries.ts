@@ -3,8 +3,8 @@ import { gql } from '@apollo/client'
 export const getTemplate = gql` query($id: uuid!) {
     template_by_pk(id: $id) {
         id
-        created_at
-        updated_at
+        createdAt
+        updatedAt
         shifts
         name
     }
@@ -14,8 +14,8 @@ export const getTemplate = gql` query($id: uuid!) {
 export const getTemplates = gql` query {
     template {
         id
-        created_at
-        updated_at
+        createdAt
+        updatedAt
         shifts
         name
     }
