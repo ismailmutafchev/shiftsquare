@@ -24,6 +24,8 @@ export default function Employees() {
     setShowModal(state)
   }
 
+  console.log(data)
+
 
   if (loading) return <LoadingAnimation />
   if (error) return <p>Error :</p>

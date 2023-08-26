@@ -19,7 +19,7 @@ export const getEmployee = gql` query($id: uuid!) {
         firstName
         lastName
         email
-          role{
+        role{
             name
         }
     }
