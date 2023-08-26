@@ -31,9 +31,9 @@ export const getWorkingHours = gql` query($start: timestamptz!, $end: timestampt
 `;
 
 export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestamptz!){
-    shift(distinct_on: [positionId], where: {start: {_gte: $start}, end: {_lte: $end}}) {
+    shift(distinct_on: positionId, where: {start: {_gte: $start}, end: {_lte: $end}}) {
       position {
-        shift_aggregate {
+        shift_aggregate(where: {start: {_gte: $start}, end: {_lte: $end}}) {
           aggregate {
             sum {
               length
@@ -61,6 +61,7 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
         firstName
         lastName
         id
+        bgColor
       }
     }
   }`

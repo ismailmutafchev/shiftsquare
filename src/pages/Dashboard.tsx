@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client"
-import { endOfDay, set, startOfDay, startOfWeek } from "date-fns"
-import { Fragment, useEffect, useState } from "react"
+import { endOfDay, startOfDay, startOfWeek } from "date-fns"
+import { Fragment, useState } from "react"
 import { getHoursByEmployee, getHoursByPosition, getWorkingHours } from "../queries/shift/queries"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 // import Datepicker from "tailwind-datepicker-react"
@@ -14,7 +14,6 @@ export default function Dashboard() {
   const [startDate, setStartDate] = useState<Date>(startOfWeek(new Date(), { weekStartsOn: 1 }))
   const [endDate, setEndDate] = useState<Date>(new Date())
   const [selectedCell, setSectedCell] = useState<any>(null)
-  const [employeesWithColors , setEmployeesWithColors] = useState<any>([])
 
   const { loading: totalHoursLoading, data: totalHours } = useQuery(getWorkingHours, {
     variables: {
@@ -25,21 +24,19 @@ export default function Dashboard() {
   })
 
   const { loading: hoursByPositionLoading, data: hoursByPosition } = useQuery(getHoursByPosition, {
+    fetchPolicy: 'network-only',
     variables: {
       start: startOfDay(startDate),
       end: endOfDay(endDate),
     },
   })
 
-  const { loading: hoursByEmployeeLoading, data: hoursByEmployee } = useQuery(getHoursByEmployee, {
+  const { data: hoursByEmployee } = useQuery(getHoursByEmployee, {
     variables: {
       start: startOfDay(startDate),
       end: endOfDay(endDate),
     },
   })
-
-
-  console.log(hoursByEmployee)
 
 
   if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />
@@ -53,10 +50,6 @@ export default function Dashboard() {
   const onPieLeave = () => {
     setSectedCell(null)
   }
-
-
-
-
 
   return (
     <div>
@@ -160,12 +153,12 @@ export default function Dashboard() {
                 <div className="flex flex-col space-y-10 pl-5">
                   <h1 className="text-2xl font-bold text-polar-700/80">Hours by Employee</h1>
                   <div className="flex items-start flex-col">
-                    {employeesWithColors.map((shift: any, idx: number) => {
+                    {hoursByEmployee.shift.map((shift: any) => {
                       return (
                         <div key={shift?.employee?.id} className="flex justify-between w-full border-b ">
                           <div className={`flex items-center space-x-1 transition duration-100 `}>
                             <div style={{
-                              backgroundColor: shift.color,
+                              backgroundColor: shift.employee.bgColor || '#248a96',
                               width: '10px',
                               height: '10px',
                               borderRadius: '50%',
@@ -184,23 +177,26 @@ export default function Dashboard() {
                     })}
                   </div>
                 </div>
-                <PieChart width={200} height={200} className="-z-10">
+                <PieChart width={200} height={200} className="xl:right-10"  onMouseEnter={onPieEnter}>
                   <Pie
                     data={hoursByEmployee.shift}
                     innerRadius={60}
                     outerRadius={80}
-                    fill="#8884d8"
+                    fill="#248a96"
                     paddingAngle={5}
                     dataKey="employee.shift_aggregate.aggregate.sum.length"
+                    onMouseEnter={onPieEnter}
+                    onMouseLeave={onPieLeave}
                   >
                     {
-                      employeesWithColors.map((shift: any, idx: number) => {
+                      hoursByEmployee.shift.map((shift: any) => {
                         return (
-                          <Cell key={shift?.employee?.id} fill={shift.color} />
+                          <Cell key={shift?.employee?.id} fill={shift.employee?.bgColor || '#248a96'} />
                         )
                       })
                     }
                   </Pie>
+                  <Tooltip content={<EmployeeCustomTooltip payload={selectedCell} total={totalHoursSum} />} />
                 </PieChart>
               </div>
             }
@@ -254,7 +250,7 @@ export default function Dashboard() {
                       })
                     }
                   </Pie>
-                  <Tooltip content={<CustomTooltip payload={selectedCell} total={totalHoursSum} />} />
+                  <Tooltip content={<PositionCustomTooltip payload={selectedCell} total={totalHoursSum} />} />
                 </PieChart>
               </div>
             }
@@ -266,13 +262,26 @@ export default function Dashboard() {
 }
 
 
-const CustomTooltip = ({ active, payload, total }: any) => {
+const PositionCustomTooltip = ({ active, payload, total }: any) => {
+
   if (active) {
     return (
       <div className="bg-polar-200/80 p-2 rounded-lg">
         <p className="text-polar-700/80">{payload[0].payload.position.name}</p>
         <p className="text-polar-700/80">{`${payload[0].value} hours (${(payload[0].value / (total) * 100).toFixed(2)}%)`}</p>
+      </div>
+    );
+  }
 
+  return null;
+}
+const EmployeeCustomTooltip = ({ active, payload }: any) => {
+
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-polar-200/80 p-2 rounded-lg">
+        <p className="text-polar-700/80">{payload[0].payload.employee.firstName} </p>
+        <p className="text-polar-700/80">{`${payload[0].value} hours`}</p>
       </div>
     );
   }

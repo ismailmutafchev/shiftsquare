@@ -5,7 +5,7 @@ import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteO
 import { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
-import { getShifts } from '../queries/shift/queries';
+import { getHoursByPosition, getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm, Controller } from 'react-hook-form';
@@ -391,8 +391,8 @@ function AddShift({ data }: any) {
   const { register, handleSubmit, watch, control, formState
 } = useForm({
   defaultValues: {
-    position: data?.data?.position_id || positions && positions[0].id || '',
-    employee: data?.data?.employee_id || employees && employees[0].id || '',
+    position: data?.data?.positionId || positions && positions[0].id || '',
+    employee: data?.data?.employeeId || employees && employees[0].id || '',
     date: data.data.start ? format(new Date(data.data.start), 'yyyy-MM-dd') : '',
     start: data.data.start ? format(new Date(data.data.start), 'HH:mm') : '',
     end: data.data.end ? format(new Date(data.data.end), 'HH:mm') : '',
@@ -401,15 +401,17 @@ function AddShift({ data }: any) {
   resolver: yupResolver(shiftSchema)
 });
 
+
 const [addShift] = useMutation(addShiftOne)
 const [updateShift] = useMutation(updateShiftById)
 
 const formErrors = formState.errors 
 
 function submit(data: any) {
+
   const employeeBusy = shifts?.some((shift: any) => {
     if (update && shift.id === id) return false
-    return shift.employee_id === data.employee && (
+    return shift.employeeId === data.employee && (
       (new Date(shift.start) <= new Date(data.date + 'T' + data.start) && new Date(shift.end) >= new Date(data.date + 'T' + data.start)) ||
       (new Date(shift.start) <= new Date(data.date + 'T' + data.end) && new Date(shift.end) >= new Date(data.date + 'T' + data.end))
     )
@@ -423,8 +425,8 @@ function submit(data: any) {
         id: id,
         start: new Date(data.date + 'T' + data.start).toISOString(),
         end: new Date(data.date + 'T' + data.end).toISOString(),
-        employee_id: data.employee,
-        position_id: data.position,
+        employeeId: data.employee,
+        positionId: data.position,
         length: shiftLength,
       }, refetchQueries: [{
         query: getShifts, variables: {
@@ -445,8 +447,8 @@ function submit(data: any) {
       object: {
         start: new Date(data.date + 'T' + data.start).toISOString(),
         end: new Date(data.date + 'T' + data.end).toISOString(),
-        employee_id: data.employee,
-        position_id: data.position,
+        employeeId: data.employee,
+        positionId: data.position,
         length: shiftLength
       }
     }, refetchQueries: [{
@@ -459,7 +461,6 @@ function submit(data: any) {
 }
 
 const selectedValues = watch()
-
 
 const selectedPositionDisplay = positions && positions.find((position: any) => position.id === selectedValues.position)
 const selectedEmployeeDisplay = employees && employees.find((employee: any) => employee.id === selectedValues.employee)
