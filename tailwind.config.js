@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-    content: [
+  content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
     "./node_modules/tailwind-datepicker-react/dist/**/*.js",
@@ -20,12 +20,16 @@ export default {
           '800': '#255b65',
           '900': '#234c56',
           '950': '#12323a',
+        },
       },
+      fontFamily: {
+        'nunito': ['Nunito', 'sans-serif'],
+        'poppins': ['Poppins', 'sans-serif'],
       },
     },
   },
   plugins: [
-   '@tailwindcss/forms'
+    '@tailwindcss/forms'
   ],
 }
 

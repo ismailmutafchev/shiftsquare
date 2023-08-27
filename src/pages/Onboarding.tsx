@@ -5,7 +5,6 @@ import { updateUserById } from "../queries/user/mutations";
 import { getOrganizationByName } from "../queries/organization/quieries";
 import { CheckBadgeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getProfile } from "../queries/user/queries";
-import { set } from "date-fns";
 
 export default function Onboarding() {
     const { profile } = useSession();
@@ -14,7 +13,7 @@ export default function Onboarding() {
     const [updateUser] = useMutation(updateUserById, {
         refetchQueries: [{
             query: getProfile,
-            variables: { auth_id: user?.auth_id }
+            variables: { authId: user?.authId }
         }]
     })
 

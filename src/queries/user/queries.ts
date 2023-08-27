@@ -6,6 +6,7 @@ export const getEmployees = gql` query {
             firstName
             lastName
             email
+            bgColor
             role{
                 name
             }
@@ -33,7 +34,7 @@ export const getProfile = gql` query($authId: String!) {
         firstName
         lastName
         onboarded
-        auth_id
+        authId
     }
 }
 `;

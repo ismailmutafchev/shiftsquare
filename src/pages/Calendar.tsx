@@ -86,7 +86,7 @@ export default function Calendar() {
     <div className="flex h-full flex-col">
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
-          <h1 className="text-base font-semibold leading-6 text-gray-900">
+          <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
             {format(new Date(selectedDay), 'd MMMM yyyy')}
           </h1>
           <p className="mt-1 text-sm text-gray-500">{format(selectedDay, 'iiii')}</p>

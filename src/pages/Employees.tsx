@@ -24,8 +24,6 @@ export default function Employees() {
     setShowModal(state)
   }
 
-  console.log(data)
-
 
   if (loading) return <LoadingAnimation />
   if (error) return <p>Error :</p>
@@ -64,7 +62,7 @@ export default function Employees() {
                 </div>
                 <p className="mt-1 truncate text-sm text-gray-500">{person.title}</p>
               </div>
-              <Avatar size={10} firstName={person.firstName} lastName={person.lastName} />
+              <Avatar size={10} firstName={person.firstName} lastName={person.lastName} className={person.bgColor} />
             </div>
             <div>
               <div className="-mt-px flex divide-x divide-gray-200">

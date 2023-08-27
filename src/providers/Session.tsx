@@ -8,15 +8,15 @@ export const useSession = () => {
     const { user } = useAuth0();
     const employees = useQuery(getEmployees);
     const positions = useQuery(getPositions);
-    const profile = useQuery(getProfile, {
+    const {data: profile } = useQuery(getProfile, {
         variables: {
-            auth_id: user?.sub
+            authId: user?.sub
         }
     });
 
     return {
         employees: employees.data?.user,
         positions: positions.data?.position,
-        profile: profile
+        profile: {...profile?.user[0], picture: user?.picture}
     }
 }
