@@ -6,6 +6,7 @@ export default function Login() {
         <div>
             <h1>Sign Up</h1>
             <button onClick={() => loginWithRedirect({
+                //@ts-ignore
                 screen_hint: 'signup',
             })}>Sign Up</button>
         </div>

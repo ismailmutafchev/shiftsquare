@@ -5,7 +5,7 @@ import { addDays, addMonths, differenceInMinutes, eachDayOfInterval, eachMinuteO
 import { useState } from 'react'
 import { useAuth0 } from '@auth0/auth0-react';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
-import { getHoursByPosition, getShifts } from '../queries/shift/queries';
+import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm, Controller } from 'react-hook-form';

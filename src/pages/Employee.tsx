@@ -1,4 +1,3 @@
-import { PaperClipIcon } from '@heroicons/react/20/solid'
 import { useParams } from 'react-router-dom';
 import { getEmployee } from '../queries/user/queries';
 import { useQuery } from '@apollo/client';
@@ -6,7 +5,7 @@ import { useQuery } from '@apollo/client';
 export default function Employee() {
     const { id } = useParams();
 
-    const { loading, error, data } = useQuery(getEmployee, {
+    const { data } = useQuery(getEmployee, {
         variables: { id: id }
     })
 

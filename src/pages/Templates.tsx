@@ -5,47 +5,45 @@ import { getTemplate, getTemplates } from "../queries/templates/queries"
 import { deleteTemplateById } from "../queries/templates/mutations"
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents"
 import { Menu, Transition } from "@headlessui/react"
-import { useFieldArray, useForm } from 'react-hook-form'
-import { useSession } from "../providers/Session"
-import { Resizable, ResizableBox } from 'react-resizable';
+import { ResizableBox } from 'react-resizable';
 
-type FormValues = {
-  mondayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-  tuesdayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-  wednesdayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-  thursdayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-  fridayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-  saturdayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-  sundayShifts: {
-    position: string;
-    start: string;
-    end: string;
-  }[],
-}
+// type FormValues = {
+//   mondayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+//   tuesdayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+//   wednesdayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+//   thursdayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+//   fridayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+//   saturdayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+//   sundayShifts: {
+//     position: string;
+//     start: string;
+//     end: string;
+//   }[],
+// }
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
@@ -53,56 +51,52 @@ function classNames(...classes: string[]) {
 
 export default function Templates() {
   const [showBuilder, setShowBuilder] = useState(false)
-  const [update, setUpdate] = useState({
-    isUpdate: false,
-    data: {}
-  })
+  // const [update, setUpdate] = useState({
+  //   isUpdate: false,
+  //   data: {}
+  // })
   const [size, setSize] = useState({
     width: 200,
     height: 200
   });
 
-  function onResize(event: any, { element, size, handle }: any) {
+  function onResize(event: any, {size }: any) {
     setSize({ width: size.width, height: size.height });
   }
 
-  const {
-    register,
-    control,
-  } = useForm<FormValues>({
-    mode: "onBlur"
-  });
-  const { fields: monday, append: appendMonday, remove: removeMonday } = useFieldArray({
-    name: "mondayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-  const { fields: tuesday, append: appendTuesday, remove: removeTuesday } = useFieldArray({
-    name: "tuesdayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-  const { fields: wednesday, append: appendWednesday, remove: removeWednesday } = useFieldArray({
-    name: "wednesdayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-  const { fields: thursday, append: appendThursday, remove: removeThursday } = useFieldArray({
-    name: "thursdayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-  const { fields: friday, append: appendFriday, remove: removeFriday } = useFieldArray({
-    name: "fridayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-  const { fields: saturday, append: appendSaturday, remove: removeSaturday } = useFieldArray({
-    name: "saturdayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-  const { fields: sunday, append: appendSunday, remove: removeSunday } = useFieldArray({
-    name: "sundayShifts", // unique name for your Field Array
-    control, // control props comes from useForm (optional: if you are using FormContext)
-  });
-
-
-  const { positions } = useSession()
+  // const {
+  //   control,
+  // } = useForm<FormValues>({
+  //   mode: "onBlur"
+  // });
+  // const { fields: monday, append: appendMonday, remove: removeMonday } = useFieldArray({
+  //   name: "mondayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
+  // const { fields: tuesday, append: appendTuesday, remove: removeTuesday } = useFieldArray({
+  //   name: "tuesdayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
+  // const { fields: wednesday, append: appendWednesday, remove: removeWednesday } = useFieldArray({
+  //   name: "wednesdayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
+  // const { fields: thursday, append: appendThursday, remove: removeThursday } = useFieldArray({
+  //   name: "thursdayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
+  // const { fields: friday, append: appendFriday, remove: removeFriday } = useFieldArray({
+  //   name: "fridayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
+  // const { fields: saturday, append: appendSaturday, remove: removeSaturday } = useFieldArray({
+  //   name: "saturdayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
+  // const { fields: sunday, append: appendSunday, remove: removeSunday } = useFieldArray({
+  //   name: "sundayShifts", // unique name for your Field Array
+  //   control, // control props comes from useForm (optional: if you are using FormContext)
+  // });
 
 
   const { loading, error, data } = useQuery(getTemplates)
@@ -121,49 +115,49 @@ export default function Templates() {
     deleteTemplate({ variables: { id } })
   }
 
-  const allDays = [{
-    day: "Monday",
-    shifts: monday,
-    append: appendMonday,
-    remove: removeMonday
-  },
-  {
-    day: "Tuesday",
-    shifts: tuesday,
-    append: appendTuesday,
-    remove: removeTuesday
-  },
-  {
-    day: "Wednesday",
-    shifts: wednesday,
-    append: appendWednesday,
-    remove: removeWednesday
-  },
-  {
-    day: "Thursday",
-    shifts: thursday,
-    append: appendThursday,
-    remove: removeThursday
-  },
-  {
-    day: "Friday",
-    shifts: friday,
-    append: appendFriday,
-    remove: removeFriday
-  },
-  {
-    day: "Saturday",
-    shifts: saturday,
-    append: appendSaturday,
-    remove: removeSaturday
-  },
-  {
-    day: "Sunday",
-    shifts: sunday,
-    append: appendSunday,
-    remove: removeSunday
-  }
-  ]
+  // const allDays = [{
+  //   day: "Monday",
+  //   shifts: monday,
+  //   append: appendMonday,
+  //   remove: removeMonday
+  // },
+  // {
+  //   day: "Tuesday",
+  //   shifts: tuesday,
+  //   append: appendTuesday,
+  //   remove: removeTuesday
+  // },
+  // {
+  //   day: "Wednesday",
+  //   shifts: wednesday,
+  //   append: appendWednesday,
+  //   remove: removeWednesday
+  // },
+  // {
+  //   day: "Thursday",
+  //   shifts: thursday,
+  //   append: appendThursday,
+  //   remove: removeThursday
+  // },
+  // {
+  //   day: "Friday",
+  //   shifts: friday,
+  //   append: appendFriday,
+  //   remove: removeFriday
+  // },
+  // {
+  //   day: "Saturday",
+  //   shifts: saturday,
+  //   append: appendSaturday,
+  //   remove: removeSaturday
+  // },
+  // {
+  //   day: "Sunday",
+  //   shifts: sunday,
+  //   append: appendSunday,
+  //   remove: removeSunday
+  // }
+  // ]
 
 
 
@@ -174,7 +168,7 @@ export default function Templates() {
         <div className="mt-3 sm:ml-4 sm:mt-0">
           <button
             onClick={() => {
-              setShowBuilder(true), setUpdate({ isUpdate: false, data: {} })
+              setShowBuilder(true)
             }}
             type="button"
             className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
@@ -288,7 +282,7 @@ export default function Templates() {
                                   {({ active }) => (
                                     <button
                                       onClick={() => {
-                                        setShowBuilder(true), setUpdate({ isUpdate: true, data: { template } })
+                                        setShowBuilder(true)
                                       }}
                                       className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                     >
@@ -377,93 +371,5 @@ export default function Templates() {
           </div>
       }
     </>
-  )
-}
-
-function AddPosition({ data }: any) {
-
-  const update = data.isUpdate
-  const id = data?.data?.template?.id || null
-  const { modalHandler, isUpdate } = data
-
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      name: isUpdate ? data?.data?.template?.name : '',
-      shifts: isUpdate ? data?.data?.template?.shifts : '',
-    }
-  });
-
-  const [addTemplate] = useMutation(insertTemplate)
-  const [updateTemplate] = useMutation(updateTemplateById)
-
-  function submit(data: any) {
-    if (update) {
-      updateTemplate({ variables: { id: id, object: data }, refetchQueries: [{ query: getTemplate }], onCompleted: () => modalHandler(false) })
-      return
-    }
-
-    addTemplate({
-      variables: { object: data }, refetchQueries: [{ query: getTemplate }], onCompleted: () => modalHandler(false)
-    })
-  }
-
-  return (
-    <form onSubmit={handleSubmit(submit)}>
-      <div className="space-y-12 sm:space-y-16">
-        <div>
-          <div className="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
-            <div className="sm:grid sm:grid-rows-3 sm:items-start">
-              <label htmlFor="first-name" className="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">
-                Template Name
-              </label>
-              <div className="mt-2 sm:row-span-2 sm:mt-0 py-1">
-                <input
-                  className='w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90'
-                  {...register("name", { required: true })}
-                />
-              </div>
-              <div className="w-full px-4 pt-16">
-                <div className="mx-auto w-full max-w-md rounded-2xl bg-white p-2 overflow-scroll max-h-96">
-                  {/* {days.map((day) => {
-                    return (
-                  <Disclosure>
-                    {({ open }) => (
-                      <>
-                        <Disclosure.Button className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500 focus-visible:ring-opacity-75">
-                          <span>{day.name}</span>
-                          <ChevronUpIcon
-                            className={`${open ? 'rotate-180 transform' : ''
-                              } h-5 w-5 text-polar-500`}
-                          />
-                        </Disclosure.Button>
-                        <Disclosure.Panel className="px-4 pt-4 pb-2 text-sm text-gray-500">
-                          <div>
-                            
-                            <button>
-                              <PlusIcon className="h-5 w-5 text-polar-500" />
-                            </button>
-                          </div>
-                        </Disclosure.Panel>
-                      </>
-                    )}
-                  </Disclosure>
-                    )
-                  })} */}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6 flex items-center justify-end gap-x-6">
-        <button
-          type="submit"
-          className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
-        >
-          Submit
-        </button>
-      </div>
-    </form>
   )
 }
