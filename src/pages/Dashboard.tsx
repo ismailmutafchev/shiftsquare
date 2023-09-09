@@ -58,8 +58,8 @@ export default function Dashboard() {
             Dashboard
           </h1>
         </div>
-        <div className="flex space-x-5 z-50">
-          <div className="top-16 w-auto text-right">
+        <div className="flex space-x-5">
+          <div className="top-16 w-auto text-right z-10">
             <Menu as="div" className="relative inline-block text-left">
               {({ open }) =>
                 <>
@@ -157,7 +157,7 @@ export default function Dashboard() {
                         <div key={shift?.employee?.id} className="flex justify-between w-full border-b ">
                           <div className={`flex items-center space-x-1 transition duration-100 `}>
                             <div style={{
-                              backgroundColor: shift.employee.bgColor || '#248a96',
+                              backgroundColor: shift?.employee?.bgColor || '#248a96',
                               width: '10px',
                               height: '10px',
                               borderRadius: '50%',
