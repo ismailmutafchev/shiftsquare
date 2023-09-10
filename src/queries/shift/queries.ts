@@ -65,3 +65,55 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
       }
     }
   }`
+
+export const getHoursByDay = gql`query MyQuery($monday: timestamptz, $tuesday: timestamptz, $wednesday: timestamptz, $thursday: timestamptz, $friday: timestamptz, $saturday: timestamptz, $sunday: timestamptz, $sundayE: timestamptz ) {
+  monday: shift_aggregate(where: {_and: {start: {_gte: $monday}}, start: {_lt: $tuesday}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+  tuesday: shift_aggregate(where: {_and: {start: {_gte: $tuesday}}, start: {_lt: $wednesday}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+    wednesday: shift_aggregate(where: {_and: {start: {_gte: $wednesday}}, start: {_lt: $thursday}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+    thursday: shift_aggregate(where: {_and: {start: {_gte: $thursday}}, start: {_lt: $friday}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+    friday: shift_aggregate(where: {_and: {start: {_gte: $friday}}, start: {_lt: $saturday}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+    saturday: shift_aggregate(where: {_and: {start: {_gte: $saturday}}, start: {_lt: $sunday}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+    sunday: shift_aggregate(where: {_and: {start: {_gte: $sunday}}, start: {_lt: $sundayE}}) {
+    aggregate {
+      sum {
+        length
+      }
+    }
+  }
+}`

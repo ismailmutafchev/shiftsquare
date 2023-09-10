@@ -2,6 +2,7 @@ import { useQuery } from "@apollo/client";
 import { endOfDay, endOfWeek, startOfDay, startOfWeek } from "date-fns";
 import { Fragment, useState } from "react";
 import {
+  getHoursByDay,
   getHoursByEmployee,
   getHoursByPosition,
   getWorkingHours,
@@ -26,7 +27,6 @@ import {
 import { colors } from "../utils/colors";
 
 export default function Dashboard() {
-
   //state for default date range
   const [startDate, setStartDate] = useState<Date>(
     startOfWeek(new Date(), { weekStartsOn: 1 })
@@ -60,41 +60,58 @@ export default function Dashboard() {
 
   //query for hours by employee
   const { data: hoursByEmployee } = useQuery(getHoursByEmployee, {
+    fetchPolicy: "network-only",
     variables: {
       start: startOfDay(startDate),
       end: endOfDay(endDate),
     },
   });
 
-  //query for hours per day for last week 
-  const { data: lastWeekHours } = useQuery(getWorkingHours, {
+  //query for hours per day for this week
+  const { data: thisWeekHours } = useQuery(getHoursByDay, {
+    fetchPolicy: "network-only",
     variables: {
-      start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-      end: endOfWeek(new Date()),
+      monday: startOfWeek(new Date(), { weekStartsOn: 1 }),
+      tuesday: startOfWeek(new Date(), { weekStartsOn: 2 }),
+      wednesday: startOfWeek(new Date(), { weekStartsOn: 3 }),
+      thursday: startOfWeek(new Date(), { weekStartsOn: 4 }),
+      friday: startOfWeek(new Date(), { weekStartsOn: 5 }),
+      saturday: startOfWeek(new Date(), { weekStartsOn: 6 }),
+      sunday: startOfWeek(new Date(endOfWeek(new Date()))),
+      sundayE: endOfWeek(new Date(), { weekStartsOn: 1 }),
     },
   });
-  //query for hours per day for this week 
-  const { data: thisWeekHours } = useQuery(getWorkingHours, {
+
+  //query for hours per day for last week
+
+  const lastWeekDate = startOfWeek(new Date(), { weekStartsOn: 1 });
+  const lastWeekDate2 = startOfWeek(new Date(lastWeekDate));
+
+  const { data: lastWeekHours } = useQuery(getHoursByDay, {
+    fetchPolicy: "network-only",
     variables: {
-      start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-      end: endOfDay(new Date()),
+      monday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 2 }),
+      tuesday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 3 }),
+      wednesday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 4 }),
+      thursday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 5 }),
+      friday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 6 }),
+      saturday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 0 }),
+      sunday: startOfWeek(new Date(endOfWeek(new Date(lastWeekDate2)))),
+      sundayE: endOfWeek(new Date(lastWeekDate2), { weekStartsOn: 1 }),
     },
   });
 
   //loading animation
   if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />;
 
-
   //total hours sum
   const totalHoursSum =
     totalHours?.shift_aggregate?.aggregate?.sum?.length || 0;
-
 
   //pie chart on hover
   const onPieEnter = (data: any) => {
     setSectedCell(data);
   };
-
 
   //pie chart on leave
   const onPieLeave = () => {
@@ -103,46 +120,39 @@ export default function Dashboard() {
 
   const data = [
     {
-      name: "Page A",
-      uv: 4000,
-      pv: 2400,
-      amt: 2400,
+      name: "Monday",
+      uv: lastWeekHours?.monday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.monday?.aggregate?.sum?.length || 0,
     },
     {
-      name: "Page B",
-      uv: 3000,
-      pv: 1398,
-      amt: 2210,
+      name: "Tuesday",
+      uv: lastWeekHours?.tuesday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.tuesday?.aggregate?.sum?.length || 0,
     },
     {
-      name: "Page C",
-      uv: 2000,
-      pv: 9800,
-      amt: 2290,
+      name: "Wednesday",
+      uv: lastWeekHours?.wednesday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.wednesday?.aggregate?.sum?.length || 0,
     },
     {
-      name: "Page D",
-      uv: 2780,
-      pv: 3908,
-      amt: 2000,
+      name: "Thursday",
+      uv: lastWeekHours?.thursday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.thursday?.aggregate?.sum?.length || 0,
     },
     {
-      name: "Page E",
-      uv: 1890,
-      pv: 4800,
-      amt: 2181,
+      name: "Friday",
+      uv: lastWeekHours?.friday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.friday?.aggregate?.sum?.length || 0,
     },
     {
-      name: "Page F",
-      uv: 2390,
-      pv: 3800,
-      amt: 2500,
+      name: "Saturday",
+      uv: lastWeekHours?.saturday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.saturday?.aggregate?.sum?.length || 0,
     },
     {
-      name: "Page G",
-      uv: 3490,
-      pv: 4300,
-      amt: 2100,
+      name: "Sunday",
+      uv: lastWeekHours?.sunday?.aggregate?.sum?.length || 0,
+      pv: thisWeekHours?.sunday?.aggregate?.sum?.length || 0,
     },
   ];
 
@@ -204,7 +214,7 @@ export default function Dashboard() {
               )}
             </Menu>
           </div>
-          <div className="top-16 w-auto text-right">
+          <div className="top-16 w-auto text-right z-10">
             <Menu as="div" className="relative inline-block text-left">
               {({ open }) => (
                 <>
@@ -239,7 +249,7 @@ export default function Dashboard() {
                   >
                     <Menu.Items static>
                       <div className="relative">
-                        <div className="absolute w-[220%] top-6 -left-32">
+                        <div className="absolute z[999] w-[220%] top-6 -left-32">
                           <Datepicker
                             selectedDay={endDate}
                             setSelectedDay={setEndDate}
@@ -258,52 +268,46 @@ export default function Dashboard() {
       {totalHoursLoading || hoursByPositionLoading ? (
         <LoadingAnimation />
       ) : (
-        <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 items-center justify-center">
-          <ResponsiveContainer
-            width="100%"
-            height="100%"
-            className="col-span-2"
-          >
-            <AreaChart
-              width={500}
-              height={400}
-              data={data}
-              margin={{
-                top: 10,
-                right: 30,
-                left: 0,
-                bottom: 0,
-              }}
+        <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-3 items-center justify-center mt-10 space-x-4 space-y-4">
+          <div className="border row-span-1 col-span-2 p-6 rounded-xl h-full bg-gradient-to-br from-purple-heart-50 to-jagged-ice-100 shadow-inner">
+            <ResponsiveContainer
+              width="100%"
+              height="100%"
             >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Area
-                type="monotone"
-                dataKey="uv"
-                stackId="1"
-                stroke={colors["purple-heart"][400]}
-                fill={colors["purple-heart"][200]}
-              />
-              <Area
-                type="monotone"
-                dataKey="pv"
-                stackId="1"
-                stroke={colors["gulf-blue"][400]}
-                fill={colors["gulf-blue"][200]}
-              />
-              <Area
-                type="monotone"
-                dataKey="amt"
-                stackId="1"
-                stroke={colors["turquoise"][400]}
-                fill={colors["turquoise"][200]}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+              <AreaChart
+                width={500}
+                height={400}
+                data={data}
+                margin={{
+                  top: 10,
+                  right: 30,
+                  left: 0,
+                  bottom: 0,
+                }}
+              >
+                <CartesianGrid strokeDasharray="0 3" />
+                <XAxis dataKey="name" />
+                <YAxis />
+                <Tooltip />
+                <Area
+                  type="monotone"
+                  dataKey="uv"
+                  // stackId="1"
+                  stroke={colors["purple-heart"][400]}
+                  fill={colors["purple-heart"][200]}
+                />
+                <Area
+                  type="monotone"
+                  dataKey="pv"
+                  // stackId="1"
+                  stroke={colors["gulf-blue"][400]}
+                  fill={colors["gulf-blue"][200]}
+                />
+              </AreaChart>
+            </ResponsiveContainer>
+          </div>
           {hoursByEmployee && hoursByEmployee.shift && (
-            <div className="min-w-[400px] flex items-center justify-between m-3 rounded-2xl bg-polar-200/30">
+            <div className="min-w-[400px] flex items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
               <div className="flex flex-col space-y-10 pl-5">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Employee
@@ -384,7 +388,7 @@ export default function Dashboard() {
             </div>
           )}
           {hoursByPosition && hoursByPosition.shift && (
-            <div className="min-w-[400px] flex items-center justify-between m-3 rounded-2xl bg-polar-200/30">
+            <div className="min-w-[400px] flex items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner">
               <div className="flex flex-col space-y-10 pl-5">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Position
@@ -474,7 +478,6 @@ export default function Dashboard() {
     </div>
   );
 }
-
 
 //position custom tooltips
 const PositionCustomTooltip = ({ active, payload, total }: any) => {
