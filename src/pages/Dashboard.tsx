@@ -268,12 +268,9 @@ export default function Dashboard() {
       {totalHoursLoading || hoursByPositionLoading ? (
         <LoadingAnimation />
       ) : (
-        <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-3 items-center justify-center mt-10 space-x-4 space-y-4">
+        <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-3 items-center justify-center mt-10 gap-x-4 gap-y-4">
           <div className="border row-span-1 col-span-2 p-6 rounded-xl h-full bg-gradient-to-br from-purple-heart-50 to-jagged-ice-100 shadow-inner">
-            <ResponsiveContainer
-              width="100%"
-              height="100%"
-            >
+            <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 width={500}
                 height={400}
@@ -307,7 +304,7 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
           {hoursByEmployee && hoursByEmployee.shift && (
-            <div className="min-w-[400px] flex items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
+            <div className="min-w-auto flex items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
               <div className="flex flex-col space-y-10 pl-5">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Employee
@@ -351,44 +348,47 @@ export default function Dashboard() {
                   })}
                 </div>
               </div>
-              <PieChart
-                width={200}
-                height={200}
-                className="xl:right-10"
-                onMouseEnter={onPieEnter}
-              >
-                <Pie
-                  data={hoursByEmployee.shift}
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#248a96"
-                  paddingAngle={5}
-                  dataKey="employee.shift_aggregate.aggregate.sum.length"
-                  onMouseEnter={onPieEnter}
-                  onMouseLeave={onPieLeave}
-                >
-                  {hoursByEmployee.shift.map((shift: any) => {
-                    return (
-                      <Cell
-                        key={shift?.employee?.id}
-                        fill={shift.employee?.bgColor || "#248a96"}
-                      />
-                    );
-                  })}
-                </Pie>
-                <Tooltip
-                  content={
-                    <EmployeeCustomTooltip
-                      payload={selectedCell}
-                      total={totalHoursSum}
+              <div className="w-[50%] min-w-[200px] h-[100%] block">
+                <ResponsiveContainer width={undefined} height={undefined}>
+                  <PieChart
+                    className="xl:right-10"
+                    onMouseEnter={onPieEnter}
+                  >
+                    <Pie
+                      data={hoursByEmployee.shift}
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#248a96"
+                      paddingAngle={5}
+                      className="test"
+                      dataKey="employee.shift_aggregate.aggregate.sum.length"
+                      onMouseEnter={onPieEnter}
+                      onMouseLeave={onPieLeave}
+                    >
+                      {hoursByEmployee.shift.map((shift: any) => {
+                        return (
+                          <Cell
+                            key={shift?.employee?.id}
+                            fill={shift.employee?.bgColor || "#248a96"}
+                          />
+                        );
+                      })}
+                    </Pie>
+                    <Tooltip
+                      content={
+                        <EmployeeCustomTooltip
+                          payload={selectedCell}
+                          total={totalHoursSum}
+                        />
+                      }
                     />
-                  }
-                />
-              </PieChart>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           )}
           {hoursByPosition && hoursByPosition.shift && (
-            <div className="min-w-[400px] flex items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner">
+            <div className="min-w-auto flex items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner">
               <div className="flex flex-col space-y-10 pl-5">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Position
