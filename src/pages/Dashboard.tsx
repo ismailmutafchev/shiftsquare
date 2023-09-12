@@ -35,7 +35,7 @@ export default function Dashboard() {
   const [selectedCell, setSectedCell] = useState<any>(null);
 
   //query for total hours
-  const { loading: totalHoursLoading, data: totalHours } = useQuery(
+  const { loading: totalHoursLoading, data: totalHours, error: totalHoursError } = useQuery(
     getWorkingHours,
     {
       variables: {
@@ -47,7 +47,7 @@ export default function Dashboard() {
   );
 
   //query for hours by position
-  const { loading: hoursByPositionLoading, data: hoursByPosition } = useQuery(
+  const { loading: hoursByPositionLoading, data: hoursByPosition, error: hoursByPositionError } = useQuery(
     getHoursByPosition,
     {
       fetchPolicy: "network-only",
@@ -59,7 +59,7 @@ export default function Dashboard() {
   );
 
   //query for hours by employee
-  const { data: hoursByEmployee } = useQuery(getHoursByEmployee, {
+  const { loading: hoursByEmployeeLoading, data: hoursByEmployee, error: hoursByEmployeeError } = useQuery(getHoursByEmployee, {
     fetchPolicy: "network-only",
     variables: {
       start: startOfDay(startDate),
@@ -68,7 +68,7 @@ export default function Dashboard() {
   });
 
   //query for hours per day for this week
-  const { data: thisWeekHours } = useQuery(getHoursByDay, {
+  const { data: thisWeekHours, loading: thisWeekHoursLoading, error: thisWeekHoursError } = useQuery(getHoursByDay, {
     fetchPolicy: "network-only",
     variables: {
       monday: startOfWeek(new Date(), { weekStartsOn: 1 }),
@@ -87,7 +87,7 @@ export default function Dashboard() {
   const lastWeekDate = startOfWeek(new Date(), { weekStartsOn: 1 });
   const lastWeekDate2 = startOfWeek(new Date(lastWeekDate));
 
-  const { data: lastWeekHours } = useQuery(getHoursByDay, {
+  const { data: lastWeekHours, loading: lastWeekHoursLoading, error: lastWeekHoursError } = useQuery(getHoursByDay, {
     fetchPolicy: "network-only",
     variables: {
       monday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 2 }),
@@ -102,7 +102,7 @@ export default function Dashboard() {
   });
 
   //loading animation
-  if (totalHoursLoading || hoursByPositionLoading) return <LoadingAnimation />;
+  if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading) return <LoadingAnimation />;
 
   //total hours sum
   const totalHoursSum =
@@ -265,7 +265,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {totalHoursLoading || hoursByPositionLoading ? (
+      {totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading || thisWeekHoursLoading || lastWeekHoursLoading ? (
         <LoadingAnimation />
       ) : (
         <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-3 items-center justify-center mt-10 gap-x-4 gap-y-4">
@@ -304,7 +304,7 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
           {hoursByEmployee && hoursByEmployee.shift && (
-            <div className="min-w-auto flex items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
+            <div className="min-w-auto flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
               <div className="flex flex-col space-y-10 pl-5">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Employee
@@ -348,47 +348,44 @@ export default function Dashboard() {
                   })}
                 </div>
               </div>
-              <div className="w-[50%] min-w-[200px] h-[100%] block">
-                <ResponsiveContainer width={undefined} height={undefined}>
-                  <PieChart
-                    className="xl:right-10"
-                    onMouseEnter={onPieEnter}
-                  >
-                    <Pie
-                      data={hoursByEmployee.shift}
-                      innerRadius={60}
-                      outerRadius={80}
-                      fill="#248a96"
-                      paddingAngle={5}
-                      className="test"
-                      dataKey="employee.shift_aggregate.aggregate.sum.length"
-                      onMouseEnter={onPieEnter}
-                      onMouseLeave={onPieLeave}
-                    >
-                      {hoursByEmployee.shift.map((shift: any) => {
-                        return (
-                          <Cell
-                            key={shift?.employee?.id}
-                            fill={shift.employee?.bgColor || "#248a96"}
-                          />
-                        );
-                      })}
-                    </Pie>
-                    <Tooltip
-                      content={
-                        <EmployeeCustomTooltip
-                          payload={selectedCell}
-                          total={totalHoursSum}
-                        />
-                      }
+              <PieChart
+                width={200}
+                height={200}
+                className="xl:right-10"
+                onMouseEnter={onPieEnter}
+              >
+                <Pie
+                  data={hoursByEmployee.shift}
+                  innerRadius={60}
+                  outerRadius={80}
+                  fill="#248a96"
+                  paddingAngle={5}
+                  dataKey="employee.shift_aggregate.aggregate.sum.length"
+                  onMouseEnter={onPieEnter}
+                  onMouseLeave={onPieLeave}
+                >
+                  {hoursByEmployee.shift.map((shift: any) => {
+                    return (
+                      <Cell
+                        key={shift?.employee?.id}
+                        fill={shift.employee?.bgColor || "#248a96"}
+                      />
+                    );
+                  })}
+                </Pie>
+                <Tooltip
+                  content={
+                    <EmployeeCustomTooltip
+                      payload={selectedCell}
+                      total={totalHoursSum}
                     />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
+                  }
+                />
+              </PieChart>
             </div>
           )}
           {hoursByPosition && hoursByPosition.shift && (
-            <div className="min-w-auto flex items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner">
+            <div className="min-w-auto flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner">
               <div className="flex flex-col space-y-10 pl-5">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Position
