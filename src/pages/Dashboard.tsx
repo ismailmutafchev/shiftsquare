@@ -7,10 +7,12 @@ import {
   getHoursByPosition,
   getWorkingHours,
 } from "../queries/shift/queries";
+import { getContractedHours } from "../queries/user/queries";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 import {
   ChevronDownIcon,
-  Square3Stack3DIcon,
+  PencilSquareIcon,
+  UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import Datepicker from "../components/Datepicker";
 import { Menu, Transition } from "@headlessui/react";
@@ -26,8 +28,8 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-
 import { colors } from "../utils/colors";
+
 
 export default function Dashboard() {
   //state for default date range
@@ -118,6 +120,11 @@ export default function Dashboard() {
     },
   });
 
+  //query for total contracted hours
+  const { data: contractedHours } = useQuery(getContractedHours, {
+    fetchPolicy: "network-only",
+  });
+
   //loading animation
   if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading)
     return <LoadingAnimation />;
@@ -136,7 +143,7 @@ export default function Dashboard() {
     setSectedCell(null);
   };
 
-  const data = [
+  const dailyData = [
     {
       name: "Monday",
       uv: lastWeekHours?.monday?.aggregate?.sum?.length || 0,
@@ -173,6 +180,42 @@ export default function Dashboard() {
       pv: thisWeekHours?.sunday?.aggregate?.sum?.length || 0,
     },
   ];
+
+  const blocksConfig = [
+    {
+      title: "Contracted Hours",
+      value: contractedHours?.user_aggregate?.aggregate?.sum.contractedHours,
+      color: "bg-red-200",
+      iconColor: "bg-red-400",
+      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+    },
+    {
+      title: "Total Hours",
+      value: totalHoursSum,
+      color: "bg-yellow-200",
+      iconColor: "bg-yellow-400",
+      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+    },
+    {
+      title: "Total Hours",
+      value: totalHoursSum,
+      color: "bg-blue-200",
+      iconColor: "bg-blue-400",
+      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+    },
+    {
+      title: "Total Hours",
+      value: totalHoursSum,
+      color: "bg-purple-200",
+      iconColor: "bg-purple-400",
+      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+    },
+  ];
+
+  //total conracted hours
+  //total holiday hours left to take
+  //average weekly spend
+  //total people on shift
 
   //return dashboard
   return (
@@ -290,13 +333,13 @@ export default function Dashboard() {
       lastWeekHoursLoading ? (
         <LoadingAnimation />
       ) : (
-        <div className="grid grid-cols-2 grid-rows-2 items-center justify-center mt-10 gap-x-4 gap-y-4">
-          <div className="max-h-60 row-span-1 col-span-2 p-6 rounded-xl h-full bg-gradient-to-br from-purple-heart-50 to-jagged-ice-100 shadow-inner">
+        <div className="grid grid-cols-4 grid-rows-3 items-center justify-center mt-10 gap-x-7 gap-y-7">
+          <div className="max-h-60 row-span-1 col-span-4 p-5 rounded-xl h-full bg-gradient-to-r from-purple-heart-50 to-jagged-ice-100 shadow-lg">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 width={500}
                 height={400}
-                data={data}
+                data={dailyData}
                 margin={{
                   top: 10,
                   right: 30,
@@ -325,52 +368,65 @@ export default function Dashboard() {
               </AreaChart>
             </ResponsiveContainer>
           </div>
-          {hoursByEmployee && hoursByEmployee.shift && (
-            <div className="max-h-60 min-w-auto h-full flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
-              <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
-                <h1 className="text-2xl font-bold text-polar-700/80">
-                  Hours by Employee
-                </h1>
-                <div className="flex items-start flex-col">
-                  {hoursByEmployee.shift.map((shift: any) => {
-                    return (
+          {blocksConfig.map((block) => {
+            return (
+              <div
+                className={`p-6 max-h-60 min-w-auto h-full flex flex-col items-start col-span-1 md:col-span-1 justify-between rounded-2xl shadow-lg ${block.color}`}
+              >
+                <div className={`${block.iconColor} p-2 rounded-md`}>
+                  {block.icon}
+                </div>
+                <p className="text-black font-bold text-4xl">{block.value} </p>
+                <p className="text-black font-normal text-xl">{block.title}</p>
+                <p className="text-blue-500 font-normal text-sm">
+                  10% above average
+                </p>
+              </div>
+            );
+          })}
+          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-2xl bg-gradient-to-r from-orange-50 to-yellow-100 shadow-lg">
+            <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
+              <h1 className="text-2xl font-bold text-polar-700/80">
+                Hours by Employee
+              </h1>
+              <div className="flex items-start flex-col">
+                {hoursByEmployee.shift.map((shift: any) => {
+                  return (
+                    <div
+                      key={shift?.employee?.id}
+                      className="flex justify-between w-full border-b "
+                    >
                       <div
-                        key={shift?.employee?.id}
-                        className="flex justify-between w-full border-b "
+                        className={`flex items-center space-x-1 transition duration-100 `}
                       >
                         <div
-                          className={`flex items-center space-x-1 transition duration-100 `}
-                        >
-                          <div
-                            style={{
-                              backgroundColor:
-                                shift?.employee?.bgColor || "#248a96",
-                              width: "10px",
-                              height: "10px",
-                              borderRadius: "50%",
-                            }}
-                          ></div>
-                          <p
-                            className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
-                          >
-                            {shift?.employee?.firstName}{" "}
-                            {shift?.employee?.lastName}
-                          </p>
-                        </div>
+                          style={{
+                            backgroundColor:
+                              shift?.employee?.bgColor || "#248a96",
+                            width: "10px",
+                            height: "10px",
+                            borderRadius: "50%",
+                          }}
+                        ></div>
                         <p
                           className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
                         >
-                          {
-                            shift?.employee?.shift_aggregate.aggregate.sum
-                              .length
-                          }
+                          {shift?.employee?.firstName}{" "}
+                          {shift?.employee?.lastName}
                         </p>
                       </div>
-                    );
-                  })}
-                </div>
+                      <p
+                        className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                      >
+                        {shift?.employee?.shift_aggregate.aggregate.sum.length}
+                      </p>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="h-[170px] w-[50%] items-center justify-center flex">
+            </div>
+            <div className="h-[170px] w-[50%] items-center justify-center flex">
+              {hoursByEmployee && hoursByEmployee.shift && (
                 <ResponsiveContainer>
                   <PieChart className="w-50%" onMouseEnter={onPieEnter}>
                     <Pie
@@ -402,10 +458,10 @@ export default function Dashboard() {
                     />
                   </PieChart>
                 </ResponsiveContainer>
-              </div>
+              )}
             </div>
-          )}
-          <div className="max-h-60 min-w-auto h-full flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner overflow-scroll">
+          </div>
+          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-2xl bg-gradient-to-r from-pink-50 to-indigo-100 overflow-scroll shadow-lg">
             <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
               <h1 className="text-2xl font-bold text-polar-700/80">
                 Hours by Position
@@ -454,9 +510,7 @@ export default function Dashboard() {
                 </div>
               )) || (
                 <div className="flex items-center justify-center h-full">
-                 <h1>
-                    No shifts found for this date range
-                 </h1>
+                  <h1>No shifts found for this date range</h1>
                 </div>
               )}
             </div>
