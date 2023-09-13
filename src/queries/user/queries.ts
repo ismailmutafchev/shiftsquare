@@ -38,3 +38,14 @@ export const getProfile = gql` query($authId: String!) {
     }
 }
 `;
+
+export const getContractedHours = gql` query {
+    user_aggregate {
+      aggregate {
+        sum {
+          contractedHours
+        }
+      }
+    }
+  }
+`;
