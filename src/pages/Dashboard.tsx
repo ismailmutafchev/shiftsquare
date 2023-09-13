@@ -8,7 +8,10 @@ import {
   getWorkingHours,
 } from "../queries/shift/queries";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronDownIcon,
+  Square3Stack3DIcon,
+} from "@heroicons/react/24/outline";
 import Datepicker from "../components/Datepicker";
 import { Menu, Transition } from "@headlessui/react";
 import {
@@ -35,31 +38,37 @@ export default function Dashboard() {
   const [selectedCell, setSectedCell] = useState<any>(null);
 
   //query for total hours
-  const { loading: totalHoursLoading, data: totalHours, error: totalHoursError } = useQuery(
-    getWorkingHours,
-    {
-      variables: {
-        start: startOfDay(startDate),
-        end: endOfDay(endDate),
-        position_id: "8c91c4d2-581e-4d14-800c-df32d3f1a482",
-      },
-    }
-  );
+  const {
+    loading: totalHoursLoading,
+    data: totalHours,
+    error: totalHoursError,
+  } = useQuery(getWorkingHours, {
+    variables: {
+      start: startOfDay(startDate),
+      end: endOfDay(endDate),
+      position_id: "8c91c4d2-581e-4d14-800c-df32d3f1a482",
+    },
+  });
 
   //query for hours by position
-  const { loading: hoursByPositionLoading, data: hoursByPosition, error: hoursByPositionError } = useQuery(
-    getHoursByPosition,
-    {
-      fetchPolicy: "network-only",
-      variables: {
-        start: startOfDay(startDate),
-        end: endOfDay(endDate),
-      },
-    }
-  );
+  const {
+    loading: hoursByPositionLoading,
+    data: hoursByPosition,
+    error: hoursByPositionError,
+  } = useQuery(getHoursByPosition, {
+    fetchPolicy: "network-only",
+    variables: {
+      start: startOfDay(startDate),
+      end: endOfDay(endDate),
+    },
+  });
 
   //query for hours by employee
-  const { loading: hoursByEmployeeLoading, data: hoursByEmployee, error: hoursByEmployeeError } = useQuery(getHoursByEmployee, {
+  const {
+    loading: hoursByEmployeeLoading,
+    data: hoursByEmployee,
+    error: hoursByEmployeeError,
+  } = useQuery(getHoursByEmployee, {
     fetchPolicy: "network-only",
     variables: {
       start: startOfDay(startDate),
@@ -68,7 +77,11 @@ export default function Dashboard() {
   });
 
   //query for hours per day for this week
-  const { data: thisWeekHours, loading: thisWeekHoursLoading, error: thisWeekHoursError } = useQuery(getHoursByDay, {
+  const {
+    data: thisWeekHours,
+    loading: thisWeekHoursLoading,
+    error: thisWeekHoursError,
+  } = useQuery(getHoursByDay, {
     fetchPolicy: "network-only",
     variables: {
       monday: startOfWeek(new Date(), { weekStartsOn: 1 }),
@@ -87,7 +100,11 @@ export default function Dashboard() {
   const lastWeekDate = startOfWeek(new Date(), { weekStartsOn: 1 });
   const lastWeekDate2 = startOfWeek(new Date(lastWeekDate));
 
-  const { data: lastWeekHours, loading: lastWeekHoursLoading, error: lastWeekHoursError } = useQuery(getHoursByDay, {
+  const {
+    data: lastWeekHours,
+    loading: lastWeekHoursLoading,
+    error: lastWeekHoursError,
+  } = useQuery(getHoursByDay, {
     fetchPolicy: "network-only",
     variables: {
       monday: startOfWeek(new Date(lastWeekDate2), { weekStartsOn: 2 }),
@@ -102,7 +119,8 @@ export default function Dashboard() {
   });
 
   //loading animation
-  if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading) return <LoadingAnimation />;
+  if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading)
+    return <LoadingAnimation />;
 
   //total hours sum
   const totalHoursSum =
@@ -265,11 +283,15 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading || thisWeekHoursLoading || lastWeekHoursLoading ? (
+      {totalHoursLoading ||
+      hoursByPositionLoading ||
+      hoursByEmployeeLoading ||
+      thisWeekHoursLoading ||
+      lastWeekHoursLoading ? (
         <LoadingAnimation />
       ) : (
-        <div className="grid grid-cols-1 grid-rows-2 lg:grid-cols-2 lg:grid-rows-3 items-center justify-center mt-10 gap-x-4 gap-y-4">
-          <div className="border row-span-1 col-span-2 p-6 rounded-xl h-full bg-gradient-to-br from-purple-heart-50 to-jagged-ice-100 shadow-inner">
+        <div className="grid grid-cols-2 grid-rows-2 items-center justify-center mt-10 gap-x-4 gap-y-4">
+          <div className="max-h-60 row-span-1 col-span-2 p-6 rounded-xl h-full bg-gradient-to-br from-purple-heart-50 to-jagged-ice-100 shadow-inner">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 width={500}
@@ -304,8 +326,8 @@ export default function Dashboard() {
             </ResponsiveContainer>
           </div>
           {hoursByEmployee && hoursByEmployee.shift && (
-            <div className="min-w-auto flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
-              <div className="flex flex-col space-y-10 pl-5">
+            <div className="max-h-60 min-w-auto h-full flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-orange-50 to-yellow-100 shadow-inner">
+              <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
                 <h1 className="text-2xl font-bold text-polar-700/80">
                   Hours by Employee
                 </h1>
@@ -348,48 +370,47 @@ export default function Dashboard() {
                   })}
                 </div>
               </div>
-              <PieChart
-                width={200}
-                height={200}
-                className="xl:right-10"
-                onMouseEnter={onPieEnter}
-              >
-                <Pie
-                  data={hoursByEmployee.shift}
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#248a96"
-                  paddingAngle={5}
-                  dataKey="employee.shift_aggregate.aggregate.sum.length"
-                  onMouseEnter={onPieEnter}
-                  onMouseLeave={onPieLeave}
-                >
-                  {hoursByEmployee.shift.map((shift: any) => {
-                    return (
-                      <Cell
-                        key={shift?.employee?.id}
-                        fill={shift.employee?.bgColor || "#248a96"}
-                      />
-                    );
-                  })}
-                </Pie>
-                <Tooltip
-                  content={
-                    <EmployeeCustomTooltip
-                      payload={selectedCell}
-                      total={totalHoursSum}
+              <div className="h-[170px] w-[50%] items-center justify-center flex">
+                <ResponsiveContainer>
+                  <PieChart className="w-50%" onMouseEnter={onPieEnter}>
+                    <Pie
+                      data={hoursByEmployee.shift}
+                      innerRadius={60}
+                      outerRadius={80}
+                      fill="#248a96"
+                      paddingAngle={5}
+                      dataKey="employee.shift_aggregate.aggregate.sum.length"
+                      onMouseEnter={onPieEnter}
+                      onMouseLeave={onPieLeave}
+                    >
+                      {hoursByEmployee.shift.map((shift: any) => {
+                        return (
+                          <Cell
+                            key={shift?.employee?.id}
+                            fill={shift.employee?.bgColor || "#248a96"}
+                          />
+                        );
+                      })}
+                    </Pie>
+                    <Tooltip
+                      content={
+                        <EmployeeCustomTooltip
+                          payload={selectedCell}
+                          total={totalHoursSum}
+                        />
+                      }
                     />
-                  }
-                />
-              </PieChart>
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           )}
-          {hoursByPosition && hoursByPosition.shift && (
-            <div className="min-w-auto flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner">
-              <div className="flex flex-col space-y-10 pl-5">
-                <h1 className="text-2xl font-bold text-polar-700/80">
-                  Hours by Position
-                </h1>
+          <div className="max-h-60 min-w-auto h-full flex col-span-2 md:col-span-1 items-center justify-between rounded-2xl bg-gradient-to-br from-pink-50 to-indigo-100 shadow-inner overflow-scroll">
+            <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
+              <h1 className="text-2xl font-bold text-polar-700/80">
+                Hours by Position
+              </h1>
+              {(hoursByPosition && hoursByPosition.shift && (
                 <div className="flex items-start flex-col">
                   {hoursByPosition.shift.map((shift: any) => {
                     return (
@@ -431,45 +452,51 @@ export default function Dashboard() {
                     );
                   })}
                 </div>
-              </div>
-              <PieChart
-                width={200}
-                height={200}
-                className=" xl:right-10"
-                onMouseEnter={onPieEnter}
-              >
-                <Pie
-                  data={hoursByPosition.shift}
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  paddingAngle={5}
-                  dataKey="position.shift_aggregate.aggregate.sum.length"
-                  onMouseEnter={onPieEnter}
-                  onMouseLeave={onPieLeave}
-                >
-                  {hoursByPosition &&
-                    hoursByPosition.shift &&
-                    hoursByPosition.shift.map((shift: any) => {
-                      return (
-                        <Cell
-                          key={shift?.position?.id}
-                          fill={shift?.position?.bgColor}
-                        />
-                      );
-                    })}
-                </Pie>
-                <Tooltip
-                  content={
-                    <PositionCustomTooltip
-                      payload={selectedCell}
-                      total={totalHoursSum}
-                    />
-                  }
-                />
-              </PieChart>
+              )) || (
+                <div className="flex items-center justify-center h-full">
+                 <h1>
+                    No shifts found for this date range
+                 </h1>
+                </div>
+              )}
             </div>
-          )}
+            <PieChart
+              width={200}
+              height={200}
+              className=" xl:right-10"
+              onMouseEnter={onPieEnter}
+            >
+              <Pie
+                data={hoursByPosition.shift}
+                innerRadius={60}
+                outerRadius={80}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="position.shift_aggregate.aggregate.sum.length"
+                onMouseEnter={onPieEnter}
+                onMouseLeave={onPieLeave}
+              >
+                {hoursByPosition &&
+                  hoursByPosition.shift &&
+                  hoursByPosition.shift.map((shift: any) => {
+                    return (
+                      <Cell
+                        key={shift?.position?.id}
+                        fill={shift?.position?.bgColor}
+                      />
+                    );
+                  })}
+              </Pie>
+              <Tooltip
+                content={
+                  <PositionCustomTooltip
+                    payload={selectedCell}
+                    total={totalHoursSum}
+                  />
+                }
+              />
+            </PieChart>
+          </div>
         </div>
       )}
     </div>
