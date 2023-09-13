@@ -29,7 +29,7 @@ export default function Datepicker({
     })
 
     return (
-        <div className="backdrop-blur-sm border  rounded-lg hidden max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
+        <div className="z-50 backdrop-blur-sm border  rounded-lg hidden max-w-md flex-none border-l border-gray-100 px-8 py-10 md:block">
             <div className="flex items-center text-center text-gray-900">
                 <button
                     type="button"
@@ -50,12 +50,12 @@ export default function Datepicker({
                 </button>
             </div>
             <div className="mt-6 grid grid-cols-7 text-center text-xs leading-6 text-gray-500">
-                <div>S</div>
                 <div>M</div>
                 <div>T</div>
                 <div>W</div>
                 <div>T</div>
                 <div>F</div>
+                <div>S</div>
                 <div>S</div>
             </div>
             <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
