@@ -49,3 +49,13 @@ export const getContractedHours = gql` query {
     }
   }
 `;
+export const getBookedHolidays = gql` query {
+    leave_aggregate(where: {type: {_eq: holiday}}) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+  }
+`;
