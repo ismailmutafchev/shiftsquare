@@ -7,7 +7,7 @@ import {
   getHoursByPosition,
   getWorkingHours,
 } from "../queries/shift/queries";
-import { getContractedHours } from "../queries/user/queries";
+import { getBookedHolidays, getContractedHours } from "../queries/user/queries";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 import {
   ChevronDownIcon,
@@ -29,7 +29,6 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { colors } from "../utils/colors";
-
 
 export default function Dashboard() {
   //state for default date range
@@ -125,6 +124,13 @@ export default function Dashboard() {
     fetchPolicy: "network-only",
   });
 
+  //query for booked holidays
+  const { data: bookedHolidays } = useQuery(getBookedHolidays, {
+    fetchPolicy: "network-only",
+  });
+
+  console.log("totalHours", bookedHolidays);
+
   //loading animation
   if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading)
     return <LoadingAnimation />;
@@ -132,6 +138,11 @@ export default function Dashboard() {
   //total hours sum
   const totalHoursSum =
     totalHours?.shift_aggregate?.aggregate?.sum?.length || 0;
+
+  //total booked holidays
+  const totalBookedHolidays =
+    bookedHolidays?.leave_aggregate?.aggregate?.sum?.length || 0;
+
 
   //pie chart on hover
   const onPieEnter = (data: any) => {
@@ -183,6 +194,7 @@ export default function Dashboard() {
 
   const blocksConfig = [
     {
+      id: 1,
       title: "Contracted Hours",
       value: contractedHours?.user_aggregate?.aggregate?.sum.contractedHours,
       color: "bg-red-200",
@@ -190,21 +202,24 @@ export default function Dashboard() {
       icon: <UserGroupIcon className="h-10 w-10 text-white" />,
     },
     {
-      title: "Total Hours",
-      value: totalHoursSum,
+      id: 2,
+      title: "Days Booked Holidays",
+      value: totalBookedHolidays,
       color: "bg-yellow-200",
       iconColor: "bg-yellow-400",
       icon: <UserGroupIcon className="h-10 w-10 text-white" />,
     },
     {
-      title: "Total Hours",
+      id: 3,
+      title: "Average Weekly Spend",
       value: totalHoursSum,
       color: "bg-blue-200",
       iconColor: "bg-blue-400",
       icon: <UserGroupIcon className="h-10 w-10 text-white" />,
     },
     {
-      title: "Total Hours",
+      id: 4,
+      title: "Total People on Shift",
       value: totalHoursSum,
       color: "bg-purple-200",
       iconColor: "bg-purple-400",
@@ -371,6 +386,7 @@ export default function Dashboard() {
           {blocksConfig.map((block) => {
             return (
               <div
+                key={block.id}
                 className={`p-6 max-h-60 min-w-auto h-full flex flex-col items-start col-span-1 md:col-span-1 justify-between rounded-2xl shadow-lg ${block.color}`}
               >
                 <div className={`${block.iconColor} p-2 rounded-md`}>

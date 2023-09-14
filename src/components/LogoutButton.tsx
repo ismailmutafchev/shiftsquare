@@ -5,12 +5,12 @@ export default function LogoutButton() {
     const { logout, isAuthenticated } = useAuth0();
 
     return (
-        <button>
+        <div>
             {isAuthenticated && (
                 <button onClick={() => logout()}>
                     Log out
                 </button>
             )}
-        </button>
+        </div>
     )
 }
