@@ -20,8 +20,18 @@ import {
   ErrorAnimation,
   LoadingAnimation,
 } from "../assets/AnimationComponents/AnimationComponents.tsx";
-import { format } from "date-fns";
 
+type UserProps = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  contractedHours: number;
+  payDetails: {
+    payRate: number;
+    per: string;
+  };
+  startDate?: string;
+};
 export default function Employees() {
   const [showModal, setShowModal] = useState(false);
   const [update, setUpdate] = useState({
@@ -35,6 +45,8 @@ export default function Employees() {
   function modalHandler(state: boolean) {
     setShowModal(state);
   }
+
+
 
   if (loading) return <LoadingAnimation />;
   if (error) return <ErrorAnimation message={error.message} />;
@@ -167,7 +179,7 @@ function AddUser({ data }: any) {
   const id = data?.data?.id || null;
   const { modalHandler } = data;
 
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit } = useForm<UserProps>({
     defaultValues: {
       firstName: data?.data?.firstName || "",
       lastName: data?.data?.lastName || "",
@@ -184,21 +196,20 @@ function AddUser({ data }: any) {
   const [updateUser] = useMutation(updateUserById);
 
   function submit(data: any) {
-    console.log(data);
-    // if (update) {
-    //   updateUser({
-    //     variables: { id: id, object: data },
-    //     refetchQueries: [{ query: getEmployees }],
-    //     onCompleted: () => modalHandler(false),
-    //   });
-    //   return;
-    // }
+    if (update) {
+      updateUser({
+        variables: { id: id, object: data },
+        refetchQueries: [{ query: getEmployees }],
+        onCompleted: () => modalHandler(false),
+      });
+      return;
+    }
 
-    // addUser({
-    //   variables: { object: data },
-    //   refetchQueries: [{ query: getEmployees }],
-    //   onCompleted: () => modalHandler(false),
-    // });
+    addUser({
+      variables: { object: data },
+      refetchQueries: [{ query: getEmployees }],
+      onCompleted: () => modalHandler(false),
+    });
   }
 
   return (
