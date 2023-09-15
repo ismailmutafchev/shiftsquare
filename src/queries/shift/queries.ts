@@ -10,6 +10,7 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
         length
         employee {
             firstName
+            payRate
         }
         position {
             bgColor

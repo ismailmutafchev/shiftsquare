@@ -5,13 +5,15 @@ import {
   getHoursByDay,
   getHoursByEmployee,
   getHoursByPosition,
+  getShifts,
   getWorkingHours,
 } from "../queries/shift/queries";
 import { getBookedHolidays, getContractedHours } from "../queries/user/queries";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 import {
+  BanknotesIcon,
+  CalendarDaysIcon,
   ChevronDownIcon,
-  PencilSquareIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import Datepicker from "../components/Datepicker";
@@ -129,7 +131,52 @@ export default function Dashboard() {
     fetchPolicy: "network-only",
   });
 
-  console.log("totalHours", bookedHolidays);
+  //query for spent money
+  const { data: totalShifts } = useQuery(getShifts, {
+    fetchPolicy: "network-only",
+    variables: {
+      start: startOfDay(startDate),
+      end: endOfDay(endDate),
+    },
+  });
+  const { data: totalShiftsPrevWeek } = useQuery(getShifts, {
+    fetchPolicy: "network-only",
+    variables: {
+      start: startOfWeek(new Date(), { weekStartsOn: 1 }),
+      end: endOfWeek(new Date(), { weekStartsOn: 1 }),
+    },
+  });
+
+  //get spent for selected range
+  const totalSpent =
+    totalShifts &&
+    totalShifts.shift &&
+    totalShifts.shift
+      .map((shift: any) => {
+        return {
+          total: shift?.employee?.payRate * shift?.length,
+          name: shift?.employee?.firstName,
+        };
+      })
+      .reduce((a: any, b: any) => {
+        return a + b.total;
+      }, 0);
+
+  //get spent for previous week
+  const totalSpentLastWeek =
+    totalShiftsPrevWeek &&
+    totalShiftsPrevWeek.shift &&
+    totalShiftsPrevWeek.shift
+      .map((shift: any) => {
+        return {
+          total: shift?.employee?.payRate * shift?.length,
+          name: shift?.employee?.firstName,
+        };
+      })
+      .reduce((a: any, b: any) => {
+        return a + b.total;
+      }, 0);
+  debugger;
 
   //loading animation
   if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading)
@@ -142,7 +189,6 @@ export default function Dashboard() {
   //total booked holidays
   const totalBookedHolidays =
     bookedHolidays?.leave_aggregate?.aggregate?.sum?.length || 0;
-
 
   //pie chart on hover
   const onPieEnter = (data: any) => {
@@ -199,6 +245,7 @@ export default function Dashboard() {
       value: contractedHours?.user_aggregate?.aggregate?.sum.contractedHours,
       color: "bg-red-200",
       iconColor: "bg-red-400",
+      additionalInfo: "10% above average",
       icon: <UserGroupIcon className="h-10 w-10 text-white" />,
     },
     {
@@ -207,30 +254,29 @@ export default function Dashboard() {
       value: totalBookedHolidays,
       color: "bg-yellow-200",
       iconColor: "bg-yellow-400",
-      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+      additionalInfo: "from 340 ",
+      icon: <CalendarDaysIcon className="h-10 w-10 text-white" />,
     },
     {
       id: 3,
-      title: "Average Weekly Spend",
-      value: totalHoursSum,
+      title: "Total Spent",
+      value: "£" + (totalSpent ? Number(totalSpent).toFixed(2) : 0),
       color: "bg-blue-200",
       iconColor: "bg-blue-400",
-      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+      additionalInfo: "Selected range",
+      icon: <BanknotesIcon className="h-10 w-10 text-white" />,
     },
     {
       id: 4,
-      title: "Total People on Shift",
-      value: totalHoursSum,
+      title: "Forecasted Spent",
+      value:
+        "£" + (totalSpentLastWeek ? Number(totalSpentLastWeek).toFixed(2) : 0),
       color: "bg-purple-200",
       iconColor: "bg-purple-400",
-      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+      additionalInfo: "This week",
+      icon: <BanknotesIcon className="h-10 w-10 text-white" />,
     },
   ];
-
-  //total conracted hours
-  //total holiday hours left to take
-  //average weekly spend
-  //total people on shift
 
   //return dashboard
   return (
@@ -395,7 +441,7 @@ export default function Dashboard() {
                 <p className="text-black font-bold text-4xl">{block.value} </p>
                 <p className="text-black font-normal text-xl">{block.title}</p>
                 <p className="text-blue-500 font-normal text-sm">
-                  10% above average
+                  {block.additionalInfo}
                 </p>
               </div>
             );
