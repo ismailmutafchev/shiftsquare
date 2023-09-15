@@ -6,6 +6,7 @@ import puzzle from '../LottieAnimations/puzzle.json';
 import finance from '../LottieAnimations/finance.json';
 import optimization from '../LottieAnimations/optimization.json';
 import loading from '../LottieAnimations/loading-squares.json';
+import error from '../LottieAnimations/error.json';
 import { useInView } from "react-intersection-observer";
 import { useEffect, useRef } from "react";
 
@@ -126,6 +127,16 @@ export function LoadingAnimation() {
     <div className=' w-[80vw] h-[80vh] md:w-[50vw]  mx-auto flex items-center justify-center'>
       <div className=' mx-auto' >
         <Lottie animationData={loading} loop={true} />
+      </div>
+    </div>
+  );
+}
+export function ErrorAnimation({message}: {message: string}) {
+  return (
+    <div className='flex items-center justify-center w-full'>
+      <div className=' w-64' >
+        <Lottie animationData={error} loop={false} />
+        <p className="text-red-500 text-lg">{message}</p>
       </div>
     </div>
   );

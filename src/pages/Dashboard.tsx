@@ -44,7 +44,7 @@ export default function Dashboard() {
   const {
     loading: totalHoursLoading,
     data: totalHours,
-    error: totalHoursError,
+    // error: totalHoursError,
   } = useQuery(getWorkingHours, {
     variables: {
       start: startOfDay(startDate),
@@ -57,7 +57,7 @@ export default function Dashboard() {
   const {
     loading: hoursByPositionLoading,
     data: hoursByPosition,
-    error: hoursByPositionError,
+    // error: hoursByPositionError,
   } = useQuery(getHoursByPosition, {
     fetchPolicy: "network-only",
     variables: {
@@ -70,7 +70,7 @@ export default function Dashboard() {
   const {
     loading: hoursByEmployeeLoading,
     data: hoursByEmployee,
-    error: hoursByEmployeeError,
+    // error: hoursByEmployeeError,
   } = useQuery(getHoursByEmployee, {
     fetchPolicy: "network-only",
     variables: {
@@ -83,7 +83,7 @@ export default function Dashboard() {
   const {
     data: thisWeekHours,
     loading: thisWeekHoursLoading,
-    error: thisWeekHoursError,
+    // error: thisWeekHoursError,
   } = useQuery(getHoursByDay, {
     fetchPolicy: "network-only",
     variables: {
@@ -106,7 +106,7 @@ export default function Dashboard() {
   const {
     data: lastWeekHours,
     loading: lastWeekHoursLoading,
-    error: lastWeekHoursError,
+    // error: lastWeekHoursError,
   } = useQuery(getHoursByDay, {
     fetchPolicy: "network-only",
     variables: {
@@ -176,7 +176,6 @@ export default function Dashboard() {
       .reduce((a: any, b: any) => {
         return a + b.total;
       }, 0);
-  debugger;
 
   //loading animation
   if (totalHoursLoading || hoursByPositionLoading || hoursByEmployeeLoading)
