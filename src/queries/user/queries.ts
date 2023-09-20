@@ -7,6 +7,9 @@ export const getEmployees = gql` query {
             lastName
             email
             bgColor
+            payDetails
+            contractedHours 
+            startDate
             role{
                 name
             }
