@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { getEmployee } from '../queries/user/queries';
 import { useQuery } from '@apollo/client';
+import Avatar from '../components/Avatar';
 
 export default function Employee() {
     const { id } = useParams();
@@ -12,9 +13,17 @@ export default function Employee() {
     const user = data && data.user_by_pk
     return (
         <div className="overflow-hidden bg-white shadow sm:rounded-lg">
-            <div className="px-4 py-6 sm:px-6">
-                <h3 className="text-base font-semibold leading-7 text-gray-900">Applicant Information</h3>
-                <p className="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal details and application.</p>
+            <div className="flex justify-center items-cente space-x-4">
+            <Avatar
+                size={16}
+                firstName={user?.firstName}
+                lastName={user?.lastName}
+                className={user?.bgColor}
+              />
+                <div className='flex flex-col justify-center text-start'>
+                    <h3 className="text-lg font-bold leading-6 text-gray-900">{user?.firstName + ' ' + user?.lastName}</h3>
+                    <p className="mt-1 max-w-2xl font-semibold text-sm leading-5 text-gray-500">{user?.email}</p>
+                </div>
             </div>
             <div className="border-t border-gray-100">
                 <dl className="divide-y divide-gray-100">
@@ -39,36 +48,6 @@ export default function Employee() {
                     <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                         <dt className="text-sm font-medium leading-6 text-gray-900">History</dt>
                         <dd className="mt-2 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                            {/* <ul role="list" className="divide-y divide-gray-100 rounded-md border border-gray-200">
-                                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                    <div className="flex w-0 flex-1 items-center">
-                                        <PaperClipIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                            <span className="truncate font-medium">resume_back_end_developer.pdf</span>
-                                            <span className="flex-shrink-0 text-gray-400">2.4mb</span>
-                                        </div>
-                                    </div>
-                                    <div className="ml-4 flex-shrink-0">
-                                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                            Download
-                                        </a>
-                                    </div>
-                                </li>
-                                <li className="flex items-center justify-between py-4 pl-4 pr-5 text-sm leading-6">
-                                    <div className="flex w-0 flex-1 items-center">
-                                        <PaperClipIcon className="h-5 w-5 flex-shrink-0 text-gray-400" aria-hidden="true" />
-                                        <div className="ml-4 flex min-w-0 flex-1 gap-2">
-                                            <span className="truncate font-medium">coverletter_back_end_developer.pdf</span>
-                                            <span className="flex-shrink-0 text-gray-400">4.5mb</span>
-                                        </div>
-                                    </div>
-                                    <div className="ml-4 flex-shrink-0">
-                                        <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                                            Download
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul> */}
                         </dd>
                     </div>
                 </dl>

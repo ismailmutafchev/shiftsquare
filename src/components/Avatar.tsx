@@ -1,6 +1,6 @@
 type AvatarProps = {
   imageUrl?: string;
-  size?: 10 | 12 | 16 | 20 | 24 | 28;
+  size?: 10 | 16;
   className?: string;
   onClick?: () => void;
   firstName?: string;
