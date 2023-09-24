@@ -10,6 +10,9 @@ export const getEmployees = gql` query {
             payDetails
             contractedHours 
             startDate
+            positions {
+             positionId
+            }
             role{
                 name
             }
@@ -29,6 +32,9 @@ export const getEmployee = gql` query($id: uuid!) {
             startDate
             role{
                 name
+            }
+            positions {
+             positionId
             }
     }
 }

@@ -3,7 +3,7 @@ import { getEmployee } from '../queries/user/queries';
 import { useQuery } from '@apollo/client';
 import Avatar from '../components/Avatar';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
-import { AtSymbolIcon, BanknotesIcon, DocumentCheckIcon, UserCircleIcon, UserGroupIcon, UserPlusIcon } from '@heroicons/react/24/outline';
+import { AtSymbolIcon, DocumentCheckIcon, UserCircleIcon, UserGroupIcon, UserPlusIcon } from '@heroicons/react/24/outline';
 import { format } from 'date-fns';
 
 export default function Employee() {
@@ -70,11 +70,11 @@ export default function Employee() {
                         <div className='flex items-center justify-center rounded-full p-5 shadow-lg '>
                             <AtSymbolIcon className="h-10 w-10 text-blue-300" aria-hidden="true" />
                         </div>
-                        <div className='flex items-start justify-center flex-col'>
+                        <div className='flex items-start justify-center flex-col overflow-hidden'>
                             <p className='text-sm text-gray-500'>
                                 Email
                             </p>
-                            <p className='text-lg font-semibold'>
+                            <p className='text-lg font-semibold overflow-hidden text-inherit'>
                                 {email}
                             </p>
                         </div>
