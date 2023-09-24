@@ -10,6 +10,9 @@ export const getEmployees = gql` query {
             payDetails
             contractedHours 
             startDate
+            positions {
+             positionId
+            }
             role{
                 name
             }
@@ -19,13 +22,20 @@ export const getEmployees = gql` query {
 
 export const getEmployee = gql` query($id: uuid!) {
     user_by_pk(id: $id) {
-        id
-        firstName
-        lastName
-        email
-        role{
-            name
-        }
+      id
+            firstName
+            lastName
+            email
+            bgColor
+            payDetails
+            contractedHours 
+            startDate
+            role{
+                name
+            }
+            positions {
+             positionId
+            }
     }
 }
 `;

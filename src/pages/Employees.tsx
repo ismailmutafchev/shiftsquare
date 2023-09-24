@@ -20,6 +20,8 @@ import {
   ErrorAnimation,
   LoadingAnimation,
 } from "../assets/AnimationComponents/AnimationComponents.tsx";
+import { useSession } from "../providers/Session.tsx";
+import { Switch } from "@headlessui/react";
 
 type UserProps = {
   firstName: string;
@@ -31,6 +33,7 @@ type UserProps = {
     per: string;
   };
   startDate?: string;
+  positions?: { id: string }[];
 };
 export default function Employees() {
   const [showModal, setShowModal] = useState(false);
@@ -140,9 +143,9 @@ export default function Employees() {
                     onClick={() =>
                       confirm("Are you sure you want to delete this user?")
                         ? deleteUser({
-                            variables: { id: person.id },
-                            refetchQueries: [{ query: getEmployees }],
-                          })
+                          variables: { id: person.id },
+                          refetchQueries: [{ query: getEmployees }],
+                        })
                         : null
                     }
                     className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
@@ -178,8 +181,9 @@ function AddUser({ data }: any) {
   const update = data.isUpdate;
   const id = data?.data?.id || null;
   const { modalHandler } = data;
+  const { positions: allPositions } = useSession();
 
-  const { register, handleSubmit } = useForm<UserProps>({
+  const { register, handleSubmit, getValues } = useForm<UserProps>({
     defaultValues: {
       firstName: data?.data?.firstName || "",
       lastName: data?.data?.lastName || "",
@@ -189,8 +193,12 @@ function AddUser({ data }: any) {
         payRate: data?.data?.payDetails?.payRate || "",
         per: data?.data?.payDetails?.per || "",
       },
+      positions: data?.data?.positions || [],
     },
   });
+
+  const positions = getValues("positions");
+  const userPositions = positions?.map((position: any) => position.positionId);
 
   const [addUser] = useMutation(addUserOne);
   const [updateUser] = useMutation(updateUserById);
@@ -322,6 +330,43 @@ function AddUser({ data }: any) {
                   <option value="month">Month</option>
                   <option value="year">Year</option>
                 </select>
+              </div>
+            </div>
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label
+                className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+              >
+                Assign Roles
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                {
+                  allPositions?.map((position: any) => {
+                    const enabled = userPositions?.includes(position.id);
+                    return (
+                      <Switch.Group as="div" className="flex items-center justify-between">
+                        <Switch.Label as="span" className="flex-grow flex flex-col">
+                          <span className="text-sm font-medium text-gray-900">{position.name}</span>
+                          <span className="text-sm text-gray-500">{position.description}</span>
+                        </Switch.Label>
+                        <Switch
+                          onChange={() => console.log(userPositions?.includes(position.id))}
+                          checked={enabled}
+                          className={`${enabled ? 'bg-blue-600' : 'bg-gray-200'
+                            } relative inline-flex h-6 w-11 items-center rounded-full`}
+                        >
+                          <span className="sr-only">Enable notifications</span>
+                          <span
+                            aria-hidden="true"
+                            className={`${
+                              enabled ? 'translate-x-6' : 'translate-x-1'
+                            } inline-block h-4 w-4 transform rounded-full bg-white transition`}
+                          />
+                        </Switch>
+                      </Switch.Group>
+                    )
+                  }
+                  )
+                }
               </div>
             </div>
           </div>
