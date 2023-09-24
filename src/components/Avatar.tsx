@@ -5,20 +5,20 @@ type AvatarProps = {
   onClick?: () => void;
   firstName?: string;
   lastName?: string;
+  border?: boolean;
 };
 
 export default function Avatar(props: AvatarProps) {
-  const { imageUrl, size, className, onClick, firstName, lastName } = props;
+  const { imageUrl, size, className, onClick, firstName, lastName, border } = props;
 
   return (
     <div className="flex items-center relative">
       <div
-        className={`w-${size} h-${size} rounded-full ${className}`}
+        className={`w-${size} h-${size} rounded-full flex justify-center items-center ${className} ${border ? 'border-2 border-opacity-75 border-white' : ''} `}
         onClick={onClick}
         style={{
           cursor: "pointer",
           backgroundColor: className ? className : "#e2e8f0",
-          opacity: 0.8,
         }}
       >
         {imageUrl ? (
