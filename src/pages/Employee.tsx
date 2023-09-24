@@ -11,19 +11,25 @@ export default function Employee() {
     })
 
     const user = data && data.user_by_pk
+
+    const bgColor = user?.bgColor || '#7fdee1'
     return (
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg">
-            <div className="flex justify-center items-cente space-x-4">
-            <Avatar
-                size={16}
-                firstName={user?.firstName}
-                lastName={user?.lastName}
-                className={user?.bgColor}
-              />
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg relative w-full">
+            <div style={{
+                background: bgColor
+            }} className={`h-[100%] w-full rotate-[160deg] -top-80 absolute rounded-3xl opacity-80`}></div>
+            <div className="flex space-x-4 border z-20">
                 <div className='flex flex-col justify-center text-start'>
-                    <h3 className="text-lg font-bold leading-6 text-gray-900">{user?.firstName + ' ' + user?.lastName}</h3>
-                    <p className="mt-1 max-w-2xl font-semibold text-sm leading-5 text-gray-500">{user?.email}</p>
+                    <h3 className="text-lg font-bold leading-6 text-white">{user?.firstName + ' ' + user?.lastName}</h3>
+                    <p className="mt-1 max-w-2xl font-semibold text-white text-sm leading-5">{user?.email}</p>
                 </div>
+                <Avatar
+                    size={16}
+                    firstName={user?.firstName}
+                    lastName={user?.lastName}
+                    className={user?.bgColor}
+                />
+
             </div>
             <div className="border-t border-gray-100">
                 <dl className="divide-y divide-gray-100">
@@ -52,6 +58,6 @@ export default function Employee() {
                     </div>
                 </dl>
             </div>
-        </div>
+        </div >
     )
 }
