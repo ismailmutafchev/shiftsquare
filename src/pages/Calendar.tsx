@@ -9,7 +9,7 @@ import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm, Controller } from 'react-hook-form';
-import { CheckIcon, ChevronDownIcon, ChevronUpDownIcon, DocumentArrowDownIcon, PencilSquareIcon, PlusIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ChevronDownIcon, ChevronUpDownIcon, DocumentArrowDownIcon, PencilSquareIcon, PlusIcon, PrinterIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
 import { Listbox, Menu, Popover, Transition } from '@headlessui/react';
@@ -18,6 +18,7 @@ import { shiftSchema } from '../validations/shift';
 import { yupResolver } from '@hookform/resolvers/yup';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
+import { RotaPrint } from '../components/RotaPrint';
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -83,19 +84,20 @@ export default function Calendar() {
   }
 
   const downloadPdf = () => {
-    const capture = document.querySelector('.actual-print')
+    const capture = document.querySelector('.rota-print')
     html2canvas(capture as HTMLElement).then(canvas => {
       const dataURL = canvas.toDataURL('image/png')
       const doc = new jsPDF('p', 'mm', 'a4')
       const componentHeight = doc.internal.pageSize.getHeight()
       const componentWidth = doc.internal.pageSize.getWidth()
       doc.addImage(dataURL, 'PNG', 0, 0, componentWidth, componentHeight)
-      doc.save('schedule.pdf')
+      doc.save(`Rota ${format(selectedDay, 'd MMMM yyyy')}.pdf`)
     })
   }
 
   return (
-    <div className="flex h-full flex-col actual-print">
+    <div className="flex h-full flex-col ">
+      <RotaPrint />
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
           <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
@@ -103,13 +105,12 @@ export default function Calendar() {
           </h1>
           <p className="mt-1 text-sm text-gray-500">{format(selectedDay, 'iiii')}</p>
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center space-x-2">
 
-          <button onClick={downloadPdf}>
-            Print
-            <DocumentArrowDownIcon className="ml-2 h-5 w-5" aria-hidden="true" />
+          <button className='inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300' onClick={downloadPdf}>
+            <p>Print <span className='text-red-500 text-xs'>PDF</span></p>
+            <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
-          {/* <PDFDownloadLink document={<PrintSchedule />} fileName="schedule.pdf"/> */}
           <div className="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
             <div
               className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-inset ring-gray-300"
