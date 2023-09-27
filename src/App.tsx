@@ -15,6 +15,7 @@ import Login from './pages/Login';
 import Employee from './pages/Employee';
 import Onboarding from './pages/Onboarding';
 import Templates from './pages/Templates';
+import Availability from './pages/Availability';
 
 function App() {
   const { isAuthenticated, } = useAuth0();
@@ -62,6 +63,9 @@ function App() {
             </Route>
             <Route path="/templates" element={<Layout />}>
               <Route index element={<Templates />} />
+            </Route>
+            <Route path="/availability" element={<Layout />}>
+              <Route index element={<Availability />} />
             </Route>
           </>
         )}

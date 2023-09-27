@@ -9,7 +9,7 @@ import { getShifts } from '../queries/shift/queries';
 import { useMutation, useQuery } from '@apollo/client';
 import Modal from '../components/Modal';
 import { useForm, Controller } from 'react-hook-form';
-import { CheckIcon, ChevronDownIcon, ChevronUpDownIcon, DocumentArrowDownIcon, PencilSquareIcon, PlusIcon, PrinterIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { CheckIcon, ChevronDownIcon, ChevronUpDownIcon, PencilSquareIcon, PlusIcon, PrinterIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { useSession } from '../providers/Session';
 import { addShiftOne, deleteShiftById, updateShiftById } from '../queries/shift/mutations';
 import { Listbox, Menu, Popover, Transition } from '@headlessui/react';
@@ -18,7 +18,7 @@ import { shiftSchema } from '../validations/shift';
 import { yupResolver } from '@hookform/resolvers/yup';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-import { RotaPrint } from '../components/RotaPrint';
+import { RotaPrint } from '../components/pdf/RotaPrint';
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')

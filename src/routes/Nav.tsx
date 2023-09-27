@@ -28,6 +28,7 @@ export default function Navigation({ children }: { children: React.JSX.Element }
     { name: 'Employees', href: '/employees', current: pathname === '/employees', icon: UsersIcon },
     { name: 'Positions', href: '/positions', current: pathname === '/positions', icon: Square3Stack3DIcon },
     { name: 'Templates', href: '/templates', current: pathname === '/templates', icon: SquaresPlusIcon },
+    { name: 'Availability', href: '/availability', current: pathname === '/availability', icon: UsersIcon}
   ]
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -238,7 +239,7 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                 <Menu as="div" className="relative">
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
-                    <Avatar size={8} firstName={profile?.firstName} lastName={profile?.lastName} className={profile?.bgColor} imageUrl={profile?.picture} />
+                    <Avatar size={10} firstName={profile?.firstName} lastName={profile?.lastName} className={profile?.bgColor} imageUrl={profile?.picture} />
                     <span className="hidden lg:flex lg:items-center">
                       <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
                         {profile?.firstName} {profile?.lastName}
