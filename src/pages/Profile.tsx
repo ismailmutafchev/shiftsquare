@@ -1,9 +1,6 @@
 import { PaperClipIcon } from "@heroicons/react/24/outline";
-import { useSession } from "../providers/Session";
 
 export default function Profile() {
-  const { profile } = useSession();
-  console.log(profile.picture, "ss");
   return (
     <div>
     <div className="px-4 sm:px-0">
