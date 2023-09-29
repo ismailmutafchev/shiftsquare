@@ -1,5 +1,4 @@
 import { PaperClipIcon } from "@heroicons/react/24/outline";
-import Avatar from "../components/Avatar";
 import { useSession } from "../providers/Session";
 
 export default function Profile() {

@@ -60,7 +60,7 @@ export default function Templates() {
     height: 200
   });
 
-  function onResize(event: any, {size }: any) {
+  function onResize( {size }: any) {
     setSize({ width: size.width, height: size.height });
   }
 

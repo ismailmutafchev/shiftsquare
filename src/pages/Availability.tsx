@@ -1,27 +1,10 @@
-import { useMutation, useQuery } from "@apollo/client";
-import { useState } from "react";
+import {  useQuery } from "@apollo/client";
 import { getEmployees } from "../queries/user/queries.ts";
-import Avatar from "../components/Avatar.tsx";
-import Modal from "../components/Modal.tsx";
-import { useForm } from "react-hook-form";
-import {
-  addUserOne,
-  deleteUserById,
-  updateUserById,
-} from "../queries/user/mutations.ts";
-import {
-  PencilSquareIcon,
-  PlusIcon,
-  Square2StackIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
-import { Link } from "react-router-dom";
+
 import {
   ErrorAnimation,
   LoadingAnimation,
 } from "../assets/AnimationComponents/AnimationComponents.tsx";
-import { useSession } from "../providers/Session.tsx";
-import { Switch } from "@headlessui/react";
 
 type UserProps = {
   firstName: string;
@@ -36,19 +19,11 @@ type UserProps = {
   positions?: { id: string }[];
 };
 export default function Availability() {
-  const [showModal, setShowModal] = useState(false);
-  const [update, setUpdate] = useState({
-    isUpdate: false,
-    data: {},
-  });
 
   const { loading, error, data } = useQuery(getEmployees);
 
   const users = data && data.user;
 
-  function modalHandler(state: boolean) {
-    setShowModal(state);
-  }
 
   if (loading) return <LoadingAnimation />;
   if (error) return <ErrorAnimation message={error.message} />;
@@ -97,9 +72,9 @@ export default function Availability() {
                   <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
                     {person?.firstName} {person?.lastName}
                   </td>
-                  {days.map((day) => (
+                  {days.map(() => (
                     <td className="whitespace-nowrap py-4 px-3 text-sm text-gray-500">
-                      <Switch
+                      {/* <Switch
                         checked={true}
                         onChange={() => console.log("hello")}
                         className={`${
@@ -112,7 +87,7 @@ export default function Availability() {
                             true ? "translate-x-6" : "translate-x-1"
                           } inline-block w-4 h-4 transform bg-white rounded-full`}
                         />
-                      </Switch>
+                      </Switch> */}
                     </td>
                   ))}
                 </tr>
