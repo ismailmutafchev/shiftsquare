@@ -57,8 +57,8 @@ export default function Positions() {
   }
 
   return (
-    <>
-      <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
+    <div className='px-4 sm:px-6 lg:px-8'>
+      <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between py-10">
         <h3 className="text-base font-semibold leading-6 text-gray-900">Positions</h3>
         <div className="mt-3 sm:ml-4 sm:mt-0">
           <button
@@ -214,7 +214,7 @@ export default function Positions() {
           update.isUpdate ? 'Edit Position' : 'Add Position'
         } children={AddPosition} />
       </div>
-    </>
+    </div>
   )
 }
 

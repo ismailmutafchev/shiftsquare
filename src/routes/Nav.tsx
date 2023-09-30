@@ -277,8 +277,8 @@ export default function Navigation({ children }: { children: React.JSX.Element }
             </div>
           </div>
 
-          <main className="py-10">
-            <div className="px-4 sm:px-6 lg:px-8">{children}</div>
+          <main>
+            <div>{children}</div>
           </main>
         </div>
       </div>

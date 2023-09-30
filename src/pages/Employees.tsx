@@ -51,13 +51,14 @@ export default function Employees() {
 
 
 
+
   if (loading) return <LoadingAnimation />;
   if (error) return <ErrorAnimation message={error.message} />;
 
   const users = data?.user;
   return (
-    <div>
-      <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between">
+    <div className="px-4 sm:px-6 lg:px-8">
+      <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between py-10">
         <h3 className="text-base font-semibold leading-6 text-gray-900">
           Employees
         </h3>
@@ -342,6 +343,7 @@ function AddUser({ data }: any) {
                 {
                   allPositions?.map((position: any) => {
                     const enabled = userPositions?.includes(position.id);
+                    console.log(positions)
                     return (
                       <Switch.Group as="div" className="flex items-center justify-between">
                         <Switch.Label as="span" className="flex-grow flex flex-col">

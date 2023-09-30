@@ -279,7 +279,7 @@ export default function Dashboard() {
 
   //return dashboard
   return (
-    <div>
+    <div className="px-4 sm:px-6 lg:px-8">
       <header className="flex flex-none items-center space-x-5 justify-between border-b border-gray-200 px-6 py-4">
         <div>
           <h1 className="text-2xl font-bold leading-6 text-polar-900/80">
