@@ -19,7 +19,6 @@ import Availability from './pages/Availability';
 
 function App() {
   const { isAuthenticated, } = useAuth0();
-  console.log(isAuthenticated, "isAuthenticated");
 
   return (
     <BrowserRouter>
