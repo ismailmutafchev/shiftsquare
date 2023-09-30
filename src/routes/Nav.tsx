@@ -7,6 +7,7 @@ import { useState } from 'react'
 import LogoutButton from '../components/LogoutButton'
 import { useSession } from '../providers/Session'
 import Avatar from '../components/Avatar'
+import Logo from '../components/Logo'
 
 const userNavigation = [
   { name: 'Your Profile', href: '/profile' },
@@ -28,7 +29,7 @@ export default function Navigation({ children }: { children: React.JSX.Element }
     { name: 'Employees', href: '/employees', current: pathname === '/employees', icon: UsersIcon },
     { name: 'Positions', href: '/positions', current: pathname === '/positions', icon: Square3Stack3DIcon },
     { name: 'Templates', href: '/templates', current: pathname === '/templates', icon: SquaresPlusIcon },
-    { name: 'Availability', href: '/availability', current: pathname === '/availability', icon: UsersIcon}
+    { name: 'Availability', href: '/availability', current: pathname === '/availability', icon: UsersIcon }
   ]
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -79,12 +80,8 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
-                    <div className="flex h-16 shrink-0 items-center">
-                      <img
-                        className="h-8 w-auto"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                        alt="Your Company"
-                      />
+                    <div className="flex h-20 shrink-0 items-center">
+                    <Logo size={50}/>
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -133,12 +130,8 @@ export default function Navigation({ children }: { children: React.JSX.Element }
         <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
-            <div className="flex h-16 shrink-0 items-center">
-              <img
-                className="h-8 w-auto"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
-                alt="Your Company"
-              />
+            <div className="flex h-20 shrink-0 items-center">
+              <Logo size={50}/>
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
