@@ -1,44 +1,103 @@
-import { Fragment } from 'react'
-import React from 'react'
-import { Dialog, Menu, Transition } from '@headlessui/react'
-import { Bars3Icon, BellIcon, CalendarDaysIcon, ChevronDownIcon, Cog6ToothIcon, MagnifyingGlassIcon, Square3Stack3DIcon, SquaresPlusIcon, UsersIcon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Link, useLocation } from 'react-router-dom'
-import { useState } from 'react'
-import LogoutButton from '../components/LogoutButton'
-import { useSession } from '../providers/Session'
-import Avatar from '../components/Avatar'
-import Logo from '../components/Logo'
+import { Fragment } from "react";
+import React from "react";
+import { Dialog, Menu, Transition } from "@headlessui/react";
+import {
+  Bars3Icon,
+  BellIcon,
+  CalendarDaysIcon,
+  ChevronDownIcon,
+  Cog6ToothIcon,
+  MagnifyingGlassIcon,
+  Square3Stack3DIcon,
+  SquaresPlusIcon,
+  UsersIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { Link, useLocation } from "react-router-dom";
+import { useState } from "react";
+import LogoutButton from "../components/LogoutButton";
+import { useSession } from "../providers/Session";
+import Avatar from "../components/Avatar";
+import Logo from "../components/Logo";
 
 const userNavigation = [
-  { name: 'Your Profile', href: '/profile' },
-  { name: 'Settings', href: '/setting' },
-]
+  { name: "Your Profile", href: "/profile" },
+  { name: "Settings", href: "/setting" },
+];
 
 //@ts-ignore
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
-export default function Navigation({ children }: { children: React.JSX.Element }) {
-  const { pathname } = useLocation()
-  const { profile } = useSession()
+export default function Navigation({
+  children,
+}: {
+  children: React.JSX.Element;
+}) {
+  const { pathname } = useLocation();
+  const { profile } = useSession();
 
   const navigation = [
-    { name: 'Dashboard', href: '/dashboard', current: pathname === '/dashboard', icon: Cog6ToothIcon },
-    { name: 'Calendar', href: '/calendar', current: pathname === '/calendar', icon: CalendarDaysIcon },
-    { name: 'Employees', href: '/employees', current: pathname === '/employees', icon: UsersIcon },
-    { name: 'Positions', href: '/positions', current: pathname === '/positions', icon: Square3Stack3DIcon },
-    { name: 'Templates', href: '/templates', current: pathname === '/templates', icon: SquaresPlusIcon },
-    { name: 'Availability', href: '/availability', current: pathname === '/availability', icon: UsersIcon }
-  ]
+    {
+      name: "Dashboard",
+      href: "/dashboard",
+      current: pathname === "/dashboard",
+      icon: Cog6ToothIcon,
+    },
+    {
+      name: "Calendar",
+      href: "/calendar",
+      current: pathname === "/calendar",
+      icon: CalendarDaysIcon,
+    },
+    {
+      name: "Employees",
+      href: "/employees",
+      current: pathname === "/employees",
+      icon: UsersIcon,
+    },
+    {
+      name: "Positions",
+      href: "/positions",
+      current: pathname === "/positions",
+      icon: Square3Stack3DIcon,
+    },
+    {
+      name: "Templates",
+      href: "/templates",
+      current: pathname === "/templates",
+      icon: SquaresPlusIcon,
+    },
+    {
+      name: "Availability",
+      href: "/availability",
+      current: pathname === "/availability",
+      icon: UsersIcon,
+    },
+  ];
 
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const [wideSidebarOpen, setWideSidebarOpen] = useState(false);
+
+  const wideUpSidebarHandler = () => {
+    setWideSidebarOpen(true);
+  };
+
+  const wideDownSidebarHandler = () => {
+    setWideSidebarOpen(false);
+  };
 
   return (
     <>
       <div>
         <Transition.Root show={sidebarOpen} as={Fragment}>
-          <Dialog as="div" className="relative z-50 lg:hidden" onClose={setSidebarOpen}>
+          <Dialog
+            as="div"
+            className="relative z-50 lg:hidden"
+            onClose={setSidebarOpen}
+          >
             <Transition.Child
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
@@ -72,16 +131,23 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                     leaveTo="opacity-0"
                   >
                     <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                      <button type="button" className="-m-2.5 p-2.5" onClick={() => setSidebarOpen(false)}>
+                      <button
+                        type="button"
+                        className="-m-2.5 p-2.5"
+                        onClick={() => setSidebarOpen(false)}
+                      >
                         <span className="sr-only">Close sidebar</span>
-                        <XMarkIcon className="h-6 w-6 text-white" aria-hidden="true" />
+                        <XMarkIcon
+                          className="h-6 w-6 text-white"
+                          aria-hidden="true"
+                        />
                       </button>
                     </div>
                   </Transition.Child>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                     <div className="flex h-20 shrink-0 items-center">
-                    <Logo size={50}/>
+                      <Logo size={50} />
                     </div>
                     <nav className="flex flex-1 flex-col">
                       <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -93,12 +159,15 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                                   to={item.href}
                                   className={classNames(
                                     item.current
-                                      ? 'bg-gray-800 text-white'
-                                      : 'text-gray-400 hover:text-white hover:bg-gray-800',
-                                    'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                                      ? "bg-gray-800 text-white"
+                                      : "text-gray-400 hover:text-white hover:bg-gray-800",
+                                    "group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold"
                                   )}
                                 >
-                                  <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
+                                  <item.icon
+                                    className="h-6 w-6 shrink-0"
+                                    aria-hidden="true"
+                                  />
                                   {item.name}
                                 </Link>
                               </li>
@@ -106,14 +175,19 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                           </ul>
                         </li>
                         <li>
-                          <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
+                          <div className="text-xs font-semibold leading-6 text-gray-400">
+                            Your teams
+                          </div>
                         </li>
                         <li className="mt-auto">
                           <Link
                             to="/setting"
                             className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                           >
-                            <Cog6ToothIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
+                            <Cog6ToothIcon
+                              className="h-6 w-6 shrink-0"
+                              aria-hidden="true"
+                            />
                             Settings
                           </Link>
                         </li>
@@ -127,11 +201,15 @@ export default function Navigation({ children }: { children: React.JSX.Element }
         </Transition.Root>
 
         {/* Static sidebar for desktop */}
-        <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <div
+          onMouseOver={wideUpSidebarHandler}
+          onMouseLeave={wideDownSidebarHandler}
+          className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-24 lg:hover:w-64 lg:duration-300  lg:flex-col"
+        >
           {/* Sidebar component, swap this element with another sidebar if you like */}
           <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
             <div className="flex h-20 shrink-0 items-center">
-              <Logo size={50}/>
+              <Logo size={50} />
             </div>
             <nav className="flex flex-1 flex-col">
               <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -143,20 +221,28 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                           to={item.href}
                           className={classNames(
                             item.current
-                              ? 'bg-polar-800 text-white'
-                              : 'text-gray-400 hover:text-white hover:bg-polar-800/70',
-                            'group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold'
+                              ? "bg-polar-800 text-white"
+                              : "text-gray-400 hover:text-white hover:bg-polar-800/70",
+                            "group flex gap-x-6 rounded-md p-2 text-sm leading-6 font-semibold"
                           )}
                         >
-                          <item.icon className="h-6 w-6 shrink-0" aria-hidden="true" />
-                          {item.name}
+                          <item.icon
+                            className="h-6 w-6 shrink-0 translate-x-3"
+                            aria-hidden="true"
+                          />
+                          {wideSidebarOpen && item.name}
                         </Link>
                       </li>
                     ))}
                   </ul>
                 </li>
                 <li>
-                  <div className="text-xs font-semibold leading-6 text-gray-400">Your teams</div>
+                  {wideSidebarOpen && (
+                    <div className="text-xs font-semibold leading-6 text-gray-400">
+                      Your teams
+                    </div>
+                  )}
+
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {/* {teams.map((team) => (
                                             <li key={team.name}>
@@ -183,7 +269,10 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                     to="/setting"
                     className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-polar-800/80 hover:text-white"
                   >
-                    <Cog6ToothIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
+                    <Cog6ToothIcon
+                      className="h-6 w-6 shrink-0"
+                      aria-hidden="true"
+                    />
                     Settings
                   </Link>
                 </li>
@@ -192,15 +281,22 @@ export default function Navigation({ children }: { children: React.JSX.Element }
           </div>
         </div>
 
-        <div className="lg:pl-72">
+        <div className={`${wideSidebarOpen ? "lg:pl-64" : "lg:pl-32"} duration-300`}>
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
-            <button type="button" className="-m-2.5 p-2.5 text-gray-700 lg:hidden" onClick={() => setSidebarOpen(true)}>
+            <button
+              type="button"
+              className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+              onClick={() => setSidebarOpen(true)}
+            >
               <span className="sr-only">Open sidebar</span>
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </button>
 
             {/* Separator */}
-            <div className="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
+            <div
+              className="h-6 w-px bg-gray-900/10 lg:hidden"
+              aria-hidden="true"
+            />
 
             <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
               <form className="relative flex flex-1" action="#" method="GET">
@@ -220,24 +316,42 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                 />
               </form>
               <div className="flex items-center gap-x-4 lg:gap-x-6">
-                <button type="button" className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500">
+                <button
+                  type="button"
+                  className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+                >
                   <span className="sr-only">View notifications</span>
                   <BellIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
 
                 {/* Separator */}
-                <div className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10" aria-hidden="true" />
+                <div
+                  className="hidden lg:block lg:h-6 lg:w-px lg:bg-gray-900/10"
+                  aria-hidden="true"
+                />
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative">
                   <Menu.Button className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
-                    <Avatar size={10} firstName={profile?.firstName} lastName={profile?.lastName} className={profile?.bgColor} imageUrl={profile?.picture} />
+                    <Avatar
+                      size={10}
+                      firstName={profile?.firstName}
+                      lastName={profile?.lastName}
+                      className={profile?.bgColor}
+                      imageUrl={profile?.picture}
+                    />
                     <span className="hidden lg:flex lg:items-center">
-                      <span className="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
+                      <span
+                        className="ml-4 text-sm font-semibold leading-6 text-gray-900"
+                        aria-hidden="true"
+                      >
                         {profile?.firstName} {profile?.lastName}
                       </span>
-                      <ChevronDownIcon className="ml-2 h-5 w-5 text-gray-400" aria-hidden="true" />
+                      <ChevronDownIcon
+                        className="ml-2 h-5 w-5 text-gray-400"
+                        aria-hidden="true"
+                      />
                     </span>
                   </Menu.Button>
                   <Transition
@@ -256,8 +370,8 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                             <Link
                               to={item.href}
                               className={classNames(
-                                active ? 'bg-gray-50' : '',
-                                'block px-3 py-1 text-sm leading-6 text-gray-900'
+                                active ? "bg-gray-50" : "",
+                                "block px-3 py-1 text-sm leading-6 text-gray-900"
                               )}
                             >
                               {item.name}
@@ -266,7 +380,7 @@ export default function Navigation({ children }: { children: React.JSX.Element }
                         </Menu.Item>
                       ))}
                       <Menu.Item>
-                        <div className='block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 hover:cursor-pointer'>
+                        <div className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 hover:cursor-pointer">
                           <LogoutButton />
                         </div>
                       </Menu.Item>
@@ -283,5 +397,5 @@ export default function Navigation({ children }: { children: React.JSX.Element }
         </div>
       </div>
     </>
-  )
+  );
 }

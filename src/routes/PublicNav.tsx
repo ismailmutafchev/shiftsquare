@@ -10,6 +10,7 @@ import { Link, useLocation } from "react-router-dom";
 import LoginButton from "../components/LoginButon";
 import LogoutButton from "../components/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
+import Logo from "../components/Logo";
 
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
@@ -63,11 +64,7 @@ export default function PublicNavigation() {
                 <div className="relative flex h-16 items-center justify-between">
                   <div className="flex items-center px-2 lg:px-0">
                     <div className="flex-shrink-0">
-                      <img
-                        className="block h-8 w-8"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=blue&shade=300"
-                        alt="Your Company"
-                      />
+                      <Logo size={50} dark />
                     </div>
                     <div className="hidden lg:ml-10 lg:block">
                       <div className="flex space-x-4">

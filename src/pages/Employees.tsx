@@ -343,7 +343,6 @@ function AddUser({ data }: any) {
                 {
                   allPositions?.map((position: any) => {
                     const enabled = userPositions?.includes(position.id);
-                    console.log(positions)
                     return (
                       <Switch.Group as="div" className="flex items-center justify-between">
                         <Switch.Label as="span" className="flex-grow flex flex-col">
@@ -351,7 +350,7 @@ function AddUser({ data }: any) {
                           <span className="text-sm text-gray-500">{position.description}</span>
                         </Switch.Label>
                         <Switch
-                          onChange={() => console.log(userPositions?.includes(position.id))}
+                          onChange={() => console.log("hello")}
                           checked={enabled}
                           className={`${enabled ? 'bg-blue-600' : 'bg-gray-200'
                             } relative inline-flex h-6 w-11 items-center rounded-full`}
