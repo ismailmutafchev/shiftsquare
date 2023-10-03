@@ -13,9 +13,13 @@ import { getTemplate, getTemplates } from "../queries/templates/queries";
 import { deleteTemplateById } from "../queries/templates/mutations";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 import { Menu, Transition } from "@headlessui/react";
-import { ResizableBox } from "react-resizable";
 import { useForm, useFieldArray, useWatch, Control } from "react-hook-form";
 import { useSession } from "../providers/Session";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/effect-coverflow";
+import "swiper/css/pagination";
+import { EffectCoverflow, Pagination } from "swiper/modules";
 
 type Section = {
   position: string;
@@ -32,26 +36,10 @@ type FormValues = {
   saturdayShifts: Section[];
   sundayShifts: Section[];
 };
-// type FormValues = {
-//   cart: {
-//     name: string;
-//     price: number;
-//     quantity: number;
-//   }[];
-// };
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
-
-const Total = ({ control }: { control: Control<FormValues> }) => {
-  const formValues = useWatch({
-    name: "mondayShifts",
-    control,
-  });
-  const total = 0;
-  return <p>Total Amount: {total}</p>;
-};
 
 export default function Templates() {
   const [showBuilder, setShowBuilder] = useState(false);
@@ -206,99 +194,236 @@ export default function Templates() {
         </div>
       </div>
       {showBuilder ? (
-        <div>
-          <form
-            className=""
-            onSubmit={handleSubmit(onSubmit)}
+        // <div>
+        //   <form
+        //     className=""
+        //     onSubmit={handleSubmit(onSubmit)}
+        //   >
+        //     <div className="flex flex-row border justify-around overflow-x-scroll borde border-blue-500">
+        //       {weekDays.map((day, index) => {
+        //         return (
+        //           <div className="bg-gray-100 rounded-br-xl backdrop-blur-md mx-1 shadow-sm min-w-[200px]" key={index}>
+        //             <h2 className="w-full bg-red-300 text-semibold text-xl">{day.name}</h2>
+        //             {day.day.map((field, index) => {
+        //               return (
+        //                 <div key={field.id}>
+        //                   <section key={field.id}>
+        //                     <select
+        //                       placeholder="Position"
+        //                       {...register(
+        //                         `mondayShifts.${index}.position` as const,
+        //                         {
+        //                           required: true,
+        //                         }
+        //                       )}
+        //                     >
+        //                       {positions?.map((position: any) => {
+        //                         return (
+        //                           <option value={position.id}>
+        //                             {position.name}
+        //                           </option>
+        //                         );
+        //                       })}
+        //                     </select>
+        //                     <input
+        //                       placeholder="quantity"
+        //                       type="time"
+        //                       {...register(
+        //                         `mondayShifts.${index}.start` as const,
+        //                         {
+        //                           valueAsNumber: true,
+        //                           required: true,
+        //                         }
+        //                       )}
+        //                       className={
+        //                         errors?.mondayShifts?.[index]?.start
+        //                           ? "error"
+        //                           : ""
+        //                       }
+        //                     />
+        //                     <input
+        //                       placeholder="value"
+        //                       type="time"
+        //                       {...register(
+        //                         `mondayShifts.${index}.end` as const,
+        //                         {
+        //                           valueAsNumber: true,
+        //                           required: true,
+        //                         }
+        //                       )}
+        //                       className={
+        //                         errors?.mondayShifts?.[index]?.end
+        //                           ? "error"
+        //                           : ""
+        //                       }
+        //                     />
+        //                     <button
+        //                       type="button"
+        //                       onClick={() => day.remove(index)}
+        //                     >
+        //                       DELETE
+        //                     </button>
+        //                   </section>
+        //                 </div>
+        //               );
+        //             })}
+        //             <button
+        //               type="button"
+        //               onClick={() =>
+        //                 day.append({
+        //                   position: "",
+        //                   start: "0",
+        //                   end: "0",
+        //                 })
+        //               }
+        //             >
+        //               APPEND
+        //             </button>
+        //           </div>
+        //         );
+        //       })}
+        //     </div>
+        //     <Total control={control} />
+        //     <input type="submit" />
+        //   </form>
+        // </div>
+        <>
+          <Swiper
+            effect={"coverflow"}
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={"auto"}
+            coverflowEffect={{
+              rotate: 50,
+              stretch: 0,
+              depth: 100,
+              modifier: 1,
+              slideShadows: true,
+            }}
+            pagination={true}
+            modules={[EffectCoverflow, Pagination]}
+            className="mySwiper top-2"
           >
-            <div className="flex flex-row border justify-around overflow-x-scroll borde border-blue-500">
-              {weekDays.map((day, index) => {
-                return (
-                  <div className="bg-gray-100 rounded-br-xl backdrop-blur-md mx-1 shadow-sm min-w-[200px]" key={index}>
-                    <h2 className="w-full bg-red-300 text-semibold text-xl">{day.name}</h2>
-                    {day.day.map((field, index) => {
+              <div>
+                <form className="" onSubmit={handleSubmit(onSubmit)}>
+                  <div className="flex flex-row justify-around overflow-x-scroll borde border-blue-500">
+                    {weekDays.map((day, index) => {
                       return (
-                        <div key={field.id}>
-                          <section key={field.id}>
-                            <select
-                              placeholder="Position"
-                              {...register(
-                                `mondayShifts.${index}.position` as const,
-                                {
-                                  required: true,
-                                }
-                              )}
-                            >
-                              {positions?.map((position: any) => {
-                                return (
-                                  <option value={position.id}>
-                                    {position.name}
-                                  </option>
-                                );
-                              })}
-                            </select>
-                            <input
-                              placeholder="quantity"
-                              type="time"
-                              {...register(
-                                `mondayShifts.${index}.start` as const,
-                                {
-                                  valueAsNumber: true,
-                                  required: true,
-                                }
-                              )}
-                              className={
-                                errors?.mondayShifts?.[index]?.start
-                                  ? "error"
-                                  : ""
-                              }
-                            />
-                            <input
-                              placeholder="value"
-                              type="time"
-                              {...register(
-                                `mondayShifts.${index}.end` as const,
-                                {
-                                  valueAsNumber: true,
-                                  required: true,
-                                }
-                              )}
-                              className={
-                                errors?.mondayShifts?.[index]?.end
-                                  ? "error"
-                                  : ""
-                              }
-                            />
-                            <button
-                              type="button"
-                              onClick={() => day.remove(index)}
-                            >
-                              DELETE
-                            </button>
-                          </section>
-                        </div>
+                        <SwiperSlide
+                          className="bg-jagged-ice-50 rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-96 overflow-scroll rounded-xl shadow-sm-xl"
+                          key={index}
+                        >
+                          <h2 className="w-full bg-red-300/10 text-semibold text-2xl sticky top-0 backdrop-blur-sm p-2">
+                            {day.name}
+                          </h2>
+                          {day.day.map((field, index) => {
+                            return (
+                              <div key={field.id}>
+                                <section key={field.id}>
+                                  <select
+                                    placeholder="Position"
+                                    {...register(
+                                      `mondayShifts.${index}.position` as const,
+                                      {
+                                        required: true,
+                                      }
+                                    )}
+                                  >
+                                    {positions?.map((position: any) => {
+                                      return (
+                                        <option value={position.id}>
+                                          {position.name}
+                                        </option>
+                                      );
+                                    })}
+                                  </select>
+                                  <input
+                                    placeholder="quantity"
+                                    type="time"
+                                    {...register(
+                                      `mondayShifts.${index}.start` as const,
+                                      {
+                                        valueAsNumber: true,
+                                        required: true,
+                                      }
+                                    )}
+                                    className={
+                                      errors?.mondayShifts?.[index]?.start
+                                        ? "error"
+                                        : ""
+                                    }
+                                  />
+                                  <input
+                                    placeholder="value"
+                                    type="time"
+                                    {...register(
+                                      `mondayShifts.${index}.end` as const,
+                                      {
+                                        valueAsNumber: true,
+                                        required: true,
+                                      }
+                                    )}
+                                    className={
+                                      errors?.mondayShifts?.[index]?.end
+                                        ? "error"
+                                        : ""
+                                    }
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => day.remove(index)}
+                                  >
+                                    DELETE
+                                  </button>
+                                </section>
+                              </div>
+                            );
+                          })}
+                          <button
+                            type="button"
+                            onClick={() =>
+                              day.append({
+                                position: "",
+                                start: "0",
+                                end: "0",
+                              })
+                            }
+                          >
+                            APPEND
+                          </button>
+                        </SwiperSlide>
                       );
                     })}
-                    <button
-                      type="button"
-                      onClick={() =>
-                        day.append({
-                          position: "",
-                          start: "0",
-                          end: "0",
-                        })
-                      }
-                    >
-                      APPEND
-                    </button>
                   </div>
-                );
-              })}
-            </div>
-            <Total control={control} />
-            <input type="submit" />
-          </form>
-        </div>
+                  <input type="submit" />
+                </form>
+              </div>
+            {/* <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
+            </SwiperSlide>
+            <SwiperSlide>
+              <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
+            </SwiperSlide> */}
+          </Swiper>
+        </>
       ) : (
         <div>
           <ul
