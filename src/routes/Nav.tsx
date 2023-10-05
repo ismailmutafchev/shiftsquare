@@ -267,13 +267,16 @@ export default function Navigation({
                 <li className="mt-auto">
                   <Link
                     to="/setting"
-                    className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-polar-800/80 hover:text-white"
+                    className="group -mx-2 flex gap-x-6 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-polar-800/80 hover:text-white"
                   >
+                    {
+                      
+                    }
                     <Cog6ToothIcon
-                      className="h-6 w-6 shrink-0"
+                      className="h-6 w-6 shrink-0 translate-x-3"
                       aria-hidden="true"
                     />
-                    Settings
+                    {wideSidebarOpen && "Settings"}
                   </Link>
                 </li>
               </ul>

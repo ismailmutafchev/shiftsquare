@@ -1,24 +1,25 @@
-import './App.css'
+import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 import Home from "./pages/Home";
-import Calendar from './pages/Calendar';
-import Employees from './pages/Employees';
-import Positions from './pages/Positions';
-import About from './pages/About';
-import Pricing from './pages/Pricing';
-import Dashboard from './pages/Dashboard';
-import Profile from './pages/Profile';
-import Setting from './pages/Setting';
-import { useAuth0 } from '@auth0/auth0-react';
-import Login from './pages/Login';
-import Employee from './pages/Employee';
-import Onboarding from './pages/Onboarding';
-import Templates from './pages/Templates';
-import Availability from './pages/Availability';
+import Calendar from "./pages/Calendar";
+import Employees from "./pages/Employees";
+import Positions from "./pages/Positions";
+import About from "./pages/About";
+import Pricing from "./pages/Pricing";
+import Dashboard from "./pages/Dashboard";
+import Profile from "./pages/Profile";
+import Setting from "./pages/Setting";
+import { useAuth0 } from "@auth0/auth0-react";
+import Login from "./pages/Login";
+import Employee from "./pages/Employee";
+import Onboarding from "./pages/Onboarding";
+import Templates from "./pages/Templates";
+import Availability from "./pages/Availability";
+import { TemplateProvider } from "./providers/TemplateContext";
 
 function App() {
-  const { isAuthenticated, } = useAuth0();
+  const { isAuthenticated } = useAuth0();
 
   return (
     <BrowserRouter>
@@ -62,7 +63,14 @@ function App() {
               <Route index element={<Setting />} />
             </Route>
             <Route path="/templates" element={<Layout />}>
-              <Route index element={<Templates />} />
+              <Route
+                index
+                element={
+                  <TemplateProvider>
+                    <Templates />
+                  </TemplateProvider>
+                }
+              />
             </Route>
             <Route path="/availability" element={<Layout />}>
               <Route index element={<Availability />} />
@@ -70,8 +78,8 @@ function App() {
           </>
         )}
       </Routes>
-    </BrowserRouter >
-  )
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

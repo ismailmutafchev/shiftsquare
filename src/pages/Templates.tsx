@@ -13,7 +13,7 @@ import { getTemplate, getTemplates } from "../queries/templates/queries";
 import { deleteTemplateById } from "../queries/templates/mutations";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 import { Menu, Transition } from "@headlessui/react";
-import { useForm, useFieldArray, useWatch, Control } from "react-hook-form";
+import { useForm, useFieldArray } from "react-hook-form";
 import { useSession } from "../providers/Session";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -46,11 +46,7 @@ export default function Templates() {
   // const [update, setUpdate] = useState({
   //   isUpdate: false,
   //   data: {}
-  // })
-  const [size, setSize] = useState({
-    width: 200,
-    height: 200,
-  });
+  // });npm run dev 
 
   const { positions } = useSession();
 
@@ -125,10 +121,6 @@ export default function Templates() {
   });
 
   const onSubmit = (data: FormValues) => console.log(data);
-
-  function onResize({ size }: any) {
-    setSize({ width: size.width, height: size.height });
-  }
 
   const { loading, error, data } = useQuery(getTemplates);
   const [deleteTemplate] = useMutation(deleteTemplateById, {
