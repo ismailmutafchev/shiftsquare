@@ -1,7 +1,7 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
 export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
-    shift(where: {start: {_gte: $start}, end: {_lte: $end}}) {
+    shift(where: {start: {_gte: $start}, end: {_lte: $end}}, order_by:{positionId: asc}) {
         id
         start
         end
@@ -20,21 +20,28 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
 },
 `;
 
-export const getWorkingHours = gql` query($start: timestamptz!, $end: timestamptz!) {
-    shift_aggregate(where: {start: {_gte: $start}, end: {_lte: $end}}) {
-        aggregate {
-            sum {
-                length
-            }
+export const getWorkingHours = gql`
+  query ($start: timestamptz!, $end: timestamptz!) {
+    shift_aggregate(where: { start: { _gte: $start }, end: { _lte: $end } }) {
+      aggregate {
+        sum {
+          length
         }
+      }
     }
-}
+  }
 `;
 
-export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestamptz!){
-    shift(distinct_on: positionId, where: {start: {_gte: $start}, end: {_lte: $end}}) {
+export const getHoursByPosition = gql`
+  query ($start: timestamptz!, $end: timestamptz!) {
+    shift(
+      distinct_on: positionId
+      where: { start: { _gte: $start }, end: { _lte: $end } }
+    ) {
       position {
-        shift_aggregate(where: {start: {_gte: $start}, end: {_lte: $end}}) {
+        shift_aggregate(
+          where: { start: { _gte: $start }, end: { _lte: $end } }
+        ) {
           aggregate {
             sum {
               length
@@ -46,13 +53,20 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
         bgColor
       }
     }
-  }`
+  }
+`;
 
-  export const getHoursByEmployee = gql`query($start: timestamptz!, $end: timestamptz!){
-    shift(distinct_on: [employeeId], where: {start: {_gte: $start}, end: {_lte: $end}}) {
+export const getHoursByEmployee = gql`
+  query ($start: timestamptz!, $end: timestamptz!) {
+    shift(
+      distinct_on: [employeeId]
+      where: { start: { _gte: $start }, end: { _lte: $end } }
+    ) {
       id
       employee {
-        shift_aggregate(where: {start: {_gte: $start}, end: {_lte: $end}}) {
+        shift_aggregate(
+          where: { start: { _gte: $start }, end: { _lte: $end } }
+        ) {
           aggregate {
             sum {
               length
@@ -65,56 +79,85 @@ export const getHoursByPosition = gql`query($start: timestamptz!, $end: timestam
         bgColor
       }
     }
-  }`
+  }
+`;
 
-export const getHoursByDay = gql`query MyQuery($monday: timestamptz, $tuesday: timestamptz, $wednesday: timestamptz, $thursday: timestamptz, $friday: timestamptz, $saturday: timestamptz, $sunday: timestamptz, $sundayE: timestamptz ) {
-  monday: shift_aggregate(where: {_and: {start: {_gte: $monday}}, start: {_lt: $tuesday}}) {
-    aggregate {
-      sum {
-        length
+export const getHoursByDay = gql`
+  query MyQuery(
+    $monday: timestamptz
+    $tuesday: timestamptz
+    $wednesday: timestamptz
+    $thursday: timestamptz
+    $friday: timestamptz
+    $saturday: timestamptz
+    $sunday: timestamptz
+    $sundayE: timestamptz
+  ) {
+    monday: shift_aggregate(
+      where: { _and: { start: { _gte: $monday } }, start: { _lt: $tuesday } }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+    tuesday: shift_aggregate(
+      where: { _and: { start: { _gte: $tuesday } }, start: { _lt: $wednesday } }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+    wednesday: shift_aggregate(
+      where: {
+        _and: { start: { _gte: $wednesday } }
+        start: { _lt: $thursday }
+      }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+    thursday: shift_aggregate(
+      where: { _and: { start: { _gte: $thursday } }, start: { _lt: $friday } }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+    friday: shift_aggregate(
+      where: { _and: { start: { _gte: $friday } }, start: { _lt: $saturday } }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+    saturday: shift_aggregate(
+      where: { _and: { start: { _gte: $saturday } }, start: { _lt: $sunday } }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
+      }
+    }
+    sunday: shift_aggregate(
+      where: { _and: { start: { _gte: $sunday } }, start: { _lt: $sundayE } }
+    ) {
+      aggregate {
+        sum {
+          length
+        }
       }
     }
   }
-  tuesday: shift_aggregate(where: {_and: {start: {_gte: $tuesday}}, start: {_lt: $wednesday}}) {
-    aggregate {
-      sum {
-        length
-      }
-    }
-  }
-    wednesday: shift_aggregate(where: {_and: {start: {_gte: $wednesday}}, start: {_lt: $thursday}}) {
-    aggregate {
-      sum {
-        length
-      }
-    }
-  }
-    thursday: shift_aggregate(where: {_and: {start: {_gte: $thursday}}, start: {_lt: $friday}}) {
-    aggregate {
-      sum {
-        length
-      }
-    }
-  }
-    friday: shift_aggregate(where: {_and: {start: {_gte: $friday}}, start: {_lt: $saturday}}) {
-    aggregate {
-      sum {
-        length
-      }
-    }
-  }
-    saturday: shift_aggregate(where: {_and: {start: {_gte: $saturday}}, start: {_lt: $sunday}}) {
-    aggregate {
-      sum {
-        length
-      }
-    }
-  }
-    sunday: shift_aggregate(where: {_and: {start: {_gte: $sunday}}, start: {_lt: $sundayE}}) {
-    aggregate {
-      sum {
-        length
-      }
-    }
-  }
-}`
+`;

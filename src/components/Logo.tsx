@@ -1,50 +1,51 @@
 export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
+  const animation = "hover:scale-110 duration-200 transpalte-x-2";
   return (
-    <div>
+    <div >
       <svg
         width={size}
         height={size}
-        viewBox="0 0 1360 1354"
+        viewBox="0 0 1360 1400"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <g filter="url(#filter0_d_6_2)">
+        <g className={animation} filter="url(#filter0_d_6_2)">
           <path
             d="M40 436C40 329.913 82.1427 228.172 157.157 153.157C232.172 78.1429 333.913 36.0001 440 36L440 436L40 436Z"
             fill={dark ? "#69bed4" : "#99D9EA"}
           />
         </g>
-        <g filter="url(#filter1_d_6_2)">
+        <g className={animation} filter="url(#filter1_d_6_2)">
           <path
             d="M914 36C1020.09 36 1121.83 78.1427 1196.84 153.157C1271.86 228.172 1314 329.913 1314 436L914 436L914 36Z"
             fill={dark ? "#69bed4" : "#99D9EA"}
           />
         </g>
-        <g filter="url(#filter2_d_6_2)">
+        <g className={animation} filter="url(#filter2_d_6_2)">
           <path
             d="M920 473C1026.09 473 1127.83 515.143 1202.84 590.157C1277.86 665.172 1320 766.913 1320 873L920 873L920 473Z"
             fill={dark ? "#69bed4" : "#99D9EA"}
           />
         </g>
-        <g filter="url(#filter3_d_6_2)">
+        <g className={animation} filter="url(#filter3_d_6_2)">
           <path
             d="M440 1310C333.914 1310 232.172 1267.86 157.157 1192.84C82.1429 1117.83 40.0001 1016.09 40 910.001L440 910L440 1310Z"
             fill={dark ? "#69bed4" : "#99D9EA"}
           />
         </g>
-        <g filter="url(#filter4_d_6_2)">
+        <g className={animation} filter="url(#filter4_d_6_2)">
           <path
             d="M1320 910C1320 1016.09 1277.86 1117.83 1202.84 1192.84C1127.83 1267.86 1026.09 1310 920.001 1310L920 910L1320 910Z"
             fill={dark ? "#1b1f57" : "#EFFFFF"}
           />
         </g>
-        <g filter="url(#filter5_d_6_2)">
+        <g className={animation} filter="url(#filter5_d_6_2)">
           <path
             d="M440 873C333.913 873 232.172 830.857 157.157 755.843C82.1429 680.828 40.0001 579.087 40 473L440 473L440 873Z"
             fill={dark ? "#1b1f57" : "#EFFFFF"}
           />
         </g>
-        <g filter="url(#filter6_d_6_2)">
+        <g className={animation} filter="url(#filter6_d_6_2)">
           <rect
             x="477"
             y="36"
@@ -53,7 +54,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             fill={dark ? "#1b1f57" : "#EFFFFF"}
           />
         </g>
-        <g filter="url(#filter7_d_6_2)">
+        <g className={animation} filter="url(#filter7_d_6_2)">
           <rect
             x="477"
             y="473"
@@ -62,7 +63,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             fill={dark ? "#1b1f57" : "#EFFFFF"}
           />
         </g>
-        <g filter="url(#filter8_d_6_2)">
+        <g className={animation} filter="url(#filter8_d_6_2)">
           <rect
             x="477"
             y="910"
