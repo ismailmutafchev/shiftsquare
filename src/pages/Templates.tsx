@@ -1,25 +1,28 @@
 import {
   ArchiveBoxIcon,
   ArrowsPointingOutIcon,
+  CheckIcon,
+  ChevronUpDownIcon,
   EllipsisVerticalIcon,
   PencilSquareIcon,
   PlusIcon,
   Square2StackIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { Fragment, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { getTemplate, getTemplates } from "../queries/templates/queries";
 import { deleteTemplateById } from "../queries/templates/mutations";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
-import { Menu, Transition } from "@headlessui/react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { Listbox, Menu, Transition } from "@headlessui/react";
+import { Controller, useForm } from "react-hook-form";
 import { useSession } from "../providers/Session";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { EffectCoverflow, Pagination } from "swiper/modules";
+import { TemplateContext } from "../providers/TemplateContext";
 
 type Section = {
   position: string;
@@ -42,18 +45,15 @@ function classNames(...classes: string[]) {
 }
 
 export default function Templates() {
+  const weekDays = useContext(TemplateContext);
   const [showBuilder, setShowBuilder] = useState(false);
-  // const [update, setUpdate] = useState({
-  //   isUpdate: false,
-  //   data: {}
-  // });npm run dev 
 
   const { positions } = useSession();
 
   const {
     register,
-    control,
     handleSubmit,
+    control,
     formState: { errors },
   } = useForm<FormValues>({
     defaultValues: {
@@ -62,62 +62,6 @@ export default function Templates() {
       ],
     },
     mode: "onBlur",
-  });
-  const {
-    fields: monday,
-    append: appendMonday,
-    remove: removeMonday,
-  } = useFieldArray({
-    name: "mondayShifts",
-    control,
-  });
-  const {
-    fields: tuesday,
-    append: appendTuesday,
-    remove: removeTuesday,
-  } = useFieldArray({
-    name: "tuesdayShifts",
-    control,
-  });
-  const {
-    fields: wednesday,
-    append: appendWednesday,
-    remove: removeWednesday,
-  } = useFieldArray({
-    name: "wednesdayShifts",
-    control,
-  });
-  const {
-    fields: thursday,
-    append: appendThursday,
-    remove: removeThursday,
-  } = useFieldArray({
-    name: "thursdayShifts",
-    control,
-  });
-  const {
-    fields: friday,
-    append: appendFriday,
-    remove: removeFriday,
-  } = useFieldArray({
-    name: "fridayShifts",
-    control,
-  });
-  const {
-    fields: saturday,
-    append: appendSaturday,
-    remove: removeSaturday,
-  } = useFieldArray({
-    name: "saturdayShifts",
-    control,
-  });
-  const {
-    fields: sunday,
-    append: appendSunday,
-    remove: removeSunday,
-  } = useFieldArray({
-    name: "sundayShifts",
-    control,
   });
 
   const onSubmit = (data: FormValues) => console.log(data);
@@ -136,35 +80,7 @@ export default function Templates() {
     deleteTemplate({ variables: { id } });
   };
 
-  const weekDays = [
-    { name: "Monday", day: monday, append: appendMonday, remove: removeMonday },
-    {
-      name: "Tuesday",
-      day: tuesday,
-      append: appendTuesday,
-      remove: removeTuesday,
-    },
-    {
-      name: "Wednesday",
-      day: wednesday,
-      append: appendWednesday,
-      remove: removeWednesday,
-    },
-    {
-      name: "Thursday",
-      day: thursday,
-      append: appendThursday,
-      remove: removeThursday,
-    },
-    { name: "Friday", day: friday, append: appendFriday, remove: removeFriday },
-    {
-      name: "Sturday",
-      day: saturday,
-      append: appendSaturday,
-      remove: removeSaturday,
-    },
-    { name: "Sunday", day: sunday, append: appendSunday, remove: removeSunday },
-  ];
+  console.log(weekDays)
 
   return (
     <>
@@ -186,99 +102,6 @@ export default function Templates() {
         </div>
       </div>
       {showBuilder ? (
-        // <div>
-        //   <form
-        //     className=""
-        //     onSubmit={handleSubmit(onSubmit)}
-        //   >
-        //     <div className="flex flex-row border justify-around overflow-x-scroll borde border-blue-500">
-        //       {weekDays.map((day, index) => {
-        //         return (
-        //           <div className="bg-gray-100 rounded-br-xl backdrop-blur-md mx-1 shadow-sm min-w-[200px]" key={index}>
-        //             <h2 className="w-full bg-red-300 text-semibold text-xl">{day.name}</h2>
-        //             {day.day.map((field, index) => {
-        //               return (
-        //                 <div key={field.id}>
-        //                   <section key={field.id}>
-        //                     <select
-        //                       placeholder="Position"
-        //                       {...register(
-        //                         `mondayShifts.${index}.position` as const,
-        //                         {
-        //                           required: true,
-        //                         }
-        //                       )}
-        //                     >
-        //                       {positions?.map((position: any) => {
-        //                         return (
-        //                           <option value={position.id}>
-        //                             {position.name}
-        //                           </option>
-        //                         );
-        //                       })}
-        //                     </select>
-        //                     <input
-        //                       placeholder="quantity"
-        //                       type="time"
-        //                       {...register(
-        //                         `mondayShifts.${index}.start` as const,
-        //                         {
-        //                           valueAsNumber: true,
-        //                           required: true,
-        //                         }
-        //                       )}
-        //                       className={
-        //                         errors?.mondayShifts?.[index]?.start
-        //                           ? "error"
-        //                           : ""
-        //                       }
-        //                     />
-        //                     <input
-        //                       placeholder="value"
-        //                       type="time"
-        //                       {...register(
-        //                         `mondayShifts.${index}.end` as const,
-        //                         {
-        //                           valueAsNumber: true,
-        //                           required: true,
-        //                         }
-        //                       )}
-        //                       className={
-        //                         errors?.mondayShifts?.[index]?.end
-        //                           ? "error"
-        //                           : ""
-        //                       }
-        //                     />
-        //                     <button
-        //                       type="button"
-        //                       onClick={() => day.remove(index)}
-        //                     >
-        //                       DELETE
-        //                     </button>
-        //                   </section>
-        //                 </div>
-        //               );
-        //             })}
-        //             <button
-        //               type="button"
-        //               onClick={() =>
-        //                 day.append({
-        //                   position: "",
-        //                   start: "0",
-        //                   end: "0",
-        //                 })
-        //               }
-        //             >
-        //               APPEND
-        //             </button>
-        //           </div>
-        //         );
-        //       })}
-        //     </div>
-        //     <Total control={control} />
-        //     <input type="submit" />
-        //   </form>
-        // </div>
         <>
           <Swiper
             effect={"coverflow"}
@@ -296,10 +119,11 @@ export default function Templates() {
             modules={[EffectCoverflow, Pagination]}
             className="mySwiper top-2"
           >
-              <div>
-                <form className="" onSubmit={handleSubmit(onSubmit)}>
-                  <div className="flex flex-row justify-around overflow-x-scroll borde border-blue-500">
-                    {weekDays.map((day, index) => {
+            <div>
+              <form className="" onSubmit={handleSubmit(onSubmit)}>
+                <div className="flex flex-row justify-around overflow-x-scroll borde border-blue-500">
+                  {weekDays &&
+                    weekDays.map((day, index) => {
                       return (
                         <SwiperSlide
                           className="bg-jagged-ice-50 rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-96 overflow-scroll rounded-xl shadow-sm-xl"
@@ -312,23 +136,94 @@ export default function Templates() {
                             return (
                               <div key={field.id}>
                                 <section key={field.id}>
-                                  <select
-                                    placeholder="Position"
-                                    {...register(
-                                      `mondayShifts.${index}.position` as const,
-                                      {
-                                        required: true,
-                                      }
+                                  <Controller
+                                    name={`mondayShifts.${index}`}
+                                    control={control}
+                                    rules={{ required: true }}
+                                    render={({
+                                      field: {onChange},
+                                    }) => (
+                                      <Listbox onChange={onChange}>
+                                        <div className="relative mt-1">
+                                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                            <span className="block truncate">
+                                              {/* {value} */}
+                                            </span>
+                                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
+                                              <ChevronUpDownIcon
+                                                className="h-5 w-5 text-gray-400"
+                                                aria-hidden="true"
+                                              />
+                                            </span>
+                                          </Listbox.Button>
+                                          <Transition
+                                            as={Fragment}
+                                            leave="transition ease-in duration-100"
+                                            leaveFrom="opacity-100"
+                                            leaveTo="opacity-0"
+                                          >
+                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                                              {positions.map(
+                                                (position: any) => (
+                                                  <Listbox.Option
+                                                    key={position.id}
+                                                    className={({ active }) =>
+                                                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                        active
+                                                          ? "bg-amber-100 text-amber-900"
+                                                          : "text-gray-900"
+                                                      }`
+                                                    }
+                                                    value={position.id}
+                                                  >
+                                                    {({ selected }) => (
+                                                      <>
+                                                        <span
+                                                          className={`block truncate ${
+                                                            selected
+                                                              ? "font-medium"
+                                                              : "font-normal"
+                                                          }`}
+                                                        >
+                                                          {position.name}
+                                                        </span>
+                                                        {selected ? (
+                                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
+                                                            <CheckIcon
+                                                              className="h-5 w-5"
+                                                              aria-hidden="true"
+                                                            />
+                                                          </span>
+                                                        ) : null}
+                                                      </>
+                                                    )}
+                                                  </Listbox.Option>
+                                                )
+                                              )}
+                                            </Listbox.Options>
+                                          </Transition>
+                                        </div>
+                                      </Listbox>
                                     )}
-                                  >
-                                    {positions?.map((position: any) => {
-                                      return (
-                                        <option value={position.id}>
-                                          {position.name}
-                                        </option>
-                                      );
-                                    })}
-                                  </select>
+                                  />
+
+                                  {/* <select
+                                  placeholder="Position"
+                                  {...register(
+                                    `mondayShifts.${index}.position` as const,
+                                    {
+                                      required: true,
+                                    }
+                                  )}
+                                >
+                                  {positions?.map((position: any) => {
+                                    return (
+                                      <option value={position.id}>
+                                        {position.name}
+                                      </option>
+                                    );
+                                  })}
+                                </select> */}
                                   <input
                                     placeholder="quantity"
                                     type="time"
@@ -386,34 +281,10 @@ export default function Templates() {
                         </SwiperSlide>
                       );
                     })}
-                  </div>
-                  <input type="submit" />
-                </form>
-              </div>
-            {/* <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-2.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-3.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-4.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-5.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-6.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-7.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-8.jpg" />
-            </SwiperSlide>
-            <SwiperSlide>
-              <img src="https://swiperjs.com/demos/images/nature-9.jpg" />
-            </SwiperSlide> */}
+                </div>
+                <input type="submit" />
+              </form>
+            </div>
           </Swiper>
         </>
       ) : (
@@ -437,9 +308,7 @@ export default function Templates() {
                         backgroundColor: template.bgColor,
                         opacity: 0.8,
                       }}
-                    >
-                      {/* {template.name.slice(0, 2).toUpperCase()} */}t
-                    </div>
+                    ></div>
                     <div className="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white">
                       <div className="flex-1 truncate px-4 py-2 text-sm">
                         <a

@@ -46,7 +46,14 @@ type FormValues = {
 };
 
 type WeekDay = {
-  name: 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+  name:
+    | "Monday"
+    | "Tuesday"
+    | "Wednesday"
+    | "Thursday"
+    | "Friday"
+    | "Saturday"
+    | "Sunday";
   day:
     | FieldArrayWithId<FormValues, "mondayShifts", "id">[]
     | FieldArrayWithId<FormValues, "tuesdayShifts", "id">[]
@@ -178,3 +185,4 @@ const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 export { TemplateContext, TemplateProvider };
+

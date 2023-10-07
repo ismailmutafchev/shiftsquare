@@ -23,61 +23,56 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-        </Route>
-        <Route path="/about" element={<Layout />}>
-          <Route index element={<About />} />
-        </Route>
-        <Route path="/pricing" element={<Layout />}>
-          <Route index element={<Pricing />} />
-        </Route>
-        <Route path="/login" element={<Layout />}>
-          <Route index element={<Login />} />
-        </Route>
-        {isAuthenticated && (
-          <>
-            <Route path="/calendar" element={<Layout />}>
-              <Route index element={<Calendar />} />
-            </Route>
-            <Route path="/employees" element={<Layout />}>
-              <Route index element={<Employees />} />
-            </Route>
-            <Route path="/employees/:id" element={<Layout />}>
-              <Route index element={<Employee />} />
-            </Route>
-            <Route path="/positions" element={<Layout />}>
-              <Route index element={<Positions />} />
-            </Route>
-            <Route path="/dashboard" element={<Layout />}>
-              <Route index element={<Dashboard />} />
-            </Route>
-            <Route path="/onboarding" element={<Layout />}>
-              <Route index element={<Onboarding />} />
-            </Route>
-            <Route path="/profile" element={<Layout />}>
-              <Route index element={<Profile />} />
-            </Route>
-            <Route path="/setting" element={<Layout />}>
-              <Route index element={<Setting />} />
-            </Route>
-            <Route path="/templates" element={<Layout />}>
-              <Route
-                index
-                element={
-                  <TemplateProvider>
-                    <Templates />
-                  </TemplateProvider>
-                }
-              />
-            </Route>
-            <Route path="/availability" element={<Layout />}>
-              <Route index element={<Availability />} />
-            </Route>
-          </>
-        )}
-      </Routes>
+      <TemplateProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+          </Route>
+          <Route path="/about" element={<Layout />}>
+            <Route index element={<About />} />
+          </Route>
+          <Route path="/pricing" element={<Layout />}>
+            <Route index element={<Pricing />} />
+          </Route>
+          <Route path="/login" element={<Layout />}>
+            <Route index element={<Login />} />
+          </Route>
+          {isAuthenticated && (
+            <>
+              <Route path="/calendar" element={<Layout />}>
+                <Route index element={<Calendar />} />
+              </Route>
+              <Route path="/employees" element={<Layout />}>
+                <Route index element={<Employees />} />
+              </Route>
+              <Route path="/employees/:id" element={<Layout />}>
+                <Route index element={<Employee />} />
+              </Route>
+              <Route path="/positions" element={<Layout />}>
+                <Route index element={<Positions />} />
+              </Route>
+              <Route path="/dashboard" element={<Layout />}>
+                <Route index element={<Dashboard />} />
+              </Route>
+              <Route path="/onboarding" element={<Layout />}>
+                <Route index element={<Onboarding />} />
+              </Route>
+              <Route path="/profile" element={<Layout />}>
+                <Route index element={<Profile />} />
+              </Route>
+              <Route path="/setting" element={<Layout />}>
+                <Route index element={<Setting />} />
+              </Route>
+              <Route path="/templates" element={<Layout />}>
+                <Route index element={<Templates />} />
+              </Route>
+              <Route path="/availability" element={<Layout />}>
+                <Route index element={<Availability />} />
+              </Route>
+            </>
+          )}
+        </Routes>
+      </TemplateProvider>
     </BrowserRouter>
   );
 }
