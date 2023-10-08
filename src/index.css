@@ -65,8 +65,8 @@ input[type="time"] {
   width: '100%';
   border-radius: '0.375rem';
   appearance: 'none';
-  background-color: '#fff';
-  color: '#111827';
+  background-color: '#a337db';
+  color: '#ba61eb';
   cursor: 'pointer';
   display: 'inline-flex';
   flex-direction: 'row';

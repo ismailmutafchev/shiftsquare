@@ -126,9 +126,9 @@ export default function Templates() {
                               return (
                                 <div
                                   key={shift.id}
-                                  className="flex flex-row justify-between items-center p-2"
+                                  className="flex flex-row justify-between items-center p-1 mx-auto space-x-10"
                                 >
-                                  <div className="flex flex-col">
+                                  <div className="flex flex-col items-start px-1 min-w-24">
                                     <label
                                       htmlFor="position"
                                       className="text-sm font-semibold text-gray-700"
@@ -140,23 +140,27 @@ export default function Templates() {
                                       control={control}
                                       rules={{ required: true }}
                                       render={({ field: { onChange } }) => (
-                                        <Listbox onChange={onChange}>
-                                          <div className="relative mt-1">
-                                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                        <Listbox onChange={onChange} >
+                                          <div className="relative mt-1 w-full">
+                                            <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white p-1 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-900 sm:text-sm ">
                                               {({ value }) => {
-                                                console.log(value);
                                                 return (
-                                                  <span className="flex items-center">
-                                                    <span className="ml-3 block truncate">
+                                                  <span className="flex w-full">
+                                                    <span className="ml-3 block truncate w-48
+                                                  ">
                                                     {positions && positions.find((position: any) => position.id === value)?.name}
                                                     </span>
+                                                    <ChevronUpDownIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
                                                   </span>
                                                 );
                                               }}
                                             </Listbox.Button>
                                             <Transition
                                               as={Fragment}
-                                              leave="transition ease-in duration-100"
+                                              enter="transition ease-out duration-300"
+                                              enterFrom="opacity-0"
+                                              enterTo="opacity-100"
+                                              leave="transition ease-in duration-300"
                                               leaveFrom="opacity-100"
                                               leaveTo="opacity-0"
                                             >
@@ -169,7 +173,7 @@ export default function Templates() {
                                                         className={({
                                                           active,
                                                         }) =>
-                                                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                                          `relative cursor-default select-none px-auto py-2 ${
                                                             active
                                                               ? "bg-polar-100 text-polar-900/80"
                                                               : "text-polar-900"
@@ -208,7 +212,7 @@ export default function Templates() {
                                       )}
                                     />
                                   </div>
-                                  <div className="flex flex-col">
+                                  <div className="flex flex-col items-start px-1 min-w-24">
                                     <label
                                       htmlFor="start"
                                       className="text-sm font-semibold text-gray-700"
@@ -220,10 +224,10 @@ export default function Templates() {
                                         `${day.name}Shifts.${index}.start`
                                       )}
                                       type="time"
-                                      className="w-full rounded-md border border-gray-300 shadow-sm p-2"
+                                      className="relative w-full cursor-default rounded-lg bg-white p-1 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-900 sm:text-sm "
                                     />
                                   </div>
-                                  <div className="flex flex-col">
+                                  <div className="flex flex-col items-start px-1 min-w-24">
                                     <label
                                       htmlFor="end"
                                       className="text-sm font-semibold text-gray-700"
@@ -235,11 +239,11 @@ export default function Templates() {
                                         `${day.name}Shifts.${index}.end`
                                       )}
                                       type="time"
-                                      className="w-full rounded-md border border-gray-300 shadow-sm p-2"
+                                      className="relative w-full cursor-default rounded-lg bg-white p-1 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-900 sm:text-sm "
                                     />
                                   </div>
-                                  <button onClick={() => day.remove(index)}>
-                                    <TrashIcon className="w-5 h-5" />
+                                  <button className="flex items-center justify-center p-2 bg-red-200 hover:bg-red-400 transition duration-400 rounded-lg" onClick={() => day.remove(index)}>
+                                    <TrashIcon className="w-6 h-6 text-white" />
                                   </button>
                                 </div>
                               );
