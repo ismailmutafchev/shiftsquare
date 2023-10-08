@@ -5,6 +5,8 @@ import {
   UseFieldArrayAppend,
   UseFieldArrayRemove,
   FieldArrayWithId,
+  UseFormRegister,
+  UseFormHandleSubmit,
 } from "react-hook-form";
 
 type FormValues = {
@@ -73,14 +75,23 @@ type WeekDay = {
   remove: UseFieldArrayRemove;
 };
 
-const TemplateContext = createContext<WeekDay[] | undefined>(undefined);
+export type TemplateContextType = {
+  weekDays: WeekDay[];
+  register: UseFormRegister<FormValues>;
+  handleSubmit: UseFormHandleSubmit<FormValues, undefined>;
+  control: any;
+};
+
+const TemplateContext = createContext<TemplateContextType | undefined>(
+  undefined
+);
 
 const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const formMethods = useForm<FormValues>({
     defaultValues: {
-      mondayShifts: [{ position: "", start: "9:00", end: "17:00" }],
+      mondayShifts: [],
       tuesdayShifts: [],
       wednesdayShifts: [],
       thursdayShifts: [],
@@ -178,11 +189,10 @@ const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
   ];
 
   return (
-    <TemplateContext.Provider value={weekDays}>
+    <TemplateContext.Provider value={{ weekDays, register: formMethods.register, handleSubmit: formMethods.handleSubmit, control: formMethods.control }}>
       {children}
     </TemplateContext.Provider>
   );
 };
 
 export { TemplateContext, TemplateProvider };
-
