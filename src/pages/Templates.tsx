@@ -1,8 +1,6 @@
 import {
   ArchiveBoxIcon,
   ArrowsPointingOutIcon,
-  CheckIcon,
-  ChevronUpDownIcon,
   EllipsisVerticalIcon,
   PencilSquareIcon,
   PlusIcon,
@@ -14,8 +12,8 @@ import { useMutation, useQuery } from "@apollo/client";
 import { getTemplate, getTemplates } from "../queries/templates/queries";
 import { deleteTemplateById } from "../queries/templates/mutations";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
-import { Listbox, Menu, Transition } from "@headlessui/react";
-import { Controller, useForm } from "react-hook-form";
+import { Menu, Transition } from "@headlessui/react";
+import { useForm } from "react-hook-form";
 import { useSession } from "../providers/Session";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -53,11 +51,28 @@ export default function Templates() {
   const {
     register,
     handleSubmit,
-    control,
-    formState: { errors },
+    getValues,
   } = useForm<FormValues>({
     defaultValues: {
       mondayShifts: [
+        { position: positions && positions[0], start: "9:00", end: "17:00" },
+      ],
+      tuesdayShifts: [
+        { position: positions && positions[0], start: "9:00", end: "17:00" },
+      ],
+      wednesdayShifts: [
+        { position: positions && positions[0], start: "9:00", end: "17:00" },
+      ],
+      thursdayShifts: [
+        { position: positions && positions[0], start: "9:00", end: "17:00" },
+      ],
+      fridayShifts: [
+        { position: positions && positions[0], start: "9:00", end: "17:00" },
+      ],
+      saturdayShifts: [
+        { position: positions && positions[0], start: "9:00", end: "17:00" },
+      ],
+      sundayShifts: [
         { position: positions && positions[0], start: "9:00", end: "17:00" },
       ],
     },
@@ -80,7 +95,7 @@ export default function Templates() {
     deleteTemplate({ variables: { id } });
   };
 
-  console.log(weekDays)
+  console.log(getValues());
 
   return (
     <>
@@ -132,151 +147,88 @@ export default function Templates() {
                           <h2 className="w-full bg-red-300/10 text-semibold text-2xl sticky top-0 backdrop-blur-sm p-2">
                             {day.name}
                           </h2>
-                          {day.day.map((field, index) => {
-                            return (
-                              <div key={field.id}>
-                                <section key={field.id}>
-                                  <Controller
-                                    name={`mondayShifts.${index}`}
-                                    control={control}
-                                    rules={{ required: true }}
-                                    render={({
-                                      field: {onChange},
-                                    }) => (
-                                      <Listbox onChange={onChange}>
-                                        <div className="relative mt-1">
-                                          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                                            <span className="block truncate">
-                                              {/* {value} */}
-                                            </span>
-                                            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                              <ChevronUpDownIcon
-                                                className="h-5 w-5 text-gray-400"
-                                                aria-hidden="true"
-                                              />
-                                            </span>
-                                          </Listbox.Button>
-                                          <Transition
-                                            as={Fragment}
-                                            leave="transition ease-in duration-100"
-                                            leaveFrom="opacity-100"
-                                            leaveTo="opacity-0"
-                                          >
-                                            <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                              {positions.map(
-                                                (position: any) => (
-                                                  <Listbox.Option
-                                                    key={position.id}
-                                                    className={({ active }) =>
-                                                      `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                                        active
-                                                          ? "bg-amber-100 text-amber-900"
-                                                          : "text-gray-900"
-                                                      }`
-                                                    }
-                                                    value={position.id}
-                                                  >
-                                                    {({ selected }) => (
-                                                      <>
-                                                        <span
-                                                          className={`block truncate ${
-                                                            selected
-                                                              ? "font-medium"
-                                                              : "font-normal"
-                                                          }`}
-                                                        >
-                                                          {position.name}
-                                                        </span>
-                                                        {selected ? (
-                                                          <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">
-                                                            <CheckIcon
-                                                              className="h-5 w-5"
-                                                              aria-hidden="true"
-                                                            />
-                                                          </span>
-                                                        ) : null}
-                                                      </>
-                                                    )}
-                                                  </Listbox.Option>
-                                                )
-                                              )}
-                                            </Listbox.Options>
-                                          </Transition>
-                                        </div>
-                                      </Listbox>
-                                    )}
-                                  />
-
-                                  {/* <select
-                                  placeholder="Position"
-                                  {...register(
-                                    `mondayShifts.${index}.position` as const,
-                                    {
-                                      required: true,
-                                    }
-                                  )}
-                                >
-                                  {positions?.map((position: any) => {
-                                    return (
-                                      <option value={position.id}>
-                                        {position.name}
-                                      </option>
-                                    );
-                                  })}
-                                </select> */}
-                                  <input
-                                    placeholder="quantity"
-                                    type="time"
-                                    {...register(
-                                      `mondayShifts.${index}.start` as const,
-                                      {
-                                        valueAsNumber: true,
-                                        required: true,
-                                      }
-                                    )}
-                                    className={
-                                      errors?.mondayShifts?.[index]?.start
-                                        ? "error"
-                                        : ""
-                                    }
-                                  />
-                                  <input
-                                    placeholder="value"
-                                    type="time"
-                                    {...register(
-                                      `mondayShifts.${index}.end` as const,
-                                      {
-                                        valueAsNumber: true,
-                                        required: true,
-                                      }
-                                    )}
-                                    className={
-                                      errors?.mondayShifts?.[index]?.end
-                                        ? "error"
-                                        : ""
-                                    }
-                                  />
-                                  <button
-                                    type="button"
-                                    onClick={() => day.remove(index)}
+                            <div className="flex flex-col">
+                              {day.day.map((shift, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    className="flex flex-row justify-between items-center p-2"
                                   >
-                                    DELETE
-                                  </button>
-                                </section>
-                              </div>
-                            );
-                          })}
+                                    <div className="flex flex-col">
+                                      <label
+                                        htmlFor="position"
+                                        className="text-sm font-semibold text-gray-700"
+                                      >
+                                        Position
+                                      </label>
+                                      <select
+                                        {...register(
+                                          `${day.name}Shifts.${index}.position`
+                                        )}
+                                        className="w-full rounded-md border border-gray-300 shadow-sm p-2"
+                                      >
+                                        {positions &&
+                                          positions.map((position: any) => {
+                                            return (
+                                              <option
+                                                key={position.id}
+                                                value={position.id}
+                                              >
+                                                {position.name}
+                                              </option>
+                                            );
+                                          })}
+                                      </select>
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <label
+                                        htmlFor="start"
+                                        className="text-sm font-semibold text-gray-700"
+                                      >
+                                        Start
+                                      </label>
+                                      <input
+                                        {...register(
+                                          `${day.name}Shifts.${index}.start`
+                                        )}
+                                        type="time"
+                                        className="w-full rounded-md border border-gray-300 shadow-sm p-2"
+                                      />
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <label
+                                        htmlFor="end"
+                                        className="text-sm font-semibold text-gray-700"
+                                      >
+                                        End
+                                      </label>
+                                      <input
+                                        {...register(
+                                          `${day.name}Shifts.${index}.end`
+                                        )}
+                                        type="time"
+                                        className="w-full rounded-md border border-gray-300 shadow-sm p-2"
+                                      />
+                                    </div>
+                                    <button onClick={() => day.remove(index)}>
+                                      <TrashIcon className="w-5 h-5" />
+                                    </button>
+                                  </div>
+                                );
+                              })}
+                            </div>
                           <button
                             type="button"
                             onClick={() =>
                               day.append({
                                 position: "",
-                                start: "0",
-                                end: "0",
+                                start: "",
+                                end: "",
                               })
                             }
+                            className="bg-polar-800/90 text-white rounded-md p-2"
                           >
-                            APPEND
+                            <PlusIcon className="w-5 h-5" />
                           </button>
                         </SwiperSlide>
                       );

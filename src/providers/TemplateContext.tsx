@@ -47,13 +47,13 @@ type FormValues = {
 
 type WeekDay = {
   name:
-    | "Monday"
-    | "Tuesday"
-    | "Wednesday"
-    | "Thursday"
-    | "Friday"
-    | "Saturday"
-    | "Sunday";
+    | "monday"
+    | "tuesday"
+    | "wednesday"
+    | "thursday"
+    | "friday"
+    | "saturday"
+    | "sunday";
   day:
     | FieldArrayWithId<FormValues, "mondayShifts", "id">[]
     | FieldArrayWithId<FormValues, "tuesdayShifts", "id">[]
@@ -148,33 +148,33 @@ const TemplateProvider: React.FC<{ children: React.ReactNode }> = ({
   });
 
   const weekDays: WeekDay[] = [
-    { name: "Monday", day: monday, append: appendMonday, remove: removeMonday },
+    { name: "monday", day: monday, append: appendMonday, remove: removeMonday },
     {
-      name: "Tuesday",
+      name: "tuesday",
       day: tuesday,
       append: appendTuesday,
       remove: removeTuesday,
     },
     {
-      name: "Wednesday",
+      name: "wednesday",
       day: wednesday,
       append: appendWednesday,
       remove: removeWednesday,
     },
     {
-      name: "Thursday",
+      name: "thursday",
       day: thursday,
       append: appendThursday,
       remove: removeThursday,
     },
-    { name: "Friday", day: friday, append: appendFriday, remove: removeFriday },
+    { name: "friday", day: friday, append: appendFriday, remove: removeFriday },
     {
-      name: "Saturday",
+      name: "saturday",
       day: saturday,
       append: appendSaturday,
       remove: removeSaturday,
     },
-    { name: "Sunday", day: sunday, append: appendSunday, remove: removeSunday },
+    { name: "sunday", day: sunday, append: appendSunday, remove: removeSunday },
   ];
 
   return (
