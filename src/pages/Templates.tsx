@@ -22,7 +22,10 @@ import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/pagination";
 import { EffectCoverflow, Pagination } from "swiper/modules";
-import { TemplateContext, TemplateContextType } from "../providers/TemplateContext";
+import {
+  TemplateContext,
+  TemplateContextType,
+} from "../providers/TemplateContext";
 
 type Section = {
   position: string;
@@ -45,7 +48,8 @@ function classNames(...classes: string[]) {
 }
 
 export default function Templates() {
-  const {weekDays, register, handleSubmit, control } = useContext(TemplateContext) || {} as TemplateContextType;
+  const { weekDays, register, handleSubmit, control } =
+    useContext(TemplateContext) || ({} as TemplateContextType);
   const [showBuilder, setShowBuilder] = useState(false);
 
   const { positions } = useSession();
@@ -131,25 +135,6 @@ export default function Templates() {
                                     >
                                       Position
                                     </label>
-                                    {/* <select
-                                        {...register(
-                                          `${day.name}Shifts.${index}.position`
-                                        )}
-                                        className="w-full rounded-md border border-gray-300 shadow-sm p-2"
-                                      >
-                                        {positions &&
-                                          positions.map((position: any) => {
-                                            return (
-                                              <option
-                                              className="text-gray-900"
-                                                key={position.id}
-                                                value={position.id}
-                                              >
-                                                {position.name}
-                                              </option>
-                                            );
-                                          })}
-                                      </select> */}
                                     <Controller
                                       name={`${day.name}Shifts.${index}.position`}
                                       control={control}
@@ -158,15 +143,16 @@ export default function Templates() {
                                         <Listbox onChange={onChange}>
                                           <div className="relative mt-1">
                                             <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
-                                              <span className="block truncate">
-                                                {`${day.name}Shifts.${index}.position.name`}
-                                              </span>
-                                              <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-                                                <ChevronUpDownIcon
-                                                  className="h-5 w-5 text-gray-400"
-                                                  aria-hidden="true"
-                                                />
-                                              </span>
+                                              {({ value }) => {
+                                                console.log(value);
+                                                return (
+                                                  <span className="flex items-center">
+                                                    <span className="ml-3 block truncate">
+                                                    {positions && positions.find((position: any) => position.id === value)?.name}
+                                                    </span>
+                                                  </span>
+                                                );
+                                              }}
                                             </Listbox.Button>
                                             <Transition
                                               as={Fragment}
