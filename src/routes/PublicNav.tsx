@@ -55,19 +55,19 @@ export default function PublicNavigation() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-full bg-transparent backdrop-blur-sm">
-      <div className="pb-24">
+    <div className="min-h-full">
+      <div>
         <Disclosure as="nav">
           {({ open }) => (
             <>
-              <div className="mx-auto px-20 sm:px-4 lg:px-8">
-                <div className="relative flex h-16 items-center justify-between">
-                  <div className="flex items-center px-2 lg:px-0">
-                    <div className="flex-shrink-0">
+              <div className="mx-auto px-20 sm:px-4 lg:px-8 flex items-center">
+                <div className="relative flex h-20 items-center w-full">
+                  <div className="flex items-center px-2 lg:px-0 w-full justify-between">
+                    <div>
                       <Logo size={50} dark />
                     </div>
-                    <div className="hidden lg:ml-10 lg:block">
-                      <div className="flex space-x-4">
+                    <div className="hidden lg:ml-10 lg:block justify-self-center">
+                      <div className="flex space-x-16">
                         {navigation.map((item) => (
                           <Link
                             key={item.name}
@@ -82,9 +82,12 @@ export default function PublicNavigation() {
                             {item.name}
                           </Link>
                         ))}
+                      </div>
+                    </div>
+                    <div>
+                      {/* <Logo size={50} dark /> */}
                         <LoginButton />
                         <LogoutButton />
-                      </div>
                     </div>
                   </div>
                   <div className="flex lg:hidden">
@@ -232,9 +235,9 @@ export default function PublicNavigation() {
         </Disclosure>
       </div>
 
-      <main className="-mt-32">
+      {/* <main className="bg-transparent border">
         <div className="mx-auto max-w-7xl px-4 pb-12 sm:px-6 lg:px-8 bg-transparent"></div>
-      </main>
+      </main> */}
     </div>
   );
 }
