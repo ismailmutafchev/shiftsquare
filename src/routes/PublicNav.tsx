@@ -73,12 +73,6 @@ export default function PublicNavigation() {
                     <div className="hidden lg:ml-10 lg:block justify-self-center">
                       <div className="flex space-x-16">
                         {navigation.map((item) => {
-                          const bottomSize =
-                            item.name.length < 6
-                              ? 10
-                              : item.name.length > 4
-                              ? 20
-                              : 4;
                           return (
                             <Link
                               key={item.name}
