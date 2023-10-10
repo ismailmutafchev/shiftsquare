@@ -9,8 +9,8 @@ export default function LogoutButton() {
 
   return (
     <div
-    className="text-white hover:bg-polar-300 hover:bg-opacity-75
-    rounded-md py-2 text-sm font-medium"
+    className="text-black hover:bg-opacity-75
+    rounded-md py-2 text-sm font-regular"
     >
       {isAuthenticated && <button onClick={logoutHandler}>Log out</button>}
     </div>

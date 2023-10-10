@@ -11,6 +11,7 @@ import LoginButton from "../components/LoginButon";
 import LogoutButton from "../components/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import Logo from "../components/Logo";
+import { colors } from "../utils/colors";
 
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
@@ -35,6 +36,9 @@ export default function PublicNavigation() {
     { name: "About", href: "/about", current: pathname === "/about" },
     { name: "Pricing", href: "/pricing", current: pathname === "/pricing" },
   ]);
+  const [scaleBottomBorder, setScaleBottomBorder] = useState<string | null>(
+    null
+  );
   const { isAuthenticated, user } = useAuth0();
 
   const showDashboard = !navigation.some((item) => item.name === "Dashboard");
@@ -68,26 +72,40 @@ export default function PublicNavigation() {
                     </div>
                     <div className="hidden lg:ml-10 lg:block justify-self-center">
                       <div className="flex space-x-16">
-                        {navigation.map((item) => (
-                          <Link
-                            key={item.name}
-                            to={item.href}
-                            className={classNames(
-                              item.current
-                                ? "bg-blue-700 text-white"
-                                : "text-white hover:bg-polar-300 hover:bg-opacity-75",
-                              "rounded-md py-2 px-3 text-sm font-medium"
-                            )}
-                          >
-                            {item.name}
-                          </Link>
-                        ))}
+                        {navigation.map((item) => {
+                          const bottomSize =
+                            item.name.length < 6
+                              ? 10
+                              : item.name.length > 4
+                              ? 20
+                              : 4;
+                          return (
+                            <Link
+                              key={item.name}
+                              to={item.href}
+                              onMouseOver={() =>
+                                setScaleBottomBorder(item.name)
+                              }
+                              onMouseLeave={() => setScaleBottomBorder(null)}
+                              className={classNames(
+                                "rounded-md py-2 px-3 text-sm font-medium text-center text-white relative"
+                              )}
+                            >
+                              {item.name}
+                              <div
+                                className={`bg-green-400 absolute h-1 left-0 ${
+                                  scaleBottomBorder === item.name
+                                    ? `w-full bottom-1 rounded-b-md`
+                                    : "w-0"
+                                }  duration-300`}
+                              ></div>
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                     <div>
-                      {/* <Logo size={50} dark /> */}
-                        <LoginButton />
-                        <LogoutButton />
+                      <LoginButton />
                     </div>
                   </div>
                   <div className="flex lg:hidden">
@@ -112,20 +130,24 @@ export default function PublicNavigation() {
                       <div className="flex items-center">
                         <button
                           type="button"
-                          className="flex-shrink-0 rounded-full bg-gradient-to-br from-polar-800 to-polar-300 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
+                          className="flex-shrink-0 rounded-full p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
                         >
                           <span className="sr-only">View notifications</span>
-                          <BellIcon className="h-6 w-6" aria-hidden="true" />
+                          <BellIcon
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                            stroke={colors.polar[800]}
+                          />
                         </button>
 
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3 flex-shrink-0">
                           <div>
-                            <Menu.Button className="flex rounded-full bg-gradient-to-br from-polar-800 to-polar-300 text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
+                            <Menu.Button className="flex rounded-full text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
                               <span className="sr-only">Open user menu</span>
                               <img
                                 className="rounded-full h-8 w-8"
-                                src="https://api.dicebear.com/6.x/fun-emoji/svg?radius=0"
+                                src={user.picture}
                                 alt=""
                               />
                             </Menu.Button>
@@ -147,7 +169,7 @@ export default function PublicNavigation() {
                                       href={item.href}
                                       className={classNames(
                                         active ? "bg-gray-100" : "",
-                                        "block px-4 py-2 text-sm text-gray-700"
+                                        "block px-4 py-2 text-sm text-gray-700 "
                                       )}
                                     >
                                       {item.name}
@@ -207,7 +229,7 @@ export default function PublicNavigation() {
                       </div>
                       <button
                         type="button"
-                        className="ml-auto flex-shrink-0 rounded-full bg-gradient-to-br from-polar-800 to-polar-300 p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
+                        className="ml-auto flex-shrink-0 rounded-full p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
                       >
                         <span className="sr-only">View notifications</span>
                         ting <BellIcon className="h-6 w-6" aria-hidden="true" />
