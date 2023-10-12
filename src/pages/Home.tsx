@@ -1,46 +1,11 @@
-import { LandingAnimation, ShiftBuild } from "../assets/AnimationComponents/AnimationComponents";
-
-// const slides = [
-//   {
-//     title: 'ShiftSquare: Simplify Scheduling and Optimize Resources for Your Business',
-//     description: 'Effortless scheduling, efficient resource management - empowering your business to thrive.',
-//     animation: ShiftBuild
-//   },
-//   {
-//     title: 'Effortless scheduling made accurate, every time!',
-//     description: 'ShiftSquare simplifies roster creation, ensuring error-free schedules that save you time and reduce headaches.',
-//     animation: EasyAnimation
-//   },
-//   {
-//     title: 'No more scheduling mishaps - only the right people for the right roles! ',
-//     description: ' ShiftSquare intelligently manages availability and role assignments, preventing conflicts and ensuring optimal workforce allocation.',
-//     animation: PuzzleAnimation
-//   },
-//   {
-//     title: 'Save time and effort with customizable scheduling templates!',
-//     description: "ShiftSquare's template feature allows you to create pre-defined schedules, making recurring shifts a breeze and streamlining your scheduling process.",
-//     animation: ScheduleClock
-//   },
-//   {
-//     title: 'Stay ahead of the game with powerful forecasting insights!',
-//     description: "ShiftSquare's forecasting feature leverages historical data and predictive algorithms, empowering you to make informed decisions, optimize staffing levels, and plan for future demand.",
-//     animation: FinanceAnimation
-//   },
-//   {
-//     title: 'Unlock savings potential by tracking and optimizing your resource allocation! ',
-//     description: "ShiftSquare's spending tracking capability helps you monitor labor costs, identify inefficiencies, and allocate your resources more effectively, ultimately maximizing your operational efficiency",
-//     animation: OptimiseAnimation
-//   },
-// ]
-
-
+import { LandingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 
 export default function Home() {
   return (
     <div>
       <main className="h-[95vh] w-full overflow-scroll snap-y no-scrollbar snap-mandatory">
         {/* First Section of Home Page */}
-        <div className="relative isolate">
+        <section className="relative isolate">
           <svg
             className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
             aria-hidden="true"
@@ -78,14 +43,14 @@ export default function Home() {
             />
           </div>
           <div className="overflow-hidden flex justify-center">
-            <div className="px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+            <div className="px-6 mx-auto pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
               <div className="flex justify-between ">
-                <div className=" max-w-xl lg:shrink-0 xl:max-w-4xl ">
-                  <h1 className="text-6xl text-start font-bold my-10 tracking-tight text-gray-900 sm:text-7xl ">
+                <div className=" max-w-xl  xl:max-w-4xl lg:pt-8">
+                  <h1 className="text-6xl text-start font-bold my-10 tracking-tight text-steel-blue-900 sm:text-7xl ">
                     Simplify <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative ">Scheduling <div className="absolute top-14 -right-24 -z-10"><svg id="visual" viewBox="0 0 600 300" width="600" height="200" xmlns="http://www.w3.org/2000/svg" version="1.1"><path d="M0 47L10 45.8C20 44.7 40 42.3 60 45.8C80 49.3 100 58.7 120 54C140 49.3 160 30.7 180 31C200 31.3 220 50.7 240 50.3C260 50 280 30 300 19C320 8 340 6 360 7C380 8 400 12 420 20.8C440 29.7 460 43.3 480 46.3C500 49.3 520 41.7 540 39.5C560 37.3 580 40.7 590 42.3L600 44" fill="none" stroke-linecap="round" stroke-linejoin="miter" stroke="#00ff0f" stroke-width="15"></path></svg>
                     </div></span> and Optimize Resources for Your Business
                   </h1>
-                  <p className="relative text-start mt-20 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none font-semibold">
+                  <p className="relative text-start mt-20 text-lg leading-8 text-text-steel-blue-700 sm:max-w-md lg:max-w-none font-semibold">
                     <span className="
                     text-start bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] 
                     ">
@@ -105,14 +70,14 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="w-1/2 flex justify-center items-center">
+                <div className="opacity-90 absolute blur-sm -z-10 lg:opacity-100 lg:blur-0 lg:relative lg:flex lg:-top-20 -top-0 justify-center items-center">
                   <LandingAnimation />
                 </div>
               </div>
 
             </div>
           </div>
-        </div>
+        </section>
       </main>
     </div>
   )
