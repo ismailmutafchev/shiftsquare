@@ -1,4 +1,4 @@
-import { ShiftBuild } from "../assets/AnimationComponents/AnimationComponents";
+import { LandingAnimation, ShiftBuild } from "../assets/AnimationComponents/AnimationComponents";
 
 // const slides = [
 //   {
@@ -77,17 +77,17 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="overflow-hidden">
-            <div className="mx-auto max-w-7xl px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-              <div className={`flex justify-center`}>
-                <div className="w-full max-w-xl lg:shrink-0 xl:max-w-4xl">
-                  <h1 className="text-6xl font-bold my-10 tracking-tight text-gray-900 sm:text-7xl ">
+          <div className="overflow-hidden flex justify-center">
+            <div className="px-6 pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
+              <div className="flex justify-between ">
+                <div className=" max-w-xl lg:shrink-0 xl:max-w-4xl ">
+                  <h1 className="text-6xl text-start font-bold my-10 tracking-tight text-gray-900 sm:text-7xl ">
                     Simplify <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative ">Scheduling <div className="absolute top-14 -right-24 -z-10"><svg id="visual" viewBox="0 0 600 300" width="600" height="200" xmlns="http://www.w3.org/2000/svg" version="1.1"><path d="M0 47L10 45.8C20 44.7 40 42.3 60 45.8C80 49.3 100 58.7 120 54C140 49.3 160 30.7 180 31C200 31.3 220 50.7 240 50.3C260 50 280 30 300 19C320 8 340 6 360 7C380 8 400 12 420 20.8C440 29.7 460 43.3 480 46.3C500 49.3 520 41.7 540 39.5C560 37.3 580 40.7 590 42.3L600 44" fill="none" stroke-linecap="round" stroke-linejoin="miter" stroke="#00ff0f" stroke-width="15"></path></svg>
                     </div></span> and Optimize Resources for Your Business
                   </h1>
-                  <p className="relative mt-20 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none font-semibold">
+                  <p className="relative text-start mt-20 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none font-semibold">
                     <span className="
-                    bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] 
+                    text-start bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] 
                     ">
                       ShiftSquare
                     </span>
@@ -105,8 +105,8 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className='absolute -z-20 blur-md opacity-60 md:left-48 scale-125 -rotate-3 '>
-                  <ShiftBuild />
+                <div className="w-1/2 flex justify-center items-center">
+                  <LandingAnimation />
                 </div>
               </div>
 

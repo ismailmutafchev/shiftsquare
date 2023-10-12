@@ -7,6 +7,7 @@ import finance from '../LottieAnimations/finance.json';
 import optimization from '../LottieAnimations/optimization.json';
 import loading from '../LottieAnimations/loading-squares.json';
 import error from '../LottieAnimations/error.json';
+import landing from '../LottieAnimations/landing.json'
 import { useInView } from "react-intersection-observer";
 import { useEffect, useRef } from "react";
 
@@ -140,4 +141,14 @@ export function ErrorAnimation({message}: {message: string}) {
       </div>
     </div>
   );
+}
+
+export function LandingAnimation() {
+  return(
+    <div className=' w-[80vw] h-[80vh] md:w-[50vw]  mx-auto flex items-center justify-center'>
+      <div className=' mx-auto' >
+        <Lottie animationData={landing} loop={true} />
+      </div>
+    </div>
+  )
 }
