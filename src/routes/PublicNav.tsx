@@ -82,16 +82,17 @@ export default function PublicNavigation() {
                               }
                               onMouseLeave={() => setScaleBottomBorder(null)}
                               className={classNames(
-                                "rounded-md py-2 px-3 text-sm font-medium text-center text-white relative"
+                                "rounded-md py-2 px-3 text-sm font-medium text-center text-steel-blue-900 relative"
                               )}
                             >
-                              {item.name}
+                              <p className={`${scaleBottomBorder === item.name ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative " : ""} duration-500 text-base`}>
+                                {item.name}
+                              </p>
                               <div
-                                className={`bg-green-400 absolute h-1 left-0 ${
-                                  scaleBottomBorder === item.name
-                                    ? `w-full bottom-1 rounded-b-md`
+                                className={`bg-green-400 absolute h-1 left-0 ${scaleBottomBorder === item.name
+                                    ? `w-full bottom-1 rounded-b-md `
                                     : "w-0"
-                                }  duration-300`}
+                                  }  duration-300`}
                               ></div>
                             </Link>
                           );
