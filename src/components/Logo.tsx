@@ -1,5 +1,6 @@
 export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
   const animation = "hover:scale-110 duration-200 transpalte-x-2";
+  // https://ibb.co/0cqTBKh
   return (
     <div >
       <svg

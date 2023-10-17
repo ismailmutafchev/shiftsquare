@@ -70,7 +70,7 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="opacity-90 absolute blur-sm -z-10 lg:opacity-100 lg:blur-0 lg:relative lg:flex lg:-top-20 -top-0 justify-center items-center">
+                <div className="opacity-90 absolute blur-sm -z-10 lg:opacity-100 lg:blur-0 lg:relative lg:flex lg:-top-20  justify-center items-center">
                   <LandingAnimation />
                 </div>
               </div>
