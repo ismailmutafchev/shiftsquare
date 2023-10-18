@@ -26,6 +26,7 @@ import {
   TemplateContext,
   TemplateContextType,
 } from "../providers/TemplateContext";
+import EmptyState from "../components/EmptyState";
 
 type Section = {
   position: string;
@@ -140,17 +141,27 @@ export default function Templates() {
                                       control={control}
                                       rules={{ required: true }}
                                       render={({ field: { onChange } }) => (
-                                        <Listbox onChange={onChange} >
+                                        <Listbox onChange={onChange}>
                                           <div className="relative mt-1 w-full">
                                             <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white p-1 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-900 sm:text-sm ">
                                               {({ value }) => {
                                                 return (
                                                   <span className="flex w-full">
-                                                    <span className="ml-3 block truncate w-48
-                                                  ">
-                                                    {positions && positions.find((position: any) => position.id === value)?.name}
+                                                    <span
+                                                      className="ml-3 block truncate w-48
+                                                  "
+                                                    >
+                                                      {positions &&
+                                                        positions.find(
+                                                          (position: any) =>
+                                                            position.id ===
+                                                            value
+                                                        )?.name}
                                                     </span>
-                                                    <ChevronUpDownIcon className="ml-3 h-5 w-5 text-gray-400" aria-hidden="true" />
+                                                    <ChevronUpDownIcon
+                                                      className="ml-3 h-5 w-5 text-gray-400"
+                                                      aria-hidden="true"
+                                                    />
                                                   </span>
                                                 );
                                               }}
@@ -242,7 +253,10 @@ export default function Templates() {
                                       className="relative w-full cursor-default rounded-lg bg-white p-1 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-900 sm:text-sm "
                                     />
                                   </div>
-                                  <button className="flex items-center justify-center p-2 bg-red-200 hover:bg-red-400 transition duration-400 rounded-lg" onClick={() => day.remove(index)}>
+                                  <button
+                                    className="flex items-center justify-center p-2 bg-red-200 hover:bg-red-400 transition duration-400 rounded-lg"
+                                    onClick={() => day.remove(index)}
+                                  >
                                     <TrashIcon className="w-6 h-6 text-white" />
                                   </button>
                                 </div>
@@ -273,166 +287,175 @@ export default function Templates() {
         </>
       ) : (
         <div>
-          <ul
-            role="list"
-            className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
-          >
-            {templates &&
-              templates.map((template: any) => {
-                return (
-                  <li
-                    key={template.name}
-                    className="col-span-1 flex rounded-md shadow-sm"
-                  >
-                    <div
-                      className={classNames(
-                        "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
-                      )}
-                      style={{
-                        backgroundColor: template.bgColor,
-                        opacity: 0.8,
-                      }}
-                    ></div>
-                    <div className="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white">
-                      <div className="flex-1 truncate px-4 py-2 text-sm">
-                        <a
-                          href={template.href}
-                          className="font-medium text-gray-900 hover:text-gray-600"
-                        >
-                          {template.name}
-                        </a>
-                        <p className="text-gray-500">
-                          {template.members} Members
-                        </p>
-                      </div>
-                      <div className="flex-shrink-0 pr-2 relative">
-                        <Menu as="div" className="relative text-left">
-                          <Menu.Button className="flex">
-                            <EllipsisVerticalIcon
-                              className="h-5 w-5 hover:text-gray-500"
-                              aria-hidden="true"
-                            />
-                          </Menu.Button>
-                          <Transition
-                            as={Fragment}
-                            enter="transition ease-out duration-100"
-                            enterFrom="transform opacity-0 scale-95"
-                            enterTo="transform opacity-100 scale-100"
-                            leave="transition ease-in duration-75"
-                            leaveFrom="transform opacity-100 scale-100"
-                            leaveTo="transform opacity-0 scale-95"
+          {data && data.templates && data.templates.length === 0 ? (
+            <ul
+              role="list"
+              className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
+            >
+              {templates &&
+                templates.map((template: any) => {
+                  return (
+                    <li
+                      key={template.name}
+                      className="col-span-1 flex rounded-md shadow-sm"
+                    >
+                      <div
+                        className={classNames(
+                          "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
+                        )}
+                        style={{
+                          backgroundColor: template.bgColor,
+                          opacity: 0.8,
+                        }}
+                      ></div>
+                      <div className="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white">
+                        <div className="flex-1 truncate px-4 py-2 text-sm">
+                          <a
+                            href={template.href}
+                            className="font-medium text-gray-900 hover:text-gray-600"
                           >
-                            <Menu.Items className="absolute right-0 top-6 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                              <div className="px-1 py-1 ">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      onClick={() => {
-                                        setShowBuilder(true);
-                                      }}
-                                      className={`${
-                                        active
-                                          ? "bg-polar-800/90 text-white"
-                                          : "text-gray-900"
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <PencilSquareIcon
-                                        className="mr-2 h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                      Edit
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${
-                                        active
-                                          ? "bg-polar-800/90 text-white"
-                                          : "text-gray-900"
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <Square2StackIcon
-                                        className="mr-2 h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                      Duplicate
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                              <div className="px-1 py-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${
-                                        active
-                                          ? "bg-polar-800/90 text-white"
-                                          : "text-gray-900"
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <ArchiveBoxIcon
-                                        className="mr-2 h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                      Archive
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      className={`${
-                                        active
-                                          ? "bg-polar-800/90 text-white"
-                                          : "text-gray-900"
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <ArrowsPointingOutIcon
-                                        className="mr-2 h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                      Move
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                              <div className="px-1 py-1">
-                                <Menu.Item>
-                                  {({ active }) => (
-                                    <button
-                                      onClick={() =>
-                                        confirm(
-                                          "Are you sure you want to delete this template?"
-                                        )
-                                          ? deleteHandler(template.id)
-                                          : null
-                                      }
-                                      className={`${
-                                        active
-                                          ? "bg-polar-800/90 text-white"
-                                          : "text-gray-900"
-                                      } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                    >
-                                      <TrashIcon
-                                        className="mr-2 h-5 w-5"
-                                        aria-hidden="true"
-                                      />
-                                      Delete
-                                    </button>
-                                  )}
-                                </Menu.Item>
-                              </div>
-                            </Menu.Items>
-                          </Transition>
-                        </Menu>
+                            {template.name}
+                          </a>
+                          <p className="text-gray-500">
+                            {template.members} Members
+                          </p>
+                        </div>
+                        <div className="flex-shrink-0 pr-2 relative">
+                          <Menu as="div" className="relative text-left">
+                            <Menu.Button className="flex">
+                              <EllipsisVerticalIcon
+                                className="h-5 w-5 hover:text-gray-500"
+                                aria-hidden="true"
+                              />
+                            </Menu.Button>
+                            <Transition
+                              as={Fragment}
+                              enter="transition ease-out duration-100"
+                              enterFrom="transform opacity-0 scale-95"
+                              enterTo="transform opacity-100 scale-100"
+                              leave="transition ease-in duration-75"
+                              leaveFrom="transform opacity-100 scale-100"
+                              leaveTo="transform opacity-0 scale-95"
+                            >
+                              <Menu.Items className="absolute right-0 top-6 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                                <div className="px-1 py-1 ">
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        onClick={() => {
+                                          setShowBuilder(true);
+                                        }}
+                                        className={`${
+                                          active
+                                            ? "bg-polar-800/90 text-white"
+                                            : "text-gray-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        <PencilSquareIcon
+                                          className="mr-2 h-5 w-5"
+                                          aria-hidden="true"
+                                        />
+                                        Edit
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        className={`${
+                                          active
+                                            ? "bg-polar-800/90 text-white"
+                                            : "text-gray-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        <Square2StackIcon
+                                          className="mr-2 h-5 w-5"
+                                          aria-hidden="true"
+                                        />
+                                        Duplicate
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                </div>
+                                <div className="px-1 py-1">
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        className={`${
+                                          active
+                                            ? "bg-polar-800/90 text-white"
+                                            : "text-gray-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        <ArchiveBoxIcon
+                                          className="mr-2 h-5 w-5"
+                                          aria-hidden="true"
+                                        />
+                                        Archive
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        className={`${
+                                          active
+                                            ? "bg-polar-800/90 text-white"
+                                            : "text-gray-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        <ArrowsPointingOutIcon
+                                          className="mr-2 h-5 w-5"
+                                          aria-hidden="true"
+                                        />
+                                        Move
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                </div>
+                                <div className="px-1 py-1">
+                                  <Menu.Item>
+                                    {({ active }) => (
+                                      <button
+                                        onClick={() =>
+                                          confirm(
+                                            "Are you sure you want to delete this template?"
+                                          )
+                                            ? deleteHandler(template.id)
+                                            : null
+                                        }
+                                        className={`${
+                                          active
+                                            ? "bg-polar-800/90 text-white"
+                                            : "text-gray-900"
+                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                      >
+                                        <TrashIcon
+                                          className="mr-2 h-5 w-5"
+                                          aria-hidden="true"
+                                        />
+                                        Delete
+                                      </button>
+                                    )}
+                                  </Menu.Item>
+                                </div>
+                              </Menu.Items>
+                            </Transition>
+                          </Menu>
+                        </div>
                       </div>
-                    </div>
-                  </li>
-                );
-              })}
-          </ul>
+                    </li>
+                  );
+                })}
+            </ul>
+          ) : (
+            <EmptyState
+              title={"Template"}
+              handler={() => {
+                setShowBuilder(true);
+              }}
+            />
+          )}
         </div>
       )}
     </>
