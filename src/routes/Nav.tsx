@@ -31,7 +31,7 @@ const SearchOptions = {
   includeScore: true,
   maxPatternLength: 32,
   minMatchCharLength: 2,
-  keys: ["name"],
+  keys: ["name", "firstName", "lastName", "email"],
 };
 
 const userNavigation = [
@@ -52,6 +52,15 @@ export default function Navigation({
   const [openSearch, setOpenSearch] = useState(false);
   const { pathname } = useLocation();
   const { profile } = useSession();
+
+  const openSearchHandler = () => {
+    setOpenSearch(true);
+  }
+
+  const closeSearchHandler = () => {
+    setOpenSearch(false);
+  }
+
 
   const navigation = [
     {
@@ -149,7 +158,7 @@ export default function Navigation({
                       <button
                         type="button"
                         className="-m-2.5 p-2.5"
-                        onClick={() => setSidebarOpen(false)}
+                        onClick={closeSearchHandler}
                       >
                         <span className="sr-only">Close sidebar</span>
                         <XMarkIcon
@@ -322,7 +331,7 @@ export default function Navigation({
               <div className="flex items-center gap-x-4 lg:gap-x-6">
                 <button
                   type="button"
-                  onClick={() => setOpenSearch(true)}
+                  onClick={openSearchHandler}
                   className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
                 >
                   <span className="sr-only">Search</span>
@@ -405,7 +414,7 @@ export default function Navigation({
               open={openSearch}
               children={SearchInput}
               setOpen={() => setOpenSearch(false)}
-              data={{ test: "test" }}
+              data={{ close: closeSearchHandler }}
             />
           </div>
 
@@ -418,7 +427,7 @@ export default function Navigation({
   );
 }
 
-function SearchInput() {
+function SearchInput({data}: {data: any}) {
   const [searchStr, setSearchStr] = useState("");
   const [searchRes, setSearchRes] = useState([]);
 
@@ -441,6 +450,8 @@ function SearchInput() {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
+
+  // console.log(list)
 
   return (
     <div className="flex-grow flex-shrink-0 flex items-center">
@@ -467,16 +478,20 @@ function SearchInput() {
           />
         </div>
         <ul>
-          {searchRes.map((res: any) => (
+          {searchRes.map((res: any) => {
+            const type = res.item.__typename
+            console.log(type)
+            return(
             <li key={res.item.id}>
               <Link
-                to={`/positions/${res.item.id}`}
+                to={type === 'position' ? `/positions/${res.item.id}` : `/employees/${res.item.id}`}
                 className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                onClick={data.close}
               >
-                {res.item.name}
+                {res.item.name || res.item.firstName + " " + res.item.lastName}
               </Link>
             </li>
-          ))}
+          )})}
         </ul>
       </div>
     </div>
