@@ -26,6 +26,7 @@
     "auth0": "^3.4.0",
     "date-fns": "^2.30.0",
     "file-saver": "^2.0.5",
+    "fuse.js": "^6.6.2",
     "graphql": "^16.6.0",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
