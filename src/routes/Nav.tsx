@@ -5,6 +5,7 @@ import {
   Bars3Icon,
   BellIcon,
   CalendarDaysIcon,
+  CheckBadgeIcon,
   ChevronDownIcon,
   Cog6ToothIcon,
   MagnifyingGlassIcon,
@@ -19,6 +20,19 @@ import LogoutButton from "../components/LogoutButton";
 import { useSession } from "../providers/Session";
 import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
+import Modal from "../components/Modal";
+import Fuse from "fuse.js";
+const SearchOptions = {
+  shouldSort: true,
+  threshold: 0.4,
+  location: 0,
+  distance: 100,
+  matchAllTokens: true,
+  includeScore: true,
+  maxPatternLength: 32,
+  minMatchCharLength: 2,
+  keys: ["name", "firstName", "lastName", "email"],
+};
 
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
@@ -35,8 +49,18 @@ export default function Navigation({
 }: {
   children: React.JSX.Element;
 }) {
+  const [openSearch, setOpenSearch] = useState(false);
   const { pathname } = useLocation();
   const { profile } = useSession();
+
+  const openSearchHandler = () => {
+    setOpenSearch(true);
+  }
+
+  const closeSearchHandler = () => {
+    setOpenSearch(false);
+  }
+
 
   const navigation = [
     {
@@ -73,7 +97,7 @@ export default function Navigation({
       name: "Availability",
       href: "/availability",
       current: pathname === "/availability",
-      icon: UsersIcon,
+      icon: CheckBadgeIcon,
     },
   ];
 
@@ -134,7 +158,7 @@ export default function Navigation({
                       <button
                         type="button"
                         className="-m-2.5 p-2.5"
-                        onClick={() => setSidebarOpen(false)}
+                        onClick={closeSearchHandler}
                       >
                         <span className="sr-only">Close sidebar</span>
                         <XMarkIcon
@@ -269,9 +293,7 @@ export default function Navigation({
                     to="/setting"
                     className="group -mx-2 flex gap-x-6 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-polar-800/80 hover:text-white"
                   >
-                    {
-                      
-                    }
+                    {}
                     <Cog6ToothIcon
                       className="h-6 w-6 shrink-0 translate-x-3"
                       aria-hidden="true"
@@ -284,7 +306,11 @@ export default function Navigation({
           </div>
         </div>
 
-        <div className={`${wideSidebarOpen ? "lg:pl-64" : "lg:pl-32"} duration-300`}>
+        <div
+          className={`${
+            wideSidebarOpen ? "lg:pl-64" : "lg:pl-32"
+          } duration-300`}
+        >
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
             <button
               type="button"
@@ -301,24 +327,16 @@ export default function Navigation({
               aria-hidden="true"
             />
 
-            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
-              <form className="relative flex flex-1" action="#" method="GET">
-                <label htmlFor="search-field" className="sr-only">
-                  Search
-                </label>
-                <MagnifyingGlassIcon
-                  className="pointer-events-none absolute inset-y-0 left-0 h-full w-5 text-gray-400"
-                  aria-hidden="true"
-                />
-                <input
-                  id="search-field"
-                  className="block h-full w-full border-0 py-0 pl-8 pr-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm"
-                  placeholder="Search..."
-                  type="search"
-                  name="search"
-                />
-              </form>
+            <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6 justify-end">
               <div className="flex items-center gap-x-4 lg:gap-x-6">
+                <button
+                  type="button"
+                  onClick={openSearchHandler}
+                  className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+                >
+                  <span className="sr-only">Search</span>
+                  <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
+                </button>
                 <button
                   type="button"
                   className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
@@ -392,6 +410,12 @@ export default function Navigation({
                 </Menu>
               </div>
             </div>
+            <Modal
+              open={openSearch}
+              children={SearchInput}
+              setOpen={() => setOpenSearch(false)}
+              data={{ close: closeSearchHandler }}
+            />
           </div>
 
           <main>
@@ -400,5 +424,72 @@ export default function Navigation({
         </div>
       </div>
     </>
+  );
+}
+
+function SearchInput({data}: {data: any}) {
+  const [searchStr, setSearchStr] = useState("");
+  const [searchRes, setSearchRes] = useState<any>([]);
+
+  const { positions, employees } = useSession();
+
+  const list = positions.concat(employees);
+
+  const fuse = new Fuse(list, SearchOptions);
+
+  const clearSearch = () => {
+    setSearchStr("");
+    setSearchRes([]);
+  };
+
+  const handleChange = (e:any) => {
+    setSearchStr(e.target.value);
+    setSearchRes(e.target.value ? fuse.search(searchStr) : []);
+  };
+
+  // console.log(list)
+
+  return (
+    <div className="flex-grow flex-shrink-0 flex items-center">
+      <div className="flex-1 min-w-0">
+        <label htmlFor="search" className="sr-only">
+          Search
+        </label>
+        <div className="relative">
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            <MagnifyingGlassIcon
+              className="h-5 w-5 text-gray-400"
+              aria-hidden="true"
+            />
+          </div>
+          <input
+            id="search"
+            name="search"
+            className="block w-full h-full pl-10 pr-3 py-2 border-transparent text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-0 focus:placeholder-gray-400 sm:text-sm"
+            placeholder="Search"
+            type="search"
+            value={searchStr}
+            onAbort={clearSearch}
+            onChange={(event) => handleChange(event)} 
+          />
+        </div>
+        <ul>
+          {searchRes.map((res: any) => {
+            const type = res.item.__typename
+            console.log(type)
+            return(
+            <li key={res.item.id}>
+              <Link
+                to={type === 'position' ? `/positions/${res.item.id}` : `/employees/${res.item.id}`}
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                onClick={data.close}
+              >
+                {res.item.name || res.item.firstName + " " + res.item.lastName}
+              </Link>
+            </li>
+          )})}
+        </ul>
+      </div>
+    </div>
   );
 }

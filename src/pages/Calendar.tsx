@@ -50,6 +50,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { RotaPrint } from "../components/pdf/RotaPrint";
+import EmptyState from "../components/EmptyState";
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -356,117 +357,124 @@ export default function Calendar() {
                 </div>
 
                 {/* Events */}
-                <ol
-                  className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
-                  style={{
-                    gridTemplateColumns:
-                      "0 repeat(288, minmax(0.6rem, 1fr)) auto",
-                    gridTemplateRows: "repeat(15, minmax(0, 1fr))",
-                  }}
-                >
-                  <li
-                    className="relative mt-px flex"
-                    style={{ gridColumn: `${1} / span ${220}` }}
-                  ></li>
-                  {data?.shift.map((shift: any) => {
-                    const startTimeStr = shift.start;
-                    const finishTimeStr = shift.end;
+                {data && data.shift.length !== 0 ? (
+                  <ol
+                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
+                    style={{
+                      gridTemplateColumns:
+                        "0 repeat(288, minmax(0.6rem, 1fr)) auto",
+                      gridTemplateRows: "repeat(15, minmax(0, 1fr))",
+                    }}
+                  >
+                    <li
+                      className="relative mt-px flex"
+                      style={{ gridColumn: `${1} / span ${220}` }}
+                    ></li>
+                    {data?.shift.map((shift: any) => {
+                      const startTimeStr = shift.start;
+                      const finishTimeStr = shift.end;
 
-                    let startHour = getHours(new Date(startTimeStr)) * 12;
-                    let startMinute = getMinutes(new Date(startTimeStr)) / 5;
+                      let startHour = getHours(new Date(startTimeStr)) * 12;
+                      let startMinute = getMinutes(new Date(startTimeStr)) / 5;
 
-                    const startNumber = startHour + startMinute + 2;
+                      const startNumber = startHour + startMinute + 2;
 
-                    let endHour = getHours(new Date(finishTimeStr)) * 12;
-                    let endMinute = getMinutes(new Date(finishTimeStr)) / 5;
+                      let endHour = getHours(new Date(finishTimeStr)) * 12;
+                      let endMinute = getMinutes(new Date(finishTimeStr)) / 5;
 
-                    const endNumber = endHour + endMinute + 2 - startNumber;
-                    return (
-                      <Popover
-                        key={shift.id}
-                        className="relative mt-px flex"
-                        style={{
-                          gridColumn: `${startNumber} / span ${endNumber}`,
-                        }}
-                      >
-                        {({ open }) => (
-                          <>
-                            <Popover.Button
-                              style={{
-                                backgroundColor: shift.position.bgColor,
-                              }}
-                              className="group no-scrollbar min-h-8 items-center justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg opacity-80 p-2 text-xs  hover:opacity-100"
-                            >
-                              <p className="font-semibold text-black text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
-                            </Popover.Button>
-                            <Transition
-                              show={open}
-                              as={Fragment}
-                              enter="transition ease-out duration-200"
-                              enterFrom="opacity-0 translate-y-1"
-                              enterTo="opacity-100 translate-y-0"
-                              leave="transition ease-in duration-150"
-                              leaveFrom="opacity-100 translate-y-0"
-                              leaveTo="opacity-0 translate-y-1"
-                            >
-                              <Popover.Panel
-                                static
-                                className="absolute z-10 max-w-sm px-2 -top-8 transform -translate-x-1/2 left-1/2 sm:px-0 "
+                      const endNumber = endHour + endMinute + 2 - startNumber;
+                      return (
+                        <Popover
+                          key={shift.id}
+                          className="relative mt-px flex"
+                          style={{
+                            gridColumn: `${startNumber} / span ${endNumber}`,
+                          }}
+                        >
+                          {({ open }) => (
+                            <>
+                              <Popover.Button
+                                style={{
+                                  backgroundColor: shift.position.bgColor,
+                                }}
+                                className="group no-scrollbar min-h-8 items-center justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg opacity-80 p-2 text-xs  hover:opacity-100"
                               >
-                                <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                                  <div className="relative grid gap-6 bg-white p-1">
-                                    <div className="flex space-x-6 justify-evenly">
-                                      <div className="flex items-center col-span-1">
-                                        <button
-                                          type="button"
-                                          onClick={() => {
-                                            setShowModal(true),
-                                              setUpdate({
-                                                isUpdate: true,
-                                                data: shift,
-                                              });
-                                          }}
-                                          className="inline-flex items-center rounded-md bg-polar-900/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-900/90 hover:ring-1 ring-polar-900/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-900/90"
-                                        >
-                                          <PencilSquareIcon
-                                            className="-ml-0.5 mr-2 h-4 w-4"
-                                            aria-hidden="true"
-                                          />
-                                          Edit
-                                        </button>
-                                      </div>
-                                      <div className="flex items-center col-span-1">
-                                        <button
-                                          type="button"
-                                          onClick={() =>
-                                            confirm(
-                                              "Are you sure you want to delete this shift?"
-                                            )
-                                              ? deleteShift({
-                                                  variables: { id: shift.id },
-                                                })
-                                              : null
-                                          }
-                                          className="inline-flex items-center rounded-md bg-red-600/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-red-600/90 hover:ring-1 ring-red-600/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600/90"
-                                        >
-                                          <TrashIcon
-                                            className="-ml-0.5 mr-2 h-4 w-4"
-                                            aria-hidden="true"
-                                          />
-                                          Remove
-                                        </button>
+                                <p className="font-semibold text-black text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
+                              </Popover.Button>
+                              <Transition
+                                show={open}
+                                as={Fragment}
+                                enter="transition ease-out duration-200"
+                                enterFrom="opacity-0 translate-y-1"
+                                enterTo="opacity-100 translate-y-0"
+                                leave="transition ease-in duration-150"
+                                leaveFrom="opacity-100 translate-y-0"
+                                leaveTo="opacity-0 translate-y-1"
+                              >
+                                <Popover.Panel
+                                  static
+                                  className="absolute z-10 max-w-sm px-2 -top-8 transform -translate-x-1/2 left-1/2 sm:px-0 "
+                                >
+                                  <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                                    <div className="relative grid gap-6 bg-white p-1">
+                                      <div className="flex space-x-6 justify-evenly">
+                                        <div className="flex items-center col-span-1">
+                                          <button
+                                            type="button"
+                                            onClick={() => {
+                                              setShowModal(true),
+                                                setUpdate({
+                                                  isUpdate: true,
+                                                  data: shift,
+                                                });
+                                            }}
+                                            className="inline-flex items-center rounded-md bg-polar-900/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-900/90 hover:ring-1 ring-polar-900/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-900/90"
+                                          >
+                                            <PencilSquareIcon
+                                              className="-ml-0.5 mr-2 h-4 w-4"
+                                              aria-hidden="true"
+                                            />
+                                            Edit
+                                          </button>
+                                        </div>
+                                        <div className="flex items-center col-span-1">
+                                          <button
+                                            type="button"
+                                            onClick={() =>
+                                              confirm(
+                                                "Are you sure you want to delete this shift?"
+                                              )
+                                                ? deleteShift({
+                                                    variables: { id: shift.id },
+                                                  })
+                                                : null
+                                            }
+                                            className="inline-flex items-center rounded-md bg-red-600/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-red-600/90 hover:ring-1 ring-red-600/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600/90"
+                                          >
+                                            <TrashIcon
+                                              className="-ml-0.5 mr-2 h-4 w-4"
+                                              aria-hidden="true"
+                                            />
+                                            Remove
+                                          </button>
+                                        </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              </Popover.Panel>
-                            </Transition>
-                          </>
-                        )}
-                      </Popover>
-                    );
-                  })}
-                </ol>
+                                </Popover.Panel>
+                              </Transition>
+                            </>
+                          )}
+                        </Popover>
+                      );
+                    })}
+                  </ol>
+                ) : (
+                  <EmptyState
+                    title="Shift"
+                    handler={() => setShowModal(true)}
+                  />
+                )}
               </div>
             </div>
           </div>
