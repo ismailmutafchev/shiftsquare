@@ -429,7 +429,7 @@ export default function Navigation({
 
 function SearchInput({data}: {data: any}) {
   const [searchStr, setSearchStr] = useState("");
-  const [searchRes, setSearchRes] = useState([]);
+  const [searchRes, setSearchRes] = useState<any>([]);
 
   const { positions, employees } = useSession();
 
@@ -437,18 +437,14 @@ function SearchInput({data}: {data: any}) {
 
   const fuse = new Fuse(list, SearchOptions);
 
-  const clearSearch = (e) => {
+  const clearSearch = () => {
     setSearchStr("");
     setSearchRes([]);
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e:any) => {
     setSearchStr(e.target.value);
     setSearchRes(e.target.value ? fuse.search(searchStr) : []);
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
   };
 
   // console.log(list)
