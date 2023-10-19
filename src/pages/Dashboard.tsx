@@ -432,7 +432,7 @@ export default function Dashboard() {
             return (
               <div
                 key={block.id}
-                className={`p-6 max-h-60 min-w-auto h-full flex flex-col items-start col-span-1 md:col-span-1 justify-between rounded-2xl shadow-lg ${block.color}`}
+                className={`p-6 max-h-60 min-w-auto h-full flex flex-col items-start col-span-4 no-scrollbar md:col-span-1 justify-between rounded-2xl shadow-lg ${block.color}`}
               >
                 <div className={`${block.iconColor} p-2 rounded-md`}>
                   {block.icon}
