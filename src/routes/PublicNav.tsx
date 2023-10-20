@@ -64,7 +64,7 @@ export default function PublicNavigation() {
         <Disclosure as="nav">
           {({ open }) => (
             <>
-              <div className="mx-auto px-20 sm:px-4 lg:px-8 flex items-center">
+              <div className="mx-auto px-8 sm:px-4 lg:px-8 flex items-center">
                 <div className="relative flex h-20 items-center w-full">
                   <div className="flex items-center px-2 lg:px-0 w-full justify-between">
                     <div>
@@ -105,16 +105,16 @@ export default function PublicNavigation() {
                   </div>
                   <div className="flex lg:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-gradient-to-br from-polar-800 to-polar-300 p-2 text-blue-200 hover:bg-polar-300 hover:bg-opacity-75 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
+                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-1">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
-                        <XMarkIcon
-                          className="block h-6 w-6"
+                        <XMarkIcon 
+                          className="block h-6 w-6 text-black"
                           aria-hidden="true"
                         />
                       ) : (
                         <Bars3Icon
-                          className="block h-6 w-6"
+                          className="block h-6 w-6 text-black"
                           aria-hidden="true"
                         />
                       )}
@@ -183,8 +183,8 @@ export default function PublicNavigation() {
                 </div>
               </div>
 
-              <Disclosure.Panel className="lg:hidden">
-                <div className="space-y-1 px-2 pb-3 pt-2">
+              <Disclosure.Panel className="lg:hidden relative">
+                <div className="space-y-1 px-2 pb-3 pt-2 absolute w-full h-screen backdrop-blur-xl z-10">
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
@@ -205,7 +205,7 @@ export default function PublicNavigation() {
                   <LogoutButton />
                 </div>
                 {isAuthenticated && (
-                  <div className="border-t border-blue-700 pb-3 pt-4">
+                  <div className="hidden lg:block border-t border-blue-700 pb-3 pt-4">
                     <div className="flex items-center px-5">
                       <div className="flex-shrink-0">
                         <img

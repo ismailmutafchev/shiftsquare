@@ -308,7 +308,7 @@ export default function Navigation({
 
         <div
           className={`${
-            wideSidebarOpen ? "lg:pl-64" : "lg:pl-32"
+            wideSidebarOpen ? "lg:pl-64" : "lg:pl-24"
           } duration-300`}
         >
           <div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
@@ -415,6 +415,7 @@ export default function Navigation({
               children={SearchInput}
               setOpen={() => setOpenSearch(false)}
               data={{ close: closeSearchHandler }}
+              search
             />
           </div>
 

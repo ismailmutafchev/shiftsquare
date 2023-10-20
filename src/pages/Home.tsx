@@ -36,7 +36,7 @@ export default function Home() {
             />
           </svg>
           <div
-            className="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48"
+            className="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl md:ml-24 xl:ml-48"
             aria-hidden="true"
           >
             <div
@@ -48,14 +48,14 @@ export default function Home() {
             />
           </div>
           <div className="overflow-hidden flex justify-center">
-            <div className="px-6 mx-auto pb-32 pt-36 sm:pt-60 lg:px-8 lg:pt-32">
-              <div className="flex justify-between ">
+            <div className="px-6 mx-auto pb-32 pt-36 sm:pt-60 md:px-8 md:pt-32">
+              <div className="flex justify-center md:justify-between ">
                 <div className="  max-w-xl  xl:max-w-4xl flex flex-col justify-start">
-                  <h1 className="text-4xl text-start font-bold tracking-tight text-steel-blue-900 sm:text-5xl mx-20">
+                  <h1 className="text-4xl text-start font-bold tracking-tight text-steel-blue-900 sm:text-5xl md:mx-2 lg:mx-20">
                     Simplify{" "}
                     <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative ">
                       Scheduling{" "}
-                      <div className="absolute top-10 -right-20 -z-10">
+                      {/* <div className="absolute top-0 right-0  -z-10">
                         <svg
                           id="visual"
                           viewBox="0 0 100 500"
@@ -73,11 +73,11 @@ export default function Home() {
                             stroke-width="15"
                           ></path>
                         </svg>
-                      </div>
+                      </div> */}
                     </span>{" "}
                     and Optimize Resources for Your Business
                   </h1>
-                  <p className="relative text-start mt-20 text-lg leading-8 text-text-steel-blue-700 sm:max-w-md lg:max-w-none font-semibold mx-20">
+                  <p className="relative text-start mt-6 md:mt-20 text-lg leading-8 text-text-steel-blue-700 sm:max-w-md md:max-w-none font-semibold lg:mx-20">
                     <span
                       className="
                     text-start bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] 
@@ -88,7 +88,7 @@ export default function Home() {
                     : Effortless scheduling, efficient resource management -
                     empowering your business to thrive.
                   </p>
-                  <div className="mt-24 flex items-center gap-x-6 mx-20">
+                  <div className="mt-6 md:mt-24 flex items-center gap-x-6 mx-20">
                     <a
                       href="#"
                       className="rounded-md bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
@@ -103,7 +103,7 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="opacity-90 absolute blur-sm -z-10 lg:opacity-100 lg:blur-0 lg:relative lg:flex lg:-top-20  justify-start items-start flex">
+                <div className="opacity-90 absolute blur-sm -z-10 md:opacity-100 md:blur-0 md:relative md:flex xl:-top-16  justify-start items-start flex">
                   <LandingAnimation />
                 </div>
               </div>
