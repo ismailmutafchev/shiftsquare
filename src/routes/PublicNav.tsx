@@ -85,14 +85,21 @@ export default function PublicNavigation() {
                                 "rounded-md py-2 px-3 text-sm font-medium text-center text-steel-blue-900 relative"
                               )}
                             >
-                              <p className={`${scaleBottomBorder === item.name ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative " : ""} duration-500 text-base`}>
+                              <p
+                                className={`${
+                                  scaleBottomBorder === item.name
+                                    ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative "
+                                    : ""
+                                } duration-500 text-base`}
+                              >
                                 {item.name}
                               </p>
                               <div
-                                className={`bg-green-400 absolute h-1 left-0 ${scaleBottomBorder === item.name
+                                className={`bg-green-400 absolute h-1 left-0 ${
+                                  scaleBottomBorder === item.name
                                     ? `w-full bottom-1 rounded-b-md `
                                     : "w-0"
-                                  }  duration-300`}
+                                }  duration-300`}
                               ></div>
                             </Link>
                           );
@@ -108,7 +115,7 @@ export default function PublicNavigation() {
                     <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-1">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
-                        <XMarkIcon 
+                        <XMarkIcon
                           className="block h-6 w-6 text-black"
                           aria-hidden="true"
                         />
@@ -172,8 +179,19 @@ export default function PublicNavigation() {
                                   )}
                                 </Menu.Item>
                               ))}
-                              <LoginButton />
-                              <LogoutButton />
+                              <Menu.Item>
+                                <LoginButton />
+                              </Menu.Item>
+                              <Menu.Item>
+                                {({ active }) => (
+                                  <LogoutButton
+                                    className={classNames(
+                                      active ? "bg-gray-100" : "",
+                                      "block px-4 py-2 text-sm text-gray-700 "
+                                    )}
+                                  />
+                                )}
+                              </Menu.Item>
                             </Menu.Items>
                           </Transition>
                         </Menu>
