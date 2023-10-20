@@ -1,17 +1,18 @@
 import { useAuth0 } from "@auth0/auth0-react";
 
-export default function LogoutButton() {
+interface Props {
+  className?: string | undefined;
+}
+
+export default function LogoutButton({ className }: Props) {
   const { logout, isAuthenticated } = useAuth0();
 
   const logoutHandler = () => {
     logout();
-  }
+  };
 
   return (
-    <div
-    className="text-black hover:bg-opacity-75
-    rounded-md py-2 text-sm font-regular"
-    >
+    <div className={className}>
       {isAuthenticated && <button onClick={logoutHandler}>Log out</button>}
     </div>
   );
