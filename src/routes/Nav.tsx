@@ -448,8 +448,6 @@ function SearchInput({data}: {data: any}) {
     setSearchRes(e.target.value ? fuse.search(searchStr) : []);
   };
 
-  // console.log(list)
-
   return (
     <div className="flex-grow flex-shrink-0 flex items-center">
       <div className="flex-1 min-w-0">
@@ -477,7 +475,6 @@ function SearchInput({data}: {data: any}) {
         <ul>
           {searchRes.map((res: any) => {
             const type = res.item.__typename
-            console.log(type)
             return(
             <li key={res.item.id}>
               <Link
