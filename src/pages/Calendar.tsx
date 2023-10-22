@@ -47,7 +47,6 @@ import { Listbox, Menu, Popover, Transition } from "@headlessui/react";
 import Datepicker from "../components/Datepicker";
 import { shiftSchema } from "../validations/shift";
 import { yupResolver } from "@hookform/resolvers/yup";
-import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 import { RotaPrint } from "../components/pdf/RotaPrint";
 import EmptyState from "../components/EmptyState";
@@ -123,13 +122,11 @@ export default function Calendar() {
 
   const downloadPdf = () => {
     const capture = document.querySelector(".rota-print");
-    html2canvas(capture as HTMLElement).then((canvas) => {
-      const dataURL = canvas.toDataURL("image/png");
-      const doc = new jsPDF("p", "mm", "a4");
-      const componentHeight = doc.internal.pageSize.getHeight();
-      const componentWidth = doc.internal.pageSize.getWidth();
-      doc.addImage(dataURL, "PNG", 0, 0, componentWidth, componentHeight);
-      doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+    const doc = new jsPDF("l", "px", "a4", true);
+    doc.html(capture as HTMLElement, {
+      callback: function (doc) {
+        doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+      },
     });
   };
 
@@ -225,7 +222,7 @@ export default function Calendar() {
               Add Shift
             </button>
           </div>
-          <div className="hidden md:ml-4 md:flex md:items-center">
+          <div className="hidden md:ml-4 md:flex md:items-center ">
             <div className="top-16 w-56 text-right z-10">
               <Menu as="div" className="relative inline-block text-left">
                 {({ open }) => (
@@ -338,12 +335,9 @@ export default function Calendar() {
               <div className="grid flex-row grid-cols-3 grid-rows-1">
                 {/* Vertical lines */}
                 <div
-                  className="row-start-1 col-start-1 grid divide-x divide-gray-100"
+                  className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-[80vh]"
                   style={{
                     gridTemplateColumns: "repeat(48, minmax(3.6rem, 1fr))",
-                  }}
-                  onClick={(e) => {
-                    console.log(e.target);
                   }}
                 >
                   <div ref={containerOffset} className="col-end-1 h-7"></div>
@@ -470,10 +464,13 @@ export default function Calendar() {
                     })}
                   </ol>
                 ) : (
-                  <EmptyState
-                    title="Shift"
-                    handler={() => setShowModal(true)}
-                  />
+                  <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 relative flex items-center justify-center top-1/4">
+                    <EmptyState
+                      title="Shift"
+                      handler={() => setShowModal(true)}
+                    />
+                  </div>
+                  
                 )}
               </div>
             </div>
