@@ -19,8 +19,7 @@ export default function Modal({
   setOpen,
   title,
   children,
-  data,
-  search
+  data
 }: ModalProps) {
   const Children = children;
 
@@ -39,8 +38,8 @@ export default function Modal({
           <div className="fixed inset-0 bg-gray-500 bg-opacity-75 bg-blend-saturation backdrop-blur-sm" />
         </Transition.Child>
 
-        <div className={`${search ? "" : ""} fixed self-center inset-0 z-10 overflow-y-auto`}>
-          <div className="sm:flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+        <div className="fixed self-center inset-0 z-10 overflow-y-auto">
+          <div className="sm:flex min-h-full items-end justify-center p-4 text-center sm:items-start sm:p-0">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"

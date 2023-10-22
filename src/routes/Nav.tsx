@@ -55,12 +55,11 @@ export default function Navigation({
 
   const openSearchHandler = () => {
     setOpenSearch(true);
-  }
+  };
 
   const closeSearchHandler = () => {
     setOpenSearch(false);
-  }
-
+  };
 
   const navigation = [
     {
@@ -428,7 +427,7 @@ export default function Navigation({
   );
 }
 
-function SearchInput({data}: {data: any}) {
+function SearchInput({ data }: { data: any }) {
   const [searchStr, setSearchStr] = useState("");
   const [searchRes, setSearchRes] = useState<any>([]);
 
@@ -443,12 +442,10 @@ function SearchInput({data}: {data: any}) {
     setSearchRes([]);
   };
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     setSearchStr(e.target.value);
     setSearchRes(e.target.value ? fuse.search(searchStr) : []);
   };
-
-  // console.log(list)
 
   return (
     <div className="flex-grow flex-shrink-0 flex items-center">
@@ -471,24 +468,47 @@ function SearchInput({data}: {data: any}) {
             type="search"
             value={searchStr}
             onAbort={clearSearch}
-            onChange={(event) => handleChange(event)} 
+            onChange={(event) => handleChange(event)}
           />
         </div>
         <ul>
           {searchRes.map((res: any) => {
-            const type = res.item.__typename
-            console.log(type)
-            return(
-            <li key={res.item.id}>
-              <Link
-                to={type === 'position' ? `/positions/${res.item.id}` : `/employees/${res.item.id}`}
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                onClick={data.close}
-              >
-                {res.item.name || res.item.firstName + " " + res.item.lastName}
-              </Link>
-            </li>
-          )})}
+            const type = res.item.__typename;
+            return (
+              <li key={res.item.id} className="flex items-center hover:bg-gray-100 px-4 rounded-lg hover:text-white">
+                {type === "position" ? (
+                  <div className="rounded-md w-6 h-6 flex justify-center items-center bg-purple-heart-400">
+                    <Square3Stack3DIcon
+                      className="h-4 w-4 text-white"
+                      aria-hidden="true"
+                    />
+                  </div>
+                ) : (
+                  <div className="rounded-md w-6 h-6 flex justify-center items-center bg-steel-blue-400">
+                    <UsersIcon
+                      className="h-4 w-4 text-white"
+                      aria-hidden="true"
+                    />
+                  </div>
+                )}
+                <Link
+                  to={
+                    type === "position"
+                      ? `/positions/${res.item.id}`
+                      : `/employees/${res.item.id}`
+                  }
+                  className="block px-4 py-2 text-sm text-gray-700 w-full"
+                  onClick={data.close}
+                >
+                  <p className="font-semibold">
+                    {res.item.name ||
+                      res.item.firstName + " " + res.item.lastName}
+                  </p>
+                  <p className="text-gray-400">{type === "user" && res.item.email}</p>
+                </Link>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
