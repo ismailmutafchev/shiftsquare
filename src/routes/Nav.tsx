@@ -112,6 +112,10 @@ export default function Navigation({
     setWideSidebarOpen(false);
   };
 
+  const closeSideBarHandler = () => {
+    setSidebarOpen(false);
+  }
+
   return (
     <>
       <div>
@@ -130,7 +134,7 @@ export default function Navigation({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed inset-0 bg-polar-800/90" />
+              <div className="fixed inset-0 bg-polar-300/50 backdrop-blur-sm" />
             </Transition.Child>
 
             <div className="fixed inset-0 flex">
@@ -157,7 +161,7 @@ export default function Navigation({
                       <button
                         type="button"
                         className="-m-2.5 p-2.5"
-                        onClick={closeSearchHandler}
+                        onClick={closeSideBarHandler}
                       >
                         <span className="sr-only">Close sidebar</span>
                         <XMarkIcon
@@ -180,6 +184,7 @@ export default function Navigation({
                               <li key={item.name}>
                                 <Link
                                   to={item.href}
+                                  onClick={closeSideBarHandler}
                                   className={classNames(
                                     item.current
                                       ? "bg-gray-800 text-white"
