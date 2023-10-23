@@ -470,7 +470,6 @@ export default function Calendar() {
                       handler={() => setShowModal(true)}
                     />
                   </div>
-                  
                 )}
               </div>
             </div>

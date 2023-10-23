@@ -17,6 +17,6 @@ export const useSession = () => {
     return {
         employees: employees.data?.user,
         positions: positions.data?.position,
-        profile: {...profile?.user[0], picture: user?.picture}
+        profile: {...profile?.user[0], picture: user?.picture},
     }
 }

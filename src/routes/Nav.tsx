@@ -134,7 +134,7 @@ export default function Navigation({
               leaveFrom="opacity-100"
               leaveTo="opacity-0"
             >
-              <div className="fixed inset-0 bg-polar-300/50 backdrop-blur-sm" />
+              <div className="fixed inset-0 bg-polar-800/40 backdrop-blur-sm" />
             </Transition.Child>
 
             <div className="fixed inset-0 flex">
