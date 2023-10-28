@@ -361,7 +361,7 @@ export default function Calendar() {
                     }}
                   >
                     <li
-                      className="relative mt-px flex"
+                      className="relative mt-px  flex"
                       style={{ gridColumn: `${1} / span ${220}` }}
                     ></li>
                     {data?.shift.map((shift: any) => {
@@ -380,7 +380,7 @@ export default function Calendar() {
                       return (
                         <Popover
                           key={shift.id}
-                          className="relative mt-px flex"
+                          className="relative mt-px m-0.5 flex"
                           style={{
                             gridColumn: `${startNumber} / span ${endNumber}`,
                           }}
@@ -393,7 +393,7 @@ export default function Calendar() {
                                 }}
                                 className="group no-scrollbar min-h-8 items-center shadow-light justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg p-2 text-xs  hover:scale-[1.01] duration-200"
                               >
-                                <p className="font-semibold text-black text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
+                                <p className="font-semibold text-gray-800 text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
                               </Popover.Button>
                               <Transition
                                 show={open}
@@ -522,12 +522,17 @@ function AddShift({ data }: any) {
       if (update && shift.id === id) return false;
       return (
         shift.employeeId === data.employee &&
-        ((new Date(shift.start) <= new Date(data.date + "T" + data.start) &&
-          new Date(shift.end) >= new Date(data.date + "T" + data.start)) ||
-          (new Date(shift.start) <= new Date(data.date + "T" + data.end) &&
-            new Date(shift.end) >= new Date(data.date + "T" + data.end)))
+        ((new Date(shift.start) < new Date(data.date + "T" + data.start) &&
+          new Date(shift.end) > new Date(data.date + "T" + data.start)) ||
+          (new Date(shift.start) < new Date(data.date + "T" + data.end) &&
+            new Date(shift.end) > new Date(data.date + "T" + data.end)))
       );
     });
+
+    if (employeeBusy) {
+      alert("Employee is busy");
+      return;
+    }
 
     const shiftLength = (
       differenceInMinutes(
@@ -560,10 +565,6 @@ function AddShift({ data }: any) {
       return;
     }
 
-    if (employeeBusy) {
-      alert("Employee is busy");
-      return;
-    }
     addShift({
       variables: {
         object: {
