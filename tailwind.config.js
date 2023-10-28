@@ -91,6 +91,9 @@ export default {
         nunito: ["Nunito", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
       },
+      boxShadow: {
+        'light': '-2px -2px 3px rgba(255, 255, 255, 0.1), 2px 2px 3px rgba(70,70,70,0.4), inset -2px -2px 3px rgba(70,70,70,0.4), inset 2px 2px 3px rgba(,255, 255, 255, 0.1)',
+      }
     },
   },
   plugins: ["@tailwindcss/forms"],

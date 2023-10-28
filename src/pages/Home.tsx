@@ -91,7 +91,7 @@ export default function Home() {
                   <div className="mt-6 md:mt-24 flex items-center gap-x-6 mx-20">
                     <a
                       href="#"
-                      className="rounded-md bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
+                      className="rounded-md shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
                     >
                       Get started
                     </a>

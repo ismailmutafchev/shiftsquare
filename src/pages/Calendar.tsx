@@ -361,7 +361,7 @@ export default function Calendar() {
                     }}
                   >
                     <li
-                      className="relative mt-px flex"
+                      className="relative mt-px  flex"
                       style={{ gridColumn: `${1} / span ${220}` }}
                     ></li>
                     {data?.shift.map((shift: any) => {
@@ -380,7 +380,7 @@ export default function Calendar() {
                       return (
                         <Popover
                           key={shift.id}
-                          className="relative mt-px flex"
+                          className="relative mt-px m-0.5 flex"
                           style={{
                             gridColumn: `${startNumber} / span ${endNumber}`,
                           }}
@@ -391,9 +391,9 @@ export default function Calendar() {
                                 style={{
                                   backgroundColor: shift.position.bgColor,
                                 }}
-                                className="group no-scrollbar min-h-8 items-center justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg opacity-80 p-2 text-xs  hover:opacity-100"
+                                className="group no-scrollbar min-h-8 items-center shadow-light justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg p-2 text-xs  hover:scale-[1.01] duration-200"
                               >
-                                <p className="font-semibold text-black text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
+                                <p className="font-semibold text-gray-800 text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
                               </Popover.Button>
                               <Transition
                                 show={open}
@@ -522,12 +522,17 @@ function AddShift({ data }: any) {
       if (update && shift.id === id) return false;
       return (
         shift.employeeId === data.employee &&
-        ((new Date(shift.start) <= new Date(data.date + "T" + data.start) &&
-          new Date(shift.end) >= new Date(data.date + "T" + data.start)) ||
-          (new Date(shift.start) <= new Date(data.date + "T" + data.end) &&
-            new Date(shift.end) >= new Date(data.date + "T" + data.end)))
+        ((new Date(shift.start) < new Date(data.date + "T" + data.start) &&
+          new Date(shift.end) > new Date(data.date + "T" + data.start)) ||
+          (new Date(shift.start) < new Date(data.date + "T" + data.end) &&
+            new Date(shift.end) > new Date(data.date + "T" + data.end)))
       );
     });
+
+    if (employeeBusy) {
+      alert("Employee is busy");
+      return;
+    }
 
     const shiftLength = (
       differenceInMinutes(
@@ -560,10 +565,6 @@ function AddShift({ data }: any) {
       return;
     }
 
-    if (employeeBusy) {
-      alert("Employee is busy");
-      return;
-    }
     addShift({
       variables: {
         object: {
@@ -615,7 +616,7 @@ function AddShift({ data }: any) {
                 render={({ field: { onChange } }) => (
                   <Listbox onChange={onChange}>
                     <div className="relative mt-1">
-                      <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                         <span className="block truncate">
                           {(selectedPositionDisplay &&
                             selectedPositionDisplay.name) ||

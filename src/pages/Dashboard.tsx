@@ -294,7 +294,7 @@ export default function Dashboard() {
                   <div>
                     <Menu.Button
                       className={`inline-flex items-center rounded-md
-                        px-3 py-2 text-sm font-semibold 
+                        px-3 py-2 text-sm font-semibold
                         shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1
                          ring-polar-800/90 focus-visible:outline focus-visible:outline-2
                           focus-visible:outline-offset-2 focus-visible:outline-polar-800/90
