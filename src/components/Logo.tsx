@@ -81,7 +81,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -122,7 +122,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -163,7 +163,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -204,7 +204,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -245,7 +245,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -286,7 +286,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -327,7 +327,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -368,7 +368,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
@@ -409,7 +409,7 @@ export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
             width="480"
             height="480"
             filterUnits="userSpaceOnUse"
-            color-interpolation-filters="sRGB"
+            colorInterpolationFilters="sRGB"
           >
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feColorMatrix
