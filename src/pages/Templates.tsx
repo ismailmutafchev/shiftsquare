@@ -64,9 +64,13 @@ export default function Templates() {
     // Set the container scroll position based on the current time.
     if (container.current && containerNav.current && containerOffset.current) {
       const currentMinute = new Date().getHours() * 60;
+      // @ts-ignore
       container.current.scrollTop =
+      // @ts-ignore
         ((container.current.scrollHeight -
+          // @ts-ignore
           containerNav.current.offsetHeight -
+          // @ts-ignore
           containerOffset.current.offsetHeight) *
           currentMinute) /
         1440;
@@ -492,7 +496,7 @@ export default function Templates() {
                                       ref={containerOffset}
                                       className="row-end-1 h-7"
                                     ></div>
-                                    {positions.map((position) => {
+                                    {positions.map((position: any) => {
                                       return (
                                         <div>
                                           <div className="sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
