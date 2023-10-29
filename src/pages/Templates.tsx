@@ -1,22 +1,26 @@
 import {
   ArchiveBoxIcon,
   ArrowsPointingOutIcon,
-  CheckIcon,
-  ChevronUpDownIcon,
+  // CheckIcon,
+  // ChevronUpDownIcon,
   EllipsisVerticalIcon,
   PencilSquareIcon,
   PlusIcon,
   Square2StackIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { Fragment, useContext, useState } from "react";
+import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { getTemplate, getTemplates } from "../queries/templates/queries";
 import { deleteTemplateById } from "../queries/templates/mutations";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
-import { Listbox, Menu, Transition } from "@headlessui/react";
-import { Controller } from "react-hook-form";
-import { useSession } from "../providers/Session";
+import {
+  // Listbox,
+  Menu,
+  Transition,
+} from "@headlessui/react";
+// import { Controller } from "react-hook-form";
+// import { useSession } from "../providers/Session";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
@@ -27,6 +31,7 @@ import {
   TemplateContextType,
 } from "../providers/TemplateContext";
 import EmptyState from "../components/EmptyState";
+import { useSession } from "../providers/Session";
 
 type Section = {
   position: string;
@@ -49,11 +54,37 @@ function classNames(...classes: string[]) {
 }
 
 export default function Templates() {
-  const { weekDays, register, handleSubmit, control } =
-    useContext(TemplateContext) || ({} as TemplateContextType);
-  const [showBuilder, setShowBuilder] = useState(false);
+  const container = useRef(null);
+  const containerNav = useRef(null);
+  const containerOffset = useRef(null);
 
   const { positions } = useSession();
+
+  useEffect(() => {
+    // Set the container scroll position based on the current time.
+    if (container.current && containerNav.current && containerOffset.current) {
+      const currentMinute = new Date().getHours() * 60;
+      // @ts-ignore
+      container.current.scrollTop =
+      // @ts-ignore
+        ((container.current.scrollHeight -
+          // @ts-ignore
+          containerNav.current.offsetHeight -
+          // @ts-ignore
+          containerOffset.current.offsetHeight) *
+          currentMinute) /
+        1440;
+    }
+  }, []);
+  const {
+    weekDays,
+    //  register,
+    handleSubmit,
+    // control
+  } = useContext(TemplateContext) || ({} as TemplateContextType);
+  const [showBuilder, setShowBuilder] = useState(false);
+
+  // const { positions } = useSession();
 
   const onSubmit = (data: FormValues) => console.log(data);
 
@@ -70,6 +101,33 @@ export default function Templates() {
   const deleteHandler = (id: string) => {
     deleteTemplate({ variables: { id } });
   };
+
+  const hours = [
+    "12AM",
+    "1AM",
+    "2AM",
+    "3AM",
+    "4AM",
+    "5AM",
+    "6AM",
+    "7AM",
+    "8AM",
+    "9AM",
+    "10AM",
+    "11AM",
+    "12PM",
+    "1PM",
+    "2PM",
+    "3PM",
+    "4PM",
+    "5PM",
+    "6PM",
+    "7PM",
+    "8PM",
+    "9PM",
+    "10PM",
+    "11PM",
+  ];
 
   return (
     <>
@@ -115,14 +173,14 @@ export default function Templates() {
                     weekDays.map((day, index) => {
                       return (
                         <SwiperSlide
-                          className="bg-jagged-ice-50 rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-96 overflow-scroll rounded-xl shadow-sm-xl"
+                          className="bg-jagged-ice-50 rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-[38rem] overflow-scroll rounded-xl shadow-sm-xl"
                           key={index}
                         >
                           <h2 className="w-full bg-red-300/10 text-bold text-xl sticky top-0 backdrop-blur-sm p-2">
                             {day.name.charAt(0).toUpperCase() +
                               day.name.slice(1)}
                           </h2>
-                          <div className="flex flex-col">
+                          {/* <div className="flex flex-col">
                             {day.day.map((shift, index) => {
                               return (
                                 <div
@@ -262,6 +320,271 @@ export default function Templates() {
                                 </div>
                               );
                             })}
+                          </div> */}
+                          <div
+                            ref={container}
+                            className="isolate flex flex-auto flex-col overflow-auto bg-white"
+                          >
+                            <div
+                              style={{ width: "165%" }}
+                              className="flex max-w-full flex-none flex-col sm:max-w-none md:max-w-full"
+                            >
+                              <div
+                                ref={containerNav}
+                                className="sticky top-0 z-30 flex-none bg-white shadow ring-1 ring-black ring-opacity-5 sm:pr-8"
+                              >
+                                <div className="grid grid-cols-7 text-sm leading-6 text-gray-500 sm:hidden">
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    M{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
+                                      10
+                                    </span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    T{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
+                                      11
+                                    </span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    W{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
+                                      12
+                                    </span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    T{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
+                                      13
+                                    </span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    F{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
+                                      14
+                                    </span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    S{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
+                                      15
+                                    </span>
+                                  </button>
+                                  <button
+                                    type="button"
+                                    className="flex flex-col items-center pb-3 pt-2"
+                                  >
+                                    S{" "}
+                                    <span className="mt-1 flex h-8 w-8 items-center justify-center font-semibold text-gray-900">
+                                      16
+                                    </span>
+                                  </button>
+                                </div>
+
+                                <div
+                                  className="-mr-px hidden divide-x divide-gray-100 border-r border-gray-100 text-sm leading-6 text-gray-500 sm:grid"
+                                  style={{
+                                    gridTemplateColumns:
+                                      "repeat(48, minmax(3.5rem, 1fr))",
+                                  }}
+                                >
+                                  <div
+                                    ref={containerOffset}
+                                    className="row-end-10 h-7"
+                                  ></div>
+
+                                  {hours.map((hour) => {
+                                    return (
+                                      <div>
+                                        <div className="sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
+                                          {hour}
+                                        </div>
+                                      </div>
+                                    );
+                                  })}
+                                  <div />
+
+                                  {/* <div className="col-end-1 w-14" />
+                                  <div className="flex items-center justify-center py-3">
+                                    <span>
+                                      Mon{" "}
+                                      <span className="items-center justify-center font-semibold text-gray-900">
+                                        10
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center justify-center py-3">
+                                    <span>
+                                      Tue{" "}
+                                      <span className="items-center justify-center font-semibold text-gray-900">
+                                        11
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center justify-center py-3">
+                                    <span className="flex items-baseline">
+                                      Wed{" "}
+                                      <span className="ml-1.5 flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 font-semibold text-white">
+                                        12
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center justify-center py-3">
+                                    <span>
+                                      Thu{" "}
+                                      <span className="items-center justify-center font-semibold text-gray-900">
+                                        13
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center justify-center py-3">
+                                    <span>
+                                      Fri{" "}
+                                      <span className="items-center justify-center font-semibold text-gray-900">
+                                        14
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center justify-center py-3">
+                                    <span>
+                                      Sat{" "}
+                                      <span className="items-center justify-center font-semibold text-gray-900">
+                                        15
+                                      </span>
+                                    </span>
+                                  </div>
+                                  <div className="flex items-center justify-center py-3">
+                                    <span>
+                                      Sun{" "}
+                                      <span className="items-center justify-center font-semibold text-gray-900">
+                                        16
+                                      </span>
+                                    </span>
+                                  </div> */}
+                                </div>
+                              </div>
+                              <div className="flex flex-auto">
+                                <div className="sticky left-0 z-10 w-14 flex-none bg-white ring-1 ring-gray-100" />
+                                <div className="grid flex-auto grid-rows-1 grid-cols-1">
+                                  {/* Horizontal lines */}
+                                  <div
+                                    className="row-start-1 row-end-2 col-start-1 grid divide-y divide-gray-100"
+                                    style={{
+                                      gridTemplateRows:
+                                        "repeat(7, minmax(3.5rem, 1fr))",
+                                    }}
+                                  >
+                                    <div
+                                      ref={containerOffset}
+                                      className="row-end-1 h-7"
+                                    ></div>
+                                    {positions.map((position: any) => {
+                                      return (
+                                        <div>
+                                          <div className="sticky left-0 z-20 -ml-14 -mt-2.5 w-14 pr-2 text-right text-xs leading-5 text-gray-400">
+                                            {position.name}
+                                          </div>
+                                        </div>
+                                      );
+                                    })}
+
+                                    {/* Vertical lines */}
+                                    <div className="row-start-1 row-end-2 col-start-1 hidden grid-row-7 grid-cols-1 divide-y divide-gray-100 sm:grid sm:grid-rows-7">
+                                      <div className="row-start-1 col-span-full" />
+                                      <div className="row-start-2 col-span-full" />
+                                      <div className="row-start-3 col-span-full" />
+                                      <div className="row-start-4 col-span-full" />
+                                      <div className="row-start-5 col-span-full" />
+                                      <div className="row-start-6 col-span-full" />
+                                      <div className="row-start-7 col-span-full" />
+                                      <div className="row-start-8 col-span-full w-8" />
+                                    </div>
+
+                                    {/* Events */}
+                                    <ol
+                                      className="row-start-1 row-end-2 col-start-1 grid grid-rows-1 sm:grid-rows-7 sm:pr-8"
+                                      style={{
+                                        gridTemplateRows:
+                                          "1.75rem repeat(288, minmax(0, 1fr)) auto",
+                                      }}
+                                    >
+                                      <li
+                                        className="relative mt-px flex sm:col-start-3"
+                                        style={{ gridRow: "74 / span 12" }}
+                                      >
+                                        <a
+                                          href="#"
+                                          className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-blue-50 p-2 text-xs leading-5 hover:bg-blue-100"
+                                        >
+                                          <p className="order-1 font-semibold text-blue-700">
+                                            Breakfast
+                                          </p>
+                                          <p className="text-blue-500 group-hover:text-blue-700">
+                                            <time dateTime="2022-01-12T06:00">
+                                              6:00 AM
+                                            </time>
+                                          </p>
+                                        </a>
+                                      </li>
+                                      <li
+                                        className="relative mt-px flex sm:col-start-3"
+                                        style={{ gridRow: "92 / span 30" }}
+                                      >
+                                        <a
+                                          href="#"
+                                          className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-pink-50 p-2 text-xs leading-5 hover:bg-pink-100"
+                                        >
+                                          <p className="order-1 font-semibold text-pink-700">
+                                            Flight to Paris
+                                          </p>
+                                          <p className="text-pink-500 group-hover:text-pink-700">
+                                            <time dateTime="2022-01-12T07:30">
+                                              7:30 AM
+                                            </time>
+                                          </p>
+                                        </a>
+                                      </li>
+                                      <li
+                                        className="relative mt-px hidden sm:col-start-6 sm:flex"
+                                        style={{ gridRow: "122 / span 24" }}
+                                      >
+                                        <a
+                                          href="#"
+                                          className="group absolute inset-1 flex flex-col overflow-y-auto rounded-lg bg-gray-100 p-2 text-xs leading-5 hover:bg-gray-200"
+                                        >
+                                          <p className="order-1 font-semibold text-gray-700">
+                                            Meeting with design team at Disney
+                                          </p>
+                                          <p className="text-gray-500 group-hover:text-gray-700">
+                                            <time dateTime="2022-01-15T10:00">
+                                              10:00 AM
+                                            </time>
+                                          </p>
+                                        </a>
+                                      </li>
+                                    </ol>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
                           </div>
                           <button
                             type="button"
