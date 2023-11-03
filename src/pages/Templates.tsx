@@ -197,7 +197,7 @@ export default function Templates() {
                                     className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-[80vh]"
                                     style={{
                                       gridTemplateColumns:
-                                        "repeat(48, minmax(3.6rem, 1fr) [col-end])",
+                                        "repeat(48, minmax(1.8rem, 1fr))",
                                     }}
                                   >
                                     <div
@@ -224,7 +224,7 @@ export default function Templates() {
                                       className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
                                       style={{
                                         gridTemplateColumns:
-                                          "0 repeat(288, minmax(0.6rem, 1fr)) auto",
+                                          "0 repeat(288, minmax(0.3rem, 0.5fr)) auto",
                                         gridTemplateRows:
                                           "repeat(15, minmax(0, 1fr))",
                                       }}
