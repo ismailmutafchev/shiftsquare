@@ -1,18 +1,11 @@
-import {
-  ArchiveBoxIcon,
-  ArrowsPointingOutIcon,
-  // CheckIcon,
-  // ChevronUpDownIcon,
-  EllipsisVerticalIcon,
-  PencilSquareIcon,
-  PlusIcon,
-  Square2StackIcon,
-  TrashIcon,
-} from "@heroicons/react/24/outline";
+import { EllipsisHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { getTemplate, getTemplates } from "../queries/templates/queries";
-import { deleteTemplateById } from "../queries/templates/mutations";
+import { getTemplates } from "../queries/templates/queries";
+import {
+  insertTemplate,
+  updateTemplateById,
+} from "../queries/templates/mutations";
 import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 import {
   // Listbox,
@@ -40,6 +33,8 @@ import {
   TemplateContextType,
 } from "../providers/TemplateContext";
 import EmptyState from "../components/EmptyState";
+import Modal from "../components/Modal";
+import { useForm } from "react-hook-form";
 
 type Section = {
   position: string;
@@ -89,20 +84,31 @@ export default function Templates() {
     // control
   } = useContext(TemplateContext) || ({} as TemplateContextType);
   const [showBuilder, setShowBuilder] = useState(false);
+  const [update, setUpdate] = useState({
+    isUpdate: false,
+    data: {},
+  });
+
+  const [showTemplateModal, setShowTemplateModal] = useState(false);
+
+  function modalHandler(state: boolean) {
+    setShowTemplateModal(state);
+  }
+  function builderHandler(state: boolean) {
+    setShowBuilder(state);
+  }
 
   // const { positions } = useSession();
 
   const onSubmit = (data: FormValues) => console.log(data);
 
   const { loading, error, data } = useQuery(getTemplates);
-  const [deleteTemplate] = useMutation(deleteTemplateById, {
-    refetchQueries: [{ query: getTemplate }],
-  });
+  // const [deleteTemplate] = useMutation(deleteTemplateById, {
+  //   refetchQueries: [{ query: getTemplate }],
+  // });
 
   if (loading) return <LoadingAnimation />;
   if (error) return <p>Error :(</p>;
-
-  const templates = data?.template;
 
   const timeSlots = eachMinuteOfInterval(
     {
@@ -112,9 +118,9 @@ export default function Templates() {
     { step: 30 }
   );
 
-  const deleteHandler = (id: string) => {
-    deleteTemplate({ variables: { id } });
-  };
+  // const deleteHandler = (id: string) => {
+  //   deleteTemplate({ variables: { id } });
+  // };
 
   return (
     <>
@@ -125,7 +131,8 @@ export default function Templates() {
         <div className="mt-3 sm:ml-4 sm:mt-0">
           <button
             onClick={() => {
-              setShowBuilder(true);
+              modalHandler(true);
+              setUpdate({ isUpdate: false, data: {} });
             }}
             type="button"
             className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
@@ -260,9 +267,10 @@ export default function Templates() {
                                         return (
                                           <Popover
                                             key={shift.id}
-                                            className="relative mt-px m-0.5 flex"
+                                            className="relative mt-px m-0.5 flex rounded-md"
                                             style={{
                                               gridColumn: `${startNumber} / span ${endNumber}`,
+                                              backgroundColor: "red",
                                             }}
                                           >
                                             {({ open }) => (
@@ -331,177 +339,204 @@ export default function Templates() {
         </>
       ) : (
         <div>
-          {data && data.templates && data.templates.length === 0 ? (
-            <ul
-              role="list"
-              className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
-            >
-              {templates &&
-                templates.map((template: any) => {
-                  return (
-                    <li
-                      key={template.name}
-                      className="col-span-1 flex rounded-md shadow-sm"
-                    >
-                      <div
-                        className={classNames(
-                          "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
-                        )}
-                        style={{
-                          backgroundColor: template.bgColor,
-                          opacity: 0.8,
-                        }}
-                      ></div>
-                      <div className="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white">
-                        <div className="flex-1 truncate px-4 py-2 text-sm">
-                          <a
-                            href={template.href}
-                            className="font-medium text-gray-900 hover:text-gray-600"
-                          >
-                            {template.name}
-                          </a>
-                          <p className="text-gray-500">
-                            {template.members} Members
-                          </p>
-                        </div>
-                        <div className="flex-shrink-0 pr-2 relative">
-                          <Menu as="div" className="relative text-left">
-                            <Menu.Button className="flex">
-                              <EllipsisVerticalIcon
-                                className="h-5 w-5 hover:text-gray-500"
-                                aria-hidden="true"
-                              />
-                            </Menu.Button>
-                            <Transition
-                              as={Fragment}
-                              enter="transition ease-out duration-100"
-                              enterFrom="transform opacity-0 scale-95"
-                              enterTo="transform opacity-100 scale-100"
-                              leave="transition ease-in duration-75"
-                              leaveFrom="transform opacity-100 scale-100"
-                              leaveTo="transform opacity-0 scale-95"
-                            >
-                              <Menu.Items className="absolute right-0 top-6 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                <div className="px-1 py-1 ">
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        onClick={() => {
-                                          setShowBuilder(true);
-                                        }}
-                                        className={`${
-                                          active
-                                            ? "bg-polar-800/90 text-white"
-                                            : "text-gray-900"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        <PencilSquareIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                        Edit
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        className={`${
-                                          active
-                                            ? "bg-polar-800/90 text-white"
-                                            : "text-gray-900"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        <Square2StackIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                        Duplicate
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                </div>
-                                <div className="px-1 py-1">
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        className={`${
-                                          active
-                                            ? "bg-polar-800/90 text-white"
-                                            : "text-gray-900"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        <ArchiveBoxIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                        Archive
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        className={`${
-                                          active
-                                            ? "bg-polar-800/90 text-white"
-                                            : "text-gray-900"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        <ArrowsPointingOutIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                        Move
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                </div>
-                                <div className="px-1 py-1">
-                                  <Menu.Item>
-                                    {({ active }) => (
-                                      <button
-                                        onClick={() =>
-                                          confirm(
-                                            "Are you sure you want to delete this template?"
-                                          )
-                                            ? deleteHandler(template.id)
-                                            : null
-                                        }
-                                        className={`${
-                                          active
-                                            ? "bg-polar-800/90 text-white"
-                                            : "text-gray-900"
-                                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                      >
-                                        <TrashIcon
-                                          className="mr-2 h-5 w-5"
-                                          aria-hidden="true"
-                                        />
-                                        Delete
-                                      </button>
-                                    )}
-                                  </Menu.Item>
-                                </div>
-                              </Menu.Items>
-                            </Transition>
-                          </Menu>
-                        </div>
+          <div>
+            {data && data.template && data.template.length !== 0 ? (
+              <ul
+                role="list"
+                className="grid grid-cols-1 gap-x-6 gap-y-8 lg:grid-cols-3 xl:gap-x-8"
+              >
+                {data.template.map((template: any) => (
+                  <li
+                    key={template.id}
+                    className="overflow-hidden rounded-xl border border-gray-200"
+                  >
+                    <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
+                      <img
+                        src={template.imageUrl}
+                        alt={template.name}
+                        className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
+                      />
+                      <div className="text-sm font-medium leading-6 text-gray-900">
+                        {template.name}
                       </div>
-                    </li>
-                  );
-                })}
-            </ul>
-          ) : (
-            <EmptyState
-              title={"Template"}
-              handler={() => {
-                setShowBuilder(true);
-              }}
-            />
-          )}
+                      <Menu as="div" className="relative ml-auto">
+                        <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
+                          <span className="sr-only">Open options</span>
+                          <EllipsisHorizontalIcon
+                            className="h-5 w-5"
+                            aria-hidden="true"
+                          />
+                        </Menu.Button>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-100"
+                          enterFrom="transform opacity-0 scale-95"
+                          enterTo="transform opacity-100 scale-100"
+                          leave="transition ease-in duration-75"
+                          leaveFrom="transform opacity-100 scale-100"
+                          leaveTo="transform opacity-0 scale-95"
+                        >
+                          <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={classNames(
+                                    active ? "bg-gray-50" : "",
+                                    "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                  )}
+                                >
+                                  View
+                                  <span className="sr-only">
+                                    , {template.name}
+                                  </span>
+                                </a>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <a
+                                  href="#"
+                                  className={classNames(
+                                    active ? "bg-gray-50" : "",
+                                    "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                  )}
+                                >
+                                  Edit
+                                  <span className="sr-only">
+                                    , {template.name}
+                                  </span>
+                                </a>
+                              )}
+                            </Menu.Item>
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
+                    </div>
+                    <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
+                      <div className="flex justify-between gap-x-4 py-3">
+                        <dt className="text-gray-500">Last invoice</dt>
+                        <dd className="text-gray-700">
+                          <time dateTime={template.createdAt}>
+                            {template.createdAt}
+                          </time>
+                        </dd>
+                      </div>
+                      <div className="flex justify-between gap-x-4 py-3">
+                        <dt className="text-gray-500">Amount</dt>
+                        <dd className="flex items-start gap-x-2">
+                          <div className="font-medium text-gray-900">
+                            template.lastInvoice.amount
+                          </div>
+                          <div
+                            className={classNames(
+                              "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
+                            )}
+                          >
+                            template.lastInvoice.status
+                          </div>
+                        </dd>
+                      </div>
+                    </dl>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <EmptyState
+                title={"Template"}
+                handler={() => {
+                  setShowTemplateModal(true);
+                }}
+              />
+            )}
+          </div>
+          <Modal
+            data={{ ...weekDays, modalHandler, builderHandler, update }}
+            open={showTemplateModal}
+            title="New Template"
+            setOpen={() => {
+              modalHandler(false);
+            }}
+            children={Template}
+          />
         </div>
       )}
     </>
+  );
+}
+
+function Template({ data }: any) {
+  const { register, handleSubmit } = useForm();
+  const { update, modalHandler, builderHandler } = data;
+
+  const [addTemplate] = useMutation(insertTemplate);
+  const [updateTemplateByOne] = useMutation(updateTemplateById);
+
+  function submit(data: any) {
+    if (update && update.isUpdate) {
+      updateTemplateByOne({
+        variables: { id: update.data.id, object: data },
+        refetchQueries: [{ query: getTemplates }],
+        onCompleted: () => modalHandler(false),
+      });
+      return;
+    }
+    addTemplate({
+      variables: { object: data },
+      refetchQueries: [{ query: getTemplates }],
+      onCompleted: () => {
+        modalHandler(false);
+        builderHandler(true);
+      },
+    });
+  }
+
+  return (
+    <form onSubmit={handleSubmit(submit)}>
+      <div className="space-y-12 sm:space-y-16">
+        <div>
+          <div className="mt-10 space-y-8 pb-12 sm:space-y-0 sm:divide-y sm:pb-0">
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label
+                htmlFor="name"
+                className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+              >
+                Template Name
+              </label>
+              <input
+                placeholder="School Holiday"
+                className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                {...register("name", { required: true })}
+              />
+            </div>
+
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label
+                htmlFor="hours"
+                className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+              >
+                Hours Budget
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0">
+                <input
+                  placeholder="480"
+                  className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  {...register("hours", { required: true })}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-6 flex items-center justify-end gap-x-6">
+        <button
+          type="submit"
+          className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90  focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
   );
 }
