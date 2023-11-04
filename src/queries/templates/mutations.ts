@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client'
 
-export const insertTemplate = gql` mutation($shifts: jsonb!) {
-    insert_template_one(object: {shifts: $shifts}) {
+export const insertTemplate = gql` mutation($object: template_insert_input!) {
+    insert_template_one(object: $object) {
         id
         createdAt
         updatedAt
