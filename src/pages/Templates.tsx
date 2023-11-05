@@ -1,8 +1,14 @@
-import { EllipsisHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  CheckBadgeIcon,
+  ChevronLeftIcon,
+  EllipsisHorizontalIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { getTemplates } from "../queries/templates/queries";
 import {
+  deleteTemplateById,
   insertTemplate,
   updateTemplateById,
 } from "../queries/templates/mutations";
@@ -52,6 +58,22 @@ type FormValues = {
   sundayShifts: Section[];
 };
 
+type TemplateUpdate = {
+  isUpdate: boolean;
+  data: {
+    id: string;
+    name: string;
+    hours: number;
+    createdAt: string;
+    updatedAt: string;
+    day: {
+      id: string;
+      name: string;
+      day: Section[];
+    }[];
+  } | null;
+  };
+
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
@@ -84,9 +106,9 @@ export default function Templates() {
     // control
   } = useContext(TemplateContext) || ({} as TemplateContextType);
   const [showBuilder, setShowBuilder] = useState(false);
-  const [update, setUpdate] = useState({
+  const [update, setUpdate] = useState<TemplateUpdate>({
     isUpdate: false,
-    data: {},
+    data: null,
   });
 
   const [showTemplateModal, setShowTemplateModal] = useState(false);
@@ -98,14 +120,21 @@ export default function Templates() {
     setShowBuilder(state);
   }
 
+  
   // const { positions } = useSession();
-
-  const onSubmit = (data: FormValues) => console.log(data);
-
+  
   const { loading, error, data } = useQuery(getTemplates);
-  // const [deleteTemplate] = useMutation(deleteTemplateById, {
-  //   refetchQueries: [{ query: getTemplate }],
-  // });
+  const [deleteTemplate] = useMutation(deleteTemplateById, {
+    refetchQueries: [{ query: getTemplates }],
+  });
+  const [updateTemplateOne] = useMutation(updateTemplateById);
+
+  const onSubmit = (data: FormValues) => {
+    updateTemplateOne({
+      variables: { id: update?.data?.id, shifts: data },
+      refetchQueries: [{ query: getTemplates }],
+    });
+  }
 
   if (loading) return <LoadingAnimation />;
   if (error) return <p>Error :(</p>;
@@ -118,9 +147,9 @@ export default function Templates() {
     { step: 30 }
   );
 
-  // const deleteHandler = (id: string) => {
-  //   deleteTemplate({ variables: { id } });
-  // };
+  const deleteHandler = (id: string) => {
+    deleteTemplate({ variables: { id } });
+  };
 
   return (
     <>
@@ -132,7 +161,7 @@ export default function Templates() {
           <button
             onClick={() => {
               modalHandler(true);
-              setUpdate({ isUpdate: false, data: {} });
+              setUpdate({ isUpdate: false, data: null });
             }}
             type="button"
             className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
@@ -169,15 +198,31 @@ export default function Templates() {
                         <SwiperSlide
                           className="bg-jagged-ice-50 rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-[38rem] overflow-scroll rounded-xl shadow-sm-xl"
                           key={index}
-                          onClick={() => {
-                            console.log(containerOffset);
-                          }}
                         >
                           <h2 className="w-full bg-red-300/10 text-bold text-xl sticky top-0 backdrop-blur-sm p-2 z-10 flex justify-between px-10">
-                            <p className="font-semibold text-gray-800">
-                              {day.name.charAt(0).toUpperCase() +
-                                day.name.slice(1)}
-                            </p>
+                            <div className="flex space-x-10  items-center">
+                              <button
+                                onClick={() => setShowBuilder(false)}
+                                className="flex  items-center "
+                              >
+                                <ChevronLeftIcon className="w-5 h-5" />
+                                <span className="font-normal text-gray-800">
+                                  Back
+                                </span>
+                              </button>
+                              <p className="font-semibold text-gray-800">
+                                {day.name.charAt(0).toUpperCase() +
+                                  day.name.slice(1)}
+                              </p>
+                            </div>
+                            <button
+                              type="submit"
+                              onClick={handleSubmit(onSubmit)}
+                              // disabled={TODO}
+                              className="bg-polar-800/90 text-white rounded-md p-2"
+                            >
+                              <CheckBadgeIcon className="w-5 h-5" />
+                            </button>
                             <button
                               type="button"
                               onClick={() =>
@@ -214,9 +259,6 @@ export default function Templates() {
                                     {timeSlots.map((timeSlot, idx) => (
                                       <div key={timeSlot.toString() + idx}>
                                         <div
-                                          onClick={(e) => {
-                                            console.log(e);
-                                          }}
                                           className="sticky w-10 items-center justify-center bg-white border flex text-xs leading-5 text-gray-400"
                                         >
                                           {format(timeSlot, "H:mm")}
@@ -380,7 +422,13 @@ export default function Templates() {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="#"
+                                  onClick={() => {
+                                    setUpdate({
+                                      isUpdate: true,
+                                      data: template,
+                                    });
+                                    builderHandler(true);
+                                  }}
                                   className={classNames(
                                     active ? "bg-gray-50" : "",
                                     "block px-3 py-1 text-sm leading-6 text-gray-900"
@@ -396,13 +444,13 @@ export default function Templates() {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="#"
+                                  onClick={() => deleteHandler(template.id)}
                                   className={classNames(
                                     active ? "bg-gray-50" : "",
                                     "block px-3 py-1 text-sm leading-6 text-gray-900"
                                   )}
                                 >
-                                  Edit
+                                  Delete
                                   <span className="sr-only">
                                     , {template.name}
                                   </span>
