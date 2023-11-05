@@ -1,8 +1,13 @@
-import { EllipsisHorizontalIcon, PlusIcon } from "@heroicons/react/24/outline";
+import {
+  ChevronLeftIcon,
+  EllipsisHorizontalIcon,
+  PlusIcon,
+} from "@heroicons/react/24/outline";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
 import { getTemplates } from "../queries/templates/queries";
 import {
+  deleteTemplateById,
   insertTemplate,
   updateTemplateById,
 } from "../queries/templates/mutations";
@@ -103,9 +108,9 @@ export default function Templates() {
   const onSubmit = (data: FormValues) => console.log(data);
 
   const { loading, error, data } = useQuery(getTemplates);
-  // const [deleteTemplate] = useMutation(deleteTemplateById, {
-  //   refetchQueries: [{ query: getTemplate }],
-  // });
+  const [deleteTemplate] = useMutation(deleteTemplateById, {
+    refetchQueries: [{ query: getTemplates }],
+  });
 
   if (loading) return <LoadingAnimation />;
   if (error) return <p>Error :(</p>;
@@ -118,9 +123,9 @@ export default function Templates() {
     { step: 30 }
   );
 
-  // const deleteHandler = (id: string) => {
-  //   deleteTemplate({ variables: { id } });
-  // };
+  const deleteHandler = (id: string) => {
+    deleteTemplate({ variables: { id } });
+  };
 
   return (
     <>
@@ -174,10 +179,21 @@ export default function Templates() {
                           }}
                         >
                           <h2 className="w-full bg-red-300/10 text-bold text-xl sticky top-0 backdrop-blur-sm p-2 z-10 flex justify-between px-10">
-                            <p className="font-semibold text-gray-800">
-                              {day.name.charAt(0).toUpperCase() +
-                                day.name.slice(1)}
-                            </p>
+                            <div className="flex space-x-10  items-center">
+                              <button
+                                onClick={() => setShowBuilder(false)}
+                                className="flex  items-center "
+                              >
+                                <ChevronLeftIcon className="w-5 h-5" />
+                                <span className="font-normal text-gray-800">
+                                  Back
+                                </span>
+                              </button>
+                              <p className="font-semibold text-gray-800">
+                                {day.name.charAt(0).toUpperCase() +
+                                  day.name.slice(1)}
+                              </p>
+                            </div>
                             <button
                               type="button"
                               onClick={() =>
@@ -380,7 +396,13 @@ export default function Templates() {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="#"
+                                  onClick={() => {
+                                    setUpdate({
+                                      isUpdate: true,
+                                      data: template,
+                                    });
+                                    builderHandler(true);
+                                  }}
                                   className={classNames(
                                     active ? "bg-gray-50" : "",
                                     "block px-3 py-1 text-sm leading-6 text-gray-900"
@@ -396,13 +418,13 @@ export default function Templates() {
                             <Menu.Item>
                               {({ active }) => (
                                 <a
-                                  href="#"
+                                  onClick={() => deleteHandler(template.id)}
                                   className={classNames(
                                     active ? "bg-gray-50" : "",
                                     "block px-3 py-1 text-sm leading-6 text-gray-900"
                                   )}
                                 >
-                                  Edit
+                                  Delete
                                   <span className="sr-only">
                                     , {template.name}
                                   </span>
