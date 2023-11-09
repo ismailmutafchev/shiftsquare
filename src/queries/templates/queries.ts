@@ -7,6 +7,7 @@ export const getTemplate = gql` query($id: uuid!) {
         updatedAt
         shifts
         name
+        hours
     }
 }
 `;
@@ -18,6 +19,7 @@ export const getTemplates = gql` query {
         updatedAt
         shifts
         name
+        hours
     }
 }
 `;
