@@ -41,6 +41,7 @@ import {
 import EmptyState from "../components/EmptyState";
 import Modal from "../components/Modal";
 import { useForm } from "react-hook-form";
+import Avatar from "../components/Avatar";
 
 type Section = {
   position: string;
@@ -390,14 +391,10 @@ export default function Templates() {
                 {data.template.map((template: any) => (
                   <li
                     key={template.id}
-                    className="overflow-hidden rounded-xl border border-gray-200"
+                    className="overflow-hidden rounded-xl border border-gray-200 m-"
                   >
                     <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                      <img
-                        src={template.imageUrl}
-                        alt={template.name}
-                        className="h-12 w-12 flex-none rounded-lg bg-white object-cover ring-1 ring-gray-900/10"
-                      />
+                     <Avatar firstName={template.name} className="w-7 bg-purple-300" />
                       <div className="text-sm font-medium leading-6 text-gray-900">
                         {template.name}
                       </div>
@@ -463,26 +460,27 @@ export default function Templates() {
                     </div>
                     <dl className="-my-3 divide-y divide-gray-100 px-6 py-4 text-sm leading-6">
                       <div className="flex justify-between gap-x-4 py-3">
-                        <dt className="text-gray-500">Last invoice</dt>
+                        <dt className="text-gray-500">Created At</dt>
                         <dd className="text-gray-700">
                           <time dateTime={template.createdAt}>
-                            {template.createdAt}
+                            {format(new Date(template.createdAt), 'dd MMM yyyy')} at {format(new Date(template.createdAt), 'HH:mm')}
                           </time>
                         </dd>
                       </div>
                       <div className="flex justify-between gap-x-4 py-3">
-                        <dt className="text-gray-500">Amount</dt>
-                        <dd className="flex items-start gap-x-2">
-                          <div className="font-medium text-gray-900">
-                            template.lastInvoice.amount
-                          </div>
-                          <div
-                            className={classNames(
-                              "rounded-md py-1 px-2 text-xs font-medium ring-1 ring-inset"
-                            )}
-                          >
-                            template.lastInvoice.status
-                          </div>
+                        <dt className="text-gray-500">Last Updated At</dt>
+                        <dd className="text-gray-700">
+                          <time dateTime={template.createdAt}>
+                            {format(new Date(template.updatedAt), 'dd MMM yyyy')} at {format(new Date(template.updatedAt), 'HH:mm')}
+                          </time>
+                        </dd>
+                      </div>
+                      <div className="flex justify-between gap-x-4 py-3">
+                        <dt className="text-gray-500">Budgeted Hours</dt>
+                        <dd className="text-gray-700">
+                          <p>
+                            {template.hours}
+                          </p>
                         </dd>
                       </div>
                     </dl>
