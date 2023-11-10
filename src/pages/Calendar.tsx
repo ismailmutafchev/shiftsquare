@@ -132,7 +132,7 @@ export default function Calendar() {
 
   return (
     <div className="flex flex-col">
-      <RotaPrint />
+      <RotaPrint date={selectedDay} />
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
           <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">

@@ -1,12 +1,78 @@
-import { format } from "date-fns";
+import { endOfDay, format, startOfDay, startOfWeek } from "date-fns";
 import { useSession } from "../../providers/Session";
+import { useQuery } from "@apollo/client";
+import { getShifts } from "../../queries/shift/queries";
 // import Logo from "../Logo";
 
-export const RotaPrint = () => {
+export const RotaPrint = ({ date }: { date: any }) => {
   const { positions, profile } = useSession();
 
+  const {
+    data: mondayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 1 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 1 })),
+    },
+  });
+
+  const {
+    data: tuesdayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 2 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 2 })),
+    },
+  });
+
+  const {
+    data: wednesdayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 3 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 3 })),
+    },
+  });
+
+  const {
+    data: thursdayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 4 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 4 })),
+    },
+  });
+
+  const {
+    data: fridayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 5 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 5 })),
+    },
+  });
+
+  const {
+    data: saturdayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 6 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 6 })),
+    },
+  });
+
+  const {
+    data: sundayShifts,
+  } = useQuery(getShifts, {
+    variables: {
+      start: startOfDay(startOfWeek(date, { weekStartsOn: 0 })),
+      end: endOfDay(startOfWeek(date, { weekStartsOn: 0 })),
+    },
+  });
+
+  console.log(mondayShifts?.shift);
   return (
-    <div className="hidde">
+    <div className="hidden">
       <div className="w-[2480px] h-[3428px] p-10 rota-print">
         <div className="text-start p-2 flex justify-between">
           {/* <Logo dark size={50} /> */}
@@ -81,48 +147,162 @@ export const RotaPrint = () => {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {positions?.map((position: any) => (
-                        <tr className="divide-x divide-gray-200">
+                        <tr
+                          key={position.map}
+                          className="divide-x divide-gray-200"
+                        >
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-md font-semibold text-gray-900 sm:pl-0">
                             {position.name}
                           </td>
-                          <td className="whitespace-nowrap p-4 text-md text-gray-500">
-                            Ismail Ahmed <br /> 9:00 - 17:00
+                          <td className="whitespace-nowrap p-4 text-sm text-gray-500">
+                            {mondayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              } 
+                            })}
                           </td>
                           <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                            {position.tuesday}
+                            {tuesdayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              } 
+                            })}
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            {position.wednesday}
+                            {wednesdayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              } 
+                            })}
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            {position.thursday}
+                            {thursdayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              } 
+                            })}
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            {position.friday}
+                            {fridayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              } 
+                            })}
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            {position.saturday}
+                            {saturdayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              }
+                            })}
                           </td>
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                            {position.sunday}
+                            {sundayShifts?.shift?.map((shift: any) => {
+                              let start = format(
+                                new Date(shift?.start),
+                                "hh:mm"
+                              );
+                              let end = format(new Date(shift?.end), "hh:mm");
+                              if (shift.position.id === position.id) {
+                                return (
+                                  <div key={shift.id}>
+                                    <p>
+                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.lastName} <br />
+                                      {start}{" "}
+                                      - {end}
+                                    </p>
+                                  </div>
+                                );
+                              } 
+                            })}
                           </td>
                         </tr>
                       ))}
-
-                      {/* <tr className="divide-x divide-gray-200">
-                      <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm font-medium text-gray-900 sm:pl-0">
-                        John
-                      </td>
-                      <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                        Doe
-                      </td>
-                      <td className="whitespace-nowrap p-4 text-sm text-gray-500">
-                        jondoe@email.com
-                      </td>
-                      <td className="whitespace-nowrap py-4 pl-4 pr-4 text-sm text-gray-500 sm:pr-0">
-                        employee
-                      </td>
-                    </tr> */}
                     </tbody>
                   </table>
                 </div>

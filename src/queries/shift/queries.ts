@@ -13,6 +13,7 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
             payDetails
         }
         position {
+          id
             bgColor
             name
         }
