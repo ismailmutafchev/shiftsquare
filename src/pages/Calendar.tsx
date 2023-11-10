@@ -122,7 +122,7 @@ export default function Calendar() {
 
   const downloadPdf = () => {
     const capture = document.querySelector(".rota-print");
-    const doc = new jsPDF("l", "px", "a4", true);
+    const doc = new jsPDF("portrait", "px", [2480,3508], true);
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
         doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
