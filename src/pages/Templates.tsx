@@ -197,7 +197,7 @@ export default function Templates() {
                     weekDays.map((day, index) => {
                       return (
                         <SwiperSlide
-                          className="bg-jagged-ice-50 rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-[38rem] overflow-scroll rounded-xl shadow-sm-xl"
+                          className="bg-jagged-ice-50 self-center rounded-br-xl backdrop-blur-md mx-auto shadow-sm min-w-[200px] h-[80vh] overflow-scroll rounded-xl shadow-sm-xl"
                           key={index}
                         >
                           <h2 className="w-full bg-red-300/10 text-bold text-xl sticky top-0 backdrop-blur-sm p-2 z-10 flex justify-between px-10">
@@ -243,11 +243,11 @@ export default function Templates() {
                               ref={container}
                               className="flex flex-auto flex-col overflow-auto"
                             >
-                              <div className="flex w-full flex-auto h-[70vh] min-h-96">
-                                <div className="grid flex-row grid-cols-3 grid-rows-1">
+                              <div className="flex w-full  h-[70vh] min-h-96 justify-center my-2 min-w-[600px]">
+                                <div className="grid flex-row grid-cols-1 grid-rows-1 ">
                                   {/* Vertical lines */}
                                   <div
-                                    className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-[80vh]"
+                                    className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-[70vh]"
                                     style={{
                                       gridTemplateColumns:
                                         "repeat(48, minmax(1.8rem, 1fr))",
@@ -259,11 +259,11 @@ export default function Templates() {
                                     ></div>
                                     {timeSlots.map((timeSlot, idx) => (
                                       <div key={timeSlot.toString() + idx}>
-                                        <div
-                                          className="sticky w-10 items-center justify-center bg-white border flex text-xs leading-5 text-gray-400"
+                                        <p
+                                          className="sticky w-10 items-center justify-center bg-white border flex text-[10px] leading-5 text-gray-400"
                                         >
                                           {format(timeSlot, "H:mm")}
-                                        </div>
+                                        </p>
                                       </div>
                                     ))}
                                   </div>
@@ -353,7 +353,7 @@ export default function Templates() {
                                       })}
                                     </ol>
                                   ) : (
-                                    <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 relative flex items-center justify-center top-1/4 overflow-">
+                                    <div className="bg-polar-50 rounded-lg p-10 border shadow-lg w-1/4 absolute left-[35vw] min-w-[250px] top-1/4 ">
                                       <EmptyState
                                         title="Shift"
                                         handler={() =>
