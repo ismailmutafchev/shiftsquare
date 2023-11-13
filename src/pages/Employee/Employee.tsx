@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { getEmployee } from "../queries/user/queries";
+import { getEmployee } from "../../queries/user/queries";
 import { useQuery } from "@apollo/client";
-import Avatar from "../components/Avatar";
-import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
+import Avatar from "../../components/Avatar";
+import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import {
   AtSymbolIcon,
   DocumentCheckIcon,
@@ -11,7 +11,7 @@ import {
   UserPlusIcon,
 } from "@heroicons/react/24/outline";
 import { format } from "date-fns";
-import { isDark } from "../utils/inheritColor";
+import { isDark } from "../../utils/inheritColor";
 
 export default function Employee() {
   const { id } = useParams();

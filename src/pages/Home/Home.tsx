@@ -1,4 +1,4 @@
-import { LandingAnimation } from "../assets/AnimationComponents/AnimationComponents";
+import { LandingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 
 export default function Home() {
   return (

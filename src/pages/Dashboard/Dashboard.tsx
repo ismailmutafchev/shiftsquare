@@ -7,16 +7,16 @@ import {
   getHoursByPosition,
   getShifts,
   getWorkingHours,
-} from "../queries/shift/queries";
-import { getBookedHolidays, getContractedHours } from "../queries/user/queries";
-import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
+} from "../../queries/shift/queries";
+import { getBookedHolidays, getContractedHours } from "../../queries/user/queries";
+import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import {
   BanknotesIcon,
   CalendarDaysIcon,
   ChevronDownIcon,
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
-import Datepicker from "../components/Datepicker";
+import Datepicker from "../../components/Datepicker";
 import { Menu, Transition } from "@headlessui/react";
 import {
   Cell,
@@ -30,7 +30,7 @@ import {
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { colors } from "../utils/colors";
+import { colors } from "../../utils/colors";
 
 export default function Dashboard() {
   //state for default date range

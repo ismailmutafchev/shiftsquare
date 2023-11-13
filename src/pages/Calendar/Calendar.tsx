@@ -25,10 +25,10 @@ import {
 } from "date-fns";
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
-import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
-import { getShifts } from "../queries/shift/queries";
+import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
+import { getShifts } from "../../queries/shift/queries";
 import { useMutation, useQuery } from "@apollo/client";
-import Modal from "../components/Modal";
+import Modal from "../../components/Modal";
 import { useForm, Controller } from "react-hook-form";
 import {
   CheckIcon,
@@ -40,19 +40,19 @@ import {
   PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { useSession } from "../providers/Session";
+import { useSession } from "../../providers/Session";
 import {
   addShiftOne,
   deleteShiftById,
   updateShiftById,
-} from "../queries/shift/mutations";
+} from "../../queries/shift/mutations";
 import { Listbox, Menu, Popover, Transition } from "@headlessui/react";
-import Datepicker from "../components/Datepicker";
-import { shiftSchema } from "../validations/shift";
+import Datepicker from "../../components/Datepicker";
+import { shiftSchema } from "../../validations/shift";
 import { yupResolver } from "@hookform/resolvers/yup";
 import jsPDF from "jspdf";
-import { RotaPrint } from "../components/pdf/RotaPrint";
-import EmptyState from "../components/EmptyState";
+import { RotaPrint } from "../../components/pdf/RotaPrint";
+import EmptyState from "../../components/EmptyState";
 
 //@ts-ignore
 function classNames(...classes) {

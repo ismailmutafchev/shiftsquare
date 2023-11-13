@@ -6,13 +6,13 @@ import {
 } from "@heroicons/react/24/outline";
 import { Fragment, useContext, useEffect, useRef, useState } from "react";
 import { useMutation, useQuery } from "@apollo/client";
-import { getTemplates } from "../queries/templates/queries";
+import { getTemplates } from "../../queries/templates/queries";
 import {
   deleteTemplateById,
   insertTemplate,
   updateTemplateById,
-} from "../queries/templates/mutations";
-import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
+} from "../../queries/templates/mutations";
+import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import {
   // Listbox,
   Menu,
@@ -37,11 +37,11 @@ import { EffectCoverflow, Pagination } from "swiper/modules";
 import {
   TemplateContext,
   TemplateContextType,
-} from "../providers/TemplateContext";
-import EmptyState from "../components/EmptyState";
-import Modal from "../components/Modal";
+} from "../../providers/TemplateContext";
+import EmptyState from "../../components/EmptyState";
+import Modal from "../../components/Modal";
 import { useForm } from "react-hook-form";
-import Avatar from "../components/Avatar";
+import Avatar from "../../components/Avatar";
 
 type Section = {
   position: string;

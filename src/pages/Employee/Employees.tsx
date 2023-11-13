@@ -1,14 +1,14 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useState } from "react";
-import { getEmployees } from "../queries/user/queries.ts";
-import Avatar from "../components/Avatar.tsx";
-import Modal from "../components/Modal.tsx";
+import { getEmployees } from "../../queries/user/queries.ts";
+import Avatar from "../../components/Avatar.tsx";
+import Modal from "../../components/Modal.tsx";
 import { useForm } from "react-hook-form";
 import {
   addUserOne,
   deleteUserById,
   updateUserById,
-} from "../queries/user/mutations.ts";
+} from "../../queries/user/mutations.ts";
 import {
   PencilSquareIcon,
   PlusIcon,
@@ -19,8 +19,8 @@ import { Link } from "react-router-dom";
 import {
   ErrorAnimation,
   LoadingAnimation,
-} from "../assets/AnimationComponents/AnimationComponents.tsx";
-import { useSession } from "../providers/Session.tsx";
+} from "../../assets/AnimationComponents/AnimationComponents.tsx";
+import { useSession } from "../../providers/Session.tsx";
 import { Switch } from "@headlessui/react";
 
 type UserProps = {

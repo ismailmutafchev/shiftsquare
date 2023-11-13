@@ -1,21 +1,21 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
-import Home from "./pages/Home";
-import Calendar from "./pages/Calendar";
-import Employees from "./pages/Employees";
-import Positions from "./pages/Positions";
-import About from "./pages/About";
-import Pricing from "./pages/Pricing";
-import Dashboard from "./pages/Dashboard";
-import Profile from "./pages/Profile";
-import Setting from "./pages/Setting";
+import Home from "./pages/Home/Home";
+import Calendar from "./pages/Calendar/Calendar";
+import Employees from "./pages/Employee/Employees";
+import Positions from "./pages/Positions/Positions";
+import About from "./pages/Abuout/About";
+import Pricing from "./pages/Pricing/Pricing";
+import Dashboard from "./pages/Dashboard/Dashboard";
+import Profile from "./pages/Profile/Profile";
+import Setting from "./pages/Profile/Setting";
 import { useAuth0 } from "@auth0/auth0-react";
 import Login from "./pages/Login";
-import Employee from "./pages/Employee";
-import Onboarding from "./pages/Onboarding";
-import Templates from "./pages/Templates";
-import Availability from "./pages/Availability";
+import Employee from "./pages/Employee/Employee";
+import Onboarding from "./pages/Onboarding/Onboarding";
+import Templates from "./pages/Templates/Templates";
+import Availability from "./pages/Availability/Availability";
 import { TemplateProvider } from "./providers/TemplateContext";
 
 function App() {
