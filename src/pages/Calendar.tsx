@@ -6,6 +6,7 @@ import {
   differenceInMinutes,
   eachDayOfInterval,
   eachMinuteOfInterval,
+  eachWeekOfInterval,
   endOfDay,
   endOfMonth,
   endOfWeek,
@@ -20,6 +21,7 @@ import {
   startOfWeek,
   subDays,
   subMonths,
+  subWeeks,
 } from "date-fns";
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
@@ -32,6 +34,7 @@ import {
   CheckIcon,
   ChevronDownIcon,
   ChevronUpDownIcon,
+  DocumentDuplicateIcon,
   PencilSquareIcon,
   PlusIcon,
   PrinterIcon,
@@ -50,6 +53,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import jsPDF from "jspdf";
 import { RotaPrint } from "../components/pdf/RotaPrint";
 import EmptyState from "../components/EmptyState";
+
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -62,6 +66,7 @@ export default function Calendar() {
   const containerNav = useRef(null);
   const containerOffset = useRef(null);
   const [showModal, setShowModal] = useState(false);
+  const [showCopyModal, setShowCopyModal] = useState(false);
   const [update, setUpdate] = useState({
     isUpdate: false,
     data: {},
@@ -120,9 +125,13 @@ export default function Calendar() {
     setShowModal(state);
   }
 
+  function copyModalHandler(state: boolean) {
+    setShowCopyModal(state);
+  }
+
   const downloadPdf = () => {
     const capture = document.querySelector(".rota-print");
-    const doc = new jsPDF("portrait", "px", [2480,3508], true);
+    const doc = new jsPDF("portrait", "px", [2480, 3508], true);
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
         doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
@@ -151,6 +160,18 @@ export default function Calendar() {
               Print <span className="text-red-500 text-xs">PDF</span>
             </p>
             <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+          </button>
+          <button
+            className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
+            onClick={() => {
+              setShowCopyModal(true);
+            }}
+          >
+            <p>Copy Week</p>
+            <DocumentDuplicateIcon
+              className="ml-2 h-4 w-4"
+              aria-hidden="true"
+            />
           </button>
           <div className="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
             <div
@@ -332,12 +353,12 @@ export default function Calendar() {
               })}
             </div>
             <div className="flex w-full flex-auto h-full">
-              <div className="grid flex-row grid-cols-3 grid-rows-1">
+              <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
                 <div
                   className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-[80vh]"
                   style={{
-                    gridTemplateColumns: "repeat(48, minmax(3.6rem, 1fr))",
+                    gridTemplateColumns: "repeat(48, minmax(1.8rem, 1fr))",
                   }}
                 >
                   <div ref={containerOffset} className="col-end-1 h-7"></div>
@@ -356,7 +377,7 @@ export default function Calendar() {
                     className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
                     style={{
                       gridTemplateColumns:
-                        "0 repeat(288, minmax(0.6rem, 1fr)) auto",
+                        "0 repeat(288, minmax(0.3rem, 1fr)) auto",
                       gridTemplateRows: "repeat(15, minmax(0, 1fr))",
                     }}
                   >
@@ -487,6 +508,15 @@ export default function Calendar() {
           ? { title: "Edit Shift" }
           : { title: "Add Shift" })}
         children={AddShift}
+      />
+      <Modal
+        data={{ copyModalHandler, selectedDay }}
+        open={showCopyModal}
+        setOpen={() => {
+          setShowCopyModal(false);
+        }}
+        title="Copy Week"
+        children={CopyWeekModal}
       />
     </div>
   );
@@ -842,3 +872,128 @@ function AddShift({ data }: any) {
     </form>
   );
 }
+
+const CopyWeekModal = () => {
+  const pastWeeks = eachWeekOfInterval(
+    {
+      start: subWeeks(new Date(), 10),
+      end: subDays(new Date(), 1),
+    },
+    { weekStartsOn: 1 }
+  );
+
+  const { control, getValues } = useForm({
+    defaultValues: {
+      week: pastWeeks[0],
+    },
+  });
+
+  console.log(pastWeeks);
+  return (
+    <div>
+      <div className="mt-10 sm:mt-0">
+        <div className="md:grid md:grid-cols-3 md:gap-6">
+          <div className="md:col-span-3">
+            <div className="px-4 sm:px-0">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Copy Week
+              </h3>
+              <p className="mt-1 text-sm text-gray-600">
+                Copy shifts from one week to another.
+              </p>
+            </div>
+          </div>
+          <div className="mt-5 md:mt-0 md:col-span-3">
+            <form action="#" method="POST">
+              <div className="shadow overflow-hidden sm:rounded-md">
+                <div className="px-4 py-5 bg-white sm:p-6">
+                  <div className="grid grid-cols-1 gap-6 pb-40">
+                    <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2 ">
+                      <label
+                        htmlFor="week"
+                        className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+                      >
+                        Select Week
+                      </label>
+                      <Controller
+                        name="week"
+                        control={control}
+                        rules={{ required: true }}
+                        render={({ field: { onChange } }) => (
+                          <Listbox onChange={onChange}>
+                            <div className="relative mt-1">
+                              <Listbox.Button className=" relative w-full cursor-default rounded-lg bg-white py-4 pl-3 pr-10 text-right shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                                <span className="pointer-events-none absolute inset-y-0 flex items-center justify-between w-full pr-2">
+                                  {pastWeeks
+                                    .find(
+                                      (week) =>
+                                        week.toDateString() ===
+                                        getValues("week").toDateString()
+                                    )
+                                    ?.toDateString()}
+                                  <ChevronUpDownIcon
+                                    className="h-5 w-5 text-gray-400"
+                                    aria-hidden="true"
+                                  />
+                                </span>
+                              </Listbox.Button>
+                              <Transition
+                                as={Fragment}
+                                leave="transition ease-in duration-100"
+                                leaveFrom="opacity-100"
+                                leaveTo="opacity-0"
+                              >
+                                <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
+                                  {pastWeeks &&
+                                    pastWeeks.map((week: any) => (
+                                      <Listbox.Option
+                                        key={week.toDateString()}
+                                        className={({ active }) =>
+                                          `relative cursor-default select-none py-2 pl-10 pr-4 ${
+                                            active
+                                              ? "bg-polar-100 text-polar-900/80"
+                                              : "text-polar-900"
+                                          }`
+                                        }
+                                        value={week}
+                                      >
+                                        {({ selected }) => (
+                                          <>
+                                            <span
+                                              className={`block truncate ${
+                                                selected
+                                                  ? "font-medium"
+                                                  : "font-normal"
+                                              }`}
+                                            >
+                                              {format(week, "d MMMM yyyy")}
+                                            </span>
+                                            {selected ? (
+                                              <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-polar-600">
+                                                <CheckIcon
+                                                  className="h-5 w-5"
+                                                  aria-hidden="true"
+                                                />
+                                              </span>
+                                            ) : null}
+                                          </>
+                                        )}
+                                      </Listbox.Option>
+                                    ))}
+                                </Listbox.Options>
+                              </Transition>
+                            </div>
+                          </Listbox>
+                        )}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
