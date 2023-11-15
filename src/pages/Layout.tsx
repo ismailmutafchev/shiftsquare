@@ -4,7 +4,7 @@ import Navigation from "../routes/Nav";
 import PublicNavigation from "../routes/PublicNav";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useSession } from "../providers/Session";
-import Onboarding from "./Onboarding";
+import Onboarding from "./Onboarding/Onboarding";
 import { Toast } from "../components/Toast";
 
 const Layout = () => {

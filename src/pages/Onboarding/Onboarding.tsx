@@ -1,10 +1,10 @@
 import { useForm } from "react-hook-form";
-import { useSession } from "../providers/Session";
+import { useSession } from "../../providers/Session";
 import { useMutation, useQuery } from "@apollo/client";
-import { updateUserById } from "../queries/user/mutations";
-import { getOrganizationByName } from "../queries/organization/quieries";
+import { updateUserById } from "../../queries/user/mutations";
+import { getOrganizationByName } from "../../queries/organization/quieries";
 import { CheckBadgeIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { getProfile } from "../queries/user/queries";
+import { getProfile } from "../../queries/user/queries";
 
 export default function Onboarding() {
     const { profile } = useSession();

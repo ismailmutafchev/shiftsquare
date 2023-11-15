@@ -1,10 +1,10 @@
 import {  useQuery } from "@apollo/client";
-import { getEmployees } from "../queries/user/queries.ts";
+import { getEmployees } from "../../queries/user/queries.ts";
 
 import {
   ErrorAnimation,
   LoadingAnimation,
-} from "../assets/AnimationComponents/AnimationComponents.tsx";
+} from "../../assets/AnimationComponents/AnimationComponents.tsx";
 
 type UserProps = {
   firstName: string;
