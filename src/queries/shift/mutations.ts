@@ -11,6 +11,14 @@ export const addShiftOne = gql`
     }
 `;
 
+export const addShiftsMany = gql`
+    mutation addShifts($objects: [shift_insert_input!]!) {
+        insert_shift(objects: $objects) {
+            affected_rows
+        }
+    }
+`;
+
 export const deleteShiftById = gql`
     mutation deleteShiftById($id: uuid!) {
         delete_shift_by_pk(id: $id) {
