@@ -43,6 +43,7 @@ export const CopyWeekModal = () => {
       end: watch("week").end,
     },
     onCompleted: (data) => {
+      console.log(data);
       setValue("shifts", data.shift);
     },
   });
@@ -53,15 +54,15 @@ export const CopyWeekModal = () => {
 
   const submit = (data: any) => {
     let newShifts = data.shifts.map((shift: any) => {
-      const startTime = format(new Date(shift.start), "HH:mm").toString();
-      const endTime = format(new Date(shift.end), "HH:mm").toString();
+      const startTime = format(new Date(shift.start), "HH:mm:ss");
+      const endTime = format(new Date(shift.end), "HH:mm:ss");
       const isoDay = isSunday(new Date(shift.start))
         ? 0
         : (getISODay(new Date(shift.start)) as WeekStartOn);
 
-      console.log(shift);
+
       const startDateTime =
-        format(
+        (format(
           new Date(
             new Date(
               isSunday(new Date(shift.start))
@@ -69,10 +70,10 @@ export const CopyWeekModal = () => {
                 : startOfWeek(new Date(), { weekStartsOn: isoDay })
             )
           ),
-          "dd/MM/yyyy"
+          "yyyy-MM-dd"
         ) +
-        "T" +
-        startTime;
+        " " +
+        startTime);
       const endDateTime =
         format(
           new Date(
@@ -82,15 +83,16 @@ export const CopyWeekModal = () => {
                 : startOfWeek(new Date(), { weekStartsOn: isoDay })
             )
           ),
-          "dd/MM/yyyy"
-        ) +
-        "T" +
+          "yyyy-MM-dd"
+        )  + ' ' +
         endTime;
+
       return {
         employeeId: shift.employeeId,
         positionId: shift.positionId,
-        start: startDateTime,
-        end: endDateTime,
+        length: shift.length,
+        start: new Date(startDateTime).toISOString(),
+        end: new Date(endDateTime).toISOString(),
       };
     });
 
@@ -100,6 +102,8 @@ export const CopyWeekModal = () => {
       },
     });
   };
+
+
 
   return (
     <div>
