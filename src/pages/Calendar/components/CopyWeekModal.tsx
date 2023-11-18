@@ -18,7 +18,7 @@ import { addShiftsMany } from "../../../queries/shift/mutations";
 
 type WeekStartOn = 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined;
 
-export const CopyWeekModal = () => {
+export const CopyWeekModal = ({ data }: any) => {
   const pastWeeks = eachWeekOfInterval(
     {
       start: subWeeks(new Date(), 10),
@@ -26,6 +26,8 @@ export const CopyWeekModal = () => {
     },
     { weekStartsOn: 1 }
   );
+
+  const { copyModalHandler } = data;
 
   const { control, watch, handleSubmit, setValue } = useForm({
     defaultValues: {
@@ -60,9 +62,8 @@ export const CopyWeekModal = () => {
         ? 0
         : (getISODay(new Date(shift.start)) as WeekStartOn);
 
-
       const startDateTime =
-        (format(
+        format(
           new Date(
             new Date(
               isSunday(new Date(shift.start))
@@ -73,7 +74,7 @@ export const CopyWeekModal = () => {
           "yyyy-MM-dd"
         ) +
         " " +
-        startTime);
+        startTime;
       const endDateTime =
         format(
           new Date(
@@ -84,7 +85,8 @@ export const CopyWeekModal = () => {
             )
           ),
           "yyyy-MM-dd"
-        )  + ' ' +
+        ) +
+        " " +
         endTime;
 
       return {
@@ -100,10 +102,20 @@ export const CopyWeekModal = () => {
       variables: {
         objects: newShifts,
       },
+      refetchQueries: [
+        {
+          query: getShifts,
+          variables: {
+            start: startOfWeek(new Date(), { weekStartsOn: 1 }),
+            end: endOfWeek(new Date(), { weekStartsOn: 1 }),
+          },
+        },
+      ],
+      onCompleted: () => {
+        copyModalHandler(false);
+      },
     });
   };
-
-
 
   return (
     <div>
