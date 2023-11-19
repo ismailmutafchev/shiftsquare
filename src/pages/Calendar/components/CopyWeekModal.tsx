@@ -1,10 +1,12 @@
 import { Fragment } from "react";
 import {
   eachWeekOfInterval,
+  endOfDay,
   endOfWeek,
   format,
   getISODay,
   isSunday,
+  startOfDay,
   startOfWeek,
   subDays,
   subWeeks,
@@ -27,6 +29,8 @@ export const CopyWeekModal = ({ data }: any) => {
     { weekStartsOn: 1 }
   );
 
+  const selectedDay = data.selectedDay;
+
   const { copyModalHandler } = data;
 
   const { control, watch, handleSubmit, setValue } = useForm({
@@ -45,7 +49,6 @@ export const CopyWeekModal = ({ data }: any) => {
       end: watch("week").end,
     },
     onCompleted: (data) => {
-      console.log(data);
       setValue("shifts", data.shift);
     },
   });
@@ -106,8 +109,8 @@ export const CopyWeekModal = ({ data }: any) => {
         {
           query: getShifts,
           variables: {
-            start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-            end: endOfWeek(new Date(), { weekStartsOn: 1 }),
+            start: startOfDay(selectedDay),
+            end: endOfDay(selectedDay),
           },
         },
       ],

@@ -96,12 +96,14 @@ export default function Templates() {
         1440;
     }
   }, []);
+
   const {
     weekDays,
     //  register,
     handleSubmit,
     // control
   } = useContext(TemplateContext) || ({} as TemplateContextType);
+
   const [showBuilder, setShowBuilder] = useState(false);
   const [update, setUpdate] = useState<TemplateUpdate>({
     isUpdate: false,

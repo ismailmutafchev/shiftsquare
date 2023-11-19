@@ -9,7 +9,8 @@ function classNames(...classes) {
 
 type DatepickerProps = {
     selectedDay: Date,
-    setSelectedDay: React.Dispatch<React.SetStateAction<Date>>,
+    //eslint-disable-next-line
+    setSelectedDay: (day: Date) => void,
     firstDayInRange?: Date,
     setFirstDayInRange?: React.Dispatch<React.SetStateAction<Date>>,
     firstDateInRange?: Date,
