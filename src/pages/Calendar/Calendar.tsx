@@ -12,7 +12,6 @@ export default function Calendar() {
   return (
     <CalendarProvider
       query={getShifts}
-      fetchPolicy="cache-and-network"
       variables={{
         start: startOfDay(selectedDay),
         end: endOfDay(selectedDay),

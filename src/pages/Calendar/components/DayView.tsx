@@ -87,6 +87,7 @@ export default function DayView({
           start: startOfDay(selectedDay),
           end: endOfDay(selectedDay),
         },
+        fetchPolicy: "network-only",
       },
     ],
   });

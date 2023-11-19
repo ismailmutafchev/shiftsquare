@@ -24,7 +24,9 @@ export const CalendarProvider = ({ query,variables,  children }: any) => {
     data,
     error: dataError
   } = useQuery(query, {
-    variables });
+    variables,
+    fetchPolicy: "cache-and-network",
+ });
 
   const value = {
     queryData: { data, loading, dataError },
