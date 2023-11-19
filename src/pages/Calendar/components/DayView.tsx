@@ -1,4 +1,4 @@
-import { Fragment, useContext, useRef } from "react";
+import { Fragment, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import {
   addDays,
@@ -42,16 +42,23 @@ import { RotaPrint } from "../../../components/pdf/RotaPrint";
 import EmptyState from "../../../components/EmptyState";
 import AddShift from "../components/ShiftModal";
 import { CopyWeekModal } from "../components/CopyWeekModal";
-import CalendarProvider, { CalendarContextType } from "../provider/CalendarProvider";
+import { useCalendar } from "../provider/CalendarProvider";
 
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function DayView() {
+export default function DayView({
+  selectedDayHandler,
+  selectedDay,
+}: {
+  //eslint-disable-next-line
+  selectedDayHandler: (day: Date) => void;
+    selectedDay: Date;
+}) {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-  const [selectedDay, setSelectedDay] = useState(new Date());
+//   const [selectedDay, setSelectedDay] = useState(new Date());
   const container = useRef(null);
   const containerNav = useRef(null);
   const containerOffset = useRef(null);
@@ -61,7 +68,9 @@ export default function DayView() {
     isUpdate: false,
     data: {},
   });
-  const { data, loading, dataError } = useContext<CalendarContextType>(CalendarProvider as any) || {};
+
+  const { data, loading, error: dataError } = useCalendar();
+  console.log(data);
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -174,7 +183,7 @@ export default function DayView() {
               className="flex items-center justify-center rounded-l-md py-2 pl-3 pr-4 text-gray-400 hover:text-gray-500 focus:relative md:w-9 md:px-2 md:hover:bg-gray-50"
               onClick={() => {
                 setSelectedMonth(selectedDay);
-                setSelectedDay(subDays(selectedDay, 1));
+                selectedDayHandler(subDays(selectedDay, 1));
                 if (!isSameMonth(selectedDay, subDays(selectedDay, 1))) {
                   setSelectedMonth(subMonths(selectedDay, 1));
                 }
@@ -194,7 +203,7 @@ export default function DayView() {
               type="button"
               onClick={() => {
                 setSelectedMonth(selectedDay);
-                setSelectedDay(addDays(selectedDay, 1));
+                selectedDayHandler(addDays(selectedDay, 1));
                 if (!isSameMonth(selectedDay, addDays(selectedDay, 1))) {
                   setSelectedMonth(addMonths(selectedDay, 1));
                 }
@@ -211,7 +220,7 @@ export default function DayView() {
               type="button"
               onClick={() => {
                 setSelectedMonth(selectedDay);
-                setSelectedDay(new Date());
+                selectedDayHandler(new Date());
                 if (!isSameMonth(selectedDay, new Date())) {
                   setSelectedMonth(new Date());
                 }
@@ -273,7 +282,7 @@ export default function DayView() {
                           <div className="absolute w-[220%] top-6 right-0">
                             <Datepicker
                               selectedDay={selectedDay}
-                              setSelectedDay={setSelectedDay}
+                              setSelectedDay={selectedDayHandler}
                             />
                           </div>
                         </div>
@@ -306,7 +315,7 @@ export default function DayView() {
                   <button
                     key={day.toDateString() + idx}
                     onClick={() => {
-                      setSelectedDay(day);
+                        selectedDayHandler(day);
                       setSelectedMonth(day);
                       if (!isSameMonth(day, selectedMonth)) {
                         setSelectedMonth(day);

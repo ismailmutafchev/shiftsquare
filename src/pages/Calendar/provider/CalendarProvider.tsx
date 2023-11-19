@@ -1,41 +1,48 @@
-import { useQuery } from "@apollo/client";
-import { getShifts } from "../../../queries/shift/queries";
-import { createContext, useState } from "react";
-import { endOfDay, startOfDay } from "date-fns";
+import { ApolloQueryResult, useQuery } from "@apollo/client";
+import { createContext, useContext } from "react";
 
-export type CalendarContextType = {
-  data: any;
+interface QueryResult<TData> {
+  data?: TData;
+  error?: any;
   loading: boolean;
-  dataError: any;
-  //eslint-disable-next-line
-  selectedDayHandler: (day: Date) => void;
-  selectedDay: Date;
-};
-const CalendarContext = createContext<CalendarContextType | undefined>(undefined);
+}
 
+interface QueryContextValue<TData> {
+  queryData: QueryResult<TData>;
+  refetch: () => Promise<ApolloQueryResult<TData>>;
+}
 
-const CalendarProvider = ({ children }: { children: any }) => {
-  const [selectedDay, setSelectedDay] = useState(new Date());
-  const selectedDayHandler = (day: Date) => {
-    setSelectedDay(day);
-  };
+const CalendarContext = createContext<QueryContextValue<any> | undefined>(
+  undefined
+);
+
+export const CalendarProvider = ({ query,variables,  children }: any) => {
+ 
+
   const {
     loading,
     data,
     error: dataError,
-  } = useQuery(getShifts, {
-    variables: {
-      start: startOfDay(selectedDay),
-      end: endOfDay(selectedDay),
-    },
-  });
+    refetch,
+  } = useQuery(query, {
+    variables });
+
+  const value = {
+    queryData: { data, loading, dataError },
+    refetch
+  };
+
   return (
-    <CalendarContext.Provider
-      value={{ data, loading, dataError, selectedDayHandler, selectedDay }}
-    >
+    <CalendarContext.Provider value={value}>
       {children}
     </CalendarContext.Provider>
   );
 };
 
-export default CalendarProvider;
+export const useCalendar = () => {
+  const context = useContext(CalendarContext);
+  if (context === undefined) {
+    throw new Error("useCalendar must be used within a CalendarProvider");
+  }
+  return context.queryData;
+};
