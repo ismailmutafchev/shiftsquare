@@ -70,7 +70,7 @@ export default function DayView({
   });
 
   const { data, loading, error: dataError } = useCalendar();
-  console.log(data);
+  console.log(data, 'xx123');
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -90,17 +90,6 @@ export default function DayView({
       },
     ],
   });
-
-  //   const {
-  //     loading,
-  //     data,
-  //     error: dataError,
-  //   } = useQuery(getShifts, {
-  //     variables: {
-  //       start: startOfDay(selectedDay),
-  //       end: endOfDay(selectedDay),
-  //     },
-  //   });
 
   const { isLoading, error } = useAuth0();
 
