@@ -55,10 +55,10 @@ export default function DayView({
 }: {
   //eslint-disable-next-line
   selectedDayHandler: (day: Date) => void;
-    selectedDay: Date;
+  selectedDay: Date;
 }) {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-//   const [selectedDay, setSelectedDay] = useState(new Date());
+  //   const [selectedDay, setSelectedDay] = useState(new Date());
   const container = useRef(null);
   const containerNav = useRef(null);
   const containerOffset = useRef(null);
@@ -70,7 +70,7 @@ export default function DayView({
   });
 
   const { data, loading, error: dataError } = useCalendar();
-  console.log(data, 'xx123');
+  console.log(data, "xx123");
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -305,7 +305,7 @@ export default function DayView({
                   <button
                     key={day.toDateString() + idx}
                     onClick={() => {
-                        selectedDayHandler(day);
+                      selectedDayHandler(day);
                       setSelectedMonth(day);
                       if (!isSameMonth(day, selectedMonth)) {
                         setSelectedMonth(day);
@@ -400,11 +400,48 @@ export default function DayView({
                             <>
                               <Popover.Button
                                 style={{
-                                  backgroundColor: shift.position.bgColor,
+                                  backgroundColor:
+                                    shift.position.bgColor + "50",
+                                  border:
+                                    `1px solid ${shift.position.bgColor}` +
+                                    "50",
                                 }}
-                                className="group no-scrollbar min-h-8 items-center shadow-light justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg p-2 text-xs  hover:scale-[1.01] duration-200"
+                                className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >
-                                <p className="font-semibold text-gray-800 text-base">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
+                                {shift.employee ? (
+                                  <div className="overflow-scroll text-start">
+                                    <p className="font-semibold text-gray-800 text-sm">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
+                                    <span>
+                                      {`${format(
+                                        new Date(shift.start),
+                                        "H:mm"
+                                      )} - ${format(
+                                        new Date(shift.end),
+                                        "H:mm"
+                                      )}`}
+                                    </span>
+                                    <span>
+                                      Duration {`${shift.length} hours`}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className="overflow-scroll text-start">
+                                    <p className="font-semibold text-red-500 text-sm truncate">{`${shift?.position?.name} Unallocated`}</p>
+                                    <span>
+                                      {`${format(
+                                        new Date(shift.start),
+                                        "H:mm"
+                                      )} - ${format(
+                                        new Date(shift.end),
+                                        "H:mm"
+                                      )}`}
+                                    </span>
+                                    <br />
+                                    <span>
+                                      Duration {`${shift.length} hours`}
+                                    </span>
+                                  </div>
+                                )}
                               </Popover.Button>
                               <Transition
                                 show={open}

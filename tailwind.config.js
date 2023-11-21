@@ -96,5 +96,8 @@ export default {
       }
     },
   },
+  animation: {
+    spin: "spin 1s linear infinite",
+  },
   plugins: ["@tailwindcss/forms"],
 };

@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 import {
   eachWeekOfInterval,
   endOfDay,
@@ -13,7 +13,7 @@ import {
 } from "date-fns";
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox, Switch, Transition } from "@headlessui/react";
 import { getShifts } from "../../../queries/shift/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { addShiftsMany } from "../../../queries/shift/mutations";
@@ -21,6 +21,7 @@ import { addShiftsMany } from "../../../queries/shift/mutations";
 type WeekStartOn = 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined;
 
 export const CopyWeekModal = ({ data }: any) => {
+  const [copyNames, setCopyNames] = useState(false);
   const pastWeeks = eachWeekOfInterval(
     {
       start: subWeeks(new Date(), 10),
@@ -93,7 +94,7 @@ export const CopyWeekModal = ({ data }: any) => {
         endTime;
 
       return {
-        employeeId: shift.employeeId,
+        employeeId: copyNames? shift.employeeId : null,
         positionId: shift.positionId,
         length: shift.length,
         start: new Date(startDateTime).toISOString(),
@@ -139,7 +140,24 @@ export const CopyWeekModal = ({ data }: any) => {
               <div className="shadow overflow-hidden sm:rounded-md">
                 <div className="px-4 py-5 bg-white sm:p-6">
                   <div className="grid grid-cols-1 gap-6 pb-40">
-                    <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2 ">
+                    <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2 divide-y-2">
+                      <div className="flex w-full justify-between">
+                        <p>Include employee names </p>
+                        <Switch
+                          checked={copyNames}
+                          onChange={setCopyNames}
+                          className={`${
+                            copyNames ? "bg-polar-600" : "bg-gray-400"
+                          } relative inline-flex h-6 w-11 items-center rounded-full duration-500 shadow-xl`}
+                        >
+                          <span className="sr-only">Enable notifications</span>
+                          <span
+                            className={`${
+                              copyNames ? "translate-x-5" : "translate-x-0"
+                            } inline-block h-6 w-6 transform rounded-full bg-gray-200 transition duration-300`}
+                          />
+                        </Switch>
+                      </div>
                       <label
                         htmlFor="week"
                         className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
