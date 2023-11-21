@@ -406,26 +406,41 @@ export default function DayView({
                                     `1px solid ${shift.position.bgColor}` +
                                     "50",
                                 }}
-                                className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col overflow-clip rounded-lg p-2 text-xs"
+                                className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >
                                 {shift.employee ? (
                                   <>
                                     <p className="font-semibold text-gray-800 text-sm">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
                                     <span>
-                                        {`${format(
-                                            new Date(shift.start),
-                                            "H:mm"
-                                        )} - ${format(
-                                            new Date(shift.end),
-                                            "H:mm"
-                                        )}`}
+                                      {`${format(
+                                        new Date(shift.start),
+                                        "H:mm"
+                                      )} - ${format(
+                                        new Date(shift.end),
+                                        "H:mm"
+                                      )}`}
                                     </span>
                                     <span>
-                                        Duration {`${shift.length} hours`}
+                                      Duration {`${shift.length} hours`}
                                     </span>
                                   </>
                                 ) : (
-                                  <p className="font-semibold text-red-500 text-sm truncate">{`${shift?.position?.name} Unallocated`}</p>
+                                  <div className="overflow-scroll text-start">
+                                    <p className="font-semibold text-red-500 text-sm truncate">{`${shift?.position?.name} Unallocated`}</p>
+                                    <span>
+                                      {`${format(
+                                        new Date(shift.start),
+                                        "H:mm"
+                                      )} - ${format(
+                                        new Date(shift.end),
+                                        "H:mm"
+                                      )}`}
+                                    </span>
+                                    <br />
+                                    <span>
+                                      Duration {`${shift.length} hours`}
+                                    </span>
+                                  </div>
                                 )}
                               </Popover.Button>
                               <Transition
