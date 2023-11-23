@@ -355,7 +355,7 @@ export default function DayView({
                   <div ref={containerOffset} className="col-end-1 h-7"></div>
                   {timeSlots.map((timeSlot, idx) => (
                     <div key={timeSlot.toString() + idx}>
-                      <div className="sticky w-10 items-center justify-center bg-white border flex text-xs leading-5 text-gray-400">
+                      <div className="sticky w-10 items-center pl-0.5 bg-white border flex text-[10px] leading-5 text-gray-400">
                         {format(timeSlot, "H:mm")}
                       </div>
                     </div>
