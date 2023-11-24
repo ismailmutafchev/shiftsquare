@@ -1,4 +1,4 @@
-import { endOfDay, format, startOfDay, startOfWeek } from "date-fns";
+import { eachDayOfInterval, endOfDay, endOfWeek, format, startOfDay, startOfWeek } from "date-fns";
 import { useSession } from "../../providers/Session";
 import { useQuery } from "@apollo/client";
 import { getShifts } from "../../queries/shift/queries";
@@ -6,58 +6,64 @@ import logo from "./logo.png";
 
 //@ts-ignore
 function classNames(...classes) {
-  return classes.filter(Boolean).join(' ')
+  return classes.filter(Boolean).join(" ");
 }
 
 export const RotaPrint = ({ date }: { date: any }) => {
+
   const { positions, profile } = useSession();
+
+  const thisWeekDays = eachDayOfInterval({
+    start: new Date(startOfWeek(date, { weekStartsOn: 1 })),
+    end: new Date(endOfWeek(date, { weekStartsOn: 1 })),
+  });
 
   const { data: mondayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 1 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 1 })),
+      start: startOfDay(thisWeekDays[0]),
+      end: endOfDay(thisWeekDays[0]),
     },
   });
 
   const { data: tuesdayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 2 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 2 })),
+      start: startOfDay(thisWeekDays[1]),
+      end: endOfDay(thisWeekDays[1]),
     },
   });
 
   const { data: wednesdayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 3 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 3 })),
+      start: startOfDay(thisWeekDays[2]),
+      end: endOfDay(thisWeekDays[2]),
     },
   });
 
   const { data: thursdayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 4 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 4 })),
+      start: startOfDay(thisWeekDays[3]),
+      end: endOfDay(thisWeekDays[3]),
     },
   });
 
   const { data: fridayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 5 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 5 })),
+      start: startOfDay(thisWeekDays[4]),
+      end: endOfDay(thisWeekDays[4]),
     },
   });
 
   const { data: saturdayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 6 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 6 })),
+      start: startOfDay(thisWeekDays[5]),
+      end: endOfDay(thisWeekDays[5]),
     },
   });
 
   const { data: sundayShifts } = useQuery(getShifts, {
     variables: {
-      start: startOfDay(startOfWeek(date, { weekStartsOn: 0 })),
-      end: endOfDay(startOfWeek(date, { weekStartsOn: 0 })),
+      start: startOfDay(thisWeekDays[6]),
+      end: endOfDay(thisWeekDays[6]),
     },
   });
 
@@ -97,43 +103,51 @@ export const RotaPrint = ({ date }: { date: any }) => {
                           scope="col"
                           className="px-4 py-3.5 text-center text-md font-semibold text-gray-900"
                         >
-                          Monday
+                          Monday <br />
+                          {format(new Date(thisWeekDays[0]), "dd MMM yyyy")}
                         </th>
                         <th
                           scope="col"
                           className="px-4 py-3.5 text-center text-md font-semibold text-gray-900"
                         >
-                          Tuesday
+                          Tuesday <br />
+                          {format(new Date(thisWeekDays[1]), "dd MMM yyyy")}
                         </th>
                         <th
                           scope="col"
                           className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
                         >
-                          Wednesday
+                          Wednesday <br />
+                          {format(new Date(thisWeekDays[2]), "dd MMM yyyy")}
+
                         </th>
                         <th
                           scope="col"
                           className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
                         >
-                          Thursday
+                          Thursday <br />
+                          {format(new Date(thisWeekDays[3]), "dd MMM yyyy")}
                         </th>
                         <th
                           scope="col"
                           className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
                         >
-                          Friday
+                          Friday <br />
+                          {format(new Date(thisWeekDays[4]), "dd MMM yyyy")}
                         </th>
                         <th
                           scope="col"
                           className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
                         >
-                          Saturday
+                          Saturday <br />
+                          {format(new Date(thisWeekDays[5]), "dd MMM yyyy")}
                         </th>
                         <th
                           scope="col"
                           className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
                         >
-                          Sunday
+                          Sunday <br />
+                          {format(new Date(thisWeekDays[6]), "dd MMM yyyy")}
                         </th>
                       </tr>
                     </thead>
@@ -146,16 +160,16 @@ export const RotaPrint = ({ date }: { date: any }) => {
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-md font-semibold text-gray-900 sm:pl-0">
                             {position.name}
                           </td>
-                          <td className={
-                            classNames(
-                              'whitespace-nowrap text-md text-gray-500',
+                          <td
+                            className={classNames(
+                              "whitespace-nowrap text-md text-gray-500",
                               mondayShifts?.shift?.map((shift: any) => {
                                 if (shift.position.id === position.id) {
-                                  return 'bg-red-500'
+                                  return "bg-red-500";
                                 }
                               })
-                            )
-                          }>
+                            )}
+                          >
                             {mondayShifts?.shift?.map((shift: any) => {
                               let start = format(
                                 new Date(shift?.start),
@@ -164,9 +178,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>
@@ -184,9 +202,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>
@@ -204,9 +226,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>
@@ -224,9 +250,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>
@@ -244,9 +274,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>
@@ -264,9 +298,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>
@@ -284,9 +322,13 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               let end = format(new Date(shift?.end), "hh:mm");
                               if (shift.position.id === position.id) {
                                 return (
-                                  <div key={shift.id} className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold">
+                                  <div
+                                    key={shift.id}
+                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                  >
                                     <p>
-                                      {shift?.employee?.firstName}{" "}
+                                      {shift?.employee?.firstName ||
+                                        "Unallocated"}{" "}
                                       {shift?.employee?.lastName} <br />
                                       {start} - {end}
                                     </p>

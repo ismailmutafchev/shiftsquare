@@ -29,6 +29,7 @@ import Modal from "../../../components/Modal";
 import {
   ChevronDownIcon,
   DocumentDuplicateIcon,
+  ExclamationTriangleIcon,
   PencilSquareIcon,
   PlusIcon,
   PrinterIcon,
@@ -186,7 +187,7 @@ export default function DayView({
               type="button"
               className="hidden px-3.5 text-sm font-semibold text-gray-900 hover:bg-gray-50 focus:relative md:block"
             >
-              {isToday(selectedDay) ? "Today" : format(selectedDay, "d MMMM")}
+              {isToday(selectedDay) ? "Today" : format(selectedDay, "d MMM")}
             </button>
             <span className="relative -mx-px h-5 w-px bg-gray-300 md:hidden" />
             <button
@@ -290,7 +291,7 @@ export default function DayView({
           <LoadingAnimation />
         </div>
       ) : (
-        <div className=" overflow-y-scroll overflow-scroll bg-white">
+        <div className=" overflow-y-scroll overflow-scroll bg-white flex items-center justify-center ">
           <div
             ref={container}
             className="flex flex-auto flex-col overflow-auto"
@@ -342,7 +343,7 @@ export default function DayView({
                 );
               })}
             </div>
-            <div className="flex w-full flex-auto h-full">
+            <div className="flex w-full flex-auto h-full items-center justify-center">
               <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
                 <div
@@ -354,7 +355,7 @@ export default function DayView({
                   <div ref={containerOffset} className="col-end-1 h-7"></div>
                   {timeSlots.map((timeSlot, idx) => (
                     <div key={timeSlot.toString() + idx}>
-                      <div className="sticky w-10 items-center justify-center bg-white border flex text-xs leading-5 text-gray-400">
+                      <div className="sticky w-10 items-center pl-0.5 bg-white border flex text-[10px] leading-5 text-gray-400">
                         {format(timeSlot, "H:mm")}
                       </div>
                     </div>
@@ -391,7 +392,7 @@ export default function DayView({
                       return (
                         <Popover
                           key={shift.id}
-                          className="relative mt-px m-0.5 flex"
+                          className="relative mt-px ml-0.5 flex"
                           style={{
                             gridColumn: `${startNumber} / span ${endNumber}`,
                           }}
@@ -410,23 +411,7 @@ export default function DayView({
                               >
                                 {shift.employee ? (
                                   <div className="overflow-scroll text-start">
-                                    <p className="font-semibold text-gray-800 text-sm">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
-                                    <span>
-                                      {`${format(
-                                        new Date(shift.start),
-                                        "H:mm"
-                                      )} - ${format(
-                                        new Date(shift.end),
-                                        "H:mm"
-                                      )}`}
-                                    </span>
-                                    <span>
-                                      Duration {`${shift.length} hours`}
-                                    </span>
-                                  </div>
-                                ) : (
-                                  <div className="overflow-scroll text-start">
-                                    <p className="font-semibold text-red-500 text-sm truncate">{`${shift?.position?.name} Unallocated`}</p>
+                                    <p className="font-semibold text-gray-800 text-xs">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
                                     <span>
                                       {`${format(
                                         new Date(shift.start),
@@ -440,6 +425,27 @@ export default function DayView({
                                     <span>
                                       Duration {`${shift.length} hours`}
                                     </span>
+                                  </div>
+                                ) : (
+                                  <div className="overflow-scroll text-start">
+                                    <p className="font-semibold text-red-500 text-xs truncate">{`${shift?.position?.name} Unallocated`}</p>
+                                    <span>
+                                      {`${format(
+                                        new Date(shift.start),
+                                        "H:mm"
+                                      )} - ${format(
+                                        new Date(shift.end),
+                                        "H:mm"
+                                      )}`}
+                                    </span>
+                                    <br />
+                                    <span>
+                                      Duration {`${shift.length} hours`}
+                                    </span>
+                                    <ExclamationTriangleIcon
+                                      className="h-4 w-4 text-orange-500 absolute top-1 right-1"
+                                      aria-hidden="true"
+                                    />
                                   </div>
                                 )}
                               </Popover.Button>
