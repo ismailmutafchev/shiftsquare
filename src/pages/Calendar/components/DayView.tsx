@@ -518,7 +518,7 @@ export default function DayView({
                     })}
                   </ol>
                 ) : (
-                  <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 relative flex items-center justify-center top-1/4">
+                  <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 absolute flex items-center justify-center top-1/3 left-1/2 -translate-x-1/2">
                     <EmptyState
                       title="Shift"
                       handler={() => setShowModal(true)}
