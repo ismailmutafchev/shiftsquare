@@ -1,4 +1,11 @@
-import { eachDayOfInterval, endOfDay, endOfWeek, format, startOfDay, startOfWeek } from "date-fns";
+import {
+  eachDayOfInterval,
+  endOfDay,
+  endOfWeek,
+  format,
+  startOfDay,
+  startOfWeek,
+} from "date-fns";
 import { useSession } from "../../providers/Session";
 import { useQuery } from "@apollo/client";
 import { getShifts } from "../../queries/shift/queries";
@@ -10,7 +17,6 @@ function classNames(...classes) {
 }
 
 export const RotaPrint = ({ date }: { date: any }) => {
-
   const { positions, profile } = useSession();
 
   const thisWeekDays = eachDayOfInterval({
@@ -67,6 +73,30 @@ export const RotaPrint = ({ date }: { date: any }) => {
     },
   });
 
+  const config = [
+    {
+      data: mondayShifts,
+    },
+    {
+      data: tuesdayShifts,
+    },
+    {
+      data: wednesdayShifts,
+    },
+    {
+      data: thursdayShifts,
+    },
+    {
+      data: fridayShifts,
+    },
+    {
+      data: saturdayShifts,
+    },
+    {
+      data: sundayShifts,
+    },
+  ];
+
   return (
     <div className="hidden">
       <div className="w-[2480px] h-[3428px] p-10 rota-print">
@@ -99,56 +129,17 @@ export const RotaPrint = ({ date }: { date: any }) => {
                         >
                           Position
                         </th>
-                        <th
-                          scope="col"
-                          className="px-4 py-3.5 text-center text-md font-semibold text-gray-900"
-                        >
-                          Monday <br />
-                          {format(new Date(thisWeekDays[0]), "dd MMM yyyy")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="px-4 py-3.5 text-center text-md font-semibold text-gray-900"
-                        >
-                          Tuesday <br />
-                          {format(new Date(thisWeekDays[1]), "dd MMM yyyy")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
-                        >
-                          Wednesday <br />
-                          {format(new Date(thisWeekDays[2]), "dd MMM yyyy")}
-
-                        </th>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
-                        >
-                          Thursday <br />
-                          {format(new Date(thisWeekDays[3]), "dd MMM yyyy")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
-                        >
-                          Friday <br />
-                          {format(new Date(thisWeekDays[4]), "dd MMM yyyy")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
-                        >
-                          Saturday <br />
-                          {format(new Date(thisWeekDays[5]), "dd MMM yyyy")}
-                        </th>
-                        <th
-                          scope="col"
-                          className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pr-0"
-                        >
-                          Sunday <br />
-                          {format(new Date(thisWeekDays[6]), "dd MMM yyyy")}
-                        </th>
+                        {thisWeekDays?.map((day: any) => (
+                          <th
+                            key={day}
+                            scope="col"
+                            className="px-4 py-3.5 text-center text-md font-semibold text-gray-900"
+                          >
+                            {format(new Date(day), "EEEE")}
+                            <br />
+                            {format(new Date(day), "dd MMM yyyy")}
+                          </th>
+                        ))}
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
@@ -160,183 +151,48 @@ export const RotaPrint = ({ date }: { date: any }) => {
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-md font-semibold text-gray-900 sm:pl-0">
                             {position.name}
                           </td>
-                          <td
-                            className={classNames(
-                              "whitespace-nowrap text-md text-gray-500",
-                              mondayShifts?.shift?.map((shift: any) => {
-                                if (shift.position.id === position.id) {
-                                  return "bg-red-500";
-                                }
-                              })
-                            )}
-                          >
-                            {mondayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
+                          {
+                            config.map((day: any) => {
+                              return (
+                                <td
+                                  className={classNames(
+                                    "whitespace-nowrap text-md text-gray-500",
+                                    day?.data?.shift?.map((shift: any) => {
+                                      if (shift.position.id === position.id) {
+                                        return "bg-red-500";
+                                      }
+                                    })
+                                  )}
+                                >
+                                  {day?.data?.shift?.map((shift: any) => {
+                                    let start = format(
+                                      new Date(shift?.start),
+                                      "hh:mm"
+                                    );
+                                    let end = format(
+                                      new Date(shift?.end),
+                                      "hh:mm"
+                                    );
+                                    if (shift.position.id === position.id) {
+                                      return (
+                                        <div
+                                          key={shift.id}
+                                          className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                        >
+                                          <p>
+                                            {shift?.employee?.firstName ||
+                                              "Unallocated"}{" "}
+                                            {shift?.employee?.lastName} <br />
+                                            {start} - {end}
+                                          </p>
+                                        </div>
+                                      );
+                                    }
+                                  })}
+                                </td>
                               );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
-                          <td className="whitespace-nowrap text-md text-gray-500">
-                            {tuesdayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
-                              );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
-                          <td className="whitespace-nowrap text-md text-gray-500 sm:pr-0">
-                            {wednesdayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
-                              );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
-                          <td className="whitespace-nowrap text-md text-gray-500 sm:pr-0">
-                            {thursdayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
-                              );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
-                          <td className="whitespace-nowrap text-md text-gray-500 sm:pr-0">
-                            {fridayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
-                              );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
-                          <td className="whitespace-nowrap text-md text-gray-500 sm:pr-0">
-                            {saturdayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
-                              );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
-                          <td className="whitespace-nowrap text-md text-gray-500 sm:pr-0">
-                            {sundayShifts?.shift?.map((shift: any) => {
-                              let start = format(
-                                new Date(shift?.start),
-                                "hh:mm"
-                              );
-                              let end = format(new Date(shift?.end), "hh:mm");
-                              if (shift.position.id === position.id) {
-                                return (
-                                  <div
-                                    key={shift.id}
-                                    className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                  >
-                                    <p>
-                                      {shift?.employee?.firstName ||
-                                        "Unallocated"}{" "}
-                                      {shift?.employee?.lastName} <br />
-                                      {start} - {end}
-                                    </p>
-                                  </div>
-                                );
-                              }
-                            })}
-                          </td>
+                            })
+                          }
                         </tr>
                       ))}
                     </tbody>
