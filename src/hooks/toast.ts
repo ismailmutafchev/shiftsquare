@@ -1,4 +1,23 @@
-import { useToastDispatchContext } from "../providers/ToastProvider/ToastContext";
+import { useContext } from "react";
+import { ToastContext } from "../providers/ToastProvider/ToastContext";
+
+export const useToastDispatchContext = () => {
+    const toastDispatch = useContext(ToastContext);
+    if (!toastDispatch) {
+      throw new Error(
+        "useToastDispatchContext must be used within a ToastProvider"
+      );
+    }
+    return toastDispatch;
+  };
+  
+  export const useToastStateContext = () => {
+    const toasts  = useContext(ToastContext);
+    if (!toasts) {
+      throw new Error("useToastStateContext must be used within a ToastProvider");
+    }
+    return toasts.toasts;
+  };
 
 export function useToast(delay: number) {
   const dispatch = useToastDispatchContext();

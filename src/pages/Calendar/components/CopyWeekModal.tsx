@@ -22,17 +22,15 @@ type WeekStartOn = 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined;
 
 export const CopyWeekModal = ({ data }: any) => {
   const [copyNames, setCopyNames] = useState(false);
+  const { copyModalHandler, selectedDay } = data;
+
   const pastWeeks = eachWeekOfInterval(
     {
-      start: subWeeks(new Date(), 10),
-      end: subDays(new Date(), 1),
+      start: subWeeks(new Date(selectedDay), 10),
+      end: subDays(new Date(selectedDay), 1),
     },
     { weekStartsOn: 1 }
   );
-
-  const selectedDay = data.selectedDay;
-
-  const { copyModalHandler } = data;
 
   const { control, watch, handleSubmit, setValue } = useForm({
     defaultValues: {

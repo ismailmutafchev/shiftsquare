@@ -1,5 +1,5 @@
 import { useQuery } from "@apollo/client";
-import { createContext, useContext } from "react";
+import { createContext } from "react";
 
 interface QueryResult<TData> {
   data?: TData;
@@ -12,7 +12,7 @@ interface QueryContextValue<TData> {
 //   refetch: () => Promise<ApolloQueryResult<TData>>;
 }
 
-const CalendarContext = createContext<QueryContextValue<any> | undefined>(
+export const CalendarContext = createContext<QueryContextValue<any> | undefined>(
   undefined
 );
 
@@ -37,12 +37,4 @@ export const CalendarProvider = ({ query,variables,  children }: any) => {
       {children}
     </CalendarContext.Provider>
   );
-};
-
-export const useCalendar = () => {
-  const context = useContext(CalendarContext);
-  if (context === undefined) {
-    throw new Error("useCalendar must be used within a CalendarProvider");
-  }
-  return context.queryData
 };

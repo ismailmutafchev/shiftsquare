@@ -43,7 +43,7 @@ import { RotaPrint } from "../../../components/pdf/RotaPrint";
 import EmptyState from "../../../components/EmptyState";
 import AddShift from "../components/ShiftModal";
 import { CopyWeekModal } from "../components/CopyWeekModal";
-import { useCalendar } from "../provider/CalendarProvider";
+import { useCalendar } from "../../../hooks/calendar";
 
 //@ts-ignore
 function classNames(...classes) {

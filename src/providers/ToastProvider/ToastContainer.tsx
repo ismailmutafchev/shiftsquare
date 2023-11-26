@@ -1,5 +1,5 @@
 import Toast from "../../components/Toast";
-import { useToastDispatchContext } from "./ToastContext";
+import { useToastDispatchContext } from "../../hooks/toast";
  
 export default function ToastContainer() {
   const { toasts } = useToastDispatchContext();

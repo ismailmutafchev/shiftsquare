@@ -1,5 +1,5 @@
 import { CheckCircleIcon, XCircleIcon } from "@heroicons/react/20/solid";
-import { useToastDispatchContext } from "../providers/ToastProvider/ToastContext";
+import { useToastDispatchContext } from "../hooks/toast";
 
 export default function Toast({
   type,
