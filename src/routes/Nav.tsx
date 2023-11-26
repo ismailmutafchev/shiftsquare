@@ -17,11 +17,11 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import LogoutButton from "../components/LogoutButton";
-import { useSession } from "../providers/SessionProvider/Session";
 import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
 import Modal from "../components/Modal";
 import Fuse from "fuse.js";
+import { useSession } from "../hooks/session";
 const SearchOptions = {
   shouldSort: true,
   threshold: 0.4,

@@ -4,12 +4,12 @@ import { getShifts } from "../../../queries/shift/queries";
 import { useMutation } from "@apollo/client";
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { useSession } from "../../../providers/SessionProvider/Session";
 import { addShiftOne, updateShiftById } from "../../../queries/shift/mutations";
 import { Listbox, Transition } from "@headlessui/react";
 import { shiftSchema } from "../../../validations/shift";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useToast } from "../../../providers/ToastProvider/ToastHook";
+import { useSession } from "../../../hooks/session";
+import { useToast } from "../../../hooks/toast";
 
 export default function AddShift({ data }: any) {
   const update = data.isUpdate;

@@ -3,8 +3,8 @@ import { Outlet, useLocation } from "react-router-dom";
 import Navigation from "../routes/Nav";
 import PublicNavigation from "../routes/PublicNav";
 import { useAuth0 } from "@auth0/auth0-react";
-import { useSession } from "../providers/SessionProvider/Session";
 import Onboarding from "./Onboarding/Onboarding";
+import { useSession } from "../hooks/session";
 
 const Layout = () => {
   const { isAuthenticated } = useAuth0();

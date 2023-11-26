@@ -6,10 +6,10 @@ import {
   startOfDay,
   startOfWeek,
 } from "date-fns";
-import { useSession } from "../../providers/SessionProvider/Session";
 import { useQuery } from "@apollo/client";
 import { getShifts } from "../../queries/shift/queries";
 import logo from "./logo.png";
+import { useSession } from "../../hooks/session";
 
 //@ts-ignore
 function classNames(...classes) {
