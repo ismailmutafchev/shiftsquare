@@ -82,7 +82,7 @@ export default function AddShift({ data }: any) {
         ],
         onCompleted: () => {
           modalHandler(false);
-          toast("success", "Shift updated");
+          toast("success", "Shift updated successfully");
         },
       });
       return;
