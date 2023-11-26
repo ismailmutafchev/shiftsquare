@@ -71,7 +71,6 @@ export default function DayView({
   });
 
   const { data, loading, error: dataError } = useCalendar();
-  console.log(data, "xx123");
 
   const days = eachDayOfInterval({
     start: new Date(

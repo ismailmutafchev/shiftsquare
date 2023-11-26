@@ -6,7 +6,7 @@ import {
   addUserOne,
   updateUserById,
 } from "../../../queries/user/mutations.ts";
-import { useSession } from "../../../providers/Session.tsx";
+import { useSession } from "../../../providers/SessionProvider/Session.tsx";
 import { Switch } from "@headlessui/react";
 
 type UserProps = {

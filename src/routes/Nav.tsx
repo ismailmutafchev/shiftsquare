@@ -17,7 +17,7 @@ import {
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import LogoutButton from "../components/LogoutButton";
-import { useSession } from "../providers/Session";
+import { useSession } from "../providers/SessionProvider/Session";
 import Avatar from "../components/Avatar";
 import Logo from "../components/Logo";
 import Modal from "../components/Modal";

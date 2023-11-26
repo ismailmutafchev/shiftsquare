@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
-import { getEmployees, getProfile } from "../queries/user/queries";
-import { getPositions } from "../queries/position/queries";
+import { getEmployees, getProfile } from "../../queries/user/queries";
+import { getPositions } from "../../queries/position/queries";
 import { useAuth0 } from "@auth0/auth0-react";
 
 

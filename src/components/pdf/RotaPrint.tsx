@@ -6,7 +6,7 @@ import {
   startOfDay,
   startOfWeek,
 } from "date-fns";
-import { useSession } from "../../providers/Session";
+import { useSession } from "../../providers/SessionProvider/Session";
 import { useQuery } from "@apollo/client";
 import { getShifts } from "../../queries/shift/queries";
 import logo from "./logo.png";
@@ -151,48 +151,47 @@ export const RotaPrint = ({ date }: { date: any }) => {
                           <td className="whitespace-nowrap py-4 pl-4 pr-4 text-md font-semibold text-gray-900 sm:pl-0">
                             {position.name}
                           </td>
-                          {
-                            config.map((day: any) => {
-                              return (
-                                <td
-                                  className={classNames(
-                                    "whitespace-nowrap text-md text-gray-500",
-                                    day?.data?.shift?.map((shift: any) => {
-                                      if (shift.position.id === position.id) {
-                                        return "bg-red-500";
-                                      }
-                                    })
-                                  )}
-                                >
-                                  {day?.data?.shift?.map((shift: any) => {
-                                    let start = format(
-                                      new Date(shift?.start),
-                                      "hh:mm"
-                                    );
-                                    let end = format(
-                                      new Date(shift?.end),
-                                      "hh:mm"
-                                    );
+                          {config.map((day: any) => {
+                            return (
+                              <td
+                                key={day && day?.data?.shift?.id}
+                                className={classNames(
+                                  "whitespace-nowrap text-md text-gray-500",
+                                  day?.data?.shift?.map((shift: any) => {
                                     if (shift.position.id === position.id) {
-                                      return (
-                                        <div
-                                          key={shift.id}
-                                          className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
-                                        >
-                                          <p>
-                                            {shift?.employee?.firstName ||
-                                              "Unallocated"}{" "}
-                                            {shift?.employee?.lastName} <br />
-                                            {start} - {end}
-                                          </p>
-                                        </div>
-                                      );
+                                      return "bg-white";
                                     }
-                                  })}
-                                </td>
-                              );
-                            })
-                          }
+                                  })
+                                )}
+                              >
+                                {day?.data?.shift?.map((shift: any) => {
+                                  let start = format(
+                                    new Date(shift?.start),
+                                    "hh:mm"
+                                  );
+                                  let end = format(
+                                    new Date(shift?.end),
+                                    "hh:mm"
+                                  );
+                                  if (shift.position.id === position.id) {
+                                    return (
+                                      <div
+                                        key={shift.id}
+                                        className="pb-3 bg-gray-50 rounded-xl m-1 flex items-center justify-center text-center font-semibold"
+                                      >
+                                        <p>
+                                          {shift?.employee?.firstName ||
+                                            "Unallocated"}{" "}
+                                          {shift?.employee?.lastName} <br />
+                                          {start} - {end}
+                                        </p>
+                                      </div>
+                                    );
+                                  }
+                                })}
+                              </td>
+                            );
+                          })}
                         </tr>
                       ))}
                     </tbody>

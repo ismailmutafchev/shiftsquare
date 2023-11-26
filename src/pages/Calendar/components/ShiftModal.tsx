@@ -4,17 +4,19 @@ import { getShifts } from "../../../queries/shift/queries";
 import { useMutation } from "@apollo/client";
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { useSession } from "../../../providers/Session";
+import { useSession } from "../../../providers/SessionProvider/Session";
 import { addShiftOne, updateShiftById } from "../../../queries/shift/mutations";
 import { Listbox, Transition } from "@headlessui/react";
 import { shiftSchema } from "../../../validations/shift";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useToast } from "../../../providers/ToastProvider/ToastHook";
 
 export default function AddShift({ data }: any) {
   const update = data.isUpdate;
   const id = data?.data?.id || null;
   const { modalHandler, selectedDay, shifts } = data;
   const { employees, positions } = useSession();
+  const toast = useToast(4000);
 
   const { register, handleSubmit, watch, control, formState } = useForm({
     defaultValues: {
@@ -78,7 +80,10 @@ export default function AddShift({ data }: any) {
             },
           },
         ],
-        onCompleted: () => modalHandler(false),
+        onCompleted: () => {
+          modalHandler(false);
+          toast("success", "Shift updated");
+        },
       });
       return;
     }

@@ -1,5 +1,5 @@
 import { useForm } from "react-hook-form";
-import { useSession } from "../../providers/Session";
+import { useSession } from "../../providers/SessionProvider/Session";
 import { useMutation, useQuery } from "@apollo/client";
 import { updateUserById } from "../../queries/user/mutations";
 import { getOrganizationByName } from "../../queries/organization/quieries";
