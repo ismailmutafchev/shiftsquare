@@ -1,15 +1,14 @@
 import { Fragment, useState } from "react";
 import {
   eachWeekOfInterval,
-  endOfDay,
-  endOfWeek,
   format,
-  getISODay,
-  isSunday,
-  startOfDay,
-  startOfWeek,
   subDays,
   subWeeks,
+  eachDayOfInterval,
+  endOfWeek,
+  startOfWeek,
+  startOfDay,
+  endOfDay,
 } from "date-fns";
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
@@ -18,7 +17,31 @@ import { getShifts } from "../../../queries/shift/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { addShiftsMany } from "../../../queries/shift/mutations";
 
-type WeekStartOn = 0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined;
+const getDayOfWeek = (givenDate: Date, selectedDate: Date) => {
+  const weekOfChoice = eachDayOfInterval({
+    start: new Date(startOfWeek(selectedDate, { weekStartsOn: 1 })),
+    end: new Date(endOfWeek(selectedDate, { weekStartsOn: 1 })),
+  });
+  
+  switch (new Date(givenDate).getDay()) {
+    case 0:
+      return weekOfChoice[6].toISOString();
+    case 1:
+      return weekOfChoice[0].toISOString();
+    case 2:
+      return weekOfChoice[1].toISOString();
+    case 3:
+      return weekOfChoice[2].toISOString();
+    case 4:
+      return weekOfChoice[3].toISOString();
+    case 5:
+      return weekOfChoice[4].toISOString();
+    case 6:
+      return weekOfChoice[5].toISOString();
+    default:
+      return null;
+  }
+};
 
 export const CopyWeekModal = ({ data }: any) => {
   const [copyNames, setCopyNames] = useState(false);
@@ -58,41 +81,24 @@ export const CopyWeekModal = ({ data }: any) => {
 
   const submit = (data: any) => {
     let newShifts = data.shifts.map((shift: any) => {
+      const startDate = getDayOfWeek(shift.start, selectedDay) as
+        | string
+        | number
+        | Date;
+      const endDate = getDayOfWeek(shift.end, selectedDay) as
+        | string
+        | number
+        | Date;
       const startTime = format(new Date(shift.start), "HH:mm:ss");
       const endTime = format(new Date(shift.end), "HH:mm:ss");
-      const isoDay = isSunday(new Date(shift.start))
-        ? 0
-        : (getISODay(new Date(shift.start)) as WeekStartOn);
 
       const startDateTime =
-        format(
-          new Date(
-            new Date(
-              isSunday(new Date(shift.start))
-                ? endOfWeek(new Date(), { weekStartsOn: 1 })
-                : startOfWeek(new Date(), { weekStartsOn: isoDay })
-            )
-          ),
-          "yyyy-MM-dd"
-        ) +
-        " " +
-        startTime;
+        format(new Date(startDate), "yyyy-MM-dd") + " " + startTime;
       const endDateTime =
-        format(
-          new Date(
-            new Date(
-              isSunday(new Date(shift.start))
-                ? endOfWeek(new Date(), { weekStartsOn: 1 })
-                : startOfWeek(new Date(), { weekStartsOn: isoDay })
-            )
-          ),
-          "yyyy-MM-dd"
-        ) +
-        " " +
-        endTime;
+        format(new Date(endDate), "yyyy-MM-dd") + " " + endTime;
 
       return {
-        employeeId: copyNames? shift.employeeId : null,
+        employeeId: copyNames ? shift.employeeId : null,
         positionId: shift.positionId,
         length: shift.length,
         start: new Date(startDateTime).toISOString(),
