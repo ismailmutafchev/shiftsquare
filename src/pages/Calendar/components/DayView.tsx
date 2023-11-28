@@ -43,7 +43,7 @@ import { RotaPrint } from "../../../components/pdf/RotaPrint";
 import EmptyState from "../../../components/EmptyState";
 import AddShift from "../components/ShiftModal";
 import { CopyWeekModal } from "../components/CopyWeekModal";
-import { useCalendar } from "../provider/CalendarProvider";
+import { useCalendar } from "../../../hooks/calendar";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -71,7 +71,6 @@ export default function DayView({
   });
 
   const { data, loading, error: dataError } = useCalendar();
-  console.log(data, "xx123");
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -518,7 +517,7 @@ export default function DayView({
                     })}
                   </ol>
                 ) : (
-                  <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 relative flex items-center justify-center top-1/4">
+                  <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 absolute flex items-center justify-center top-1/3 left-1/2 -translate-x-1/2">
                     <EmptyState
                       title="Shift"
                       handler={() => setShowModal(true)}

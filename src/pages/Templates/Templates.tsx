@@ -118,9 +118,6 @@ export default function Templates() {
   function builderHandler(state: boolean) {
     setShowBuilder(state);
   }
-
-  
-  // const { positions } = useSession();
   
   const { loading, error, data } = useQuery(getTemplates);
   const [deleteTemplate] = useMutation(deleteTemplateById, {
