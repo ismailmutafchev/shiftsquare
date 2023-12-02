@@ -59,7 +59,6 @@ export default function DayView({
   selectedDay: Date;
 }) {
   const [selectedMonth, setSelectedMonth] = useState(new Date());
-  //   const [selectedDay, setSelectedDay] = useState(new Date());
   const container = useRef(null);
   const containerNav = useRef(null);
   const containerOffset = useRef(null);
@@ -527,7 +526,6 @@ export default function DayView({
               </div>
             </div>
           </div>
-          {/* <Datepicker selectedDay={selectedDay} setSelectedDay={setSelectedDay} show={showCalendar} /> */}
         </div>
       )}
       <Modal

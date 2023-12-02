@@ -16,13 +16,14 @@ import { Listbox, Switch, Transition } from "@headlessui/react";
 import { getShifts } from "../../../queries/shift/queries";
 import { useMutation, useQuery } from "@apollo/client";
 import { addShiftsMany } from "../../../queries/shift/mutations";
+import { useToast } from "../../../hooks/toast";
 
 const getDayOfWeek = (givenDate: Date, selectedDate: Date) => {
   const weekOfChoice = eachDayOfInterval({
     start: new Date(startOfWeek(selectedDate, { weekStartsOn: 1 })),
     end: new Date(endOfWeek(selectedDate, { weekStartsOn: 1 })),
   });
-  
+
   switch (new Date(givenDate).getDay()) {
     case 0:
       return weekOfChoice[6].toISOString();
@@ -64,6 +65,8 @@ export const CopyWeekModal = ({ data }: any) => {
       shifts: [],
     },
   });
+
+  const toast = useToast(4000);
 
   useQuery(getShifts, {
     variables: {
@@ -121,6 +124,7 @@ export const CopyWeekModal = ({ data }: any) => {
       ],
       onCompleted: () => {
         copyModalHandler(false);
+        toast("success", "Shifts copied successfully!")
       },
     });
   };
