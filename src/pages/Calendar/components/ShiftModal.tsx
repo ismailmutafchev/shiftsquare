@@ -6,15 +6,15 @@ import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { addShiftOne, updateShiftById } from "../../../queries/shift/mutations";
 import { Listbox, Transition } from "@headlessui/react";
-import { shiftSchema } from "../../../validations/shift";
-import { yupResolver } from "@hookform/resolvers/yup";
+// import { shiftSchema } from "../../../validations/shift";
+// import { yupResolver } from "@hookform/resolvers/yup";
 import { useSession } from "../../../hooks/session";
 import { useToast } from "../../../hooks/toast";
 
 export default function AddShift({ data }: any) {
   const update = data.isUpdate;
   const id = data?.data?.id || null;
-  const { modalHandler, selectedDay, shifts } = data;
+  const { modalHandler, selectedDay } = data;
   const { employees, positions } = useSession();
   const toast = useToast(4000);
 
@@ -29,7 +29,7 @@ export default function AddShift({ data }: any) {
       end: data.data.end ? format(new Date(data.data.end), "HH:mm") : "",
       length: data.data.length || 0,
     },
-    resolver: yupResolver(shiftSchema),
+    // resolver: yupResolver(shiftSchema),
   });
 
   const [addShift] = useMutation(addShiftOne);
@@ -38,21 +38,21 @@ export default function AddShift({ data }: any) {
   const formErrors = formState.errors;
 
   function submit(data: any) {
-    const employeeBusy = shifts?.some((shift: any) => {
-      if (update && shift.id === id) return false;
-      return (
-        shift.employeeId === data.employee &&
-        ((new Date(shift.start) < new Date(data.date + "T" + data.start) &&
-          new Date(shift.end) > new Date(data.date + "T" + data.start)) ||
-          (new Date(shift.start) < new Date(data.date + "T" + data.end) &&
-            new Date(shift.end) > new Date(data.date + "T" + data.end)))
-      );
-    });
+    // const employeeBusy = shifts?.some((shift: any) => {
+    //   if (update && shift.id === id) return false;
+    //   return (
+    //     shift.employeeId === data.employee &&
+    //     ((new Date(shift.start) < new Date(data.date + "T" + data.start) &&
+    //       new Date(shift.end) > new Date(data.date + "T" + data.start)) ||
+    //       (new Date(shift.start) < new Date(data.date + "T" + data.end) &&
+    //         new Date(shift.end) > new Date(data.date + "T" + data.end)))
+    //   );
+    // });
 
-    if (employeeBusy) {
-      alert("Employee is busy");
-      return;
-    }
+    // if (employeeBusy) {
+    //   alert("Employee is busy");
+    //   return;
+    // }
 
     const shiftLength = (
       differenceInMinutes(
@@ -108,6 +108,9 @@ export default function AddShift({ data }: any) {
         },
       ],
       onCompleted: () => modalHandler(false),
+      onError: (error) => {
+        toast("error", error.message === "database query error" ? "Employee is busy" : error.message);
+      }
     });
   }
 
