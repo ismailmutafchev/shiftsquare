@@ -38,22 +38,6 @@ export default function AddShift({ data }: any) {
   const formErrors = formState.errors;
 
   function submit(data: any) {
-    // const employeeBusy = shifts?.some((shift: any) => {
-    //   if (update && shift.id === id) return false;
-    //   return (
-    //     shift.employeeId === data.employee &&
-    //     ((new Date(shift.start) < new Date(data.date + "T" + data.start) &&
-    //       new Date(shift.end) > new Date(data.date + "T" + data.start)) ||
-    //       (new Date(shift.start) < new Date(data.date + "T" + data.end) &&
-    //         new Date(shift.end) > new Date(data.date + "T" + data.end)))
-    //   );
-    // });
-
-    // if (employeeBusy) {
-    //   alert("Employee is busy");
-    //   return;
-    // }
-
     const shiftLength = (
       differenceInMinutes(
         new Date(data.date + "T" + data.end),
