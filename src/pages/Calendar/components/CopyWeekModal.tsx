@@ -122,9 +122,11 @@ export const CopyWeekModal = ({ data }: any) => {
           },
         },
       ],
-      onCompleted: () => {
+      onCompleted: ({insert_shift}) => {
+        const shiftsAdded = insert_shift.affected_rows;
+        const shiftsFailed = newShifts.length - shiftsAdded;
         copyModalHandler(false);
-        toast("success", "Shifts copied successfully!")
+        toast("success", `${shiftsAdded} shifts added, ${shiftsFailed} failed`);
       },
     });
   };

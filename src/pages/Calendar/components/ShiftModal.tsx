@@ -84,6 +84,9 @@ export default function AddShift({ data }: any) {
           modalHandler(false);
           toast("success", "Shift updated successfully");
         },
+        onError: (error) => {
+          toast("error", error.message === "database query error" ? "Employee is busy" : error.message);
+        }
       });
       return;
     }
