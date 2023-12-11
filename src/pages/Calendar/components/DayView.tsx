@@ -44,6 +44,7 @@ import EmptyState from "../../../components/EmptyState";
 import AddShift from "../components/ShiftModal";
 import { CopyWeekModal } from "../components/CopyWeekModal";
 import { useCalendar } from "../../../hooks/calendar";
+import { useToast } from "../../../hooks/toast";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -69,6 +70,8 @@ export default function DayView({
     data: {},
   });
 
+  const toast = useToast(4000);
+
   const { data, loading, error: dataError } = useCalendar();
 
   const days = eachDayOfInterval({
@@ -89,6 +92,10 @@ export default function DayView({
         fetchPolicy: "network-only",
       },
     ],
+    onCompleted: (data) => {
+      console.log(data);
+      toast("success", "Shift deleted successfully");
+    }
   });
 
   const { isLoading, error } = useAuth0();
@@ -345,7 +352,7 @@ export default function DayView({
               <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
                 <div
-                  className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-[80vh]"
+                  className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-full"
                   style={{
                     gridTemplateColumns: "repeat(48, minmax(1.8rem, 1fr))",
                   }}
