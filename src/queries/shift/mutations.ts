@@ -1,12 +1,11 @@
 import { gql } from '@apollo/client'
+import { ShiftFragment } from './fragment'
 
 export const addShiftOne = gql`
+    ${ShiftFragment}
     mutation addShiftOne($object: shift_insert_input!) {
         insert_shift_one(object: $object) {
-            id
-            start
-            end
-            positionId
+            ...ShiftFragment
         }
     }
 `;
