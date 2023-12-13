@@ -415,7 +415,7 @@ export default function DayView({
                                 className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >
                                 {shift.employee ? (
-                                  <div className="overflow-scroll text-start">
+                                  <div className="overflow-scroll text-start no-scrollbar">
                                     <p className="font-semibold text-gray-800 text-xs">{`${shift.employee.firstName} (${shift?.position?.name}) `}</p>
                                     <span>
                                       {`${format(

@@ -450,7 +450,7 @@ export default function Dashboard() {
               <h1 className="text-2xl font-bold text-polar-700/80">
                 Hours by Employee
               </h1>
-              <div className="flex items-start flex-col">
+              <div className="flex items-start no-scrollbar flex-col">
                 {hoursByEmployee.shift.map((shift: any) => {
                   return (
                     <div
@@ -528,7 +528,7 @@ export default function Dashboard() {
                 Hours by Position
               </h1>
               {(hoursByPosition && hoursByPosition.shift && (
-                <div className="flex items-start flex-col">
+                <div className="flex items-start flex-col no-scrollbar">
                   {hoursByPosition.shift.map((shift: any) => {
                     return (
                       <div
