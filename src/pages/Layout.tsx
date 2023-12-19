@@ -8,9 +8,20 @@ import { useSession } from "../hooks/session";
 
 const Layout = () => {
   const { isAuthenticated } = useAuth0();
-  const { profile } = useSession();
+  const { profile,user } = useSession();
 
   const { pathname } = useLocation();
+
+  console.log(profile, 'xss')
+
+  if (profile?.data?.user[0]?.onboarded === false || user?.email_verified === false ){
+    return (
+      <div className="bg-gradient-to-br from-polar-300 to-white pb-24">
+        <Onboarding />
+      </div>
+    );
+  }
+
 
   if (
     !isAuthenticated ||
@@ -24,7 +35,7 @@ const Layout = () => {
         <Outlet />
       </div>
     );
-  } else if (profile?.data?.user[0]?.onboarded === false) {
+  } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === false) {
     return (
       <div className="bg-gradient-to-br from-polar-300 to-white pb-24">
         <Onboarding />
