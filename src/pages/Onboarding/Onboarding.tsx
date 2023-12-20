@@ -5,8 +5,8 @@ import { getOrganizationByName } from "../../queries/organization/quieries";
 import { CheckBadgeIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { getProfile } from "../../queries/user/queries";
 import { useSession } from "../../hooks/session";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination, Navigation } from 'swiper/modules';
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
 
 export default function Onboarding() {
   const { profile } = useSession();
@@ -41,6 +41,15 @@ export default function Onboarding() {
     });
   }
 
+  const SwipeNextButton = () => {
+    const swiper = useSwiper();
+    return (
+      <button onClick={() => swiper.slideNext()} className="font-bold">
+        Let's get started!
+      </button>
+    );
+  };
+
   return (
     <>
       <Swiper
@@ -49,9 +58,20 @@ export default function Onboarding() {
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
-        className="mySwiper border-2 border-gray-200 h-screen mx-auto"
+        className="mySwiper h-screen mx-auto swiper"
       >
-        <SwiperSlide className="border-2 border-red-400 flex items-center justify-center">Slide 1</SwiperSlide>
+        <SwiperSlide className="flex items-center justify-center">
+          
+          <div className="w-1/2 space-y-10 flex flex-col">
+            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+              Welcom e to Shift Square
+            </h1>
+            <p className="text-xl text-polar-500 animate-fadeUp">
+              We are excited to have you on board.{" "}
+              <SwipeNextButton />
+            </p>
+          </div>
+        </SwiperSlide>
         <SwiperSlide>Slide 2</SwiperSlide>
         <SwiperSlide>Slide 3</SwiperSlide>
         <SwiperSlide>Slide 4</SwiperSlide>

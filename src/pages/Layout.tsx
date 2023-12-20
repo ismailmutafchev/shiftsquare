@@ -16,7 +16,7 @@ const Layout = () => {
 
   if (profile?.data?.user[0]?.onboarded === false || user?.email_verified === false ){
     return (
-      <div className="bg-gradient-to-br from-polar-300 to-white pb-24">
+      <div className="bg-gradient-to-br from-jagged-ice-50 to-white pb-24">
         <Onboarding />
       </div>
     );
@@ -30,14 +30,14 @@ const Layout = () => {
     pathname === "/pricing"
   ) {
     return (
-      <div className="bg-gradient-to-br from-polar-300 to-white pb-24">
+      <div className="bg-gradient-to-br from-jagged-ice-50 to-white pb-24">
         <PublicNavigation />
         <Outlet />
       </div>
     );
   } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === false) {
     return (
-      <div className="bg-gradient-to-br from-polar-100 to-white">
+      <div className="">
         <Onboarding />
       </div>
     );
