@@ -21,6 +21,9 @@ export const useSession = () => {
     console.log(profile, 'profile');
     console.log(user, 'user');  
 
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('profile', JSON.stringify(profile?.user[0]));
+
     return {
         employees: employees.data?.user,
         positions: positions.data?.position,

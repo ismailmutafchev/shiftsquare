@@ -37,7 +37,7 @@ const Layout = () => {
     );
   } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === false) {
     return (
-      <div className="bg-gradient-to-br from-polar-300 to-white pb-24">
+      <div className="bg-gradient-to-br from-polar-100 to-white">
         <Onboarding />
       </div>
     );
