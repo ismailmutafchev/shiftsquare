@@ -6,6 +6,8 @@ import { getProfile } from "../../queries/user/queries";
 import { useSession } from "../../hooks/session";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { onboardingSchema } from "../../validations/onboarding";
 
 export default function Onboarding() {
   const { profile } = useSession();
@@ -20,7 +22,9 @@ export default function Onboarding() {
     ],
   });
 
-  const { register, handleSubmit, watch } = useForm();
+  const { register, handleSubmit, watch } = useForm({
+    resolver: yupResolver(onboardingSchema),
+  });
   const organization = watch("organization");
 
   const { data: organizationData } = useQuery(getOrganizationByName, {
@@ -37,9 +41,9 @@ export default function Onboarding() {
           onboarded: true,
         },
       },
+      
     });
   }
-  console.log(watch("firstName")); // watch input value by passing the name of it
 
   const SwipeNextButton = (props: { text: string }) => {
     const swiper = useSwiper();
