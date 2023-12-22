@@ -93,11 +93,26 @@ export default {
       },
       boxShadow: {
         'light': '-2px -2px 3px rgba(255, 255, 255, 0.1), 2px 2px 3px rgba(70,70,70,0.4), inset -2px -2px 3px rgba(70,70,70,0.4), inset 2px 2px 3px rgba(,255, 255, 255, 0.1)',
-      }
+      },
+      keyframes: {
+        fade: {
+          "0%": {
+            opacity: "0",
+            transform: "translateY(20px)",
+          },
+          "100%": {
+            opacity: "1",
+            transform: "translateY(0)",
+          },
+        },
+      },
+      animation: {
+        fadeUp: "fade 0.5s ease-out",
+      },
     },
   },
   animation: {
-    spin: "spin 1s linear infinite",
+    spin: "spin 1s linear infinite"
   },
   plugins: ["@tailwindcss/forms"],
 };

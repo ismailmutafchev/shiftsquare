@@ -12,12 +12,22 @@ export const useSession = () => {
     const {data: profile } = useQuery(getProfile, {
         variables: {
             authId: user?.sub
+        },
+        onCompleted: (data) => {
+            console.log(data, 'xyss');
         }
     });
+
+    console.log(profile, 'profile');
+    console.log(user, 'user');  
+
+    localStorage.setItem('user', JSON.stringify(user));
+    localStorage.setItem('profile', JSON.stringify(profile?.user[0]));
 
     return {
         employees: employees.data?.user,
         positions: positions.data?.position,
         profile: {...profile?.user[0], picture: user?.picture},
+        user: user
     }
 }
