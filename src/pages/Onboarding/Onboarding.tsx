@@ -1,7 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "@apollo/client";
+import { useMutation } from "@apollo/client";
 import { updateUserById } from "../../queries/user/mutations";
-import { getOrganizationByName } from "../../queries/organization/quieries";
 import { getProfile } from "../../queries/user/queries";
 import { useSession } from "../../hooks/session";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
@@ -31,23 +30,13 @@ export default function Onboarding() {
   const {
     register,
     handleSubmit,
-    getValues,
     watch,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(onboardingSchema),
     mode: "onChange",
-    defaultValues: {
-        firstName: user?.firstName || "",
-        lastName: user?.lastName || "",
-        organization: user?.organization?.name || "",
-        }
   });
-  const organization = watch("organization");
 
-  const { data: organizationData } = useQuery(getOrganizationByName, {
-    variables: { name: organization },
-  });
   function submit(data: any) {
     updateUser({
       variables: {
@@ -55,12 +44,14 @@ export default function Onboarding() {
         object: {
           firstName: data.firstName,
           lastName: data.lastName,
-          organization_id: data.organization,
+          organization: data.organization,
           onboarded: true,
         },
       },
     });
   }
+
+  const watcher = watch();
 
   const SwipeNextButton = (props: { text: string; disabled: boolean }) => {
     const swiper = useSwiper();
@@ -133,8 +124,10 @@ export default function Onboarding() {
                     // style={inputStyles}
                     className={classNames(
                       "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
-                      getValues('organization') && errors.organization &&
-                        "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1"
+                      !watcher.organization ||
+                        watcher.organization === "" ||
+                        (errors.organization &&
+                          "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
                     )}
                     {...register("organization", {
                       required: true,
@@ -142,7 +135,7 @@ export default function Onboarding() {
                     })}
                   />
                   <p className="text-xs absolute text-red-500">
-                    {errors.organization ? errors.organization.message : ""}
+                    {errors.organization?.message}
                   </p>
                   {}
                 </div>
@@ -151,13 +144,170 @@ export default function Onboarding() {
             <div className="flex w-full justify-between">
               <SwipePrevButton text="Back" />
               <SwipeNextButton
-                disabled={errors.organization ? true : false}
+                disabled={
+                  !watcher.organization || errors.organization ? true : false
+                }
                 text="Next"
               />
             </div>
           </div>
         </SwiperSlide>
         {/* names slide */}
+        <SwiperSlide className="flex items-center justify-center">
+          <div className="w-3/4 space-y-10 flex flex-col">
+            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+              Let's start with your name
+            </h1>
+            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  What is your first name?
+                </p>
+                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                  <input
+                    type="text"
+                    // style={inputStyles}
+                    className={classNames(
+                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                      !watcher.firstName ||
+                        watcher.firstName === "" ||
+                        (errors.firstName &&
+                          "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                    )}
+                    {...register("firstName", {
+                      required: true,
+                      minLength: 2,
+                    })}
+                  />
+                  <p className="text-xs absolute text-red-500">
+                    {errors.firstName?.message}
+                  </p>
+                  {}
+                </div>
+              </div>
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  What is your last name?
+                </p>
+                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                  <input
+                    type="text"
+                    // style={inputStyles}
+                    className={classNames(
+                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                      !watcher.lastName ||
+                        watcher.lastName === "" ||
+                        (errors.lastName &&
+                          "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                    )}
+                    {...register("lastName", {
+                      required: true,
+                      minLength: 2,
+                    })}
+                  />
+                  <p className="text-xs absolute text-red-500">
+                    {errors.lastName?.message}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div className="flex w-full justify-between">
+              <SwipePrevButton text="Back" />
+              <SwipeNextButton
+                disabled={
+                  !watcher.firstName ||
+                  !watcher.lastName ||
+                  errors.firstName ||
+                  errors.lastName
+                    ? true
+                    : false
+                }
+                text="Next"
+              />
+            </div>
+          </div>
+        </SwiperSlide>
+        {/* role slide */}
+        <SwiperSlide className="flex items-center justify-center">
+          <div className="w-3/4 space-y-10 flex flex-col">
+            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+              What is your role?
+            </h1>
+            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  What is your role?
+                </p>
+                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                  <input
+                    type="text"
+                    // style={inputStyles}
+                    className={classNames(
+                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                      !watcher.role ||
+                        watcher.role === "" ||
+                        (errors.role &&
+                          "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                    )}
+                    {...register("role", {
+                      required: true,
+                      minLength: 2,
+                    })}
+                  />
+                  <p className="text-xs absolute text-red-500">
+                    {errors.role?.message}
+                  </p>
+                  {}
+                </div>
+              </div>
+            </div>
+            <div className="flex w-full justify-between">
+              <SwipePrevButton text="Back" />
+              <SwipeNextButton
+                disabled={!watcher.role || errors.role ? true : false}
+                text="Next"
+              />
+            </div>
+          </div>
+        </SwiperSlide>
+        {/* confirmation slide */}
+        <SwiperSlide className="flex items-center justify-center">
+          <div className="w-3/4 space-y-10 flex flex-col">
+            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+              Confirm your details
+            </h1>
+            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  Your organization is{" "}
+                  <span className="font-bold">{watcher.organization}</span>
+                </p>
+              </div>
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  Your name is{" "}
+                  <span className="font-bold">
+                    {watcher.firstName} {watcher.lastName}
+                  </span>
+                </p>
+              </div>
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  Your role is <span className="font-bold">{watcher.role}</span>
+                </p>
+              </div>
+            </div>
+            <div className="flex w-full justify-between">
+              <SwipePrevButton text="Back" />
+              <button
+                onClick={handleSubmit(submit)}
+                className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </SwiperSlide>
       </Swiper>
     </>
   );

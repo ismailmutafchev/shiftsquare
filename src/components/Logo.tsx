@@ -1,5 +1,5 @@
 export default function Logo({ size, dark }: { size: number; dark?: boolean }) {
-  const animation = "hover:scale-105 duration-200";
+  const animation = "hover:scale-105 transition-transform duration-300";
   // https://ibb.co/0cqTBKh
   return (
     <div>
