@@ -11,12 +11,9 @@ const Layout = () => {
   const { profile,user } = useSession();
 
   const { pathname } = useLocation();
-
-  console.log(profile, 'xss')
-
   if (profile?.data?.user[0]?.onboarded === false || user?.email_verified === false ){
     return (
-      <div className="bg-gradient-to-br from-jagged-ice-50 to-white pb-24">
+      <div className="bg-gray-300/40 pb-24">
         <Onboarding />
       </div>
     );
@@ -30,7 +27,7 @@ const Layout = () => {
     pathname === "/pricing"
   ) {
     return (
-      <div className="bg-gradient-to-br from-jagged-ice-50 to-white pb-24">
+      <div className="bg-polar-700/5">
         <PublicNavigation />
         <Outlet />
       </div>

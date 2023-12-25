@@ -8,6 +8,12 @@ import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { onboardingSchema } from "../../validations/onboarding";
+import Logo from "../../components/Logo";
+
+//@ts-ignore
+function classNames(...classes) {
+  return classes.filter(Boolean).join(" ");
+}
 
 export default function Onboarding() {
   const { profile } = useSession();
@@ -22,8 +28,20 @@ export default function Onboarding() {
     ],
   });
 
-  const { register, handleSubmit, watch } = useForm({
+  const {
+    register,
+    handleSubmit,
+    getValues,
+    watch,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(onboardingSchema),
+    mode: "onChange",
+    defaultValues: {
+        firstName: user?.firstName || "",
+        lastName: user?.lastName || "",
+        organization: user?.organization?.name || "",
+        }
   });
   const organization = watch("organization");
 
@@ -37,20 +55,27 @@ export default function Onboarding() {
         object: {
           firstName: data.firstName,
           lastName: data.lastName,
-          organization_id: organizationData?.organization[0]?.id,
+          organization_id: data.organization,
           onboarded: true,
         },
       },
-      
     });
   }
 
-  const SwipeNextButton = (props: { text: string }) => {
+  const SwipeNextButton = (props: { text: string; disabled: boolean }) => {
     const swiper = useSwiper();
+
     return (
       <button
-        onClick={() => swiper.slideNext()}
-        className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+        disabled={props.disabled}
+        onClick={() => {
+          console.log(errors.organization?.message);
+          swiper.slideNext();
+        }}
+        className={classNames(
+          "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
+          props.disabled && "opacity-50 cursor-not-allowed"
+        )}
       >
         {props.text}
       </button>
@@ -79,123 +104,60 @@ export default function Onboarding() {
         modules={[Pagination, Navigation]}
         className="mySwiper h-screen mx-auto swiper"
       >
-        <SwiperSlide className="flex items-center justify-center">
-          <div className="w-1/2 space-y-10 flex flex-col">
+        <SwiperSlide className="flex justify-center">
+          <div className="w-1/2 space-y-20 flex flex-col items-center justify-center">
+            <Logo size={220} />
             <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              Welcom e to Shift Square
+              Welcome to Shift Square
             </h1>
             <p className="text-xl text-polar-500 animate-fadeUp">
               We are excited to have you on board.{" "}
-              <SwipeNextButton text="Let's get started" />
+              <SwipeNextButton disabled={false} text="Let's get started" />
             </p>
           </div>
         </SwiperSlide>
-        <SwiperSlide className="flex items-center justify-center">
-          <div className="w-1/2 space-y-10 flex flex-col">
+        {/* organization slide */}
+        <SwiperSlide className="flex items-center justify-center ">
+          <div className="w-3/4 space-y-10 flex flex-col">
             <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              Let's start with your name
+              Let's start with your organization
             </h1>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              What is your first name?
-            </p>
-            <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
-              <input
-                type="text"
-                // style={inputStyles}
-                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm `}
-                {...register("firstName", { required: true })}
-              />
-              {}
-            </div>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              What is your last name?
-            </p>
-            <div>
-              <input
-                type="text"
-                // style={inputStyles}
-                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm `}
-                {...register("lastName", { required: true })}
-              />
-              {}
-            </div>
-            <div className="flex w-full justify-between">
-              <SwipePrevButton text="Back" />
-              <SwipeNextButton text="Next" />
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide className="flex items-center justify-center">
-          <div className="w-1/2 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              What organization do you work for?
-            </h1>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              Please enter the name of your organization
-            </p>
-            <div>
-              <input
-                type="text"
-                // style={inputStyles}
-                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm `}
-                {...register("organization", { required: true })}
-              />
-              {}
+            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+              <div>
+                <p className="text-polar-500 animate-fadeUp">
+                  What is the name of your organization?
+                </p>
+                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                  <input
+                    type="text"
+                    // style={inputStyles}
+                    className={classNames(
+                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                      getValues('organization') && errors.organization &&
+                        "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1"
+                    )}
+                    {...register("organization", {
+                      required: true,
+                      minLength: 10,
+                    })}
+                  />
+                  <p className="text-xs absolute text-red-500">
+                    {errors.organization ? errors.organization.message : ""}
+                  </p>
+                  {}
+                </div>
+              </div>
             </div>
             <div className="flex w-full justify-between">
               <SwipePrevButton text="Back" />
-              <SwipeNextButton text="Next" />
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide className="flex items-center justify-center">
-          <div className="w-1/2 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              What is your role?
-            </h1>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              Please enter your role
-            </p>
-            <div>
-              <input
-                type="text"
-                // style={inputStyles}
-                className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm `}
-                {...register("role", { required: true })}
+              <SwipeNextButton
+                disabled={errors.organization ? true : false}
+                text="Next"
               />
-              {}
-            </div>
-            <div className="flex w-full justify-between">
-              <SwipePrevButton text="Back" />
-              <SwipeNextButton text="Next" />
             </div>
           </div>
         </SwiperSlide>
-        <SwiperSlide className="flex items-center justify-center flex-col">
-          <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-            Please confirm your information
-          </h1>
-          <div className="w-1/2 space-y-10 flex flex-col">
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              Names: {watch("firstName")} {watch("lastName")}
-            </p>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              Organization {watch("organization")}
-            </p>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              Role in the organization {watch("role")}
-            </p>
-            <div className="flex w-full justify-between">
-              <SwipePrevButton text="Back" />
-              <button
-                onClick={handleSubmit(submit)}
-                className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
-              >
-                Confirm
-              </button>
-            </div>
-          </div>
-        </SwiperSlide>
+        {/* names slide */}
       </Swiper>
     </>
   );
