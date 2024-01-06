@@ -1,13 +1,20 @@
 import { useForm } from "react-hook-form";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { updateUserById } from "../../queries/user/mutations";
 import { getProfile } from "../../queries/user/queries";
 import { useSession } from "../../hooks/session";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { onboardingSchema } from "../../validations/onboarding";
+import { onboardingSchema, organizationSchema } from "../../validations/onboarding";
 import Logo from "../../components/Logo";
+import { Fragment, useState } from "react";
+import { addOrganizationOne } from "../../queries/organization/mutations";
+import { getOrganizationByName } from "../../queries/organization/quieries";
+import { format } from "date-fns";
+import { Listbox, Transition } from "@headlessui/react";
+import {  CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
+import { getRoles } from "../../queries/role/queries";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -15,17 +22,8 @@ function classNames(...classes) {
 }
 
 export default function Onboarding() {
+  const [createNewOrganization, setCreateNewOrganization] = useState(false);
   const { profile } = useSession();
-
-  const user = profile?.data?.user[0];
-  const [updateUser] = useMutation(updateUserById, {
-    refetchQueries: [
-      {
-        query: getProfile,
-        variables: { authId: user?.authId },
-      },
-    ],
-  });
 
   const {
     register,
@@ -37,21 +35,64 @@ export default function Onboarding() {
     mode: "onChange",
   });
 
+
+  const {
+    register: registerOrganization,
+    handleSubmit: handleSubmitOrganization,
+    watch: watchOrganization,
+    formState: { errors: errorsOrganization },
+  } = useForm({
+    resolver: yupResolver(organizationSchema),
+    mode: "onChange",
+  });
+
+  const watcher = watch();
+  const organizationWatcher = watchOrganization();
+
+
+  const [updateUser] = useMutation(updateUserById, {
+    refetchQueries: [
+      {
+        query: getProfile,
+        variables: { authId: profile?.authId },
+      },
+    ],
+  });
+
+  const [insertOrganization] = useMutation(addOrganizationOne, {
+    refetchQueries: [
+      {
+        query: getOrganizationByName,
+        variables: { name: organizationWatcher.name },
+      },
+    ],
+  });
+
   function submit(data: any) {
     updateUser({
       variables: {
-        id: user?.id,
+        id: profile?.id,
         object: {
           firstName: data.firstName,
           lastName: data.lastName,
-          organization: data.organization,
           onboarded: true,
         },
       },
     });
   }
 
-  const watcher = watch();
+  function submitOrganization(data: any) {
+    insertOrganization({
+      variables: {
+        object: {
+          name: data.name,
+          location: data.location,
+          yearEnd: data.yearEnd,
+          holidayAllowance: data.holidayAllowance,
+        },
+      },
+    });
+  }
 
   const SwipeNextButton = (props: { text: string; disabled: boolean }) => {
     const swiper = useSwiper();
@@ -60,7 +101,7 @@ export default function Onboarding() {
       <button
         disabled={props.disabled}
         onClick={() => {
-          console.log(errors.organization?.message);
+          console.log(errorsOrganization.name?.message);
           swiper.slideNext();
         }}
         className={classNames(
@@ -85,6 +126,10 @@ export default function Onboarding() {
     );
   };
 
+  const { data: roles } = useQuery(getRoles);
+
+  console.log(roles);
+
   return (
     <>
       <Swiper
@@ -108,50 +153,310 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
         {/* organization slide */}
-        <SwiperSlide className="flex items-center justify-center ">
-          <div className="w-3/4 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              Let's start with your organization
-            </h1>
-            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
-              <div>
-                <p className="text-polar-500 animate-fadeUp">
-                  What is the name of your organization?
-                </p>
-                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
-                  <input
-                    type="text"
-                    // style={inputStyles}
-                    className={classNames(
-                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
-                      !watcher.organization ||
-                        watcher.organization === "" ||
-                        (errors.organization &&
-                          "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
-                    )}
-                    {...register("organization", {
-                      required: true,
-                      minLength: 10,
-                    })}
-                  />
-                  <p className="text-xs absolute text-red-500">
-                    {errors.organization?.message}
+        {profile?.organizationId === null && (
+          <>
+            <SwiperSlide className="flex items-center justify-center ">
+              <div className="w-3/4 space-y-10 flex flex-col">
+                <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+                  Looks like you don't have an organization yet.
+                </h1>
+                <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+                  <p>
+                    In order to use Shift Square, you need to be part of an
+                    organization. If you don't have one, you can create one in
+                    the next step.
                   </p>
-                  {}
+                  <p>
+                    If you would to create an organization, you have to be an authorized person to do so.
+                  </p>
+                  <div className="flex items-center space-x-2">
+                    Please select your role in the organization:
+                    <Listbox>
+                      <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm">
+                        <span className="block truncate">
+                          {watcher.role ? watcher.role : "Select your role"}
+                        </span>
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                          <ChevronDownIcon
+                            className="w-5 h-5 text-polar-400"
+                            aria-hidden="true"
+                          />
+                        </span>
+                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
+                          <ChevronDownIcon
+                            className="w-5 h-5 text-polar-400"
+                            aria-hidden="true"
+                          />
+                        </span>
+                      </Listbox.Button>
+                      <Transition
+                        as={Fragment}
+                        leave="transition ease-in duration-100"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
+                      >
+                        <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                          {roles?.role.map((role: any) => (
+                            <Listbox.Option
+                              key={role.id}
+                              className={({ active }) =>
+                                classNames(
+                                  active
+                                    ? "text-polar-900 bg-polar-100"
+                                    : "text-polar-900",
+                                  "cursor-default select-none relative py-2 pl-10 pr-4"
+                                )
+                              }
+                              value={role.name.charAt(0).toUpperCase() + role.name.slice(1)}
+                            >
+                              {({ selected, active }) => (
+                                <>
+                                  <span
+                                    className={classNames(
+                                      selected
+                                        ? "font-semibold"
+                                        : "font-normal",
+                                      "block truncate"
+                                    )}
+                                  >
+                                    {role.name}
+                                  </span>
+                                  {selected ? (
+                                    <span
+                                      className={classNames(
+                                        active
+                                          ? "text-polar-600"
+                                          : "text-polar-600",
+                                        "absolute inset-y-0 left-0 flex items-center pl-3"
+                                      )}
+                                    >
+                                      <CheckIcon
+                                        className="w-5 h-5"
+                                        aria-hidden="true"
+                                      />
+                                    </span>
+                                  ) : null}
+                                </>
+                              )}
+                            </Listbox.Option>
+                          ))}
+                        </Listbox.Options>
+                      </Transition>
+                    </Listbox>
+
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      className="h-4 w-4 text-polar-600 focus:ring-polar-500 border-gray-300 rounded"
+                      checked={createNewOrganization}
+                      onChange={() =>
+                        setCreateNewOrganization(!createNewOrganization)
+                      }
+                    />
+                    <p className="text-polar-500 animate-fadeUp">
+                      By clicking Create Organization you agree to our{" "}
+                      <span className="text-polar-400 underline">
+                        Terms and Conditions
+                      </span> 
+
+                    </p>
+                  </div>
+                </div>
+                <div className="flex w-full justify-between">
+                  <SwipePrevButton text="Back" />
+                  <SwipeNextButton
+                    disabled={!createNewOrganization}
+                    text="Create organization"
+                  />
                 </div>
               </div>
-            </div>
-            <div className="flex w-full justify-between">
+            </SwiperSlide>
+            <SwiperSlide className="flex items-center justify-center ">
+              <div className="w-3/4 space-y-10 flex flex-col">
+                <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+                  Organization details
+                </h1>
+                <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      What is the name of your organization?
+                    </p>
+                    <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                      <input
+                        type="text"
+                        // style={inputStyles}
+                        className={classNames(
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          !organizationWatcher.name ||
+                            organizationWatcher.name === "" ||
+                            (errorsOrganization.name &&
+                              "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                        )}
+                        {...registerOrganization("name", {
+                          required: true,
+                          minLength: 2,
+                        })}
+                      />
+                      <p className="text-xs absolute text-red-500">
+                        {errorsOrganization?.name?.message}
+                      </p>
+                      {}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      Whats is the name of the location of your organization?
+                    </p>
+                    <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                      <input
+                        type="text"
+                        // style={inputStyles}
+                        className={classNames(
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          !organizationWatcher.location ||
+                            organizationWatcher.location === "" ||
+                            (errorsOrganization.location &&
+                              "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                        )}
+                        {...registerOrganization("location", {
+                          required: true,
+                          minLength: 2,
+                        })}
+                      />
+                      <p className="text-xs absolute text-red-500">
+                        {errorsOrganization?.location?.message}
+                      </p>
+                      {}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      When is the year end of your organization? We will use
+                      this to calculate your holiday days.
+                    </p>
+                    <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                      <input
+                        type="date"
+                        // style={inputStyles}
+                        className={classNames(
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          !organizationWatcher.yearEnd ||
+                            organizationWatcher.yearEnd === null ||
+                            (errorsOrganization.yearEnd &&
+                              "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                        )}
+                        {...registerOrganization("yearEnd", {
+                          required: true,
+                          minLength: 2,
+                        })}
+                      />
+                      <p className="text-xs absolute text-red-500">
+                        {errorsOrganization?.name?.message}
+                      </p>
+                      {}
+                    </div>
+                  </div>
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      How many holiday days do you have for a full year?
+                    </p>
+                    <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                      <input
+                        type="number"
+                        // style={inputStyles}
+                        className={classNames(
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          !organizationWatcher.holidayAllowance ||
+                            organizationWatcher.holidayAllowance === null ||
+                            (errorsOrganization.holidayAllowance &&
+                              "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                        )}
+                        {...registerOrganization("holidayAllowance", {
+                          required: true,
+                          minLength: 2,
+                        })}
+                      />
+                      <p className="text-xs absolute text-red-500">
+                        {errorsOrganization?.holidayAllowance?.message}
+                      </p>
+                      {}
+                    </div>
+                  </div>
+                  <div className="flex w-full justify-between">
+                    <SwipePrevButton text="Back" />
+                    <SwipeNextButton
+                      disabled={
+                        !organizationWatcher.name ||
+                        !organizationWatcher.yearEnd ||
+                        !organizationWatcher.holidayAllowance ||
+                        errorsOrganization.name ||
+                        errorsOrganization.yearEnd ||
+                        errorsOrganization.holidayAllowance
+                          ? true
+                          : false
+                      }
+                      text="Next"
+                    />
+                  </div>
+                </div>
+              </div>
+            </SwiperSlide>
+            <SwiperSlide className="flex items-center justify-center ">
+              <div className="w-3/4 space-y-10 flex flex-col">
+                <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+                  Confirm Organization details
+                </h1>
+                <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      Your organization name is{" "}
+                      <span className="font-bold">
+                        {organizationWatcher.name}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      Your organization location is{" "}
+                      <span className="font-bold">
+                        {organizationWatcher.location}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      Your organization year end is{" "}
+                      <span className="font-bold">
+                        {format(
+                          new Date(organizationWatcher.yearEnd ? organizationWatcher.yearEnd : 0),
+                          "dd/MM/yyyy"
+                        )}
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-polar-500 animate-fadeUp">
+                      Your organization holiday allowance is{" "}
+                      <span className="font-bold">
+                        {organizationWatcher.holidayAllowance}
+                      </span>
+                    </p>
+                  </div>
+                  <div className="flex w-full justify-between">
               <SwipePrevButton text="Back" />
-              <SwipeNextButton
-                disabled={
-                  !watcher.organization || errors.organization ? true : false
-                }
-                text="Next"
-              />
+              <button
+                onClick={handleSubmitOrganization(submitOrganization)}
+                className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+              >
+                Confirm
+              </button>
             </div>
-          </div>
-        </SwiperSlide>
+                </div>
+              </div>
+            </SwiperSlide>
+          </>
+        )}
         {/* names slide */}
         <SwiperSlide className="flex items-center justify-center">
           <div className="w-3/4 space-y-10 flex flex-col">
@@ -277,12 +582,6 @@ export default function Onboarding() {
               Confirm your details
             </h1>
             <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
-              <div>
-                <p className="text-polar-500 animate-fadeUp">
-                  Your organization is{" "}
-                  <span className="font-bold">{watcher.organization}</span>
-                </p>
-              </div>
               <div>
                 <p className="text-polar-500 animate-fadeUp">
                   Your name is{" "}
