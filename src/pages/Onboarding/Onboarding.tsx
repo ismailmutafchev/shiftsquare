@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "@apollo/client";
 import { updateUserById } from "../../queries/user/mutations";
 import { getProfile } from "../../queries/user/queries";
@@ -6,15 +6,18 @@ import { useSession } from "../../hooks/session";
 import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import { Pagination, Navigation } from "swiper/modules";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { onboardingSchema, organizationSchema } from "../../validations/onboarding";
+import {
+  onboardingSchema,
+  organizationSchema,
+  roleSchema,
+} from "../../validations/onboarding";
 import Logo from "../../components/Logo";
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { addOrganizationOne } from "../../queries/organization/mutations";
 import { getOrganizationByName } from "../../queries/organization/quieries";
 import { format } from "date-fns";
-import { Listbox, Transition } from "@headlessui/react";
-import {  CheckIcon, ChevronDownIcon } from "@heroicons/react/24/outline";
 import { getRoles } from "../../queries/role/queries";
+import { updateUserRole } from "../../queries/role/mutations";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -35,6 +38,15 @@ export default function Onboarding() {
     mode: "onChange",
   });
 
+  const {
+    handleSubmit: handleSubmitRole,
+    watch: watchRole,
+    control: controlRole,
+    formState: { errors: errorsRole },
+  } = useForm({
+    resolver: yupResolver(roleSchema),
+    mode: "onChange",
+  });
 
   const {
     register: registerOrganization,
@@ -48,9 +60,18 @@ export default function Onboarding() {
 
   const watcher = watch();
   const organizationWatcher = watchOrganization();
-
+  const roleWatcher = watchRole();
 
   const [updateUser] = useMutation(updateUserById, {
+    refetchQueries: [
+      {
+        query: getProfile,
+        variables: { authId: profile?.authId },
+      },
+    ],
+  });
+
+  const [updateRole] = useMutation(updateUserRole, {
     refetchQueries: [
       {
         query: getProfile,
@@ -63,7 +84,10 @@ export default function Onboarding() {
     refetchQueries: [
       {
         query: getOrganizationByName,
-        variables: { name: organizationWatcher.name },
+        variables: {
+          name:
+            organizationWatcher.name + organizationWatcher?.location?.slice(3),
+        },
       },
     ],
   });
@@ -76,6 +100,18 @@ export default function Onboarding() {
           firstName: data.firstName,
           lastName: data.lastName,
           onboarded: true,
+        },
+      },
+    });
+  }
+
+  function submitRole(data: any) {
+    console.log(profile?.id, "tete");
+    updateRole({
+      variables: {
+        id: profile?.id,
+        object: {
+          roleId: data.role,
         },
       },
     });
@@ -128,8 +164,6 @@ export default function Onboarding() {
 
   const { data: roles } = useQuery(getRoles);
 
-  console.log(roles);
-
   return (
     <>
       <Swiper
@@ -155,7 +189,7 @@ export default function Onboarding() {
         {/* organization slide */}
         {profile?.organizationId === null && (
           <>
-            <SwiperSlide className="flex items-center justify-center ">
+            <SwiperSlide key="11" className="flex items-center justify-center ">
               <div className="w-3/4 space-y-10 flex flex-col">
                 <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
                   Looks like you don't have an organization yet.
@@ -167,83 +201,38 @@ export default function Onboarding() {
                     the next step.
                   </p>
                   <p>
-                    If you would to create an organization, you have to be an authorized person to do so.
+                    If you would to create an organization, you have to be an
+                    authorized person to do so.
                   </p>
                   <div className="flex items-center space-x-2">
                     Please select your role in the organization:
-                    <Listbox>
-                      <Listbox.Button className="relative w-full py-2 pl-3 pr-10 text-left bg-white rounded-lg shadow-md cursor-default focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm">
-                        <span className="block truncate">
-                          {watcher.role ? watcher.role : "Select your role"}
-                        </span>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <ChevronDownIcon
-                            className="w-5 h-5 text-polar-400"
-                            aria-hidden="true"
-                          />
-                        </span>
-                        <span className="absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                          <ChevronDownIcon
-                            className="w-5 h-5 text-polar-400"
-                            aria-hidden="true"
-                          />
-                        </span>
-                      </Listbox.Button>
-                      <Transition
-                        as={Fragment}
-                        leave="transition ease-in duration-100"
-                        leaveFrom="opacity-100"
-                        leaveTo="opacity-0"
-                      >
-                        <Listbox.Options className="absolute w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
+                    <Controller
+                      name="role"
+                      control={controlRole}
+                      defaultValue=""
+                      render={({ field }) => (
+                        <select
+                          {...field}
+                          className={classNames(
+                            "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                            !roleWatcher ||
+                              roleWatcher.role === "" ||
+                              (errorsRole.role &&
+                                "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
+                          )}
+                        >
+                          <option value="" disabled>
+                            Select your role
+                          </option>
                           {roles?.role.map((role: any) => (
-                            <Listbox.Option
-                              key={role.id}
-                              className={({ active }) =>
-                                classNames(
-                                  active
-                                    ? "text-polar-900 bg-polar-100"
-                                    : "text-polar-900",
-                                  "cursor-default select-none relative py-2 pl-10 pr-4"
-                                )
-                              }
-                              value={role.name.charAt(0).toUpperCase() + role.name.slice(1)}
-                            >
-                              {({ selected, active }) => (
-                                <>
-                                  <span
-                                    className={classNames(
-                                      selected
-                                        ? "font-semibold"
-                                        : "font-normal",
-                                      "block truncate"
-                                    )}
-                                  >
-                                    {role.name}
-                                  </span>
-                                  {selected ? (
-                                    <span
-                                      className={classNames(
-                                        active
-                                          ? "text-polar-600"
-                                          : "text-polar-600",
-                                        "absolute inset-y-0 left-0 flex items-center pl-3"
-                                      )}
-                                    >
-                                      <CheckIcon
-                                        className="w-5 h-5"
-                                        aria-hidden="true"
-                                      />
-                                    </span>
-                                  ) : null}
-                                </>
-                              )}
-                            </Listbox.Option>
+                            <option key={role.id} value={role.id}>
+                              {role?.name.charAt(0).toUpperCase() +
+                                role?.name?.slice(1)}
+                            </option>
                           ))}
-                        </Listbox.Options>
-                      </Transition>
-                    </Listbox>
-
+                        </select>
+                      )}
+                    />
                   </div>
                   <div className="flex items-center space-x-2">
                     <input
@@ -258,21 +247,23 @@ export default function Onboarding() {
                       By clicking Create Organization you agree to our{" "}
                       <span className="text-polar-400 underline">
                         Terms and Conditions
-                      </span> 
-
+                      </span>
                     </p>
                   </div>
                 </div>
                 <div className="flex w-full justify-between">
                   <SwipePrevButton text="Back" />
-                  <SwipeNextButton
-                    disabled={!createNewOrganization}
-                    text="Create organization"
-                  />
+                  <button
+                    // disabled={!watchRole.name || errorsRole ? true : false || !createNewOrganization}
+                    onClick={handleSubmitRole(submitRole)}
+                    className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                  >
+                    Continue
+                  </button>
                 </div>
               </div>
             </SwiperSlide>
-            <SwiperSlide className="flex items-center justify-center ">
+            <SwiperSlide key="12" className="flex items-center justify-center ">
               <div className="w-3/4 space-y-10 flex flex-col">
                 <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
                   Organization details
@@ -402,7 +393,7 @@ export default function Onboarding() {
                 </div>
               </div>
             </SwiperSlide>
-            <SwiperSlide className="flex items-center justify-center ">
+            <SwiperSlide key="13" className="flex items-center justify-center ">
               <div className="w-3/4 space-y-10 flex flex-col">
                 <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
                   Confirm Organization details
@@ -429,7 +420,11 @@ export default function Onboarding() {
                       Your organization year end is{" "}
                       <span className="font-bold">
                         {format(
-                          new Date(organizationWatcher.yearEnd ? organizationWatcher.yearEnd : 0),
+                          new Date(
+                            organizationWatcher.yearEnd
+                              ? organizationWatcher.yearEnd
+                              : 0
+                          ),
                           "dd/MM/yyyy"
                         )}
                       </span>
@@ -444,14 +439,14 @@ export default function Onboarding() {
                     </p>
                   </div>
                   <div className="flex w-full justify-between">
-              <SwipePrevButton text="Back" />
-              <button
-                onClick={handleSubmitOrganization(submitOrganization)}
-                className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
-              >
-                Confirm
-              </button>
-            </div>
+                    <SwipePrevButton text="Back" />
+                    <button
+                      onClick={handleSubmitOrganization(submitOrganization)}
+                      className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                    >
+                      Confirm
+                    </button>
+                  </div>
                 </div>
               </div>
             </SwiperSlide>

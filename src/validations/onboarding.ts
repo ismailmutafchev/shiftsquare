@@ -13,3 +13,7 @@ export const organizationSchema = object().shape({
     holidayAllowance: number().required('Please enter the holiday allowance'),
     location: string().required('Please enter the location'),
 });
+
+export const roleSchema = object().shape({
+    role: string().min(3, 'Please enter the name of the role').required('Please enter the name of the role'),
+});
