@@ -12,7 +12,7 @@ import {
   roleSchema,
 } from "../../validations/onboarding";
 import Logo from "../../components/Logo";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { addOrganizationOne } from "../../queries/organization/mutations";
 import { getOrganizationByName } from "../../queries/organization/quieries";
 import { format } from "date-fns";
@@ -28,6 +28,15 @@ export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
   const { profile } = useSession();
   const { data: roles } = useQuery(getRoles);
+
+  const swiperRef = useRef(null);
+
+  function swiperHandler() {
+    if (swiperRef.current) {
+      // @ts-ignore
+      swiperRef.current.swiper.slideNext();
+    }
+  }
 
   const {
     register,
@@ -79,6 +88,9 @@ export default function Onboarding() {
         variables: { authId: profile?.authId },
       },
     ],
+    onCompleted: () => {
+      swiperHandler();
+    },
   });
 
   const [insertOrganization] = useMutation(addOrganizationOne, {
@@ -130,16 +142,13 @@ export default function Onboarding() {
     });
   }
 
-  const SwipeNextButton = (props: { text: string; disabled: boolean; submitFunction?: any; handleSubmitFunction?: any }) => {
+  const SwipeNextButton = (props: { text: string; disabled: boolean }) => {
     const swiper = useSwiper();
-    const submit = props.submitFunction
-    const handleSubmit = props.handleSubmitFunction
     return (
       <button
         disabled={props.disabled}
         onClick={() => {
           swiper.slideNext();
-          submit && handleSubmit && handleSubmit(submit)
         }}
         className={classNames(
           "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
@@ -163,7 +172,7 @@ export default function Onboarding() {
     );
   };
 
-  console.log(profile)
+  console.log(profile);
 
   return (
     <>
@@ -174,6 +183,7 @@ export default function Onboarding() {
         navigation={true}
         modules={[Pagination, Navigation]}
         className="mySwiper h-screen mx-auto swiper"
+        ref={swiperRef}
       >
         <SwiperSlide className="flex justify-center">
           <div className="w-1/2 space-y-20 flex flex-col items-center justify-center">
@@ -254,12 +264,22 @@ export default function Onboarding() {
                 </div>
                 <div className="flex w-full justify-between">
                   <SwipePrevButton text="Back" />
-                  <SwipeNextButton
-                    disabled={!roleWatcher.role || errorsRole.role ? true : false || !createNewOrganization}
-                    text="Continue"
-                    submitFunction={submitRole}
-                    handleSubmitFunction={handleSubmitRole}
-                  />
+                  <button
+                    onClick={handleSubmitRole(submitRole)}
+                    className={classNames(
+                      "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
+                      !roleWatcher.role || errorsRole.role
+                        ? "opacity-50 cursor-not-allowed"
+                        : ""
+                    )}
+                    disabled={
+                      !roleWatcher.role || errorsRole.role
+                        ? true
+                        : false || !createNewOrganization
+                    }
+                  >
+                    Create Organization
+                  </button>
                 </div>
               </div>
             </SwiperSlide>
