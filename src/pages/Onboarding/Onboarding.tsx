@@ -27,6 +27,7 @@ function classNames(...classes) {
 export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
   const { profile } = useSession();
+  const { data: roles } = useQuery(getRoles);
 
   const {
     register,
@@ -106,7 +107,6 @@ export default function Onboarding() {
   }
 
   function submitRole(data: any) {
-    console.log(profile?.id, "tete");
     updateRole({
       variables: {
         id: profile?.id,
@@ -130,15 +130,16 @@ export default function Onboarding() {
     });
   }
 
-  const SwipeNextButton = (props: { text: string; disabled: boolean }) => {
+  const SwipeNextButton = (props: { text: string; disabled: boolean; submitFunction?: any; handleSubmitFunction?: any }) => {
     const swiper = useSwiper();
-
+    const submit = props.submitFunction
+    const handleSubmit = props.handleSubmitFunction
     return (
       <button
         disabled={props.disabled}
         onClick={() => {
-          console.log(errorsOrganization.name?.message);
           swiper.slideNext();
+          submit && handleSubmit && handleSubmit(submit)
         }}
         className={classNames(
           "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
@@ -162,7 +163,7 @@ export default function Onboarding() {
     );
   };
 
-  const { data: roles } = useQuery(getRoles);
+  console.log(profile)
 
   return (
     <>
@@ -187,7 +188,7 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
         {/* organization slide */}
-        {profile?.organizationId === null && (
+        {!profile.organizationId && (
           <>
             <SwiperSlide key="11" className="flex items-center justify-center ">
               <div className="w-3/4 space-y-10 flex flex-col">
@@ -253,13 +254,12 @@ export default function Onboarding() {
                 </div>
                 <div className="flex w-full justify-between">
                   <SwipePrevButton text="Back" />
-                  <button
-                    // disabled={!watchRole.name || errorsRole ? true : false || !createNewOrganization}
-                    onClick={handleSubmitRole(submitRole)}
-                    className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
-                  >
-                    Continue
-                  </button>
+                  <SwipeNextButton
+                    disabled={!roleWatcher.role || errorsRole.role ? true : false || !createNewOrganization}
+                    text="Continue"
+                    submitFunction={submitRole}
+                    handleSubmitFunction={handleSubmitRole}
+                  />
                 </div>
               </div>
             </SwiperSlide>
@@ -440,12 +440,21 @@ export default function Onboarding() {
                   </div>
                   <div className="flex w-full justify-between">
                     <SwipePrevButton text="Back" />
-                    <button
-                      onClick={handleSubmitOrganization(submitOrganization)}
-                      className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
-                    >
-                      Confirm
-                    </button>
+                    <SwipeNextButton
+                      disabled={
+                        !organizationWatcher.name ||
+                        !organizationWatcher.yearEnd ||
+                        !organizationWatcher.holidayAllowance ||
+                        errorsOrganization.name ||
+                        errorsOrganization.yearEnd ||
+                        errorsOrganization.holidayAllowance
+                          ? true
+                          : false
+                      }
+                      text="Next"
+                      submitFunction={submitOrganization}
+                      handleSubmitFunction={handleSubmitOrganization}
+                    />
                   </div>
                 </div>
               </div>
@@ -527,49 +536,6 @@ export default function Onboarding() {
             </div>
           </div>
         </SwiperSlide>
-        {/* role slide */}
-        <SwiperSlide className="flex items-center justify-center">
-          <div className="w-3/4 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              What is your role?
-            </h1>
-            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
-              <div>
-                <p className="text-polar-500 animate-fadeUp">
-                  What is your role?
-                </p>
-                <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
-                  <input
-                    type="text"
-                    // style={inputStyles}
-                    className={classNames(
-                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
-                      !watcher.role ||
-                        watcher.role === "" ||
-                        (errors.role &&
-                          "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
-                    )}
-                    {...register("role", {
-                      required: true,
-                      minLength: 2,
-                    })}
-                  />
-                  <p className="text-xs absolute text-red-500">
-                    {errors.role?.message}
-                  </p>
-                  {}
-                </div>
-              </div>
-            </div>
-            <div className="flex w-full justify-between">
-              <SwipePrevButton text="Back" />
-              <SwipeNextButton
-                disabled={!watcher.role || errors.role ? true : false}
-                text="Next"
-              />
-            </div>
-          </div>
-        </SwiperSlide>
         {/* confirmation slide */}
         <SwiperSlide className="flex items-center justify-center">
           <div className="w-3/4 space-y-10 flex flex-col">
@@ -583,11 +549,6 @@ export default function Onboarding() {
                   <span className="font-bold">
                     {watcher.firstName} {watcher.lastName}
                   </span>
-                </p>
-              </div>
-              <div>
-                <p className="text-polar-500 animate-fadeUp">
-                  Your role is <span className="font-bold">{watcher.role}</span>
                 </p>
               </div>
             </div>

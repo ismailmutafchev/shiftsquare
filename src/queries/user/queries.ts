@@ -39,7 +39,7 @@ export const getEmployee = gql` query($id: uuid!) {
     }
 }
 `;
-export const getProfile = gql` query($authId: String!) {
+export const getProfile = gql` query getProfileByAuthId($authId: String!) {
     user(where: {authId: {_eq: $authId}}) {
         id
         email
