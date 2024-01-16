@@ -92,8 +92,7 @@ export default function DayView({
         fetchPolicy: "network-only",
       },
     ],
-    onCompleted: (data) => {
-      console.log(data);
+    onCompleted: () => {
       toast("success", "Shift deleted successfully");
     }
   });
