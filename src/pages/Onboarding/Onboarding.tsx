@@ -31,8 +31,11 @@ export default function Onboarding() {
 
   const swiperRef = useRef(null);
 
-  function swiperHandler() {
-    if (swiperRef.current) {
+  function swiperHandler(direction?: string) {
+    if (swiperRef.current !== null && direction === "prev") {
+      // @ts-ignore
+      swiperRef.current.swiper.slidePrev();
+    } else if (swiperRef.current !== null && direction === "next") {
       // @ts-ignore
       swiperRef.current.swiper.slideNext();
     }
@@ -139,6 +142,17 @@ export default function Onboarding() {
           holidayAllowance: data.holidayAllowance,
         },
       },
+      onCompleted: (data) => {
+        updateUser({
+          variables: {
+            id: profile?.id,
+            object: {
+              organizationId: data.insert_organization_one.id,
+            },
+          },
+        });
+        swiperHandler();
+      }
     });
   }
 
@@ -171,8 +185,6 @@ export default function Onboarding() {
       </button>
     );
   };
-
-  console.log(profile);
 
   return (
     <>
@@ -460,7 +472,7 @@ export default function Onboarding() {
                   </div>
                   <div className="flex w-full justify-between">
                     <SwipePrevButton text="Back" />
-                    <SwipeNextButton
+                    <button
                       disabled={
                         !organizationWatcher.name ||
                         !organizationWatcher.yearEnd ||
@@ -471,10 +483,11 @@ export default function Onboarding() {
                           ? true
                           : false
                       }
-                      text="Next"
-                      submitFunction={submitOrganization}
-                      handleSubmitFunction={handleSubmitOrganization}
-                    />
+                      onClick={handleSubmitOrganization(submitOrganization)}
+                      >
+                        Next
+                    </button>
+
                   </div>
                 </div>
               </div>
