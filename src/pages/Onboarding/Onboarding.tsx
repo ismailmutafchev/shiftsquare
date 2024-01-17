@@ -18,6 +18,7 @@ import { getOrganizationByName } from "../../queries/organization/quieries";
 import { format } from "date-fns";
 import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
+import { useNavigate } from "react-router-dom";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -28,6 +29,8 @@ export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
   const { profile } = useSession();
   const { data: roles } = useQuery(getRoles);
+
+  const navigation = useNavigate();
 
   const swiperRef = useRef(null);
 
@@ -92,7 +95,7 @@ export default function Onboarding() {
       },
     ],
     onCompleted: () => {
-      swiperHandler();
+      swiperHandler("next");
     },
   });
 
@@ -118,6 +121,10 @@ export default function Onboarding() {
           onboarded: true,
         },
       },
+      onCompleted: () => {
+        navigation("/dashboard");
+        location.reload();
+      }
     });
   }
 
@@ -151,7 +158,7 @@ export default function Onboarding() {
             },
           },
         });
-        swiperHandler();
+        swiperHandler("next");
       }
     });
   }
@@ -275,7 +282,7 @@ export default function Onboarding() {
                   </div>
                 </div>
                 <div className="flex w-full justify-between">
-                  <SwipePrevButton text="Back" />
+                  npm
                   <button
                     onClick={handleSubmitRole(submitRole)}
                     className={classNames(

@@ -11,7 +11,10 @@ const Layout = () => {
   const { profile,user } = useSession();
 
   const { pathname } = useLocation();
-  if (profile?.data?.user[0]?.onboarded === false || user?.email_verified === false ){
+  console.log("profile", profile , 'xxxxx' ,user);
+  if (profile?.data?.user[0]?.onboarded === false 
+    // || user?.email_verified === false
+     ){
     return (
       <div className="bg-gray-300/40 pb-24">
         <Onboarding />
