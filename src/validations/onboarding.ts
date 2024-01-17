@@ -3,7 +3,7 @@ import { date, number, object, string } from 'yup';
 export const onboardingSchema = object().shape({
     lastName: string().min(3,'Please enter Last Name').required('Please enter Last Name'),
     firstName:string().min(3, 'Please enter First Name').required('Please enter First Name'),
-    role: string().required('Please enter Role'),
+    // role: string().required('Please enter Role'),
     // position: string().required('Please enter Position'),
 }); 
 
