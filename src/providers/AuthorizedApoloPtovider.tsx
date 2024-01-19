@@ -10,7 +10,7 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
         return <LoadingAnimation />;
     } else {
         const httpLink: ApolloLink | RequestHandler = createHttpLink({
-            uri: import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT, // your URI here...
+            uri:  import.meta.env.VITE_HASURA_GRAPHQL_ENDPOINT, // your URI here...
         });
 
         const authLink = setContext(async () => {
