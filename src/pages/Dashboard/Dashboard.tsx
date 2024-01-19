@@ -451,7 +451,7 @@ export default function Dashboard() {
                 Hours by Employee
               </h1>
               <div className="flex items-start no-scrollbar flex-col">
-                {hoursByEmployee.shift.map((shift: any) => {
+                {hoursByEmployee?.shift.map((shift: any) => {
                   return (
                     <div
                       key={shift?.employee?.id}
@@ -582,7 +582,7 @@ export default function Dashboard() {
               onMouseEnter={onPieEnter}
             >
               <Pie
-                data={hoursByPosition.shift}
+                data={hoursByPosition?.shift}
                 innerRadius={60}
                 outerRadius={80}
                 fill="#8884d8"

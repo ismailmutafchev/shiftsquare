@@ -10,7 +10,7 @@ const profile =
   profileJSON && profileJSON != "undefined" ? JSON.parse(profileJSON) : null;
 
 let redudectUri =
-  profile && profile.onboarded
+  profile && profile.onboarded === true
     ? (import.meta.env.VITE_AUTH0_REDIRECT_URI as string)
     : (import.meta.env.VITE_AUTH0_REDIRECT_URI_NO as string);
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
