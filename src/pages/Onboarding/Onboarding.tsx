@@ -124,7 +124,7 @@ export default function Onboarding() {
       onCompleted: () => {
         navigation("/dashboard");
         location.reload();
-      }
+      },
     });
   }
 
@@ -159,7 +159,7 @@ export default function Onboarding() {
           },
         });
         swiperHandler("next");
-      }
+      },
     });
   }
 
@@ -366,9 +366,7 @@ export default function Onboarding() {
                       this to calculate your holiday days.
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
-                      <input
-                        type="date"
-                        // style={inputStyles}
+                      <select
                         className={classNames(
                           "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
                           !organizationWatcher.yearEnd ||
@@ -376,11 +374,27 @@ export default function Onboarding() {
                             (errorsOrganization.yearEnd &&
                               "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
                         )}
-                        {...registerOrganization("yearEnd", {
-                          required: true,
-                          minLength: 2,
-                        })}
-                      />
+                        {...registerOrganization("yearEnd")}
+                      >
+                        <option value="" disabled>
+                          Select your year end
+                        </option>
+                        <option value="2021-12-31">January</option>
+                        <option value="2021-12-31">February</option>
+                        <option value="2021-12-31">March</option>
+                        <option value="2021-12-31">April</option>
+                        <option value="2021-12-31">May</option>
+                        <option value="2021-12-31">June</option>
+                        <option value="2021-12-31">July</option>
+                        <option value="2021-12-31">August</option>
+                        <option value="2021-12-31">September</option>
+                        <option value="2021-12-31">October</option>
+                        <option value="2021-12-31">November</option>
+                        <option value="2021-12-31">December</option>
+                      </select>
+                      <p className="text-xs absolute text-red-500">
+                        {errorsOrganization?.yearEnd?.message}
+                      </p>
                       <p className="text-xs absolute text-red-500">
                         {errorsOrganization?.name?.message}
                       </p>
@@ -389,12 +403,11 @@ export default function Onboarding() {
                   </div>
                   <div>
                     <p className="text-polar-500 animate-fadeUp">
-                      How many holiday days do you have for a full year?
+                      How many holiday days do employees are entitled to for a year?
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
                       <input
                         type="number"
-                        // style={inputStyles}
                         className={classNames(
                           "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
                           !organizationWatcher.holidayAllowance ||
@@ -491,10 +504,9 @@ export default function Onboarding() {
                           : false
                       }
                       onClick={handleSubmitOrganization(submitOrganization)}
-                      >
-                        Next
+                    >
+                      Next
                     </button>
-
                   </div>
                 </div>
               </div>
