@@ -48,6 +48,9 @@ export const getProfile = gql` query getProfileByAuthId($authId: String!) {
         lastName
         onboarded
         authId
+        role {
+            name
+        }
     }
 }
 `;
