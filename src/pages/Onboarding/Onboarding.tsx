@@ -12,10 +12,10 @@ import {
   roleSchema,
 } from "../../validations/onboarding";
 import Logo from "../../components/Logo";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { addOrganizationOne } from "../../queries/organization/mutations";
 import { getOrganizationByName } from "../../queries/organization/quieries";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
@@ -27,11 +27,13 @@ function classNames(...classes) {
 
 export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
+  const [allowSwipeNext, setAllowSwipeNext] = useState(true);
   const { profile } = useSession();
   const { data: roles } = useQuery(getRoles);
 
+  
   const navigation = useNavigate();
-
+  
   const swiperRef = useRef(null);
 
   function swiperHandler(direction?: string) {
@@ -203,6 +205,14 @@ export default function Onboarding() {
         modules={[Pagination, Navigation]}
         className="mySwiper h-screen mx-auto swiper"
         ref={swiperRef}
+        allowSlideNext={allowSwipeNext}
+        onPaginationUpdate={(swiper) => {
+          if (swiper.activeIndex === 0) {
+            setAllowSwipeNext(true);
+          }
+          setAllowSwipeNext(false);
+        }
+        }
       >
         <SwiperSlide className="flex justify-center">
           <div className="w-1/2 space-y-20 flex flex-col items-center justify-center">
@@ -212,7 +222,16 @@ export default function Onboarding() {
             </h1>
             <p className="text-xl text-polar-500 animate-fadeUp">
               We are excited to have you on board.{" "}
-              <SwipeNextButton disabled={false} text="Let's get started" />
+              <button
+                onClick={() => {
+                  swiperHandler("next");
+                }}
+                className={classNames(
+                  "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                )}
+              >
+                Let's get started
+              </button>
             </p>
           </div>
         </SwiperSlide>
@@ -281,13 +300,15 @@ export default function Onboarding() {
                     </p>
                   </div>
                 </div>
-                <div className="flex w-full justify-between">
-                  npm
+                <div className="flex w-full flex-row-reverse justify-between">
                   <button
                     onClick={handleSubmitRole(submitRole)}
                     className={classNames(
                       "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
                       !roleWatcher.role || errorsRole.role
+                        ? "opacity-50 cursor-not-allowed"
+                        : "",
+                      !createNewOrganization
                         ? "opacity-50 cursor-not-allowed"
                         : ""
                     )}
@@ -403,7 +424,8 @@ export default function Onboarding() {
                   </div>
                   <div>
                     <p className="text-polar-500 animate-fadeUp">
-                      How many holiday days do employees are entitled to for a year?
+                      How many holiday days do employees are entitled to for a
+                      year?
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
                       <input
