@@ -19,6 +19,7 @@ import { format } from "date-fns";
 import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "../../components/LogoutButton";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -27,6 +28,7 @@ function classNames(...classes) {
 
 export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
+  const [allowSwipeNext, setAllowSwipeNext] = useState(true);
   const { profile } = useSession();
   const { data: roles } = useQuery(getRoles);
 
@@ -94,9 +96,6 @@ export default function Onboarding() {
         variables: { authId: profile?.authId },
       },
     ],
-    onCompleted: () => {
-      swiperHandler("next");
-    },
   });
 
   const [insertOrganization] = useMutation(addOrganizationOne, {
@@ -122,6 +121,10 @@ export default function Onboarding() {
         },
       },
       onCompleted: () => {
+        setAllowSwipeNext(true);
+        setTimeout(() => {
+          swiperHandler("next");
+        });
         navigation("/dashboard");
         location.reload();
       },
@@ -135,6 +138,12 @@ export default function Onboarding() {
         object: {
           roleId: data.role,
         },
+      },
+      onCompleted: () => {
+        setAllowSwipeNext(true);
+        setTimeout(() => {
+          swiperHandler("next");
+        }, 200);
       },
     });
   }
@@ -158,7 +167,10 @@ export default function Onboarding() {
             },
           },
         });
-        swiperHandler("next");
+        setAllowSwipeNext(true);
+        setTimeout(() => {
+          swiperHandler("next");
+        });
       },
     });
   }
@@ -203,6 +215,18 @@ export default function Onboarding() {
         modules={[Pagination, Navigation]}
         className="mySwiper h-screen mx-auto swiper"
         ref={swiperRef}
+        allowSlideNext={allowSwipeNext}
+        onPaginationUpdate={(swiper) => {
+          if (
+            swiper.activeIndex === 0 ||
+            swiper.activeIndex === 2 ||
+            swiper.activeIndex === 4
+          ) {
+            setAllowSwipeNext(true);
+          } else {
+            setAllowSwipeNext(false);
+          }
+        }}
       >
         <SwiperSlide className="flex justify-center">
           <div className="w-1/2 space-y-20 flex flex-col items-center justify-center">
@@ -212,8 +236,18 @@ export default function Onboarding() {
             </h1>
             <p className="text-xl text-polar-500 animate-fadeUp">
               We are excited to have you on board.{" "}
-              <SwipeNextButton disabled={false} text="Let's get started" />
+              <button
+                onClick={() => {
+                  swiperHandler("next");
+                }}
+                className={classNames(
+                  "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                )}
+              >
+                Let's get started
+              </button>
             </p>
+            <LogoutButton />
           </div>
         </SwiperSlide>
         {/* organization slide */}
@@ -281,13 +315,15 @@ export default function Onboarding() {
                     </p>
                   </div>
                 </div>
-                <div className="flex w-full justify-between">
-                  npm
+                <div className="flex w-full flex-row-reverse justify-between">
                   <button
                     onClick={handleSubmitRole(submitRole)}
                     className={classNames(
                       "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
                       !roleWatcher.role || errorsRole.role
+                        ? "opacity-50 cursor-not-allowed"
+                        : "",
+                      !createNewOrganization
                         ? "opacity-50 cursor-not-allowed"
                         : ""
                     )}
@@ -403,7 +439,8 @@ export default function Onboarding() {
                   </div>
                   <div>
                     <p className="text-polar-500 animate-fadeUp">
-                      How many holiday days do employees are entitled to for a year?
+                      How many holiday days do employees are entitled to for a
+                      year?
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
                       <input
@@ -429,6 +466,7 @@ export default function Onboarding() {
                   <div className="flex w-full justify-between">
                     <SwipePrevButton text="Back" />
                     <SwipeNextButton
+                      text="Next"
                       disabled={
                         !organizationWatcher.name ||
                         !organizationWatcher.yearEnd ||
@@ -439,7 +477,6 @@ export default function Onboarding() {
                           ? true
                           : false
                       }
-                      text="Next"
                     />
                   </div>
                 </div>
@@ -503,6 +540,17 @@ export default function Onboarding() {
                           ? true
                           : false
                       }
+                      className={classNames(
+                        "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
+                        !organizationWatcher.name ||
+                          !organizationWatcher.yearEnd ||
+                          !organizationWatcher.holidayAllowance ||
+                          errorsOrganization.name ||
+                          errorsOrganization.yearEnd ||
+                          errorsOrganization.holidayAllowance
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      )}
                       onClick={handleSubmitOrganization(submitOrganization)}
                     >
                       Next

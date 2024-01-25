@@ -12,9 +12,7 @@ const Layout = () => {
 
   const { pathname } = useLocation();
 
-  console.log(profile);
-
-  if (profile?.onboarded === false
+  if (profile?.data?.user[0]?.onboarded === false || profile?.onboarded === false
      ){
     return (
       <div className="bg-gray-300/40 pb-24">

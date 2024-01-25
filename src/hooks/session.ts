@@ -18,6 +18,8 @@ export const useSession = () => {
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('profile', JSON.stringify(profile?.user[0]));
 
+    console.log('profile', user);
+
     return {
         employees: employees.data?.user,
         positions: positions.data?.position,
