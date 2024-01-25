@@ -47,14 +47,13 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="overflow-hidden flex justify-center">
-            <div className="px-6 mx-auto pb-32 pt-36 sm:pt-60 md:px-8 md:pt-32">
+          <div className="overflow-hidden">
+            <div className="px-6 mx-auto pb-32 pt-18 sm:pt-20 md:px-8 md:pt-18 relative">
               <div className="flex justify-center md:justify-between ">
                 <div className="  max-w-xl  xl:max-w-4xl flex flex-col justify-start">
-                  <h1 className="text-4xl text-start font-bold tracking-tight text-steel-blue-900 sm:text-5xl md:mx-2 lg:mx-20">
-                    Simplify{" "}
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative ">
-                      Scheduling{" "}
+                  <h1 className="text-4xl text-start font-semibold tracking-tight text-steel-blue-900 sm:text-6xl md:mx-2 lg:mx-20">
+                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-polar-400 to-polar-600 relative font-semibold">
+                      Shift Square{" "}
                       {/* <div className="absolute top-0 right-0  -z-10">
                         <svg
                           id="visual"
@@ -75,7 +74,8 @@ export default function Home() {
                         </svg>
                       </div> */}
                     </span>{" "}
-                    and Optimize Resources for Your Business
+                    <br />
+                    Schedule your business to success
                   </h1>
                   <p className="relative text-start mt-6 md:mt-20 text-lg leading-8 text-text-steel-blue-700 sm:max-w-md md:max-w-none font-semibold lg:mx-20">
                     <span
@@ -103,7 +103,7 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="opacity-90 absolute blur-sm -z-10 md:opacity-100 md:blur-0 md:relative md:flex xl:-top-16  justify-start items-start flex">
+                <div className="opacity-90 w-2/5 absolute top-10 blur-sm -z-10 md:opacity-100 md:blur-0 md:relative md:flex xl:-top-16  justify-start items-start flex">
                   <LandingAnimation />
                 </div>
               </div>

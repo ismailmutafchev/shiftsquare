@@ -59,19 +59,23 @@ export default function PublicNavigation() {
   }, [isAuthenticated]);
 
   return (
-    <div className="min-h-full">
+    <div className="min-h-full bg-transparent">
       <div>
         <Disclosure as="nav">
           {({ open }) => (
             <>
-              <div className="mx-auto px-8 sm:px-4 lg:px-8 flex items-center">
-                <div className="relative flex h-20 items-center w-full">
+              <div className="mx-auto px-4 sm:px-4 py-2 lg:px-6 flex items-center">
+                <div className="relative flex items-center w-full">
                   <div className="flex items-center px-2 lg:px-0 w-full justify-between">
-                    <div>
-                      <Logo size={50} dark />
+                    <div className="flex items-center space-x-2">
+                      <Logo size={30} dark />
+                      <p className="font-medium">
+                        <span className="text-polar-400">Shift </span>
+                        <span className="text-polar-800">Square</span>
+                      </p>
                     </div>
                     <div className="hidden lg:ml-10 lg:block justify-self-center">
-                      <div className="flex space-x-16">
+                      <div className="flex space-x-4">
                         {navigation.map((item) => {
                           return (
                             <Link
@@ -90,7 +94,7 @@ export default function PublicNavigation() {
                                   scaleBottomBorder === item.name
                                     ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative "
                                     : ""
-                                } duration-500 text-base`}
+                                } duration-500`}
                               >
                                 {item.name}
                               </p>
@@ -104,10 +108,8 @@ export default function PublicNavigation() {
                             </Link>
                           );
                         })}
+                        <LoginButton />
                       </div>
-                    </div>
-                    <div>
-                      <LoginButton />
                     </div>
                   </div>
                   <div className="flex lg:hidden">

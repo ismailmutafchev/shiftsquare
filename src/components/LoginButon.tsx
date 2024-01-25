@@ -22,13 +22,13 @@ export default function LoginButton() {
     <div
       onMouseOut={bottomBorderOn}
       onMouseLeave={bottomBorderOff}
-      className="text-steel-blue-900 text-base
-        rounded-md py-2 px-3 font-medium relative"
+      className="text-steel-blue-900
+        rounded-md py-2 px-3 font-medium relative text-sm"
     >
       {!isAuthenticated && (
         // <button className={`${scaleBottomBorder ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative " : ""} duration-500 text-base`} onClick={loginHandler}>
         <button
-          className="hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-[#ff80b5] hover:to-[#9089fc] hover:relative hover:duration-500 hover:text-base"
+          className="hover:bg-clip-text hover:text-transparent hover:bg-gradient-to-r hover:from-[#ff80b5] hover:to-[#9089fc] hover:relative hover:duration-500"
           onClick={loginHandler}
         >
           Log in

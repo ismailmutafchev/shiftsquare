@@ -15,10 +15,11 @@ import Logo from "../../components/Logo";
 import { useRef, useState } from "react";
 import { addOrganizationOne } from "../../queries/organization/mutations";
 import { getOrganizationByName } from "../../queries/organization/quieries";
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
+import LogoutButton from "../../components/LogoutButton";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -246,6 +247,7 @@ export default function Onboarding() {
                 Let's get started
               </button>
             </p>
+            <LogoutButton />
           </div>
         </SwiperSlide>
         {/* organization slide */}
