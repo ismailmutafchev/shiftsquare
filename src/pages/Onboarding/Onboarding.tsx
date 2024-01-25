@@ -12,7 +12,7 @@ import {
   roleSchema,
 } from "../../validations/onboarding";
 import Logo from "../../components/Logo";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { addOrganizationOne } from "../../queries/organization/mutations";
 import { getOrganizationByName } from "../../queries/organization/quieries";
 import { format, set } from "date-fns";
@@ -31,9 +31,8 @@ export default function Onboarding() {
   const { profile } = useSession();
   const { data: roles } = useQuery(getRoles);
 
-  
   const navigation = useNavigate();
-  
+
   const swiperRef = useRef(null);
 
   function swiperHandler(direction?: string) {
@@ -96,9 +95,6 @@ export default function Onboarding() {
         variables: { authId: profile?.authId },
       },
     ],
-    onCompleted: () => {
-      swiperHandler("next");
-    },
   });
 
   const [insertOrganization] = useMutation(addOrganizationOne, {
@@ -124,6 +120,10 @@ export default function Onboarding() {
         },
       },
       onCompleted: () => {
+        setAllowSwipeNext(true);
+        setTimeout(() => {
+          swiperHandler("next");
+        });
         navigation("/dashboard");
         location.reload();
       },
@@ -137,6 +137,12 @@ export default function Onboarding() {
         object: {
           roleId: data.role,
         },
+      },
+      onCompleted: () => {
+        setAllowSwipeNext(true);
+        setTimeout(() => {
+          swiperHandler("next");
+        }, 200);
       },
     });
   }
@@ -160,7 +166,10 @@ export default function Onboarding() {
             },
           },
         });
-        swiperHandler("next");
+        setAllowSwipeNext(true);
+        setTimeout(() => {
+          swiperHandler("next");
+        });
       },
     });
   }
@@ -207,12 +216,16 @@ export default function Onboarding() {
         ref={swiperRef}
         allowSlideNext={allowSwipeNext}
         onPaginationUpdate={(swiper) => {
-          if (swiper.activeIndex === 0) {
+          if (
+            swiper.activeIndex === 0 ||
+            swiper.activeIndex === 2 ||
+            swiper.activeIndex === 4
+          ) {
             setAllowSwipeNext(true);
+          } else {
+            setAllowSwipeNext(false);
           }
-          setAllowSwipeNext(false);
-        }
-        }
+        }}
       >
         <SwiperSlide className="flex justify-center">
           <div className="w-1/2 space-y-20 flex flex-col items-center justify-center">
@@ -451,6 +464,7 @@ export default function Onboarding() {
                   <div className="flex w-full justify-between">
                     <SwipePrevButton text="Back" />
                     <SwipeNextButton
+                      text="Next"
                       disabled={
                         !organizationWatcher.name ||
                         !organizationWatcher.yearEnd ||
@@ -461,7 +475,6 @@ export default function Onboarding() {
                           ? true
                           : false
                       }
-                      text="Next"
                     />
                   </div>
                 </div>
@@ -525,6 +538,17 @@ export default function Onboarding() {
                           ? true
                           : false
                       }
+                      className={classNames(
+                        "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
+                        !organizationWatcher.name ||
+                          !organizationWatcher.yearEnd ||
+                          !organizationWatcher.holidayAllowance ||
+                          errorsOrganization.name ||
+                          errorsOrganization.yearEnd ||
+                          errorsOrganization.holidayAllowance
+                          ? "opacity-50 cursor-not-allowed"
+                          : ""
+                      )}
                       onClick={handleSubmitOrganization(submitOrganization)}
                     >
                       Next
