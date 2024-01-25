@@ -1,8 +1,9 @@
 # Shift Square Application ReadMe
 
-<p><a href="https://shiftsquare.vercel.app" target="_blank" rel="noreferrer"> <img src="/public/ShiftSquare3.svg" alt="Shift Square" width="120" height="120"/> </a></p>
 
 ## Introduction
+
+<p><a href="https://shiftsquare.vercel.app" target="_blank" rel="noreferrer"> <img src="/public/ShiftSquare3.svg" alt="Shift Square" width="120" height="120"/> </a></p>
 
 Welcome to Shift Square, your go-to solution for efficient scheduling, labor management, and insightful spending tracking. This application is meticulously crafted to empower HR professionals and managers by providing a comprehensive platform to streamline the scheduling process, monitor labor expenditures, and gain valuable insights into resource allocation.
 
