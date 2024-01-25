@@ -1,6 +1,6 @@
 # Shift Square Application ReadMe
 
-![Alt text](/public/ShiftSquare.svg)
+![Alt text](/public/ShiftSquare3.svg)
 
 ## Introduction
 
