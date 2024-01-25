@@ -1,5 +1,7 @@
 # Shift Square Application ReadMe
 
+![Alt text](/public/ShiftSquare.svg)
+
 ## Introduction
 
 Welcome to Shift Square, your go-to solution for efficient scheduling, labor management, and insightful spending tracking. This application is meticulously crafted to empower HR professionals and managers by providing a comprehensive platform to streamline the scheduling process, monitor labor expenditures, and gain valuable insights into resource allocation.
