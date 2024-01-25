@@ -1,6 +1,6 @@
 # Shift Square Application ReadMe
 
-<a href="https://shiftsquare.vercel.app" target="_blank" rel="noreferrer"> <img src="/public/ShiftSquare3" alt="graphql" width="120" height="120"/> </a>
+<p><a href="https://shiftsquare.vercel.app" target="_blank" rel="noreferrer"> <img src="/public/ShiftSquare3.svg" alt="Shift Square" width="120" height="120"/> </a></p>
 
 ## Introduction
 
