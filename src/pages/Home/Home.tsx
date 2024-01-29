@@ -3,9 +3,9 @@ import Logo from "../../components/Logo";
 export default function Home() {
   return (
     <div className="relative ">
-      <main className="h-[95vh] w-full overflow-scroll snap-y no-scrollbar snap-mandatory flex justify-center">
+      <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex justify-center">
         {/* First Section of Home Page */}
-        <section className="isolate -z-10  max-w-7xl mx-auto">
+        <section className="isolate -z-10  max-w-7xl ">
           <svg
             className="absolute inset-x-0 top-14 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
             aria-hidden="true"
@@ -47,7 +47,7 @@ export default function Home() {
               }}
             />
           </div>
-          <div className="overflow-hidden">
+          <div>
             <div className="px-6 mx-auto pb-32 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
               <div className="flex flex-col-reverse xl:flex-row">
                 <div className="max-w-2xl flex flex-col justify-start">
@@ -101,8 +101,9 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="m-auto xl:ml-24">
-                  <Logo size={300} />
+                <div className="m-auto xl:ml-24 relative">
+                  <Logo size={250} />
+                  <div className="absolute -z-10 -inset-16 bg-gradient-to-br from-polar-500 to-purple-heart-400 rounded-full blur-3xl"/>
                 </div>
               </div>
             </div>
