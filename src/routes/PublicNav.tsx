@@ -56,15 +56,15 @@ export default function PublicNavigation() {
     } else {
       return;
     }
-  }, [isAuthenticated]);
+  }, [isAuthenticated, navigation, pathname, showDashboard]);
 
   return (
-    <div className="min-h-full bg-transparent">
+    <div className="max-w-7xl mx-auto">
       <div>
         <Disclosure as="nav">
           {({ open }) => (
             <>
-              <div className="mx-auto px-4 sm:px-4 py-2 lg:px-6 flex items-center">
+              <div className="mx-auto px-4 sm:px-4 py-3 lg:px-6 flex items-center">
                 <div className="relative flex items-center w-full">
                   <div className="flex items-center px-2 lg:px-0 w-full justify-between">
                     <div className="flex items-center space-x-2">

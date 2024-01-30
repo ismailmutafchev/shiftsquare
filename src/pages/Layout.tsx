@@ -29,7 +29,7 @@ const Layout = () => {
     pathname === "/pricing"
   ) {
     return (
-      <div className="bg-polar-700/5">
+      <div>
         <PublicNavigation />
         <Outlet />
       </div>

@@ -1,13 +1,13 @@
-import { LandingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
+import Logo from "../../components/Logo";
 
 export default function Home() {
   return (
-    <div>
-      <main className="h-[95vh] w-full overflow-scroll snap-y no-scrollbar snap-mandatory">
+    <div className="relative ">
+      <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex justify-center">
         {/* First Section of Home Page */}
-        <section className="relative isolate">
+        <section className="isolate -z-10  max-w-7xl ">
           <svg
-            className="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
+            className="absolute inset-x-0 top-14 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
             aria-hidden="true"
           >
             <defs>
@@ -36,23 +36,23 @@ export default function Home() {
             />
           </svg>
           <div
-            className="absolute left-1/2 right-0 top-0 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl md:ml-24 xl:ml-48"
+            className="absolute left-1/2 right-0 top-14 -z-10 -ml-24 transform-gpu overflow-hidden blur-3xl lg:ml-24 xl:ml-48"
             aria-hidden="true"
           >
             <div
-              className="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
+              className="aspect-[801/1036] w-[50.0625rem] bg-gradient-to-tr from-polar-400 to-purple-heart-600 opacity-30"
               style={{
                 clipPath:
                   "polygon(63.1% 29.5%, 100% 17.1%, 76.6% 3%, 48.4% 0%, 44.6% 4.7%, 54.5% 25.3%, 59.8% 49%, 55.2% 57.8%, 44.4% 57.2%, 27.8% 47.9%, 35.1% 81.5%, 0% 97.7%, 39.2% 100%, 35.2% 81.4%, 97.2% 52.8%, 63.1% 29.5%)",
               }}
             />
           </div>
-          <div className="overflow-hidden">
-            <div className="px-6 mx-auto pb-32 pt-18 sm:pt-20 md:px-8 md:pt-18 relative">
-              <div className="flex justify-center md:justify-between ">
-                <div className="  max-w-xl  xl:max-w-4xl flex flex-col justify-start">
-                  <h1 className="text-4xl text-start font-semibold tracking-tight text-steel-blue-900 sm:text-6xl md:mx-2 lg:mx-20">
-                    <span className="bg-clip-text text-transparent bg-gradient-to-r from-polar-400 to-polar-600 relative font-semibold">
+          <div>
+            <div className="px-6 mx-auto pb-32 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
+              <div className="flex flex-col-reverse xl:flex-row">
+                <div className="max-w-2xl flex flex-col justify-start">
+                  <h1 className="text-4xl text-start font-semibold text-steel-blue-900 sm:text-6xl lg:mx-1 lg:ml-8 leading-4 tracking-normal">
+                    <span className="bg-clip-text leading-[1.1] text-transparent bg-gradient-to-r from-polar-400 to-purple-heart-600 relative font-semibold">
                       Shift Square{" "}
                       {/* <div className="absolute top-0 right-0  -z-10">
                         <svg
@@ -75,20 +75,18 @@ export default function Home() {
                       </div> */}
                     </span>{" "}
                     <br />
-                    Schedule your business to success
-                  </h1>
-                  <p className="relative text-start mt-6 md:mt-20 text-lg leading-8 text-text-steel-blue-700 sm:max-w-md md:max-w-none font-semibold lg:mx-20">
                     <span
-                      className="
-                    text-start bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] 
+                      className="leading-[1.1]
                     "
                     >
-                      ShiftSquare
+                      Schedule your business to success
                     </span>
-                    : Effortless scheduling, efficient resource management -
+                  </h1>
+                  <p className="relative text-start mt-4 text-2xl leading-8 text-gray-500 sm:max-w-md lg:max-w-none lg:ml-8 tracking-wider">
+                    Effortless scheduling, efficient resource management -
                     empowering your business to thrive.
                   </p>
-                  <div className="mt-6 md:mt-24 flex items-center gap-x-6 mx-20">
+                  <div className="mt-6 lg:mt-8 flex items-center gap-x-6 mx-8">
                     <a
                       href="#"
                       className="rounded-md shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
@@ -103,8 +101,9 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="opacity-90 w-2/5 absolute top-10 blur-sm -z-10 md:opacity-100 md:blur-0 md:relative md:flex xl:-top-16  justify-start items-start flex">
-                  <LandingAnimation />
+                <div className="m-auto xl:ml-24 relative">
+                  <Logo size={250} />
+                  <div className="absolute -z-10 -inset-16 bg-gradient-to-br from-polar-500 to-purple-heart-400 rounded-full blur-3xl"/>
                 </div>
               </div>
             </div>
