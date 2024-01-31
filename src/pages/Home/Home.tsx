@@ -48,7 +48,7 @@ export default function Home() {
             />
           </div>
           <div>
-            <div className="px-6 mx-auto pb-32 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
+            <div className="px-6 mx-auto pb-20 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
               <div className="flex flex-col-reverse lg:flex-row">
                 <div className="max-w-2xl flex flex-col justify-start">
                   <h1 className="text-4xl text-start font-semibold text-steel-blue-900 sm:text-6xl lg:mx-1 lg:ml-8 leading-4 tracking-normal">
@@ -94,74 +94,72 @@ export default function Home() {
           <div className="grid grid-cols-3 grid-rows-2 gap-4 max-w-7xl mx-16">
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
-                🫡
+                🎮
               </div>
               <h3 className="text-base font-semibold mb-2">
-                Easy to use interface
+                Intuitive Interface
               </h3>
               <p className="text-gray-500 pt-1 leading-6 text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, quod.
+                Streamline workforce management with an easy-to-use interface
+                for businesses of any size.
               </p>
             </div>
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
-                🫡
+                🛡️
               </div>
-              <h3 className="text-base font-semibold mb-2">
-                Easy to use interface
-              </h3>
+              <h3 className="text-base font-semibold mb-2">Error Prevention</h3>
               <p className="text-gray-500 pt-1 leading-6 text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, quod.
+                Ensure accuracy, minimize disruptions with automated warnings,
+                preventing costly scheduling mistakes.
               </p>
             </div>
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
-                🫡
+                📊
               </div>
               <h3 className="text-base font-semibold mb-2">
-                Easy to use interface
+                Dynamic Dashboard
               </h3>
               <p className="text-gray-500 pt-1 leading-6 text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, quod.
+                Gain insights into hours, expenses, and sales percentages for
+                informed decision-making.
               </p>
             </div>
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
-                🫡
+                📆
               </div>
               <h3 className="text-base font-semibold mb-2">
-                Easy to use interface
+                Copy-Paste Efficiency
               </h3>
               <p className="text-gray-500 pt-1 leading-6 text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, quod.
+                Save time with seamless shift copying, enhancing scheduling
+                efficiency for managers.
               </p>
             </div>
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
-                🫡
+                📝
               </div>
               <h3 className="text-base font-semibold mb-2">
-                Easy to use interface
+                Section Assignment
               </h3>
               <p className="text-gray-500 pt-1 leading-6 text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, quod.
+                Optimize workforce allocation, prevent misplacement, aligning
+                tasks with individual skill sets.
               </p>
             </div>
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
-                🫡
+                💡
               </div>
               <h3 className="text-base font-semibold mb-2">
-                Easy to use interface
+                Departmental Insights
               </h3>
               <p className="text-gray-500 pt-2 leading-6 text-sm">
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                Voluptatibus, quod.
+                Facilitate budget optimization with views of spending patterns
+                by department, employee, and hours.
               </p>
             </div>
           </div>
