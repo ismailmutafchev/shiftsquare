@@ -3,9 +3,9 @@ import Logo from "../../components/Logo";
 export default function Home() {
   return (
     <div className="relative ">
-      <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex justify-center">
+      <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex flex-col place-items-center">
         {/* First Section of Home Page */}
-        <section className="isolate -z-10  max-w-7xl ">
+        <section className=" isolate -z-10 w-full max-w-7xl">
           <svg
             className="absolute inset-x-0 top-14 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
             aria-hidden="true"
@@ -48,31 +48,12 @@ export default function Home() {
             />
           </div>
           <div>
-            <div className="px-6 mx-auto pb-32 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
-              <div className="flex flex-col-reverse xl:flex-row">
+            <div className="px-6 mx-auto pb-20 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
+              <div className="flex flex-col-reverse lg:flex-row">
                 <div className="max-w-2xl flex flex-col justify-start">
                   <h1 className="text-4xl text-start font-semibold text-steel-blue-900 sm:text-6xl lg:mx-1 lg:ml-8 leading-4 tracking-normal">
                     <span className="bg-clip-text leading-[1.1] text-transparent bg-gradient-to-r from-polar-400 to-purple-heart-600 relative font-semibold">
                       Shift Square{" "}
-                      {/* <div className="absolute top-0 right-0  -z-10">
-                        <svg
-                          id="visual"
-                          viewBox="0 0 100 500"
-                          width="600"
-                          height="200"
-                          xmlns="http://www.w3.org/2000/svg"
-                          version="1.1"
-                        >
-                          <path
-                            d="M0 47L10 45.8C20 44.7 40 42.3 60 45.8C80 49.3 100 58.7 120 54C140 49.3 160 30.7 180 31C200 31.3 220 50.7 240 50.3C260 50 280 30 300 19C320 8 340 6 360 7C380 8 400 12 420 20.8C440 29.7 460 43.3 480 46.3C500 49.3 520 41.7 540 39.5C560 37.3 580 40.7 590 42.3L600 44"
-                            fill="none"
-                            stroke-linecap="round"
-                            stroke-linejoin="miter"
-                            stroke="#00ff0f"
-                            stroke-width="15"
-                          ></path>
-                        </svg>
-                      </div> */}
                     </span>{" "}
                     <br />
                     <span
@@ -103,9 +84,83 @@ export default function Home() {
                 </div>
                 <div className="m-auto xl:ml-24 relative">
                   <Logo size={250} />
-                  <div className="absolute -z-10 -inset-16 bg-gradient-to-br from-polar-500 to-purple-heart-400 rounded-full blur-3xl"/>
+                  <div className="absolute -z-10 -inset-16 bg-gradient-to-br from-polar-500 to-purple-heart-400 rounded-full blur-3xl" />
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+        <section className="isolate -z-10 w-full max-w-7xl">
+          <div className="grid grid-cols-3 grid-rows-2 gap-4 max-w-7xl mx-16">
+            <div className="bg-gray-100 rounded-2xl p-6 text-start ">
+              <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
+                🎮
+              </div>
+              <h3 className="text-base font-semibold mb-2">
+                Intuitive Interface
+              </h3>
+              <p className="text-gray-500 pt-1 leading-6 text-sm">
+                Streamline workforce management with an easy-to-use interface
+                for businesses of any size.
+              </p>
+            </div>
+            <div className="bg-gray-100 rounded-2xl p-6 text-start ">
+              <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
+                🛡️
+              </div>
+              <h3 className="text-base font-semibold mb-2">Error Prevention</h3>
+              <p className="text-gray-500 pt-1 leading-6 text-sm">
+                Ensure accuracy, minimize disruptions with automated warnings,
+                preventing costly scheduling mistakes.
+              </p>
+            </div>
+            <div className="bg-gray-100 rounded-2xl p-6 text-start ">
+              <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
+                📊
+              </div>
+              <h3 className="text-base font-semibold mb-2">
+                Dynamic Dashboard
+              </h3>
+              <p className="text-gray-500 pt-1 leading-6 text-sm">
+                Gain insights into hours, expenses, and sales percentages for
+                informed decision-making.
+              </p>
+            </div>
+            <div className="bg-gray-100 rounded-2xl p-6 text-start ">
+              <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
+                📆
+              </div>
+              <h3 className="text-base font-semibold mb-2">
+                Copy-Paste Efficiency
+              </h3>
+              <p className="text-gray-500 pt-1 leading-6 text-sm">
+                Save time with seamless shift copying, enhancing scheduling
+                efficiency for managers.
+              </p>
+            </div>
+            <div className="bg-gray-100 rounded-2xl p-6 text-start ">
+              <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
+                📝
+              </div>
+              <h3 className="text-base font-semibold mb-2">
+                Section Assignment
+              </h3>
+              <p className="text-gray-500 pt-1 leading-6 text-sm">
+                Optimize workforce allocation, prevent misplacement, aligning
+                tasks with individual skill sets.
+              </p>
+            </div>
+            <div className="bg-gray-100 rounded-2xl p-6 text-start ">
+              <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
+                💡
+              </div>
+              <h3 className="text-base font-semibold mb-2">
+                Departmental Insights
+              </h3>
+              <p className="text-gray-500 pt-2 leading-6 text-sm">
+                Facilitate budget optimization with views of spending patterns
+                by department, employee, and hours.
+              </p>
             </div>
           </div>
         </section>
