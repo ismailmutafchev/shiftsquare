@@ -5,7 +5,7 @@ export default function Home() {
     <div className="relative ">
       <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex flex-col place-items-center">
         {/* First Section of Home Page */}
-        <section className=" isolate -z-10 w-full max-w-7xl">
+        <section className="isolate -z-10 w-full max-w-7xl pt-14">
           <svg
             className="absolute inset-x-0 top-14 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
             aria-hidden="true"
@@ -48,26 +48,23 @@ export default function Home() {
             />
           </div>
           <div>
-            <div className="px-6 mx-auto pb-20 pt-18 sm:pt-20 lg:px-8 lg:pt-20">
-              <div className="flex flex-col-reverse lg:flex-row">
-                <div className="max-w-2xl flex flex-col justify-start">
-                  <h1 className="text-4xl text-start font-semibold text-steel-blue-900 sm:text-6xl lg:mx-1 lg:ml-8 leading-4 tracking-normal">
-                    <span className="bg-clip-text leading-[1.1] text-transparent bg-gradient-to-r from-polar-400 to-purple-heart-600 relative font-semibold">
+            <div className="px-6 mx-auto pb-20 pt-16 lg:px-8 lg:pt-20">
+              <div className="flex flex-col-reverse lg:flex-row items-center">
+                <div className="max-w-2xl flex flex-col justify-start items-center">
+                  <h1 className="text-4xl text-center lg:text-start font-semibold text-steel-blue-900 md:text-5xl lg:text-6xl lg:mx-1 lg:ml-8 leading-4 tracking-normal font-poppins">
+                    <span className="bg-clip-text leading-[1.1] text-transparent bg-gradient-to-r from-polar-400 to-purple-heart-600 relative font-bold">
                       Shift Square{" "}
                     </span>{" "}
                     <br />
-                    <span
-                      className="leading-[1.1]
-                    "
-                    >
+                    <span className="leading-[1.1] font-bold font-poppins">
                       Schedule your business to success
                     </span>
                   </h1>
-                  <p className="relative text-start mt-4 text-2xl leading-8 text-gray-500 sm:max-w-md lg:max-w-none lg:ml-8 tracking-wider">
+                  <p className="relative mt-4 text-lg text-center lg:leading-8 lg:text-2xl lg:text-start text-gray-500 sm:max-w-md lg:max-w-none lg:ml-8 tracking-wider font-poppins">
                     Effortless scheduling, efficient resource management -
                     empowering your business to thrive.
                   </p>
-                  <div className="mt-6 lg:mt-8 flex items-center gap-x-6 mx-8">
+                  <div className="mt-6 lg:mt-8 flex items-center gap-x-8 mx-8 w-full lg:pl-8 justify-center lg:justify-start">
                     <a
                       href="#"
                       className="rounded-md shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
@@ -82,16 +79,16 @@ export default function Home() {
                     </a>
                   </div>
                 </div>
-                <div className="m-auto xl:ml-24 relative">
-                  <Logo size={250} />
-                  <div className="absolute -z-10 -inset-16 bg-gradient-to-br from-polar-500 to-purple-heart-400 rounded-full blur-3xl" />
+                <div className="m-auto py-16 md:py-0 md:pb-10 xl:ml-24 relative">
+                  <Logo size={230} />
+                  <div className="absolute -z-10 -inset-12 bg-gradient-to-br from-polar-500 to-purple-heart-400 rounded-full blur-3xl" />
                 </div>
               </div>
             </div>
           </div>
         </section>
         <section className="isolate -z-10 w-full max-w-7xl">
-          <div className="grid grid-cols-3 grid-rows-2 gap-4 max-w-7xl mx-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-4 max-w-7xl mx-16">
             <div className="bg-gray-100 rounded-2xl p-6 text-start ">
               <div className="w-12 h-12 bg-gray-200 flex items-center justify-center rounded-md mb-4 text-2xl">
                 🎮
