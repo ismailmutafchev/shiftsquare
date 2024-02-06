@@ -61,7 +61,7 @@ export default function PublicNavigation() {
   return (
     <div className="max-w-7xl mx-auto">
       <div>
-        <Disclosure as="nav">
+        <Disclosure as="nav" className="fixed w-full left-0 z-50 backdrop-blur-lg">
           {({ open }) => (
             <>
               <div className="mx-auto px-4 sm:px-4 py-3 lg:px-6 flex items-center">
