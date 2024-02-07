@@ -5,7 +5,7 @@ import Home from "./pages/Home/Home";
 import Calendar from "./pages/Calendar/Calendar";
 import Employees from "./pages/Employee/Employees";
 import Positions from "./pages/Positions/Positions";
-import About from "./pages/Abuout/About";
+import About from "./pages/About/About";
 import Pricing from "./pages/Pricing/Pricing";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Profile from "./pages/Profile/Profile";
