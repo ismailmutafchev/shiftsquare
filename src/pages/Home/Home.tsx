@@ -5,7 +5,7 @@ export default function Home() {
     <div className="relative ">
       <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex flex-col place-items-center">
         {/* First Section of Home Page */}
-        <section className="isolate -z-10 w-full max-w-7xl pt-14">
+        <section className="isolate -z-10 w-full max-w-7xl lg:pt-14">
           <svg
             className="absolute inset-x-0 top-14 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]"
             aria-hidden="true"
