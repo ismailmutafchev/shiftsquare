@@ -12,7 +12,6 @@ import LogoutButton from "../components/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import Logo from "../components/Logo";
 import { colors } from "../utils/colors";
-import { CircleStackIcon } from "@heroicons/react/20/solid";
 
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
