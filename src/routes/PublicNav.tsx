@@ -85,7 +85,7 @@ export default function PublicNavigation() {
                           return (
                             <Link
                               key={item.name}
-                              to={item.href}
+                              to={item.href === '/login' ? '/' : item.href}
                               onMouseOver={() =>
                                 setScaleBottomBorder(item.name)
                               }
@@ -93,6 +93,11 @@ export default function PublicNavigation() {
                               className={classNames(
                                 "rounded-md py-2 px-3 text-sm font-medium text-center text-steel-blue-900 relative"
                               )}
+                              onClick={
+                                item.href === "/login"
+                                  ? () => loginWithRedirect()
+                                  : () => {}
+                              }
                             >
                               <p
                                 className={`${
@@ -113,7 +118,7 @@ export default function PublicNavigation() {
                             </Link>
                           );
                         })}
-                        <LoginButton />
+                        {/* <LoginButton /> */}
                       </div>
                     </div>
                   </div>
