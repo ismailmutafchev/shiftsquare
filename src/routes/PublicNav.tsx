@@ -26,6 +26,7 @@ function classNames(...classes) {
 
 export default function PublicNavigation() {
   const { pathname } = useLocation();
+  const { loginWithRedirect } = useAuth0();
   const [navigation, setNavigation] = useState([
     {
       name: "Home",
@@ -35,6 +36,7 @@ export default function PublicNavigation() {
     },
     { name: "About", href: "/about", current: pathname === "/about" },
     { name: "Pricing", href: "/pricing", current: pathname === "/pricing" },
+    { name: "Login", href: "/login", current: pathname === "/login" },
   ]);
   const [scaleBottomBorder, setScaleBottomBorder] = useState<string | null>(
     null
@@ -61,7 +63,10 @@ export default function PublicNavigation() {
   return (
     <div className="max-w-7xl mx-auto">
       <div>
-        <Disclosure as="nav" className="fixed w-full left-0 z-50 backdrop-blur-lg">
+        <Disclosure
+          as="nav"
+          className="lg:fixed lg:w-full lg:left-0 lg:z-50 lg:backdrop-blur-lg "
+        >
           {({ open }) => (
             <>
               <div className="mx-auto px-4 sm:px-4 py-3 lg:px-6 flex items-center">
@@ -203,8 +208,8 @@ export default function PublicNavigation() {
                 </div>
               </div>
 
-              <Disclosure.Panel className="lg:hidden relative">
-                <div className="space-y-1 px-2 pb-3 pt-2 absolute w-full h-screen backdrop-blur-xl z-10">
+              <Disclosure.Panel className="lg:hidden  w-full z-10 ">
+                <div className="space-y-1 px-2 py-10 w-full h-screen bg-white z-10 divide-y absolute pointer-events-auto overflow-scroll items-center flex flex-col text-start">
                   {navigation.map((item) => (
                     <Disclosure.Button
                       key={item.name}
@@ -212,18 +217,23 @@ export default function PublicNavigation() {
                       href={item.href}
                       className={classNames(
                         item.current
-                          ? "bg-blue-700 text-white"
-                          : "text-white hover:bg-polar-300 hover:bg-opacity-75",
-                        "block rounded-md py-2 px-3 text-base font-medium"
+                          ? "text-polar-600"
+                          : "text-black hover:text-polar-600",
+                        "block rounded-md py-2 px-3 text-sm font-normal font-poppins text-gray-600 w-1/2"
                       )}
+                      onClick={
+                        item.href === "/login"
+                          ? () => loginWithRedirect()
+                          : () => {}
+                      }
                       aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
                     </Disclosure.Button>
                   ))}
-                  <LoginButton />
-                  <LogoutButton />
+                  <div>{/* TODO: add icons to the pages     */}</div>
                 </div>
+
                 {isAuthenticated && (
                   <div className="hidden lg:block border-t border-blue-700 pb-3 pt-4">
                     <div className="flex items-center px-5">
