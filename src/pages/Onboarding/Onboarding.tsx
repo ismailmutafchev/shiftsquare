@@ -46,6 +46,10 @@ export default function Onboarding() {
     }
   }
 
+  const createNewOrganizationhandler = () => {
+    setCreateNewOrganization(!createNewOrganization);
+  };
+
   const {
     register,
     handleSubmit,
@@ -258,7 +262,7 @@ export default function Onboarding() {
                 <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
                   Looks like you don't have an organization yet.
                 </h1>
-                <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+                <div className="border-4 border-polar-600 rounded-xl p-3 md:p-10 text-start space-y-10 ">
                   <p>
                     In order to use Shift Square, you need to be part of an
                     organization. If you don't have one, you can create one in
@@ -303,9 +307,7 @@ export default function Onboarding() {
                       type="checkbox"
                       className="h-4 w-4 text-polar-600 focus:ring-polar-500 border-gray-300 rounded"
                       checked={createNewOrganization}
-                      onChange={() =>
-                        setCreateNewOrganization(!createNewOrganization)
-                      }
+                      onChange={createNewOrganizationhandler}
                     />
                     <p className="text-polar-500 animate-fadeUp">
                       By clicking Create Organization you agree to our{" "}
@@ -313,28 +315,28 @@ export default function Onboarding() {
                         Terms and Conditions
                       </span>
                     </p>
+                    <div className="flex w-full flex-row-reverse justify-between">
+                      <button
+                        onClick={handleSubmitRole(submitRole)}
+                        className={classNames(
+                          "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
+                          !roleWatcher.role || errorsRole.role
+                            ? "opacity-50 cursor-not-allowed"
+                            : "",
+                          !createNewOrganization
+                            ? "opacity-50 cursor-not-allowed"
+                            : ""
+                        )}
+                        disabled={
+                          !roleWatcher.role || errorsRole.role
+                            ? true
+                            : false || !createNewOrganization
+                        }
+                      >
+                        Create Organization
+                      </button>
+                    </div>
                   </div>
-                </div>
-                <div className="flex w-full flex-row-reverse justify-between">
-                  <button
-                    onClick={handleSubmitRole(submitRole)}
-                    className={classNames(
-                      "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
-                      !roleWatcher.role || errorsRole.role
-                        ? "opacity-50 cursor-not-allowed"
-                        : "",
-                      !createNewOrganization
-                        ? "opacity-50 cursor-not-allowed"
-                        : ""
-                    )}
-                    disabled={
-                      !roleWatcher.role || errorsRole.role
-                        ? true
-                        : false || !createNewOrganization
-                    }
-                  >
-                    Create Organization
-                  </button>
                 </div>
               </div>
             </SwiperSlide>
