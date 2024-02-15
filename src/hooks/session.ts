@@ -23,8 +23,6 @@ export const useSession = () => {
         }
     }
 
-    console.log(onboarded());
-
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('profile', JSON.stringify(profile?.user[0]));
 
