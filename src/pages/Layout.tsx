@@ -8,19 +8,16 @@ import { useSession } from "../hooks/session";
 
 const Layout = () => {
   const { isAuthenticated } = useAuth0();
-  const { profile } = useSession();
-
+  const { profile, onboarded } = useSession();
   const { pathname } = useLocation();
 
-  if (profile?.data?.user[0]?.onboarded === false || profile?.onboarded === false
-     ){
+  if (!onboarded && pathname !== "/" && pathname !== "/about" && pathname !== "/pricing") {
     return (
       <div className="bg-gray-white pb-24">
         <Onboarding />
       </div>
     );
   }
-
 
   if (
     !isAuthenticated ||
@@ -34,7 +31,7 @@ const Layout = () => {
         <Outlet />
       </div>
     );
-  } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === false) {
+  } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === true) {
     return (
       <div>
         <Onboarding />
