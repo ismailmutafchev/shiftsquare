@@ -157,7 +157,7 @@ const footerNavigation = {
 export default function Example() {
 
   return (
-    <div className="bg-gray-900">
+    <div className="bg-white">
 
       <main className="relative isolate">
         {/* Background */}
@@ -177,8 +177,8 @@ export default function Example() {
         {/* Header section */}
         <div className="px-6 pt-14 lg:px-8">
           <div className="mx-auto max-w-2xl pt-24 text-center sm:pt-40">
-            <h2 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">We love creators</h2>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            <h2 className="text-4xl font-bold tracking-tight text-gray-800/80 sm:text-6xl">We love creators</h2>
+            <p className="mt-6 text-lg leading-8 text-gray-700">
               Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo. Elit sunt amet
               fugiat veniam occaecat fugiat aliqua.
             </p>
@@ -188,7 +188,7 @@ export default function Example() {
         {/* Content section */}
         <div className="mx-auto mt-20 max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
-            <div className="grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-300 lg:max-w-none lg:grid-cols-2">
+            <div className="grid max-w-xl grid-cols-1 gap-8 text-base leading-7 text-gray-700 lg:max-w-none lg:grid-cols-2">
               <div>
                 <p>
                   Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet
@@ -217,9 +217,9 @@ export default function Example() {
             </div>
             <dl className="mt-16 grid grid-cols-1 gap-x-8 gap-y-12 sm:mt-20 sm:grid-cols-2 sm:gap-y-16 lg:mt-28 lg:grid-cols-4">
               {stats.map((stat, statIdx) => (
-                <div key={statIdx} className="flex flex-col-reverse gap-y-3 border-l border-white/20 pl-6">
-                  <dt className="text-base leading-7 text-gray-300">{stat.label}</dt>
-                  <dd className="text-3xl font-semibold tracking-tight text-white">{stat.value}</dd>
+                <div key={statIdx} className="flex flex-col-reverse gap-y-3 border-l border-gray-800/80/20 pl-6">
+                  <dt className="text-base leading-7 text-gray-700">{stat.label}</dt>
+                  <dd className="text-3xl font-semibold tracking-tight text-gray-800/80">{stat.value}</dd>
                 </div>
               ))}
             </dl>
@@ -238,17 +238,17 @@ export default function Example() {
         {/* Values section */}
         <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Our values</h2>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-800/80 sm:text-4xl">Our values</h2>
+            <p className="mt-6 text-lg leading-8 text-gray-700">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Maiores impedit perferendis suscipit eaque, iste
               dolor cupiditate blanditiis.
             </p>
           </div>
-          <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 text-base leading-7 text-gray-300 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
+          <dl className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 text-base leading-7 text-gray-700 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:gap-x-16">
             {values.map((value) => (
               <div key={value.name} className="relative pl-9">
-                <dt className="inline font-semibold text-white">
-                  <value.icon className="absolute left-1 top-1 h-5 w-5 text-indigo-500" aria-hidden="true" />
+                <dt className="inline font-semibold text-gray-800/80">
+                  <value.icon className="absolute left-1 top-1 h-5 w-5 text-polar-500" aria-hidden="true" />
                   {value.name}
                 </dt>{' '}
                 <dd className="inline">{value.description}</dd>
@@ -260,8 +260,8 @@ export default function Example() {
         {/* Team section */}
         <div className="mx-auto mt-32 max-w-7xl px-6 sm:mt-40 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0">
-            <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Our team</h2>
-            <p className="mt-6 text-lg leading-8 text-gray-300">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-800/80 sm:text-4xl">Our team</h2>
+            <p className="mt-6 text-lg leading-8 text-gray-700">
               Excepturi repudiandae alias ut. Totam aut facilis. Praesentium in neque vel omnis. Eos error odio. Qui
               fugit voluptatibus eum culpa.
             </p>
@@ -273,8 +273,8 @@ export default function Example() {
             {team.map((person) => (
               <li key={person.name}>
                 <img className="aspect-[14/13] w-full rounded-2xl object-cover" src={person.imageUrl} alt="" />
-                <h3 className="mt-6 text-lg font-semibold leading-8 tracking-tight text-white">{person.name}</h3>
-                <p className="text-base leading-7 text-gray-300">{person.role}</p>
+                <h3 className="mt-6 text-lg font-semibold leading-8 tracking-tight text-gray-800/80">{person.name}</h3>
+                <p className="text-base leading-7 text-gray-700">{person.role}</p>
                 <p className="text-sm leading-6 text-gray-500">{person.location}</p>
               </li>
             ))}
@@ -284,21 +284,21 @@ export default function Example() {
         {/* CTA section */}
         <div className="relative isolate -z-10 mt-32 sm:mt-40">
           <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-            <div className="mx-auto flex max-w-2xl flex-col gap-16 bg-white/5 px-6 py-16 ring-1 ring-white/10 sm:rounded-3xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
+            <div className="mx-auto flex max-w-2xl flex-col gap-16 bg-gray-800/80/5 px-6 py-16 ring-1 ring-gray-800/80/10 sm:rounded-3xl sm:p-8 lg:mx-0 lg:max-w-none lg:flex-row lg:items-center lg:py-20 xl:gap-x-20 xl:px-20">
               <img
                 className="h-96 w-full flex-none rounded-2xl object-cover shadow-xl lg:aspect-square lg:h-auto lg:max-w-sm"
                 src="https://images.unsplash.com/photo-1519338381761-c7523edc1f46?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80"
                 alt=""
               />
               <div className="w-full flex-auto">
-                <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Join our team</h2>
-                <p className="mt-6 text-lg leading-8 text-gray-300">
+                <h2 className="text-3xl font-bold tracking-tight text-gray-800/80 sm:text-4xl">Join our team</h2>
+                <p className="mt-6 text-lg leading-8 text-gray-700">
                   Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate veritatis
                   in accusamus quisquam.
                 </p>
                 <ul
                   role="list"
-                  className="mt-10 grid grid-cols-1 gap-x-8 gap-y-3 text-base leading-7 text-white sm:grid-cols-2"
+                  className="mt-10 grid grid-cols-1 gap-x-8 gap-y-3 text-base leading-7 text-gray-800/80 sm:grid-cols-2"
                 >
                   {benefits.map((benefit) => (
                     <li key={benefit} className="flex gap-x-3">
@@ -308,7 +308,7 @@ export default function Example() {
                   ))}
                 </ul>
                 <div className="mt-10 flex">
-                  <a href="#" className="text-sm font-semibold leading-6 text-indigo-400">
+                  <a href="#" className="text-sm font-semibold leading-6 text-polar-400">
                     See our job postings <span aria-hidden="true">&rarr;</span>
                   </a>
                 </div>
@@ -340,10 +340,10 @@ export default function Example() {
             <div className="space-y-8">
               <img
                 className="h-7"
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=500"
+                src="https://tailwindui.com/img/logos/mark.svg?color=polar&shade=500"
                 alt="Company name"
               />
-              <p className="text-sm leading-6 text-gray-300">
+              <p className="text-sm leading-6 text-gray-700">
                 Est error fuga modi error. Laborum eum nobis porro cupiditate et quo.
               </p>
               <div className="flex space-x-6">
@@ -358,11 +358,11 @@ export default function Example() {
             <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold leading-6 text-white">Solutions</h3>
+                  <h3 className="text-sm font-semibold leading-6 text-gray-800/80">Solutions</h3>
                   <ul role="list" className="mt-6 space-y-4">
                     {footerNavigation.solutions.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
+                        <a href={item.href} className="text-sm leading-6 text-gray-700 hover:text-gray-800/80">
                           {item.name}
                         </a>
                       </li>
@@ -370,11 +370,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-10 md:mt-0">
-                  <h3 className="text-sm font-semibold leading-6 text-white">Support</h3>
+                  <h3 className="text-sm font-semibold leading-6 text-gray-800/80">Support</h3>
                   <ul role="list" className="mt-6 space-y-4">
                     {footerNavigation.support.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
+                        <a href={item.href} className="text-sm leading-6 text-gray-700 hover:text-gray-800/80">
                           {item.name}
                         </a>
                       </li>
@@ -384,11 +384,11 @@ export default function Example() {
               </div>
               <div className="md:grid md:grid-cols-2 md:gap-8">
                 <div>
-                  <h3 className="text-sm font-semibold leading-6 text-white">Company</h3>
+                  <h3 className="text-sm font-semibold leading-6 text-gray-800/80">Company</h3>
                   <ul role="list" className="mt-6 space-y-4">
                     {footerNavigation.company.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
+                        <a href={item.href} className="text-sm leading-6 text-gray-700 hover:text-gray-800/80">
                           {item.name}
                         </a>
                       </li>
@@ -396,11 +396,11 @@ export default function Example() {
                   </ul>
                 </div>
                 <div className="mt-10 md:mt-0">
-                  <h3 className="text-sm font-semibold leading-6 text-white">Legal</h3>
+                  <h3 className="text-sm font-semibold leading-6 text-gray-800/80">Legal</h3>
                   <ul role="list" className="mt-6 space-y-4">
                     {footerNavigation.legal.map((item) => (
                       <li key={item.name}>
-                        <a href={item.href} className="text-sm leading-6 text-gray-300 hover:text-white">
+                        <a href={item.href} className="text-sm leading-6 text-gray-700 hover:text-gray-800/80">
                           {item.name}
                         </a>
                       </li>
@@ -410,7 +410,7 @@ export default function Example() {
               </div>
             </div>
           </div>
-          <div className="mt-16 border-t border-white/10 pt-8 sm:mt-20 lg:mt-24">
+          <div className="mt-16 border-t border-gray-800/80/10 pt-8 sm:mt-20 lg:mt-24">
             <p className="text-xs leading-5 text-gray-400">&copy; 2020 Your Company, Inc. All rights reserved.</p>
           </div>
         </div>
