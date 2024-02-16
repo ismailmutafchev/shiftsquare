@@ -15,6 +15,14 @@ export const useSession = () => {
         }
     });
 
+    const onboarded = () => {
+        if (profile?.user[0]?.onboarded === false || profile?.onboarded === false ) {
+            return false
+        } else {
+            return true
+        }
+    }
+
     localStorage.setItem('user', JSON.stringify(user));
     localStorage.setItem('profile', JSON.stringify(profile?.user[0]));
 
@@ -22,6 +30,7 @@ export const useSession = () => {
         employees: employees.data?.user,
         positions: positions.data?.position,
         profile: {...profile?.user[0], picture: user?.picture},
-        user: user
+        user: user,
+        onboarded: onboarded()
     }
 }
