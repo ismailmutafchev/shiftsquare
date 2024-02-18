@@ -20,7 +20,6 @@ import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
-import { useAuth0 } from "@auth0/auth0-react";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -32,7 +31,6 @@ export default function Onboarding() {
   const [allowSwipeNext, setAllowSwipeNext] = useState(true);
   const { profile } = useSession();
   const { data: roles } = useQuery(getRoles);
-  const { getAccessTokenSilently } = useAuth0();
 
   const navigation = useNavigate();
 
@@ -102,19 +100,6 @@ export default function Onboarding() {
         variables: { authId: profile?.authId },
       },
     ],
-
-    onCompleted: () => {
-      getAccessTokenSilently()
-        .then((token) => {
-          localStorage.setItem("token", token);
-        })
-        .then(() => {
-          location.reload();
-        })
-        .catch((error) => {
-          console.error("Error: ", error);
-        });
-    },
   });
 
   const [insertOrganization] = useMutation(addOrganizationOne, {

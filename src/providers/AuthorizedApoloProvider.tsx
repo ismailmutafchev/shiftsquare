@@ -16,8 +16,6 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
         const authLink = setContext(async () => {
             if (isAuthenticated) {
                 const token = await getAccessTokenSilently();
-                localStorage.setItem('token', token);
-                console.log(token, 'token')
                 return {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -35,7 +33,6 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
             connectToDevTools: true
         });
 
-        console.log(apolloClient, 'apolloClient')
         return (
             <ApolloProvider client={apolloClient}>
                 {children}
