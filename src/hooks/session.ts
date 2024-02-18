@@ -15,6 +15,8 @@ export const useSession = () => {
         }
     });
 
+    console.log(profile, 'xx23')
+
     const onboarded = () => {
         if (profile?.user[0]?.onboarded === false || profile?.onboarded === false ) {
             return false

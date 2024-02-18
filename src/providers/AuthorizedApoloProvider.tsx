@@ -4,7 +4,7 @@ import { setContext } from 'apollo-link-context';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
 
 const AuthorizedApolloProvider = ({ children }: { children: any }) => {
-    const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+    const { getAccessTokenSilently, isAuthenticated, isLoading  } = useAuth0();
 
     if (isLoading) {
         return <LoadingAnimation />;
@@ -16,6 +16,8 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
         const authLink = setContext(async () => {
             if (isAuthenticated) {
                 const token = await getAccessTokenSilently();
+                localStorage.setItem('token', token);
+                console.log(token, 'token')
                 return {
                     headers: {
                         Authorization: `Bearer ${token}`
@@ -32,6 +34,8 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
             cache: new InMemoryCache(),
             connectToDevTools: true
         });
+
+        console.log(apolloClient, 'apolloClient')
         return (
             <ApolloProvider client={apolloClient}>
                 {children}
