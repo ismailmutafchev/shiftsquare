@@ -210,14 +210,14 @@ export default function Onboarding() {
   };
 
   return (
-    <>
+    <div className="flex">
       <Swiper
         pagination={{
           type: "progressbar",
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
-        className="mySwiper h-screen mx-auto swiper"
+        className="mySwiper h-screen mx-auto swiper bg-white w-1/2"
         ref={swiperRef}
         allowSlideNext={allowSwipeNext}
         onPaginationUpdate={(swiper) => {
@@ -666,6 +666,9 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
       </Swiper>
-    </>
+      <div className="w-1/2 bg-gray-300">
+        
+      </div>
+    </div>
   );
 }
