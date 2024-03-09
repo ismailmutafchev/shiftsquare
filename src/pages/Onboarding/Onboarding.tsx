@@ -666,9 +666,9 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
       </Swiper>
-      <div className="w-1/2 bg-gray-300">
-        
-      </div>
+      <div
+        className="w-1/2 bg-third-pattern"
+      ></div>
     </div>
   );
 }

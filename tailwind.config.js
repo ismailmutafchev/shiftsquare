@@ -7,6 +7,11 @@ export default {
   ],
   theme: {
     extend: {
+      backgroundImage: {
+        'hero-pattern': "url('/src/assets/hero-pattern.svg')", 
+        'secondary-pattern': "url('/src/assets/hollowed-boxes.svg')",
+        'third-pattern': "url('/src/assets/subtle-prism.svg')",
+      },
       colors: {
         polar: {
           50: "#effcfc",
