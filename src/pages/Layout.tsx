@@ -5,15 +5,25 @@ import PublicNavigation from "../routes/PublicNav";
 import { useAuth0 } from "@auth0/auth0-react";
 import Onboarding from "./Onboarding/Onboarding";
 import { useSession } from "../hooks/session";
+import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 
 const Layout = () => {
   const { isAuthenticated } = useAuth0();
-  const { profile, onboarded } = useSession();
+  const { profile, onboarded, userLoading } = useSession();
   const { pathname } = useLocation();
 
-  if (!onboarded && pathname !== "/" && pathname !== "/about" && pathname !== "/pricing") {
+  if (userLoading) {
+    return <LoadingAnimation />;
+  }
+
+  if (
+    !onboarded &&
+    pathname !== "/" &&
+    pathname !== "/about" &&
+    pathname !== "/pricing"
+  ) {
     return (
-      <div className="bg-gray-white pb-24">
+      <div className="bg-gray-white">
         <Onboarding />
       </div>
     );

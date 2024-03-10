@@ -13,7 +13,7 @@ export default function LogoutButton({ className }: Props) {
 
   return (
     <div className={className}>
-      {isAuthenticated && <button onClick={logoutHandler}>Log out</button>}
+      {isAuthenticated && <button onClick={logoutHandler}>Logout</button>}
     </div>
   );
 }
