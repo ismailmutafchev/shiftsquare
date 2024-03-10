@@ -20,6 +20,7 @@ import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
+import { Listbox } from "@headlessui/react";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -210,7 +211,13 @@ export default function Onboarding() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex relative">
+      <div className="flex items-center space-x-2 absolute top-10 left-10 z-10">
+        <Logo size={50} dark />
+        <h1 className="font-semibold text-xl text-polar-500">
+          Shift <span className="text-[#1b1f57]">Square</span>
+        </h1>
+      </div>
       <Swiper
         pagination={{
           type: "progressbar",
@@ -232,113 +239,164 @@ export default function Onboarding() {
           }
         }}
       >
-        <SwiperSlide className="flex justify-center">
-          <div className="w-1/2 space-y-20 flex flex-col items-center justify-center">
-            <Logo size={220} />
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              Welcome to Shift Square
-            </h1>
-            <p className="text-xl text-polar-500 animate-fadeUp">
-              We are excited to have you on board.{" "}
+        <SwiperSlide className="flex w-full">
+          <div className=" space-y-20 flex flex-col w-full justify-between">
+            <div></div>
+            <div className="px-16 space-y-10">
+              <h1 className="text-3xl font-semibold text-polar-900 animate-fadeUp text-start">
+                Welcome to Shift Square! 🎉
+              </h1>
+              <p className="text-base text-gray-400 animate-fadeUp text-start">
+                We are excited to have you on board. Let's get you started with
+                a few details.
+              </p>
               <button
                 onClick={() => {
                   swiperHandler("next");
                 }}
                 className={classNames(
-                  "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                  "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400 w-full"
                 )}
               >
                 Let's get started
               </button>
-            </p>
-            <LogoutButton />
+            </div>
+            <div>
+              <LogoutButton className="text-gray-500 font-semibold text-start px-16 pb-5 hover:text-gray-800" />
+            </div>
           </div>
         </SwiperSlide>
         {/* organization slide */}
         {!profile.organizationId && (
           <>
-            <SwiperSlide key="11" className="flex items-center justify-center ">
-              <div className="w-3/4 space-y-10 flex flex-col">
-                <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+            <SwiperSlide key="11" className="flex flex-col items-start justify-between ">
+              <div/>
+              <div className="space-y-10 flex flex-col px-16 w-full">
+                <h1 className="text-3xl font-semibold text-polar-900 animate-fadeUp text-start">
                   Looks like you don't have an organization yet.
                 </h1>
-                <div className="border-4 border-polar-600 rounded-xl p-3 md:p-10 text-start space-y-10 ">
-                  <p>
-                    In order to use Shift Square, you need to be part of an
-                    organization. If you don't have one, you can create one in
-                    the next step.
-                  </p>
-                  <p>
-                    If you would to create an organization, you have to be an
-                    authorized person to do so.
-                  </p>
-                  <div className="flex items-center space-x-2">
+                <p className="text-base text-gray-500 animate-fadeUp text-start">
+                  In order to use Shift Square, you need to be part of an
+                  organization. If you don't have one, you can create one in the
+                  next step.
+                </p>
+                <p className="text-base text-gray-500 animate-fadeUp text-start">
+                  If you would to create an organization, you have to be an
+                  authorized person to do so.
+                </p>
+                <div className="flex flex-col space-y-5">
+                  {/* <p className="text-base text-gray-900 text-start">
                     Please select your role in the organization:
-                    <Controller
-                      name="role"
-                      control={controlRole}
-                      defaultValue=""
-                      render={({ field }) => (
-                        <select
-                          {...field}
-                          className={classNames(
-                            "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
-                            !roleWatcher ||
-                              roleWatcher.role === "" ||
-                              (errorsRole.role &&
-                                "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
-                          )}
-                        >
-                          <option value="" disabled>
-                            Select your role
-                          </option>
-                          {roles?.role.map((role: any) => (
-                            <option key={role.id} value={role.id}>
-                              {role?.name.charAt(0).toUpperCase() +
-                                role?.name?.slice(1)}
-                            </option>
-                          ))}
-                        </select>
-                      )}
-                    />
-                  </div>
-                  <div className="flex items-center space-x-2">
+                  </p> */}
+                  <Controller
+                    name="role"
+                    control={controlRole}
+                    defaultValue=""
+                    render={({ field }) => (
+                      <Listbox
+                        as="div"
+                        className="space-y-1"
+                        value={field.value}
+                        onChange={field.onChange}
+                      >
+                        {() => (
+                          <>
+                            <Listbox.Label className="block text-base font-medium text-gray-700 text-start pb-3">
+                              Please select your role in the organization
+                            </Listbox.Label>
+                            <div className="relative">
+                              <span className="inline-block w-full rounded-md shadow-sm">
+                                <Listbox.Button className="cursor-default relative w-full rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm">
+                                  <span className="block truncate text-gray-500">
+                                    {roleWatcher.role
+                                      ? roles?.role.find(
+                                          (role: any) =>
+                                            role.id === roleWatcher.role
+                                        )?.name
+                                      : "Select your role"}
+                                  </span>
+                                </Listbox.Button>
+                              </span>
+                              <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-start">
+                                {roles?.role.map((role: any) => (
+                                  <Listbox.Option
+                                    key={role.id}
+                                    value={role.id}
+                                    className={({ active }) =>
+                                      classNames(
+                                        active
+                                          ? "text-white bg-polar-600"
+                                          : "text-gray-900",
+                                        "cursor-default select-none relative py-2 pl-3 pr-9"
+                                      )
+                                    }
+                                  >
+                                    {({ selected }) => (
+                                      <span
+                                        className={classNames(
+                                          selected
+                                            ? "font-semibold"
+                                            : "font-normal",
+                                          "block truncate"
+                                        )}
+                                      >
+                                        {role?.name.charAt(0).toUpperCase() +
+                                          role?.name?.slice(1)}
+                                      </span>
+                                    )}
+                                  </Listbox.Option>
+                                ))}
+                              </Listbox.Options>
+                            </div>
+                          </>
+                        )}
+                      </Listbox>
+                    )}
+                  />
+                  <div className="flex items-center space-x-4">
                     <input
                       type="checkbox"
-                      className="h-4 w-4 text-polar-600 focus:ring-polar-500 border-gray-300 rounded"
+                      className="h-4 w-4 text-polar-600 focus:ring-gray-500 border-gray-300 rounded"
                       checked={createNewOrganization}
                       onChange={createNewOrganizationhandler}
                     />
-                    <p className="text-polar-500 animate-fadeUp">
+                    <p className="text-gray-500 animate-fadeUp text-start">
                       By clicking Create Organization you agree to our{" "}
-                      <span className="text-polar-400 underline">
+                      <span className="text-gray-500 underline">
                         Terms and Conditions
                       </span>
                     </p>
-                    <div className="flex w-full flex-row-reverse justify-between">
-                      <button
-                        onClick={handleSubmitRole(submitRole)}
-                        className={classNames(
-                          "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
-                          !roleWatcher.role || errorsRole.role
-                            ? "opacity-50 cursor-not-allowed"
-                            : "",
-                          !createNewOrganization
-                            ? "opacity-50 cursor-not-allowed"
-                            : ""
-                        )}
-                        disabled={
-                          !roleWatcher.role || errorsRole.role
-                            ? true
-                            : false || !createNewOrganization
-                        }
-                      >
-                        Create Organization
-                      </button>
-                    </div>
                   </div>
                 </div>
+
+                <button
+                  onClick={handleSubmitRole(submitRole)}
+                  className={classNames(
+                    "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
+                    !roleWatcher.role || errorsRole.role
+                      ? "opacity-50 cursor-not-allowed"
+                      : "",
+                    !createNewOrganization
+                      ? "opacity-50 cursor-not-allowed"
+                      : ""
+                  )}
+                  disabled={
+                    !roleWatcher.role || errorsRole.role
+                      ? true
+                      : false || !createNewOrganization
+                  }
+                >
+                  Create Organization
+                </button>
               </div>
+              <button
+                onClick={() => {
+                  swiperHandler("prev");
+                }}
+                className="text-gray-500 font-semibold text-start px-16 pb-5 hover:text-gray-800"
+              >
+                Back
+              </button>
             </SwiperSlide>
             <SwiperSlide key="12" className="flex items-center justify-center ">
               <div className="w-3/4 space-y-10 flex flex-col">
@@ -666,9 +724,7 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
       </Swiper>
-      <div
-        className="w-1/2 bg-third-pattern"
-      ></div>
+      <div className="w-1/2 bg-third-pattern"></div>
     </div>
   );
 }
