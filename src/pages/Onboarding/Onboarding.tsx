@@ -240,13 +240,13 @@ export default function Onboarding() {
         }}
       >
         <SwiperSlide className="flex w-full">
-          <div className=" space-y-20 flex flex-col w-full justify-between">
-            <div></div>
-            <div className="px-16 space-y-10">
+          <div className="space-y-20 flex flex-col w-full justify-between">
+            <div />
+            <div className="px-16 space-y-10 items-start justify-start flex flex-col">
               <h1 className="text-3xl font-semibold text-polar-900 animate-fadeUp text-start">
                 Welcome to Shift Square! 🎉
               </h1>
-              <p className="text-base text-gray-400 animate-fadeUp text-start">
+              <p className="text-base text-gray-400 animate-fadeUp text-start max-w-xl">
                 We are excited to have you on board. Let's get you started with
                 a few details.
               </p>
@@ -255,7 +255,7 @@ export default function Onboarding() {
                   swiperHandler("next");
                 }}
                 className={classNames(
-                  "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400 w-full"
+                  "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400 w-full max-w-xl justify-self-start"
                 )}
               >
                 Let's get started
@@ -269,18 +269,21 @@ export default function Onboarding() {
         {/* organization slide */}
         {!profile.organizationId && (
           <>
-            <SwiperSlide key="11" className="flex flex-col items-start justify-between ">
-              <div/>
-              <div className="space-y-10 flex flex-col px-16 w-full">
+            <SwiperSlide
+              key="11"
+              className="flex flex-col items-start justify-between "
+            >
+              <div />
+              <div className="space-y-10 flex flex-col px-16 w-full max-w-3xl">
                 <h1 className="text-3xl font-semibold text-polar-900 animate-fadeUp text-start">
                   Looks like you don't have an organization yet.
                 </h1>
-                <p className="text-base text-gray-500 animate-fadeUp text-start">
+                {/* <p className="text-base text-gray-500 animate-fadeUp text-start">
                   In order to use Shift Square, you need to be part of an
                   organization. If you don't have one, you can create one in the
                   next step.
-                </p>
-                <p className="text-base text-gray-500 animate-fadeUp text-start">
+                </p> */}
+                <p className="text-base text-gray-500 animate-fadeUp text-start pb-10">
                   If you would to create an organization, you have to be an
                   authorized person to do so.
                 </p>
@@ -295,13 +298,13 @@ export default function Onboarding() {
                     render={({ field }) => (
                       <Listbox
                         as="div"
-                        className="space-y-1"
+                        className="space-y-1 pb-10"
                         value={field.value}
                         onChange={field.onChange}
                       >
                         {() => (
                           <>
-                            <Listbox.Label className="block text-base font-medium text-gray-700 text-start pb-3">
+                            <Listbox.Label className="block text-base font-medium text-gray-700 text-start pb-4">
                               Please select your role in the organization
                             </Listbox.Label>
                             <div className="relative">
@@ -398,14 +401,14 @@ export default function Onboarding() {
                 Back
               </button>
             </SwiperSlide>
-            <SwiperSlide key="12" className="flex items-center justify-center ">
-              <div className="w-3/4 space-y-10 flex flex-col">
-                <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+            <SwiperSlide key="12" className="flex items-center justify-start ">
+              <div className="px-16 space-y-10 flex flex-col">
+                <h1 className="text-4xl font-bold text-gray-800 animate-fadeUp text-start">
                   Organization details
                 </h1>
-                <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+                <div className="text-start space-y-10 ">
                   <div>
-                    <p className="text-polar-500 animate-fadeUp">
+                    <p className="text-gray-500 animate-fadeUp text-start">
                       What is the name of your organization?
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
@@ -413,7 +416,7 @@ export default function Onboarding() {
                         type="text"
                         // style={inputStyles}
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
                           !organizationWatcher.name ||
                             organizationWatcher.name === "" ||
                             (errorsOrganization.name &&
@@ -431,7 +434,7 @@ export default function Onboarding() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-polar-500 animate-fadeUp">
+                    <p className="text-gray-500 animate-fadeUp">
                       Whats is the name of the location of your organization?
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
@@ -439,7 +442,7 @@ export default function Onboarding() {
                         type="text"
                         // style={inputStyles}
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
                           !organizationWatcher.location ||
                             organizationWatcher.location === "" ||
                             (errorsOrganization.location &&
@@ -457,14 +460,14 @@ export default function Onboarding() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-polar-500 animate-fadeUp">
+                    <p className="text-gray-500 animate-fadeUp">
                       When is the year end of your organization? We will use
                       this to calculate your holiday days.
                     </p>
                     <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
                       <select
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-20 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
                           !organizationWatcher.yearEnd ||
                             organizationWatcher.yearEnd === null ||
                             (errorsOrganization.yearEnd &&
@@ -498,7 +501,7 @@ export default function Onboarding() {
                     </div>
                   </div>
                   <div>
-                    <p className="text-polar-500 animate-fadeUp">
+                    <p className="text-gray-500 animate-fadeUp">
                       How many holiday days do employees are entitled to for a
                       year?
                     </p>
@@ -506,7 +509,7 @@ export default function Onboarding() {
                       <input
                         type="number"
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
                           !organizationWatcher.holidayAllowance ||
                             organizationWatcher.holidayAllowance === null ||
                             (errorsOrganization.holidayAllowance &&
@@ -542,80 +545,61 @@ export default function Onboarding() {
                 </div>
               </div>
             </SwiperSlide>
-            <SwiperSlide key="13" className="flex items-center justify-center ">
+            <SwiperSlide
+              key="13"
+              className="flex flex-col items-start justify-center "
+            >
               <div className="w-3/4 space-y-10 flex flex-col">
-                <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+                <h1 className="text-4xl font-bold text-gray-800 animate-fadeUp text-start px-16">
                   Confirm Organization details
                 </h1>
-                <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
-                  <div>
-                    <p className="text-polar-500 animate-fadeUp">
-                      Your organization name is{" "}
-                      <span className="font-bold">
+                <div className="mt-6 border-t border-gray-100 mx-16">
+                  <dl className="divide-y divide-gray-100">
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
+                        Organization Name
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {organizationWatcher.name}
-                      </span>
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-polar-500 animate-fadeUp">
-                      Your organization location is{" "}
-                      <span className="font-bold">
+                      </dd>
+                      </div>
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
+                        Location
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {organizationWatcher.location}
-                      </span>
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-polar-500 animate-fadeUp">
-                      Your organization year end is{" "}
-                      <span className="font-bold">
+                      </dd>
+                      </div>
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
+                        Year End
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {format(
-                          new Date(
-                            organizationWatcher.yearEnd
-                              ? organizationWatcher.yearEnd
-                              : 0
-                          ),
-                          "dd/MM/yyyy"
+                          new Date(organizationWatcher.yearEnd),
+                          "MMMM dd"
                         )}
-                      </span>
-                    </p>
-                  </div>
-                  <div>
-                    <p className="text-polar-500 animate-fadeUp">
-                      Your organization holiday allowance is{" "}
-                      <span className="font-bold">
+                      </dd>
+                      </div>
+                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                      <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
+                        Holiday Allowance
+                      </dt>
+                      <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {organizationWatcher.holidayAllowance}
-                      </span>
-                    </p>
-                  </div>
-                  <div className="flex w-full justify-between">
-                    <SwipePrevButton text="Back" />
-                    <button
-                      disabled={
-                        !organizationWatcher.name ||
-                        !organizationWatcher.yearEnd ||
-                        !organizationWatcher.holidayAllowance ||
-                        errorsOrganization.name ||
-                        errorsOrganization.yearEnd ||
-                        errorsOrganization.holidayAllowance
-                          ? true
-                          : false
-                      }
-                      className={classNames(
-                        "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400",
-                        !organizationWatcher.name ||
-                          !organizationWatcher.yearEnd ||
-                          !organizationWatcher.holidayAllowance ||
-                          errorsOrganization.name ||
-                          errorsOrganization.yearEnd ||
-                          errorsOrganization.holidayAllowance
-                          ? "opacity-50 cursor-not-allowed"
-                          : ""
-                      )}
-                      onClick={handleSubmitOrganization(submitOrganization)}
-                    >
-                      Next
-                    </button>
-                  </div>
+                      </dd>
+                      </div>
+                    <div className="flex w-full justify-between pt-10">
+                      <SwipePrevButton text="Back" />
+                      <button
+                        onClick={handleSubmitOrganization(submitOrganization)}
+                        className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </dl>
                 </div>
               </div>
             </SwiperSlide>
