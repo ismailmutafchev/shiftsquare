@@ -210,6 +210,9 @@ export default function Onboarding() {
     );
   };
 
+  const dontHaveOrganizationPages = [0, 2, 4];
+  const haveOrganizationPages = [0, 1];
+
   return (
     <div className="flex relative">
       <div className="flex items-center space-x-2 absolute top-10 left-10 z-10">
@@ -229,9 +232,14 @@ export default function Onboarding() {
         allowSlideNext={allowSwipeNext}
         onPaginationUpdate={(swiper) => {
           if (
-            swiper.activeIndex === 0 ||
-            swiper.activeIndex === 2 ||
-            swiper.activeIndex === 4
+            profile &&
+            profile.organizationId &&
+            haveOrganizationPages.includes(swiper.activeIndex)
+          ) {
+            setAllowSwipeNext(true);
+          } else if (
+            !profile.organizationId &&
+            dontHaveOrganizationPages.includes(swiper.activeIndex)
           ) {
             setAllowSwipeNext(true);
           } else {
@@ -682,29 +690,39 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
         {/* confirmation slide */}
-        <SwiperSlide className="flex items-center justify-center">
+        <SwiperSlide className="flex flex-col items-start justify-center ">
           <div className="w-3/4 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
-              Confirm your details
+            <h1 className="text-4xl font-bold text-gray-800 animate-fadeUp text-start px-16">
+              Confirm Organization details
             </h1>
-            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
-              <div>
-                <p className="text-polar-500 animate-fadeUp">
-                  Your name is{" "}
-                  <span className="font-bold">
-                    {watcher.firstName} {watcher.lastName}
-                  </span>
-                </p>
-              </div>
-            </div>
-            <div className="flex w-full justify-between">
-              <SwipePrevButton text="Back" />
-              <button
-                onClick={handleSubmit(submit)}
-                className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
-              >
-                Confirm
-              </button>
+            <div className="mt-6 border-t border-gray-100 mx-16">
+              <dl className="divide-y divide-gray-100">
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
+                    First Name
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
+                    {watcher.firstName}
+                  </dd>
+                </div>
+                <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
+                    Last Name
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
+                    {watcher.lastName}
+                  </dd>
+                </div>
+                <div className="flex w-full justify-between pt-10">
+                  <SwipePrevButton text="Back" />
+                  <button
+                    onClick={handleSubmit(submit)}
+                    className="font-semibold text-center  text-white p-2 rounded-lg bg-polar-400"
+                  >
+                    Confirm
+                  </button>
+                </div>
+              </dl>
             </div>
           </div>
         </SwiperSlide>
