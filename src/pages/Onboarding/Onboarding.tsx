@@ -562,34 +562,35 @@ export default function Onboarding() {
                       <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {organizationWatcher.name}
                       </dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
                         Location
                       </dt>
                       <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {organizationWatcher.location}
                       </dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
                         Year End
                       </dt>
                       <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
-                        {format(
-                          new Date(organizationWatcher.yearEnd),
-                          "MMMM dd"
-                        )}
+                        {organizationWatcher.yearEnd &&
+                          format(
+                            new Date(organizationWatcher.yearEnd),
+                            "MMMM dd, yyyy"
+                          )}
                       </dd>
-                      </div>
-                      <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    </div>
+                    <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                       <dt className="text-sm font-medium leading-6 text-gray-900 text-start">
                         Holiday Allowance
                       </dt>
                       <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0 text-start">
                         {organizationWatcher.holidayAllowance}
                       </dd>
-                      </div>
+                    </div>
                     <div className="flex w-full justify-between pt-10">
                       <SwipePrevButton text="Back" />
                       <button
@@ -606,14 +607,14 @@ export default function Onboarding() {
           </>
         )}
         {/* names slide */}
-        <SwiperSlide className="flex items-center justify-center">
-          <div className="w-3/4 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-polar-800 animate-fadeUp">
+        <SwiperSlide className="flex items-center justify-start">
+          <div className="space-y-10 flex flex-col px-16 w-full max-w-3xl">
+            <h1 className="text-4xl font-bold text-gray-800 animate-fadeUp text-start">
               Let's start with your name
             </h1>
-            <div className="shadow-light rounded-xl p-3 md:p-10 text-start space-y-10 ">
+            <div className="text-start space-y-10 ">
               <div>
-                <p className="text-polar-500 animate-fadeUp">
+                <p className="text-gray-500 animate-fadeUp">
                   What is your first name?
                 </p>
                 <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
@@ -621,7 +622,7 @@ export default function Onboarding() {
                     type="text"
                     // style={inputStyles}
                     className={classNames(
-                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
                       !watcher.firstName ||
                         watcher.firstName === "" ||
                         (errors.firstName &&
@@ -639,7 +640,7 @@ export default function Onboarding() {
                 </div>
               </div>
               <div>
-                <p className="text-polar-500 animate-fadeUp">
+                <p className="text-gray-500 animate-fadeUp text-start">
                   What is your last name?
                 </p>
                 <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
@@ -647,7 +648,7 @@ export default function Onboarding() {
                     type="text"
                     // style={inputStyles}
                     className={classNames(
-                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-sm focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ",
+                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
                       !watcher.lastName ||
                         watcher.lastName === "" ||
                         (errors.lastName &&
