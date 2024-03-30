@@ -124,9 +124,9 @@ export default function DayView({
     setShowCopyModal(state);
   }
 
-  const downloadPdf = () => {
+  const openPdf = () => {
     const capture = document.querySelector(".rota-print");
-    const doc = new jsPDF("portrait", "px", [2480, 3508], true);
+    const doc = new jsPDF("portrait", "px", [2480, 3510], true);
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
         // doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
@@ -154,7 +154,7 @@ export default function DayView({
         <div className="flex items-center space-x-2">
           <button
             className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
-            onClick={downloadPdf}
+            onClick={openPdf}
           >
             <p>
               Print <span className="text-red-500 text-xs">PDF</span>
