@@ -369,7 +369,7 @@ export default function DayView({
                 {/* Events */}
                 {data && data.shift.length !== 0 ? (
                   <ol
-                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
+                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full pt-12"
                     style={{
                       gridTemplateColumns:
                         "0 repeat(288, minmax(0.3rem, 1fr)) auto",
@@ -383,16 +383,20 @@ export default function DayView({
                     {data?.shift.map((shift: any) => {
                       const startTimeStr = shift.start;
                       const finishTimeStr = shift.end;
+                      const shiftStartToday = new Date(startTimeStr) > startOfDay(selectedDay);
+                      const shiftEndToday = new Date(finishTimeStr) < endOfDay(selectedDay);
+
+                      console.log(startTimeStr,shiftStartToday, '|||||||' ,finishTimeStr,shiftEndToday, '|||' ,startOfDay(selectedDay));
 
                       let startHour = getHours(new Date(startTimeStr)) * 12;
                       let startMinute = getMinutes(new Date(startTimeStr)) / 5;
 
-                      const startNumber = startHour + startMinute + 2;
+                      const startNumber = shiftStartToday ?  startHour + startMinute + 2 : 2;
 
                       let endHour = getHours(new Date(finishTimeStr)) * 12;
                       let endMinute = getMinutes(new Date(finishTimeStr)) / 5;
 
-                      const endNumber = endHour + endMinute + 2 - startNumber;
+                      const endNumber = shiftEndToday ? endHour + endMinute + 2 - startNumber : 288 - startNumber;
                       return (
                         <Popover
                           key={shift.id}
