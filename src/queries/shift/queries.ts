@@ -21,6 +21,27 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
 },
 `;
 
+export const getShiftsToPrint = gql` query($start: timestamptz!, $end: timestamptz!) {
+  shift(where: {start: {_gte: $start}, _and: {start: {_lte: $end}}}, order_by: {positionId: asc}) {
+      id
+      start
+      end
+      positionId
+      employeeId
+      length
+      employee {
+          firstName
+          payDetails
+      }
+      position {
+        id
+          bgColor
+          name
+      }
+}
+},
+`;
+
 export const getWorkingHours = gql`
   query ($start: timestamptz!, $end: timestamptz!) {
     shift_aggregate(where: { start: { _gte: $start }, end: { _lte: $end } }) {

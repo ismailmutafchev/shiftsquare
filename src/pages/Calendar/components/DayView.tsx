@@ -129,7 +129,12 @@ export default function DayView({
     const doc = new jsPDF("portrait", "px", [2480, 3508], true);
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
-        doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+        // doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+         // Get the blob URL of the PDF content
+         const blob = doc.output("bloburl");
+
+         // Open the blob URL in a new tab
+         window.open(blob, "_blank");
       },
     });
   };
@@ -386,8 +391,6 @@ export default function DayView({
                       const shiftStartToday = new Date(startTimeStr) > startOfDay(selectedDay);
                       const shiftEndToday = new Date(finishTimeStr) < endOfDay(selectedDay);
 
-                      console.log(startTimeStr,shiftStartToday, '|||||||' ,finishTimeStr,shiftEndToday, '|||' ,startOfDay(selectedDay));
-
                       let startHour = getHours(new Date(startTimeStr)) * 12;
                       let startMinute = getMinutes(new Date(startTimeStr)) / 5;
 
@@ -414,6 +417,8 @@ export default function DayView({
                                   border:
                                     `1px solid ${shift.position.bgColor}` +
                                     "50",
+                                  borderRadius: shiftEndToday && shiftStartToday ? "0.5rem" : shiftStartToday ? "0.5rem 0 0 0.5rem" : "0 0.5rem 0.5rem 0",
+                                  
                                 }}
                                 className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >

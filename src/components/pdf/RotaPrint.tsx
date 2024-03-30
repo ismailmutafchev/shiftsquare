@@ -7,7 +7,7 @@ import {
   startOfWeek,
 } from "date-fns";
 import { useQuery } from "@apollo/client";
-import { getShifts } from "../../queries/shift/queries";
+import { getShiftsToPrint } from "../../queries/shift/queries";
 import logo from "./logo.png";
 import { useSession } from "../../hooks/session";
 
@@ -24,49 +24,49 @@ export const RotaPrint = ({ date }: { date: any }) => {
     end: new Date(endOfWeek(date, { weekStartsOn: 1 })),
   });
 
-  const { data: mondayShifts } = useQuery(getShifts, {
+  const { data: mondayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[0]),
       end: endOfDay(thisWeekDays[0]),
     },
   });
 
-  const { data: tuesdayShifts } = useQuery(getShifts, {
+  const { data: tuesdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[1]),
       end: endOfDay(thisWeekDays[1]),
     },
   });
 
-  const { data: wednesdayShifts } = useQuery(getShifts, {
+  const { data: wednesdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[2]),
       end: endOfDay(thisWeekDays[2]),
     },
   });
 
-  const { data: thursdayShifts } = useQuery(getShifts, {
+  const { data: thursdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[3]),
       end: endOfDay(thisWeekDays[3]),
     },
   });
 
-  const { data: fridayShifts } = useQuery(getShifts, {
+  const { data: fridayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[4]),
       end: endOfDay(thisWeekDays[4]),
     },
   });
 
-  const { data: saturdayShifts } = useQuery(getShifts, {
+  const { data: saturdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[5]),
       end: endOfDay(thisWeekDays[5]),
     },
   });
 
-  const { data: sundayShifts } = useQuery(getShifts, {
+  const { data: sundayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[6]),
       end: endOfDay(thisWeekDays[6]),
