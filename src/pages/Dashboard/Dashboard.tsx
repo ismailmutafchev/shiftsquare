@@ -154,7 +154,7 @@ export default function Dashboard() {
     totalShifts.shift
       .map((shift: any) => {
         return {
-          total: shift?.employee?.payRate * shift?.length,
+          total: Number(shift?.employee?.payDetails?.payRate) * shift?.length,
           name: shift?.employee?.firstName,
         };
       })
@@ -437,8 +437,8 @@ export default function Dashboard() {
                 <div className={`${block.iconColor} p-2 rounded-md`}>
                   {block.icon}
                 </div>
-                <p className="text-black font-bold text-4xl">{block.value} </p>
-                <p className="text-black font-normal text-xl">{block.title}</p>
+                <p className="text-black font-bold text-2xl">{block.value} </p>
+                <p className="text-black font-normal text-lg">{block.title}</p>
                 <p className="text-blue-500 font-normal text-sm">
                   {block.additionalInfo}
                 </p>
@@ -446,8 +446,8 @@ export default function Dashboard() {
             );
           })}
           <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-2xl bg-gradient-to-r from-orange-50 to-yellow-100 shadow-lg">
-            <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
-              <h1 className="text-2xl font-bold text-polar-700/80">
+            <div className="flex flex-col space-y-10 px-5 pt-3 h-full overflow-x-scroll">
+              <h1 className="text-xl font-semibold text-gray-900">
                 Hours by Employee
               </h1>
               <div className="flex items-start no-scrollbar flex-col">
@@ -470,14 +470,14 @@ export default function Dashboard() {
                           }}
                         ></div>
                         <p
-                          className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                          className={`text-base text-gray-700 transition duration-100`}
                         >
                           {shift?.employee?.firstName}{" "}
                           {shift?.employee?.lastName}
                         </p>
                       </div>
                       <p
-                        className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                        className={`text-base text-gray-700 transition duration-100`}
                       >
                         {shift?.employee?.shift_aggregate.aggregate.sum.length}
                       </p>
@@ -523,8 +523,8 @@ export default function Dashboard() {
             </div>
           </div>
           <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-2xl bg-gradient-to-r from-pink-50 to-indigo-100 overflow-scroll shadow-lg">
-            <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
-              <h1 className="text-2xl font-bold text-polar-700/80">
+            <div className="flex flex-col space-y-10 px-5 pt-3 h-full overflow-x-scroll">
+              <h1 className="text-xl font-semibold text-gray-900">
                 Hours by Position
               </h1>
               {(hoursByPosition && hoursByPosition.shift && (
@@ -552,13 +552,13 @@ export default function Dashboard() {
                             }}
                           ></div>
                           <p
-                            className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                            className={` text-gray-700 transition duration-100`}
                           >
                             {shift?.position?.name}
                           </p>
                         </div>
                         <p
-                          className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                          className={` text-gray-700 transition duration-100`}
                         >
                           {
                             shift?.position?.shift_aggregate?.aggregate?.sum
