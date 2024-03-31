@@ -36,7 +36,6 @@ export function AddUser({ data }: any) {
         payRate: data?.data?.payDetails?.payRate || "",
         per: data?.data?.payDetails?.per || "",
       },
-      positions: data?.data?.positions || [],
     },
   });
 
@@ -48,14 +47,12 @@ export function AddUser({ data }: any) {
 
   function submit(data: any) {
     if (update) {
+      console.log('update true');
       updateUser({
         variables: {
           id: id,
           object: {
-            ...data,
-            positions: {
-              data: data.positions.map((pos: any) => ({ positionId: pos })),
-            },
+            ...data
           },
         },
         refetchQueries: [{ query: getEmployees }],

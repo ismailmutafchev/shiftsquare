@@ -124,12 +124,17 @@ export default function DayView({
     setShowCopyModal(state);
   }
 
-  const downloadPdf = () => {
+  const openPdf = () => {
     const capture = document.querySelector(".rota-print");
-    const doc = new jsPDF("portrait", "px", [2480, 3508], true);
+    const doc = new jsPDF("portrait", "px", [2480, 3510], true);
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
-        doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+        // doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+         // Get the blob URL of the PDF content
+         const blob = doc.output("bloburl");
+
+         // Open the blob URL in a new tab
+         window.open(blob, "_blank");
       },
     });
   };
@@ -149,7 +154,7 @@ export default function DayView({
         <div className="flex items-center space-x-2">
           <button
             className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
-            onClick={downloadPdf}
+            onClick={openPdf}
           >
             <p>
               Print <span className="text-red-500 text-xs">PDF</span>
@@ -369,7 +374,7 @@ export default function DayView({
                 {/* Events */}
                 {data && data.shift.length !== 0 ? (
                   <ol
-                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
+                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full pt-12"
                     style={{
                       gridTemplateColumns:
                         "0 repeat(288, minmax(0.3rem, 1fr)) auto",
@@ -383,16 +388,18 @@ export default function DayView({
                     {data?.shift.map((shift: any) => {
                       const startTimeStr = shift.start;
                       const finishTimeStr = shift.end;
+                      const shiftStartToday = new Date(startTimeStr) > startOfDay(selectedDay);
+                      const shiftEndToday = new Date(finishTimeStr) < endOfDay(selectedDay);
 
                       let startHour = getHours(new Date(startTimeStr)) * 12;
                       let startMinute = getMinutes(new Date(startTimeStr)) / 5;
 
-                      const startNumber = startHour + startMinute + 2;
+                      const startNumber = shiftStartToday ?  startHour + startMinute + 2 : 2;
 
                       let endHour = getHours(new Date(finishTimeStr)) * 12;
                       let endMinute = getMinutes(new Date(finishTimeStr)) / 5;
 
-                      const endNumber = endHour + endMinute + 2 - startNumber;
+                      const endNumber = shiftEndToday ? endHour + endMinute + 2 - startNumber : 288 - startNumber;
                       return (
                         <Popover
                           key={shift.id}
@@ -410,6 +417,8 @@ export default function DayView({
                                   border:
                                     `1px solid ${shift.position.bgColor}` +
                                     "50",
+                                  borderRadius: shiftEndToday && shiftStartToday ? "0.5rem" : shiftStartToday ? "0.5rem 0 0 0.5rem" : "0 0.5rem 0.5rem 0",
+                                  
                                 }}
                                 className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >

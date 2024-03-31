@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
-    shift(where: {start: {_gte: $start}, end: {_lte: $end}}, order_by:{positionId: asc}) {
+    shift(where: {start: {_lte: $end}, end: {_gte: $start}}, order_by:{positionId: asc}) {
         id
         start
         end
@@ -17,6 +17,27 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
             bgColor
             name
         }
+}
+},
+`;
+
+export const getShiftsToPrint = gql` query($start: timestamptz!, $end: timestamptz!) {
+  shift(where: {start: {_gte: $start}, _and: {start: {_lte: $end}}}, order_by: {positionId: asc}) {
+      id
+      start
+      end
+      positionId
+      employeeId
+      length
+      employee {
+          firstName
+          payDetails
+      }
+      position {
+        id
+          bgColor
+          name
+      }
 }
 },
 `;
