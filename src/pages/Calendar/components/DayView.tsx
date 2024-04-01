@@ -303,7 +303,7 @@ export default function DayView({
         <div className=" overflow-y-scroll overflow-scroll bg-white flex items-center justify-center ">
           <div
             ref={container}
-            className="flex flex-auto flex-col overflow-auto"
+            className="flex flex-auto flex-col overflow-clip"
           >
             <div
               ref={containerNav}
@@ -328,7 +328,7 @@ export default function DayView({
                         ? "bg-white"
                         : "bg-gray-50",
                       (isToday(day) || isSelected) && "font-semibold",
-                      isSelected && "font-semibold text-polar-600",
+                      isSelected && "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
                       !isSelected &&
                         isSameMonth(day, selectedMonth) &&
                         !isToday(day) &&
@@ -352,7 +352,7 @@ export default function DayView({
                 );
               })}
             </div>
-            <div className="flex w-full flex-auto h-full items-center justify-center">
+            <div className="flex w-full flex-auto h-full items-center justify-center overflow-scroll">
               <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
                 <div
