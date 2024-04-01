@@ -3,6 +3,7 @@ import React from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
+  Battery50Icon,
   BellIcon,
   CalendarDaysIcon,
   CheckBadgeIcon,
@@ -10,6 +11,7 @@ import {
   Cog6ToothIcon,
   MagnifyingGlassIcon,
   Square3Stack3DIcon,
+  Squares2X2Icon,
   SquaresPlusIcon,
   UsersIcon,
   XMarkIcon,
@@ -50,8 +52,11 @@ export default function Navigation({
   children: React.JSX.Element;
 }) {
   const [openSearch, setOpenSearch] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [wideSidebarOpen, setWideSidebarOpen] = useState(false);
+
   const { pathname } = useLocation();
-  const { profile } = useSession();
+  const { profile, permissions } = useSession();
 
   const openSearchHandler = () => {
     setOpenSearch(true);
@@ -61,48 +66,69 @@ export default function Navigation({
     setOpenSearch(false);
   };
 
-  const navigation = [
-    {
-      name: "Dashboard",
-      href: "/dashboard",
-      current: pathname === "/dashboard",
-      icon: Cog6ToothIcon,
-    },
-    {
-      name: "Calendar",
-      href: "/calendar",
-      current: pathname === "/calendar",
-      icon: CalendarDaysIcon,
-    },
-    {
-      name: "Employees",
-      href: "/employees",
-      current: pathname === "/employees",
-      icon: UsersIcon,
-    },
-    {
-      name: "Positions",
-      href: "/positions",
-      current: pathname === "/positions",
-      icon: Square3Stack3DIcon,
-    },
-    {
-      name: "Templates",
-      href: "/templates",
-      current: pathname === "/templates",
-      icon: SquaresPlusIcon,
-    },
-    {
-      name: "Availability",
-      href: "/availability",
-      current: pathname === "/availability",
-      icon: CheckBadgeIcon,
-    },
-  ];
+  let navigation: { name: string; href: string; current: boolean; icon: any }[] = [];
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
-  const [wideSidebarOpen, setWideSidebarOpen] = useState(false);
+  if (permissions && permissions["x-hasura-allowed-roles"]?.includes("admin") || permissions["x-hasura-allowed-roles"].includes("manager") || permissions["x-hasura-allowed-roles"].includes("supervisor")) {
+    navigation = [
+      {
+        name: "Dashboard",
+        href: "/dashboard",
+        current: pathname === "/dashboard",
+        icon: Cog6ToothIcon,
+      },
+      {
+        name: "Calendar",
+        href: "/calendar",
+        current: pathname === "/calendar",
+        icon: CalendarDaysIcon,
+      },
+      {
+        name: "Employees",
+        href: "/employees",
+        current: pathname === "/employees",
+        icon: UsersIcon,
+      },
+      {
+        name: "Positions",
+        href: "/positions",
+        current: pathname === "/positions",
+        icon: Square3Stack3DIcon,
+      },
+      {
+        name: "Templates",
+        href: "/templates",
+        current: pathname === "/templates",
+        icon: SquaresPlusIcon,
+      },
+      {
+        name: "Availability",
+        href: "/availability",
+        current: pathname === "/availability",
+        icon: CheckBadgeIcon,
+      },
+    ];
+  } else if (permissions && permissions["x-hasura-allowed-roles"]?.includes("employee")) {
+    navigation = [
+      {
+        name: "Calendar",
+        href: "/calendar",
+        current: pathname === "/calendar",
+        icon: CalendarDaysIcon,
+      },
+      {
+        name: "Time Off",
+        href: "/time-off",
+        current: pathname === "/time-off",
+        icon: Battery50Icon,
+      },
+      {
+        name: "My Shifts",
+        href: "/shifts",
+        current: pathname === "/shifts",
+        icon: Squares2X2Icon,
+      },
+    ];
+  }
 
   const wideUpSidebarHandler = () => {
     setWideSidebarOpen(true);
