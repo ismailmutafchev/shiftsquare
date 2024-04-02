@@ -3,6 +3,7 @@ import App from "./App.tsx";
 import "./index.css";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AuthorizedApolloProvider from "./providers/AuthorizedApoloProvider.tsx";
+import { SessionProvider } from "./providers/SessionProvider.tsx";
 
 const profileJSON = localStorage.getItem("profile");
 
@@ -23,7 +24,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     }}
   >
     <AuthorizedApolloProvider>
+      <SessionProvider>
       <App />
+      </SessionProvider>
     </AuthorizedApolloProvider>
   </Auth0Provider>
 );

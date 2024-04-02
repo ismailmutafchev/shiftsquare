@@ -45,6 +45,7 @@ import AddShift from "../components/ShiftModal";
 import { CopyWeekModal } from "../components/CopyWeekModal";
 import { useCalendar } from "../../../hooks/calendar";
 import { useToast } from "../../../hooks/toast";
+import { useSession } from "../../../hooks/session";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -73,6 +74,9 @@ export default function DayView({
   const toast = useToast(4000);
 
   const { data, loading, error: dataError } = useCalendar();
+  const {permissions} = useSession();
+
+  const allowedToEdit = permissions["x-hasura-allowed-roles"].includes("admin") || permissions["x-hasura-allowed-roles"].includes("manager");
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -141,7 +145,10 @@ export default function DayView({
 
   return (
     <div className="flex flex-col">
-      <RotaPrint date={selectedDay} />
+      {
+      
+      allowedToEdit && <RotaPrint date={selectedDay} />
+      }
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
           <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
