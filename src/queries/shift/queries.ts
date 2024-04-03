@@ -54,6 +54,32 @@ export const getWorkingHours = gql`
   }
 `;
 
+
+export const getShiftsByEmployee = gql`
+  query ($start: timestamptz!, $end: timestamptz!, $employeeId: uuid!) {
+    shift(
+      where: { start: { _gte: $start }, end: { _lte: $end }, employeeId: { _eq: $employeeId } }
+      order_by: { start: asc }
+    ) {
+      id
+      start
+      end
+      positionId
+      employeeId
+      length
+      employee {
+        firstName
+        payDetails
+      }
+      position {
+        id
+        bgColor
+        name
+      }
+    }
+  }
+`;
+
 export const getHoursByPosition = gql`
   query ($start: timestamptz!, $end: timestamptz!) {
     shift(
