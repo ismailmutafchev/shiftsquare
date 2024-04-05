@@ -23,7 +23,7 @@ export default function Shifts() {
   console.log(shifts, 'xsxs');
 
   return (
-    <div>
+    <div className='px-4 sm:px-6 lg:px-8'>
       <h2 className="text-sm font-medium text-gray-500">Pinned Projects</h2>
       <ul
         role="list"
@@ -37,9 +37,9 @@ export default function Shifts() {
             >
               <div
                 className={classNames(
-                  "bg-[" + shift.position.bgColor + "]",
                   "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white"
                 )}
+                style={{ backgroundColor: shift.position.bgColor }}
               >
                 {shift.position.name.slice(0, 2).toUpperCase()}
               </div>

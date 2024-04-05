@@ -76,7 +76,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
         permissions: permissions,
     };
     
-    console.log(userLoading, "session");
   return (
     <SessionContext.Provider value={{ session}}>
       {children}
