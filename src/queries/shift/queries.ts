@@ -14,8 +14,8 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
         }
         position {
           id
-            bgColor
-            name
+          bgColor
+          name
         }
 }
 },
@@ -35,8 +35,8 @@ export const getShiftsToPrint = gql` query($start: timestamptz!, $end: timestamp
       }
       position {
         id
-          bgColor
-          name
+        bgColor
+        name
       }
 }
 },
