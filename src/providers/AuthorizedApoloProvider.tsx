@@ -16,7 +16,6 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
         const authLink = setContext(async () => {
             if (isAuthenticated) {
                 const token = await getAccessTokenSilently();
-                console.log(token);
                 return {
                     headers: {
                         Authorization: `Bearer ${token}`
