@@ -144,7 +144,6 @@ export const RotaPrint = ({ date }: { date: any }) => {
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
                       {positions?.map((position: any) => {
-                        console.log(position?.bgColor);
                         return (
                         <tr
                           key={position.id}
