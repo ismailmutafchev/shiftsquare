@@ -12,11 +12,7 @@ import {
   updateTemplateById,
 } from "../../queries/templates/mutations";
 import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
-import {
-  Menu,
-  Popover,
-  Transition,
-} from "@headlessui/react";
+import { Menu, Popover, Transition } from "@headlessui/react";
 import {
   eachMinuteOfInterval,
   endOfDay,
@@ -69,7 +65,7 @@ type TemplateUpdate = {
       day: Section[];
     }[];
   } | null;
-  };
+};
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -118,7 +114,7 @@ export default function Templates() {
   function builderHandler(state: boolean) {
     setShowBuilder(state);
   }
-  
+
   const { loading, error, data } = useQuery(getTemplates);
   const [deleteTemplate] = useMutation(deleteTemplateById, {
     refetchQueries: [{ query: getTemplates }],
@@ -130,7 +126,7 @@ export default function Templates() {
       variables: { id: update?.data?.id, shifts: data },
       refetchQueries: [{ query: getTemplates }],
     });
-  }
+  };
 
   if (loading) return <LoadingAnimation />;
   if (error) return <p>Error :(</p>;
@@ -254,9 +250,7 @@ export default function Templates() {
                                     ></div>
                                     {timeSlots.map((timeSlot, idx) => (
                                       <div key={timeSlot.toString() + idx}>
-                                        <p
-                                          className="sticky w-10 items-center justify-center bg-white border flex text-[10px] leading-5 text-gray-400"
-                                        >
+                                        <p className="sticky w-10 items-center justify-center bg-white border flex text-[10px] leading-5 text-gray-400">
                                           {format(timeSlot, "H:mm")}
                                         </p>
                                       </div>
@@ -351,6 +345,7 @@ export default function Templates() {
                                     <div className="bg-polar-50 rounded-lg p-10 border shadow-lg w-1/4 absolute left-[35vw] min-w-[250px] top-1/4 ">
                                       <EmptyState
                                         title="Shift"
+                                        showCreate={true}
                                         handler={() =>
                                           day.append({
                                             position: "",
@@ -389,7 +384,10 @@ export default function Templates() {
                     className="overflow-hidden rounded-xl border border-gray-200 m-"
                   >
                     <div className="flex items-center gap-x-4 border-b border-gray-900/5 bg-gray-50 p-6">
-                     <Avatar firstName={template.name} className="w-7 bg-purple-300" />
+                      <Avatar
+                        firstName={template.name}
+                        className="w-7 bg-purple-300"
+                      />
                       <div className="text-sm font-medium leading-6 text-gray-900">
                         {template.name}
                       </div>
@@ -458,7 +456,11 @@ export default function Templates() {
                         <dt className="text-gray-500">Created At</dt>
                         <dd className="text-gray-700">
                           <time dateTime={template.createdAt}>
-                            {format(new Date(template.createdAt), 'dd MMM yyyy')} at {format(new Date(template.createdAt), 'HH:mm')}
+                            {format(
+                              new Date(template.createdAt),
+                              "dd MMM yyyy"
+                            )}{" "}
+                            at {format(new Date(template.createdAt), "HH:mm")}
                           </time>
                         </dd>
                       </div>
@@ -466,16 +468,18 @@ export default function Templates() {
                         <dt className="text-gray-500">Last Updated At</dt>
                         <dd className="text-gray-700">
                           <time dateTime={template.createdAt}>
-                            {format(new Date(template.updatedAt), 'dd MMM yyyy')} at {format(new Date(template.updatedAt), 'HH:mm')}
+                            {format(
+                              new Date(template.updatedAt),
+                              "dd MMM yyyy"
+                            )}{" "}
+                            at {format(new Date(template.updatedAt), "HH:mm")}
                           </time>
                         </dd>
                       </div>
                       <div className="flex justify-between gap-x-4 py-3">
                         <dt className="text-gray-500">Budgeted Hours</dt>
                         <dd className="text-gray-700">
-                          <p>
-                            {template.hours}
-                          </p>
+                          <p>{template.hours}</p>
                         </dd>
                       </div>
                     </dl>
@@ -484,6 +488,7 @@ export default function Templates() {
               </ul>
             ) : (
               <EmptyState
+                showCreate={true}
                 title={"Template"}
                 handler={() => {
                   setShowTemplateModal(true);

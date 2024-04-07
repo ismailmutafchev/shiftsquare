@@ -68,7 +68,7 @@ export default function Navigation({
 
   let navigation: { name: string; href: string; current: boolean; icon: any }[] = [];
 
-  if (permissions && permissions["x-hasura-allowed-roles"]?.includes("admin") || permissions["x-hasura-allowed-roles"].includes("manager") || permissions["x-hasura-allowed-roles"].includes("supervisor")) {
+  if (permissions && permissions?.includes("admin") || permissions.includes("manager") || permissions.includes("supervisor")) {
     navigation = [
       {
         name: "Dashboard",
@@ -107,7 +107,7 @@ export default function Navigation({
         icon: CheckBadgeIcon,
       },
     ];
-  } else if (permissions && permissions["x-hasura-allowed-roles"]?.includes("employee")) {
+  } else if (permissions && permissions?.includes("employee")) {
     navigation = [
       {
         name: "Calendar",

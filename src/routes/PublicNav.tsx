@@ -31,7 +31,7 @@ export default function PublicNavigation() {
     {
       name: "Home",
       href: "/",
-      current: pathname === "/dashboard",
+      current: pathname === "/calendar",
       icon: Cog6ToothIcon,
     },
     { name: "About", href: "/about", current: pathname === "/about" },
@@ -43,16 +43,16 @@ export default function PublicNavigation() {
   );
   const { isAuthenticated, user } = useAuth0();
 
-  const showDashboard = !navigation.some((item) => item.name === "Dashboard");
+  const showDashboard = !navigation.some((item) => item.name === "Calendar");
 
   useEffect(() => {
     if (isAuthenticated && showDashboard) {
       setNavigation([
         ...navigation,
         {
-          name: "Dashboard",
-          href: "/dashboard",
-          current: pathname === "/dashboard",
+          name: "Calendar",
+          href: "/calendar",
+          current: pathname === "/calendar",
         },
       ]);
     } else {
