@@ -74,9 +74,11 @@ export default function DayView({
   const toast = useToast(4000);
 
   const { data, loading, error: dataError } = useCalendar();
-  const {permissions} = useSession();
+  const { permissions } = useSession();
 
-  const allowedToEdit = permissions["x-hasura-allowed-roles"].includes("admin") || permissions["x-hasura-allowed-roles"].includes("manager");
+  const allowedToEdit =
+    permissions["x-hasura-allowed-roles"].includes("admin") ||
+    permissions["x-hasura-allowed-roles"].includes("manager");
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -98,7 +100,7 @@ export default function DayView({
     ],
     onCompleted: () => {
       toast("success", "Shift deleted successfully");
-    }
+    },
   });
 
   const { isLoading, error } = useAuth0();
@@ -134,21 +136,18 @@ export default function DayView({
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
         // doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
-         // Get the blob URL of the PDF content
-         const blob = doc.output("bloburl");
+        // Get the blob URL of the PDF content
+        const blob = doc.output("bloburl");
 
-         // Open the blob URL in a new tab
-         window.open(blob, "_blank");
+        // Open the blob URL in a new tab
+        window.open(blob, "_blank");
       },
     });
   };
 
   return (
     <div className="flex flex-col">
-      {
-      
-      allowedToEdit && <RotaPrint date={selectedDay} />
-      }
+      {allowedToEdit && <RotaPrint date={selectedDay} />}
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
           <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
@@ -160,7 +159,9 @@ export default function DayView({
         </div>
         <div className="flex items-center space-x-2">
           <button
-            className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
+            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+              allowedToEdit ? "" : "hidden"
+            }`}
             onClick={openPdf}
           >
             <p>
@@ -169,7 +170,9 @@ export default function DayView({
             <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
-            className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
+            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+              allowedToEdit ? "" : "hidden"
+            }`}
             onClick={() => {
               setShowCopyModal(true);
             }}
@@ -180,6 +183,21 @@ export default function DayView({
               aria-hidden="true"
             />
           </button>
+          <div className="hidden md:ml-4 md:flex md:items-center">
+            <div className="ml-6 h-6 w-px bg-gray-300" />
+            <button
+              onClick={() => {
+                setShowModal(true), setUpdate({ isUpdate: false, data: {} });
+              }}
+              type="button"
+              className={`inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90 ${
+                allowedToEdit ? "" : "hidden"
+              }`}
+            >
+              <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+              Add Shift
+            </button>
+          </div>
           <div className="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
             <div
               className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-inset ring-gray-300"
@@ -237,19 +255,7 @@ export default function DayView({
               See Today
             </button>
           </div>
-          <div className="hidden md:ml-4 md:flex md:items-center">
-            <div className="ml-6 h-6 w-px bg-gray-300" />
-            <button
-              onClick={() => {
-                setShowModal(true), setUpdate({ isUpdate: false, data: {} });
-              }}
-              type="button"
-              className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
-            >
-              <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-              Add Shift
-            </button>
-          </div>
+
           <div className="hidden md:ml-4 md:flex md:items-center ">
             <div className="top-16 w-56 text-right z-10">
               <Menu as="div" className="relative inline-block text-left">
@@ -335,7 +341,8 @@ export default function DayView({
                         ? "bg-white"
                         : "bg-gray-50",
                       (isToday(day) || isSelected) && "font-semibold",
-                      isSelected && "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
+                      isSelected &&
+                        "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
                       !isSelected &&
                         isSameMonth(day, selectedMonth) &&
                         !isToday(day) &&
@@ -395,18 +402,24 @@ export default function DayView({
                     {data?.shift.map((shift: any) => {
                       const startTimeStr = shift.start;
                       const finishTimeStr = shift.end;
-                      const shiftStartToday = new Date(startTimeStr) > startOfDay(selectedDay);
-                      const shiftEndToday = new Date(finishTimeStr) < endOfDay(selectedDay);
+                      const shiftStartToday =
+                        new Date(startTimeStr) > startOfDay(selectedDay);
+                      const shiftEndToday =
+                        new Date(finishTimeStr) < endOfDay(selectedDay);
 
                       let startHour = getHours(new Date(startTimeStr)) * 12;
                       let startMinute = getMinutes(new Date(startTimeStr)) / 5;
 
-                      const startNumber = shiftStartToday ?  startHour + startMinute + 2 : 2;
+                      const startNumber = shiftStartToday
+                        ? startHour + startMinute + 2
+                        : 2;
 
                       let endHour = getHours(new Date(finishTimeStr)) * 12;
                       let endMinute = getMinutes(new Date(finishTimeStr)) / 5;
 
-                      const endNumber = shiftEndToday ? endHour + endMinute + 2 - startNumber : 288 - startNumber;
+                      const endNumber = shiftEndToday
+                        ? endHour + endMinute + 2 - startNumber
+                        : 288 - startNumber;
                       return (
                         <Popover
                           key={shift.id}
@@ -424,8 +437,12 @@ export default function DayView({
                                   border:
                                     `1px solid ${shift.position.bgColor}` +
                                     "50",
-                                  borderRadius: shiftEndToday && shiftStartToday ? "0.5rem" : shiftStartToday ? "0.5rem 0 0 0.5rem" : "0 0.5rem 0.5rem 0",
-                                  
+                                  borderRadius:
+                                    shiftEndToday && shiftStartToday
+                                      ? "0.5rem"
+                                      : shiftStartToday
+                                      ? "0.5rem 0 0 0.5rem"
+                                      : "0 0.5rem 0.5rem 0",
                                 }}
                                 className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >
@@ -540,6 +557,7 @@ export default function DayView({
                 ) : (
                   <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 absolute flex items-center justify-center top-1/3 left-1/2 -translate-x-1/2">
                     <EmptyState
+                      showCreate={allowedToEdit}
                       title="Shift"
                       handler={() => setShowModal(true)}
                     />

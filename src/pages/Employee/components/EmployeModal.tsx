@@ -40,14 +40,12 @@ export function AddUser({ data }: any) {
   });
 
   const [positions, setPositions] = useState(data?.data?.positions || []);
-  console.log(positions, "xx12");
 
   const [addUser] = useMutation(addUserOne);
   const [updateUser] = useMutation(updateUserById);
 
   function submit(data: any) {
     if (update) {
-      console.log('update true');
       updateUser({
         variables: {
           id: id,
@@ -193,7 +191,6 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 {allPositions?.map((position: any) => {
-                  console.log(position, positions);
                   return (
                     <Switch.Group
                       as="div"
@@ -213,7 +210,6 @@ export function AddUser({ data }: any) {
                       </Switch.Label>
                       <Switch
                         onChange={() => {
-                          console.log(positions);
                           setValue(
                             "positions",
                             positions?.includes(position.id)
