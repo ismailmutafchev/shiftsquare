@@ -24,9 +24,9 @@ function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
   if (!permissions) return false;
   if (!isAuthenticated) return false;
   return (
-    permissions["x-hasura-allowed-roles"].includes("admin") ||
-    permissions["x-hasura-allowed-roles"].includes("manager") ||
-    permissions["x-hasura-allowed-roles"].includes("supervisor")
+    permissions.includes("admin") ||
+    permissions.includes("manager") ||
+    permissions.includes("supervisor")
   );
 }
 

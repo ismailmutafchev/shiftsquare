@@ -77,8 +77,8 @@ export default function DayView({
   const { permissions } = useSession();
 
   const allowedToEdit =
-    permissions["x-hasura-allowed-roles"].includes("admin") ||
-    permissions["x-hasura-allowed-roles"].includes("manager");
+    permissions.includes("admin") ||
+    permissions.includes("manager");
 
   const days = eachDayOfInterval({
     start: new Date(

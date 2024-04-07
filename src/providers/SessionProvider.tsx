@@ -73,7 +73,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
         user: user,
         userLoading: userLoading,
         onboarded: onboarded(),
-        permissions: permissions,
+        permissions: permissions["x-hasura-allowed-roles"],
     };
     
   return (

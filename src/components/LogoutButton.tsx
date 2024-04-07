@@ -8,7 +8,11 @@ export default function LogoutButton({ className }: Props) {
   const { logout, isAuthenticated } = useAuth0();
 
   const logoutHandler = () => {
-    logout();
+    logout({
+      logoutParams: {
+        returnTo: window.location.origin,
+      },
+    });
   };
 
   return (
