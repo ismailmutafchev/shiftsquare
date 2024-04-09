@@ -14,7 +14,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Login from "./pages/Login";
 import Employee from "./pages/Employee/Employee";
 import Onboarding from "./pages/Onboarding/Onboarding";
-import Timeoff from "./pages/Timeoff/Timeoff";
+import Timeoff from "./pages/Leave/Leave";
 import NotFound from "./pages/NotFound/NotFound";
 import Shifts from "./pages/Shifts/Shifts";
 import { TemplateProvider } from "./providers/TemplateContext";
@@ -32,7 +32,7 @@ function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
 
 function App() {
   const { isAuthenticated } = useAuth0();
-  const { permissions } = useSession();
+  const { permissions, onboarded } = useSession();
 
   return (
     <BrowserRouter>
@@ -50,6 +50,13 @@ function App() {
           <Route path="/login" element={<Layout />}>
             <Route index element={<Login />} />
           </Route>
+          {
+            onboarded === false ? (
+              <Route path="/onboarding" element={<Layout />}>
+                <Route index element={<Onboarding />} />
+              </Route>
+            ) : null
+          }
           {perimissionsCheck(isAuthenticated, permissions) ? (
             <>
               <Route path="/calendar" element={<Layout />}>

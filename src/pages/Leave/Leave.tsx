@@ -1,7 +1,7 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Modal from "../../components/Modal";
-import { LeaveRequest } from "./TimeOffModal";
+import { LeaveRequest } from "./LeaveModal";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -10,6 +10,7 @@ function classNames(...classes: string[]) {
 export default function Timeoff() {
   const [showModal, setShowModal] = useState(false);
   const [update, setUpdate] = useState({ isUpdate: false, data: {} });
+  
   const holidayStats = [
     {
       name: "Time off taken",
