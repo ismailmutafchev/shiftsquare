@@ -2,15 +2,34 @@ import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Modal from "../../components/Modal";
 import { LeaveRequest } from "./LeaveModal";
+import { useQuery } from "@apollo/client";
+import { getLeaveAll } from "../../queries/leave/queries";
+import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
+import { format, intervalToDuration } from "date-fns";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export default function Timeoff() {
+export default function Leave() {
   const [showModal, setShowModal] = useState(false);
   const [update, setUpdate] = useState({ isUpdate: false, data: {} });
-  
+
+  function modalHandler(state: boolean) {
+    setShowModal(state);
+  }
+
+  const { loading, error, data } = useQuery(getLeaveAll);
+
+  const leaveData = data?.leave;
+
+  const nextPendingHoliday = leaveData?.filter(
+    (holiday: any) => holiday.status === "pending"
+  );
+
+  const nextApprovedHoliday = leaveData?.filter(
+    (holiday: any) => holiday.status === "approved"
+  );
   const holidayStats = [
     {
       name: "Time off taken",
@@ -32,11 +51,45 @@ export default function Timeoff() {
     },
     {
       name: "Next holiday approved",
-      value: "12 Jun 2024 - 15 Jun 2024",
-      change: "in 3 days",
+      value:
+        (nextApprovedHoliday &&
+          nextApprovedHoliday[0] &&
+          format(new Date(nextApprovedHoliday[0]?.start), "dd MMM yyyy") +
+            " - " +
+            format(new Date(nextApprovedHoliday[0]?.end), "dd MMM yyyy")) ||
+        "No approved holiday",
+      change: 
+        nextApprovedHoliday &&
+        nextApprovedHoliday?.length > 0 &&
+        "In " + intervalToDuration({
+          start: new Date(nextApprovedHoliday[0]?.start),
+          end: new Date(nextApprovedHoliday[0]?.end),
+        }).days + " days",
       changeType: "positive",
     },
+    {
+      name: "Next holiday pending",
+      value:
+        (nextPendingHoliday &&
+          nextPendingHoliday[0] &&
+          format(new Date(nextPendingHoliday[0]?.start), "dd MMM yyyy") +
+            " - " +
+            format(new Date(nextPendingHoliday[0]?.end), "dd MMM yyyy")) ||
+        "No pending holiday",
+      change:
+        nextPendingHoliday && 
+        nextPendingHoliday?.length > 0 &&
+        "In " + intervalToDuration({
+          start: new Date(nextPendingHoliday[0]?.start),
+          end: new Date(nextPendingHoliday[0]?.end),
+        }).days + " days",
+      changeType: "neutral",
+    },
   ];
+
+  if (loading) return <LoadingAnimation />;
+
+  if (error) return <div>{error.message}</div>;
 
   return (
     <>
@@ -91,7 +144,7 @@ export default function Timeoff() {
         setOpen={setShowModal}
         title="Time Off Request"
         children={LeaveRequest}
-        data={{...update}}
+        data={{ ...update, modalHandler }}
       />
     </>
   );
