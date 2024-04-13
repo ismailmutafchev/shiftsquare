@@ -12,8 +12,6 @@ const Layout = () => {
   const { profile, onboarded, userLoading } = useSession();
   const { pathname } = useLocation();
 
-  console.log(profile, onboarded, userLoading);
-
   if (userLoading) {
     return <LoadingAnimation />;
   }
