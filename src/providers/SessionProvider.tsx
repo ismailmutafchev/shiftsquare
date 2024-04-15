@@ -76,7 +76,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
     onboarded: onboarded(),
     permissions: (permissions && permissions["x-hasura-allowed-roles"]) || [],
   };
-
   return (
     <SessionContext.Provider value={{ session }}>
       {children}
