@@ -85,6 +85,12 @@ export default function Leave() {
         }).days + " days",
       changeType: "neutral",
     },
+    {
+      name: "Reqests",
+      value: leaveData?.length || 0,
+      change: "+1",
+      changeType: "positive",
+    }
   ];
 
   if (loading) return <LoadingAnimation />;
@@ -138,13 +144,38 @@ export default function Leave() {
             </dd>
           </div>
         ))}
+        <div
+            
+            className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2 bg-white px-4 py-10 sm:px-6 xl:px-8"
+          >
+            <dt className="text-sm font-medium leading-6 text-gray-500">
+              All Time Off Requests
+            </dt>
+            {
+              leaveData?.map((stat: any) => (
+                <dd
+                  key={stat.id}
+                  className="text-xs font-medium"
+                  onClick={() => {
+                    setShowModal(true), setUpdate({ isUpdate: true, data: stat });
+                  }
+                  }
+                >
+                  {format(new Date(stat.start), "dd MMM yyyy") + " - " + format(new Date(stat.end), "dd MMM yyyy")}
+                </dd>
+              ))
+            }
+            <dd className="w-full flex-none text-3xl font-medium leading-10 tracking-tight text-gray-900">
+              {/* {stat.value} */}
+            </dd>
+          </div>
       </dl>
       <Modal
         open={showModal}
         setOpen={setShowModal}
         title="Time Off Request"
         children={LeaveRequest}
-        data={{ ...update, modalHandler }}
+        data={{ ...update, modalHandler, loading }}
       />
     </>
   );

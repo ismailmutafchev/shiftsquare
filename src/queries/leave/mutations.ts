@@ -18,3 +18,12 @@ export const updateLeaveOne = gql`
     }
   }
 `;
+
+export const deleteLeaveOne = gql`
+  ${LeaveFragment}
+  mutation DeleteLeaveById($id: uuid!) {
+    delete_leave_by_pk(id: $id) {
+      ...LeaveFragment
+    }
+  }
+`;
