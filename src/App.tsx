@@ -19,6 +19,8 @@ import NotFound from "./pages/NotFound/NotFound";
 import Shifts from "./pages/Shifts/Shifts";
 import { TemplateProvider } from "./providers/TemplateContext";
 import { useSession } from "./hooks/session";
+import 'swiper/css';
+import 'swiper/css/pagination';
 
 function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
   if (!permissions) return false;
@@ -103,6 +105,9 @@ function App() {
               </Route>
               <Route path="/time-off" element={<Layout />}>
                 <Route index element={<Timeoff />} />
+              </Route>
+              <Route path="/onboarding" element={<Layout />}>
+                <Route index element={<Onboarding />} />
               </Route>
               <Route path="/shifts" element={<Layout />}>
                 <Route index element={<Shifts />} />

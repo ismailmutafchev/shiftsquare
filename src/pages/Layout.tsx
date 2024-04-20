@@ -23,7 +23,7 @@ const Layout = () => {
     pathname !== "/pricing"
   ) {
     return (
-      <div className="bg-gray-white">
+      <div className="bg-white">
         <Onboarding />
       </div>
     );
