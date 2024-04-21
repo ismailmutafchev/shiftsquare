@@ -106,9 +106,6 @@ function App() {
               <Route path="/time-off" element={<Layout />}>
                 <Route index element={<Timeoff />} />
               </Route>
-              <Route path="/onboarding" element={<Layout />}>
-                <Route index element={<Onboarding />} />
-              </Route>
               <Route path="/shifts" element={<Layout />}>
                 <Route index element={<Shifts />} />
               </Route>
