@@ -11,7 +11,6 @@ import {
   Cog6ToothIcon,
   MagnifyingGlassIcon,
   Square3Stack3DIcon,
-  Squares2X2Icon,
   SquaresPlusIcon,
   UsersIcon,
   XMarkIcon,
@@ -122,10 +121,10 @@ export default function Navigation({
         icon: Battery50Icon,
       },
       {
-        name: "My Shifts",
-        href: "/shifts",
+        name: "Profile",
+        href: "/profile",
         current: pathname === "/shifts",
-        icon: Squares2X2Icon,
+        icon:  UsersIcon,
       },
     ];
   }

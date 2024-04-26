@@ -100,8 +100,8 @@ function App() {
             </>
           ) : (
             <>
-              <Route path="/calendar" element={<Layout />}>
-                <Route index element={<Calendar />} />
+              <Route path="/profile" element={<Layout />}>
+                <Route index element={<Profile />} />
               </Route>
               <Route path="/time-off" element={<Layout />}>
                 <Route index element={<Timeoff />} />
