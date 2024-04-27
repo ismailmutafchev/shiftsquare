@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
 import { Listbox } from "@headlessui/react";
 
+
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -224,10 +225,15 @@ export default function Onboarding() {
       <Swiper
         pagination={{
           type: "progressbar",
+          renderProgressbar(progressbarFillClass) {
+            console.log(progressbarFillClass);
+            return `<span class="border-2 border-polar-500  ${progressbarFillClass}"></span>`;
+          },
+
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
-        className="mySwiper h-screen mx-auto swiper bg-white w-1/2"
+        className="mySwiper h-screen mx-auto swiper bg-white w-1/2 flex items-center justify-center"
         ref={swiperRef}
         allowSlideNext={allowSwipeNext}
         onPaginationUpdate={(swiper) => {
@@ -693,7 +699,7 @@ export default function Onboarding() {
         <SwiperSlide className="flex flex-col items-start justify-center ">
           <div className="w-3/4 space-y-10 flex flex-col">
             <h1 className="text-4xl font-bold text-gray-800 animate-fadeUp text-start px-16">
-              Confirm Organization details
+              Confirm Name details
             </h1>
             <div className="mt-6 border-t border-gray-100 mx-16">
               <dl className="divide-y divide-gray-100">

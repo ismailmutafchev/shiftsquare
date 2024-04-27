@@ -27,11 +27,11 @@ export function LeaveRequest({ data }: any) {
   const leaveTypes = leaveTypesData?.leave_type;
 
   const { handleSubmit, register } = useForm<LeaveProps>({
-    defaultValues: {
-      start: new Date(data.data.start).toISOString().split("T")[0],
-      end: new Date(data.data.end).toISOString().split("T")[0],
-      details: data.data.details,
-      type: data.data.type,
+    defaultValues: update && {
+      start:data && data.data && new Date(data?.data?.start).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
+      end:data && data.data && new Date(data?.data?.end).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
+      details: data?.data?.details,
+      type: data?.data?.type,
     },
   });
 
