@@ -15,6 +15,12 @@ export default function Profile() {
   const { profile } = useSession();
 
   const [tabs, setTabs] = useState([
+    {
+      name: "Schedule",
+      href: "#",
+      current: true,
+      element: <Schedule />,
+    },
     { name: "Time Off", href: "#", current: false, element: <Absence /> },
     {
       name: "Documents",
@@ -25,16 +31,11 @@ export default function Profile() {
     {
       name: "Personal",
       href: "#",
-      current: true,
+      current: false,
       element: <Personal />,
     },
     { name: "Reports", href: "#", current: false, element: <Reports /> },
-    {
-      name: "Schedule",
-      href: "#",
-      current: false,
-      element: <Schedule />,
-    },
+
   ]);
 
   const currentTabHandler = (tabName: string) => {
