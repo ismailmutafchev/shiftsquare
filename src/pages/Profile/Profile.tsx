@@ -5,6 +5,7 @@ import Absence from "./components/Absebce";
 import Documents from "./components/Documents";
 import Personal from "./components/Personal";
 import Reports from "../Reports/Reports";
+import Avatar from "../../components/Avatar";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -14,7 +15,7 @@ export default function Profile() {
   const { profile } = useSession();
 
   const [tabs, setTabs] = useState([
-    { name: "Absence", href: "#", current: false, element: <Absence />},
+    { name: "Time Off", href: "#", current: false, element: <Absence /> },
     {
       name: "Documents",
       href: "#",
@@ -27,7 +28,7 @@ export default function Profile() {
       current: true,
       element: <Personal />,
     },
-    { name: "Reports", href: "#", current: false, element: <Reports />},
+    { name: "Reports", href: "#", current: false, element: <Reports /> },
     {
       name: "Schedule",
       href: "#",
@@ -44,13 +45,24 @@ export default function Profile() {
       })
     );
   };
+
   return (
     <>
       <div className="border-b border-gray-200 pb-5 sm:pb-0">
-        <h3 className="text-lg font-semibold leading-6 text-gray-900">
-          <span className="font-normal text-base">Welcome back,</span>{" "}
-          {profile?.firstName} 👋
-        </h3>
+        <div className="flex space-x-10 items-center px-10 py-5">
+          <Avatar
+            firstName={profile.firstName}
+            lastName={profile.lastName}
+            imageUrl={profile.picture}
+            size={16}
+          />
+          <div className="flex flex-col text-start">
+            <h3 className="text-lg font-semibold leading-6 text-gray-900">
+              {profile?.firstName} {profile?.lastName}
+            </h3>
+            <p className="text-gray-600">{profile?.email}</p>
+          </div>
+        </div>
         <div className="mt-3 sm:mt-4">
           <div className="sm:hidden">
             <label htmlFor="current-tab" className="sr-only">

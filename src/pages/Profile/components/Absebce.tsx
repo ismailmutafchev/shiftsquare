@@ -4,7 +4,7 @@ import { format, intervalToDuration } from "date-fns";
 import { useQuery } from "@apollo/client";
 import { getLeaveAll } from "../../../queries/leave/queries";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
-import { LeaveRequest } from "../../Leave/LeaveModal";
+import { LeaveRequest } from "./LeaveModal";
 import Modal from "../../../components/Modal";
 
 function classNames(...classes: string[]) {

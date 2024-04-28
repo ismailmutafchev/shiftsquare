@@ -1,12 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { getLeaveAll, getLeaveTypes } from "../../queries/leave/queries";
+import { getLeaveAll, getLeaveTypes } from "../../../queries/leave/queries";
 import {
   deleteLeaveOne,
   insertLeave,
   updateLeaveOne,
-} from "../../queries/leave/mutations";
-import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
+} from "../../../queries/leave/mutations";
+import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
 import { intervalToDuration } from "date-fns";
 
 type LeaveProps = {
