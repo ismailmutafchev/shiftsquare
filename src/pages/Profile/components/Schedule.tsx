@@ -2,20 +2,24 @@ import { useQuery } from "@apollo/client";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 import { getShiftsByEmployee } from "../../../queries/shift/queries";
 import { useSession } from "../../../hooks/session";
+import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
 
 export default function Schedule() {
   function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
   }
-  const { permissions } = useSession();
+  const { profile } = useSession();
 
-  const { data } = useQuery(getShiftsByEmployee, {
+  const { data, loading } = useQuery(getShiftsByEmployee, {
     variables: {
       start: startOfWeek(new Date(), { weekStartsOn: 1 }),
       end: endOfWeek(new Date(), { weekStartsOn: 1 }),
-      employeeId: permissions["x-hasura-user-id"],
+      employeeId: profile?.id,
     },
+    fetchPolicy: "no-cache",
   });
+
+  if (loading) return <LoadingAnimation />;
 
   const shifts = data?.shift;
 

@@ -9,13 +9,13 @@ import { LoadingAnimation } from "../assets/AnimationComponents/AnimationCompone
 
 const Layout = () => {
   const { isAuthenticated } = useAuth0();
-  const { profile, onboarded, userLoading } = useSession();
+  const { profile, onboarded, userLoading, permissions } = useSession();
   const { pathname } = useLocation();
 
   if (userLoading) {
     return <LoadingAnimation />;
   }
-
+  //return onboarding page
   if (
     !onboarded &&
     pathname !== "/" &&
@@ -29,31 +29,49 @@ const Layout = () => {
     );
   }
 
+  // return public navigation
+
   if (
     !isAuthenticated ||
     pathname === "/" ||
     pathname === "/about" ||
     pathname === "/pricing"
   ) {
+    // return public navigation
     return (
       <div>
         <PublicNavigation />
         <Outlet />
       </div>
     );
+    // return onboarding page
   } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === true) {
     return (
       <div>
         <Onboarding />
       </div>
     );
-  } else {
+  } else if (
+    permissions.includes("admin") ||
+    permissions.includes("manager") ||
+    permissions.includes("supervisor")
+  ) {
     return (
       <>
         <Navigation>
           <Outlet />
         </Navigation>
       </>
+    );
+    // return private navigation
+  } else {
+    return (
+      <div>
+        <PublicNavigation />
+        <div className="py-20">
+          <Outlet />
+        </div>
+      </div>
     );
   }
 };

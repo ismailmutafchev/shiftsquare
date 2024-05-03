@@ -35,7 +35,6 @@ export default function Profile() {
       element: <Personal />,
     },
     { name: "Reports", href: "#", current: false, element: <Reports /> },
-
   ]);
 
   const currentTabHandler = (tabName: string) => {
@@ -73,6 +72,9 @@ export default function Profile() {
               id="current-tab"
               name="current-tab"
               className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm"
+              onChange={(e) => {
+                currentTabHandler(e.target.value);
+              }}
             >
               {tabs.map((tab) => (
                 <option
