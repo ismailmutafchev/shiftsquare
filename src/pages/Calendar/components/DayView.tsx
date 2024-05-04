@@ -30,12 +30,13 @@ import {
   ChevronDownIcon,
   DocumentDuplicateIcon,
   ExclamationTriangleIcon,
+  PaperAirplaneIcon,
   PencilSquareIcon,
   PlusIcon,
   PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { deleteShiftById } from "../../../queries/shift/mutations";
+import { commitShiftsMany, deleteShiftById } from "../../../queries/shift/mutations";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import Datepicker from "../../../components/Datepicker";
 import jsPDF from "jspdf";
@@ -74,7 +75,9 @@ export default function DayView({
   const toast = useToast(4000);
 
   const { data, loading, error: dataError } = useCalendar();
-  const { permissions } = useSession();
+  const { permissions, profile } = useSession();
+
+  console.log(profile)
 
   const allowedToEdit =
     permissions.includes("admin") ||
@@ -103,7 +106,30 @@ export default function DayView({
     },
   });
 
+  const [commitShfts] = useMutation(commitShiftsMany, {
+    variables: {
+      start: startOfDay(selectedDay),
+      end: endOfDay(selectedDay),
+      organizationId: "1",
+    },
+    onCompleted: () => {
+      toast("success", "Rota committed successfully");
+    },
+  });
+
   const { isLoading, error } = useAuth0();
+
+ function submit(){
+    commitShfts(
+      {
+        variables: {
+          start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
+          end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
+          organizationId: profile?.organizationId,
+        },
+      }
+    );
+ }
 
   if (error || dataError) {
     return <div>Oops... {dataError?.message}</div>;
@@ -158,6 +184,17 @@ export default function DayView({
           </p>
         </div>
         <div className="flex items-center space-x-2">
+        <button
+            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+              allowedToEdit ? "" : "hidden"
+            }`}
+            onClick={submit}
+          >
+            <p>
+              Commit Rota
+            </p>
+            <PaperAirplaneIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+          </button>
           <button
             className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
