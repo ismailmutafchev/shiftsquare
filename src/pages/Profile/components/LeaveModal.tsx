@@ -1,13 +1,12 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { getLeaveAll, getLeaveTypes } from "../../../queries/leave/queries";
+import { getLeaveAll, getLeaveTypes, getPendingLeave } from "../../../queries/leave/queries";
 import {
   deleteLeaveOne,
   insertLeave,
   updateLeaveOne,
 } from "../../../queries/leave/mutations";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
-import { intervalToDuration } from "date-fns";
 
 type LeaveProps = {
   start: Date | string;
@@ -15,6 +14,7 @@ type LeaveProps = {
   details: string;
   type: "holiday" | "sickLeave" | "unpaidLeave" | "maternity" | "paternity";
   status: "pending" | "approved" | "rejected";
+  duration: number;
 };
 
 export function LeaveRequest({ data }: any) {
@@ -32,6 +32,7 @@ export function LeaveRequest({ data }: any) {
       end:data && data.data && new Date(data?.data?.end).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
       details: data?.data?.details,
       type: data?.data?.type,
+      duration: data?.data?.duration,
     },
   });
 
@@ -40,10 +41,6 @@ export function LeaveRequest({ data }: any) {
   const [removeLeave] = useMutation(deleteLeaveOne);
 
   function submit(data: LeaveProps) {
-    const duration = intervalToDuration({
-      start: new Date(data.start),
-      end: new Date(data.end),
-    }).days;
     if (update) {
       updateLeave({
         variables: {
@@ -57,16 +54,15 @@ export function LeaveRequest({ data }: any) {
       });
       return;
     }
-
     addLeave({
       variables: {
         object: {
           ...data,
-          duration: duration,
+          userId: id,
           status: "pending",
         },
       },
-      refetchQueries: [{ query: getLeaveAll }],
+      refetchQueries: [{ query: getLeaveAll }, { query: getPendingLeave }],
       onCompleted: () => modalHandler(false),
     });
   }
@@ -154,6 +150,21 @@ export function LeaveRequest({ data }: any) {
                     type="text"
                     className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
                     {...register("details", { required: true })}
+                  />
+                </div>
+              </div>
+              <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                <label
+                  htmlFor="email"
+                  className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+                >
+                  Duration
+                </label>
+                <div className="mt-2 sm:col-span-2 sm:mt-0">
+                  <input
+                    type="number"
+                    className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                    {...register("duration", { required: true })}
                   />
                 </div>
               </div>

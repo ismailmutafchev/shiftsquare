@@ -1,7 +1,7 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Modal from "../../components/Modal";
-import { LeaveRequest } from "../Profile/components/LeaveModal";
+import { LeaveRequest } from "../Profile/Components/LeaveModal";
 import { useQuery } from "@apollo/client";
 import { getLeaveAll } from "../../queries/leave/queries";
 import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";

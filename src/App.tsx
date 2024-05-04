@@ -19,8 +19,9 @@ import NotFound from "./pages/NotFound/NotFound";
 import Shifts from "./pages/Shifts/Shifts";
 import { TemplateProvider } from "./providers/TemplateContext";
 import { useSession } from "./hooks/session";
-import 'swiper/css';
-import 'swiper/css/pagination';
+import "swiper/css";
+import "swiper/css/pagination";
+import Request from "./pages/Leave/Request";
 
 function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
   if (!permissions) return false;
@@ -52,13 +53,11 @@ function App() {
           <Route path="/login" element={<Layout />}>
             <Route index element={<Login />} />
           </Route>
-          {
-            onboarded === false ? (
-              <Route path="/onboarding" element={<Layout />}>
-                <Route index element={<Onboarding />} />
-              </Route>
-            ) : null
-          }
+          {onboarded === false ? (
+            <Route path="/onboarding" element={<Layout />}>
+              <Route index element={<Onboarding />} />
+            </Route>
+          ) : null}
           {perimissionsCheck(isAuthenticated, permissions) ? (
             <>
               <Route path="/calendar" element={<Layout />}>
@@ -91,11 +90,17 @@ function App() {
                 <Route path="/availability" element={<Layout />}>
                   <Route index element={<Availability />} />
                 </Route> */}
+              <Route path="/time-off/:id" element={<Layout />}>
+                <Route index element={<Request />} />
+              </Route>
               <Route path="/shifts" element={<Layout />}>
                 <Route index element={<Shifts />} />
               </Route>
               <Route path="/time-off" element={<Layout />}>
                 <Route index element={<Timeoff />} />
+              </Route>
+              <Route path="/time-off/:id" element={<Layout />}>
+                <Route index element={<Request />} />
               </Route>
             </>
           ) : (
@@ -103,8 +108,8 @@ function App() {
               <Route path="/profile" element={<Layout />}>
                 <Route index element={<Profile />} />
               </Route>
-              <Route path="/time-off" element={<Layout />}>
-                <Route index element={<Timeoff />} />
+              <Route path="/time-off/:id" element={<Layout />}>
+                <Route index element={<Request />} />
               </Route>
               <Route path="/shifts" element={<Layout />}>
                 <Route index element={<Shifts />} />
