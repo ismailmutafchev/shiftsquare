@@ -2,11 +2,11 @@ import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getLeaveAll } from "../../../queries/leave/queries";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
-import { LeaveRequest } from "../Components/LeaveModal";
 import Modal from "../../../components/Modal";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
+import { LeaveRequest } from "../Components/LeaveModal";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
