@@ -32,3 +32,21 @@ export const getLeaveTypes = gql`
     }
   }
 `
+export const getPendingLeave = gql`
+  ${LeaveFragment}
+  query GetPendingLeave {
+    leave(where: {status: {_eq: "pending"}}) {
+      id 
+      start
+      end
+      details
+      type
+      status
+      user {
+        id
+        firstName 
+        lastName
+      }
+    }
+  }
+`

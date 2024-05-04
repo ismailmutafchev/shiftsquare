@@ -23,6 +23,8 @@ import Logo from "../components/Logo";
 import Modal from "../components/Modal";
 import Fuse from "fuse.js";
 import { useSession } from "../hooks/session";
+import { getPendingLeave } from "../queries/leave/queries";
+import { useQuery } from "@apollo/client";
 const SearchOptions = {
   shouldSort: true,
   threshold: 0.4,
@@ -57,6 +59,10 @@ export default function Navigation({
   const { pathname } = useLocation();
   const { profile, permissions } = useSession();
 
+  const { data } = useQuery(getPendingLeave);
+
+  const pendingLeaveRequests = data?.leave;
+
   const openSearchHandler = () => {
     setOpenSearch(true);
   };
@@ -65,9 +71,18 @@ export default function Navigation({
     setOpenSearch(false);
   };
 
-  let navigation: { name: string; href: string; current: boolean; icon: any }[] = [];
+  let navigation: {
+    name: string;
+    href: string;
+    current: boolean;
+    icon: any;
+  }[] = [];
 
-  if (permissions && permissions?.includes("admin") || permissions.includes("manager") || permissions.includes("supervisor")) {
+  if (
+    (permissions && permissions?.includes("admin")) ||
+    permissions.includes("manager") ||
+    permissions.includes("supervisor")
+  ) {
     navigation = [
       {
         name: "Dashboard",
@@ -124,7 +139,7 @@ export default function Navigation({
         name: "Profile",
         href: "/profile",
         current: pathname === "/shifts",
-        icon:  UsersIcon,
+        icon: UsersIcon,
       },
     ];
   }
@@ -139,7 +154,9 @@ export default function Navigation({
 
   const closeSideBarHandler = () => {
     setSidebarOpen(false);
-  }
+  };
+
+  console.log(pendingLeaveRequests);
 
   return (
     <>
@@ -366,13 +383,69 @@ export default function Navigation({
                   <span className="sr-only">Search</span>
                   <MagnifyingGlassIcon className="h-6 w-6" aria-hidden="true" />
                 </button>
-                <button
-                  type="button"
-                  className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-                >
-                  <span className="sr-only">View notifications</span>
-                  <BellIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
+
+                {/* Notification Dropdown */}
+                <Menu as="div" className="relative">
+                  <Menu.Button className="-m-1.5 flex items-center p-1.5 relative">
+                    <span className="sr-only">Open user menu</span>
+                    <div className="absolute top-0.5 right-0.5 bg-red-500 rounded-full text-white p-1 w-3.5 h-3.5 flex text-[8px] items-center justify-center">
+                      <p>
+                        {pendingLeaveRequests && pendingLeaveRequests.length}
+                      </p>
+                    </div>
+                    <BellIcon
+                      className="ml-2 h-6 w-6 text-gray-400"
+                      aria-hidden="true"
+                    />
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-0 mt-2.5 divide-y origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                      {pendingLeaveRequests &&
+                      pendingLeaveRequests.length > 0 ? (
+                        pendingLeaveRequests.map((leave: any) => (
+                          <Menu.Item key={leave.id}>
+                            {({ active }) => (
+                              <Link
+                                to={`/time-off/${leave.id}`}
+                                className={classNames(
+                                  active ? "bg-gray-50" : "",
+                                  "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                )}
+                              >
+                                <div className="relative">
+                                  <div className="font-semibold text-start pt-5">
+                                    <p>
+                                      {leave.user.firstName}{" "}
+                                      {leave.user.lastName} requested a{" "}
+                                      {leave.type} leave
+                                    </p>
+                                  </div>
+                                  <div className="text-gray-400 bg-green-50 border border-green-200 rounded-full flex items-center justify-center px-1 text-[10px] absolute top-1 right-1">
+                                    <p>{leave.status}</p>
+                                  </div>
+                                </div>
+                              </Link>
+                            )}
+                          </Menu.Item>
+                        ))
+                      ) : (
+                        <Menu.Item>
+                          <div className="block px-3 py-1 text-sm leading-6 text-gray-900">
+                            No pending leave requests
+                          </div>
+                        </Menu.Item>
+                      )}
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
 
                 {/* Separator */}
                 <div
@@ -505,7 +578,10 @@ function SearchInput({ data }: { data: any }) {
           {searchRes.map((res: any) => {
             const type = res.item.__typename;
             return (
-              <li key={res.item.id} className="flex items-center hover:bg-gray-100 px-4 rounded-lg hover:text-white">
+              <li
+                key={res.item.id}
+                className="flex items-center hover:bg-gray-100 px-4 rounded-lg hover:text-white"
+              >
                 {type === "position" ? (
                   <div className="rounded-md w-6 h-6 flex justify-center items-center bg-purple-heart-400">
                     <Square3Stack3DIcon
@@ -534,7 +610,9 @@ function SearchInput({ data }: { data: any }) {
                     {res.item.name ||
                       res.item.firstName + " " + res.item.lastName}
                   </p>
-                  <p className="text-gray-400">{type === "user" && res.item.email}</p>
+                  <p className="text-gray-400">
+                    {type === "user" && res.item.email}
+                  </p>
                 </Link>
               </li>
             );

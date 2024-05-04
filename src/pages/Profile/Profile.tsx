@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSession } from "../../hooks/session";
-import Schedule from "./components/Schedule";
-import Absence from "./components/Absebce";
-import Documents from "./components/Documents";
-import Personal from "./components/Personal";
+import Schedule from "./Pages/Schedule";
+import Absence from "./Pages/Absebce";
+import Documents from "./Pages/Documents";
+import Personal from "./Pages/Personal";
 import Reports from "../Reports/Reports";
 import Avatar from "../../components/Avatar";
 

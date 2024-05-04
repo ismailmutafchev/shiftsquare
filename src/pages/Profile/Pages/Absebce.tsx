@@ -2,18 +2,23 @@ import { useState } from "react";
 import { useQuery } from "@apollo/client";
 import { getLeaveAll } from "../../../queries/leave/queries";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
-import { LeaveRequest } from "./LeaveModal";
 import Modal from "../../../components/Modal";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import { useSession } from "../../../hooks/session";
+import { LeaveRequest } from "../Components/LeaveModal";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Absebce() {
+  const { profile } = useSession();
   const [showModal, setShowModal] = useState(false);
-  const [update, setUpdate] = useState({ isUpdate: false, data: {} });
+  const [update, setUpdate] = useState({
+    isUpdate: false,
+    data: { id: profile.id },
+  });
 
   function modalHandler(state: boolean) {
     setShowModal(state);
@@ -23,10 +28,9 @@ export default function Absebce() {
 
   const leaveData = data?.leave;
 
-  const nextPendingHoliday = leaveData?.filter(
-    (holiday: any) => holiday.status === "pending"
-  );
-
+  // const nextPendingHoliday = leaveData?.filter(
+  //   (holiday: any) => holiday.status === "pending"
+  // );
 
   const holidayStats = [
     {
@@ -47,14 +51,7 @@ export default function Absebce() {
       value: "2",
       change: "+1",
       changeType: "positive",
-    },
-    {
-      name: "Upcoming Time Off",
-      value: nextPendingHoliday?.length,
-      change: nextPendingHoliday?.length,
-      changeType: "positive",
-      button: "View",
-    },
+    }
   ];
 
   if (loading) return <LoadingAnimation />;
@@ -63,7 +60,7 @@ export default function Absebce() {
 
   return (
     <>
-      <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-4">
+      <dl className="mx-auto grid grid-cols-1 gap-px bg-gray-900/5 sm:grid-cols-2 lg:grid-cols-3">
         {holidayStats.map((stat) => (
           <div
             key={stat.name}
@@ -90,7 +87,7 @@ export default function Absebce() {
                 type="button"
                 className="w-full mx-7 items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
                 onClick={() => {
-                  setShowModal(true), setUpdate({ isUpdate: false, data: {} });
+                  setShowModal(true), setUpdate({ isUpdate: false, data: {id: profile.id} });
                 }}
               >
                 {stat.button}
@@ -114,17 +111,14 @@ export default function Absebce() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                 {
-                    leaveData?.map((leave: any) => (
-                      <div key={leave.id} className="flex flex-col gap-y-2">
-                        <div className="flex justify-between">
-                          <span className="font-semibold">{leave.type}</span>
-                          <span className="text-gray-500">{leave.status}</span>
-                        </div>
-                        
+                  {leaveData?.map((leave: any) => (
+                    <div key={leave.id} className="flex flex-col gap-y-2">
+                      <div className="flex justify-between">
+                        <span className="font-semibold">{leave.type}</span>
+                        <span className="text-gray-500">{leave.status}</span>
                       </div>
-                    ))
-                 }
+                    </div>
+                  ))}
                 </Disclosure.Panel>
               </>
             )}
