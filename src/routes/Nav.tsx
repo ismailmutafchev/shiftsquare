@@ -156,6 +156,8 @@ export default function Navigation({
     setSidebarOpen(false);
   };
 
+  console.log(pendingLeaveRequests);
+
   return (
     <>
       <div>
@@ -405,7 +407,7 @@ export default function Navigation({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <Menu.Items className="absolute right-0 mt-2.5 divide-y origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                       {pendingLeaveRequests &&
                       pendingLeaveRequests.length > 0 ? (
                         pendingLeaveRequests.map((leave: any) => (
@@ -418,17 +420,16 @@ export default function Navigation({
                                   "block px-3 py-1 text-sm leading-6 text-gray-900"
                                 )}
                               >
-                                <div className="flex justify-between">
-                                  <div>
-                                    <div className="font-semibold">
-                                      {leave.type}
-                                    </div>
-                                    <div className="text-gray-400">
-                                      {leave.status}
-                                    </div>
+                                <div className="relative">
+                                  <div className="font-semibold text-start pt-5">
+                                    <p>
+                                      {leave.user.firstName}{" "}
+                                      {leave.user.lastName} requested a{" "}
+                                      {leave.type} leave
+                                    </p>
                                   </div>
-                                  <div className="text-gray-400">
-                                    {leave.start}
+                                  <div className="text-gray-400 bg-green-50 border border-green-200 rounded-full flex items-center justify-center px-1 text-[10px] absolute top-1 right-1">
+                                    <p>{leave.status}</p>
                                   </div>
                                 </div>
                               </Link>
@@ -442,11 +443,6 @@ export default function Navigation({
                           </div>
                         </Menu.Item>
                       )}
-                      <Menu.Item>
-                        <div className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 hover:cursor-pointer">
-                          <LogoutButton />
-                        </div>
-                      </Menu.Item>
                     </Menu.Items>
                   </Transition>
                 </Menu>

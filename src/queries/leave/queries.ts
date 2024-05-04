@@ -42,6 +42,11 @@ export const getPendingLeave = gql`
       details
       type
       status
+      user {
+        id
+        firstName 
+        lastName
+      }
     }
   }
 `
