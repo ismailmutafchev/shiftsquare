@@ -3,8 +3,14 @@ import { LeaveFragment } from "./fragment";
 
 export const getLeaveOne = gql`
   query GetLeave($id: uuid!) {
-    getLeave(id: $id) {
-      ...LeaveFragment
+    leave_by_pk(id: $id) {
+      id 
+      start
+      end
+      details
+      type
+      status
+      readBy
     }
   }
   ${LeaveFragment}
@@ -19,7 +25,7 @@ export const getLeaveAll = gql`
       details
       type
       status
-
+      readBy
     }
   }
 `
@@ -42,6 +48,7 @@ export const getPendingLeave = gql`
       details
       type
       status
+      readBy
       user {
         id
         firstName 
