@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import React from "react";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import {
@@ -55,6 +55,7 @@ export default function Navigation({
   const [openSearch, setOpenSearch] = useState(false);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [wideSidebarOpen, setWideSidebarOpen] = useState(false);
+  const [notReadRequests, setNotReadRequests] = useState<any>([]);
 
   const { pathname } = useLocation();
   const { profile, permissions } = useSession();
@@ -62,6 +63,22 @@ export default function Navigation({
   const { data } = useQuery(getPendingLeave);
 
   const pendingLeaveRequests = data?.leave;
+
+  console.log(pendingLeaveRequests, notReadRequests);
+
+  useEffect(
+    () => {
+      if (pendingLeaveRequests) {
+        const notRead = pendingLeaveRequests.filter(
+          (leave: any) => !leave.readBy.includes(profile?.id)
+        );
+        console.log(notRead);
+        setNotReadRequests(notRead);
+      }
+    },
+    // eslint-disable-next-line
+    [pendingLeaveRequests]
+  );
 
   const openSearchHandler = () => {
     setOpenSearch(true);
@@ -155,8 +172,6 @@ export default function Navigation({
   const closeSideBarHandler = () => {
     setSidebarOpen(false);
   };
-
-  console.log(pendingLeaveRequests);
 
   return (
     <>
@@ -388,11 +403,13 @@ export default function Navigation({
                 <Menu as="div" className="relative">
                   <Menu.Button className="-m-1.5 flex items-center p-1.5 relative">
                     <span className="sr-only">Open user menu</span>
-                    <div className="absolute top-0.5 right-0.5 bg-red-500 rounded-full text-white p-1 w-3.5 h-3.5 flex text-[8px] items-center justify-center">
-                      <p>
-                        {pendingLeaveRequests && pendingLeaveRequests.length}
-                      </p>
-                    </div>
+                    {
+                      notReadRequests && notReadRequests.length > 0 && (
+                        <div className="absolute top-0.5 right-0.5 bg-red-500 rounded-full text-white p-1 w-3.5 h-3.5 flex text-[8px] items-center justify-center">
+                          <p>{notReadRequests && notReadRequests.length}</p>
+                        </div>
+                      )
+                    }
                     <BellIcon
                       className="ml-2 h-6 w-6 text-gray-400"
                       aria-hidden="true"
@@ -407,7 +424,7 @@ export default function Navigation({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 mt-2.5 divide-y origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <Menu.Items className="absolute w-80 right-0 divide-y origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                       {pendingLeaveRequests &&
                       pendingLeaveRequests.length > 0 ? (
                         pendingLeaveRequests.map((leave: any) => (
@@ -417,11 +434,13 @@ export default function Navigation({
                                 to={`/time-off/${leave.id}`}
                                 className={classNames(
                                   active ? "bg-gray-50" : "",
-                                  "block px-3 py-1 text-sm leading-6 text-gray-900"
+                                  "block px-3 py-1 text-sm leading-6 text-gray-900",
+                                  notReadRequests?.includes(leave) &&
+                                    "bg-polar-50"
                                 )}
                               >
                                 <div className="relative">
-                                  <div className="font-semibold text-start pt-5">
+                                  <div className="font-semibold text-start w-5/6">
                                     <p>
                                       {leave.user.firstName}{" "}
                                       {leave.user.lastName} requested a{" "}

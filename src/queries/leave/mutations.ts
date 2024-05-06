@@ -27,3 +27,11 @@ export const deleteLeaveOne = gql`
     }
   }
 `;
+
+export const updateReadStatus = gql`
+  mutation UpdateReadStatus($id: uuid!, $readBy: jsonb ) {
+    update_leave_by_pk(pk_columns: { id: $id }, _set: { readBy: $readBy }) {
+      id
+    }
+  }
+`;
