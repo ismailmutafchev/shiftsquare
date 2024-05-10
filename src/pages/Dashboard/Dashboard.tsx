@@ -349,7 +349,7 @@ export default function Dashboard() {
                           ${
                             open
                               ? "bg-gray-200 ring-1 text-polar-800/90"
-                              : "bg-polar-800/90 text-white"
+                              : "bg-polar-800/90 text-gray-50"
                           }`}
                     >
                       {endDate.toDateString()}
