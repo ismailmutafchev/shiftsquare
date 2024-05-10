@@ -70,7 +70,7 @@ export default function Employees() {
           >
             <div className="flex w-full items-center justify-between space-x-6 p-6">
               <div className="flex-1 truncate">
-                <div className="flex items-center space-x-3">
+                <div className="flex items-start space-y-1 flex-col text-start">
                   <div className="flex flex-col items-start">
                     <h3 className="truncate text-sm font-medium text-gray-900">
                       {person.firstName} {person.lastName}
@@ -79,7 +79,7 @@ export default function Employees() {
                       {person.email}
                     </p>
                   </div>
-                  <span className="inline-flex flex-shrink-0 items-center rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
+                  <span className="inline-flex flex-shrink-0 rounded-full bg-green-50 px-1.5 py-0.5 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">
                     {person ? person.role?.name.toUpperCase() : "No Role"}
                   </span>
                 </div>

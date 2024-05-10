@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { getEmployee } from "../../queries/user/queries";
 import { useQuery } from "@apollo/client";
 import Avatar from "../../components/Avatar";
-import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
+import { ErrorAnimation, LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import {
   AtSymbolIcon,
   DocumentCheckIcon,
@@ -16,7 +16,7 @@ import { isDark } from "../../utils/inheritColor";
 export default function Employee() {
   const { id } = useParams();
 
-  const { data, loading } = useQuery(getEmployee, {
+  const { data, loading, error } = useQuery(getEmployee, {
     variables: { id: id },
   });
 
@@ -35,6 +35,7 @@ export default function Employee() {
   const colorIsDark = isDark(bgColor);
 
   if (loading) return <LoadingAnimation />;
+  if (error) return <ErrorAnimation message={error.message} />
   return (
     <div className="overflow-hidden pr-1 z-0 ">
       <div
@@ -58,7 +59,7 @@ export default function Employee() {
                 colorIsDark ? "text-white" : "text-gray-800"
               } `}
             >
-              {user?.email}
+              {email}
             </p>
           </div>
           <Avatar firstName={firstName} lastName={lastName} size={16} />
