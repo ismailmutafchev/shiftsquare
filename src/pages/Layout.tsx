@@ -5,22 +5,31 @@ import PublicNavigation from "../routes/PublicNav";
 import { useAuth0 } from "@auth0/auth0-react";
 import Onboarding from "./Onboarding/Onboarding";
 import { useSession } from "../hooks/session";
+import { LoadingAnimation } from "../assets/AnimationComponents/AnimationComponents";
 
 const Layout = () => {
   const { isAuthenticated } = useAuth0();
-  const { profile } = useSession();
-
+  const { profile, onboarded, userLoading, permissions } = useSession();
   const { pathname } = useLocation();
 
-  if (profile?.data?.user[0]?.onboarded === false || profile?.onboarded === false
-     ){
+  if (userLoading) {
+    return <LoadingAnimation />;
+  }
+  //return onboarding page
+  if (
+    !onboarded &&
+    pathname !== "/" &&
+    pathname !== "/about" &&
+    pathname !== "/pricing"
+  ) {
     return (
-      <div className="bg-gray-300/40 pb-24">
+      <div className="bg-white">
         <Onboarding />
       </div>
     );
   }
 
+  // return public navigation
 
   if (
     !isAuthenticated ||
@@ -28,25 +37,41 @@ const Layout = () => {
     pathname === "/about" ||
     pathname === "/pricing"
   ) {
+    // return public navigation
     return (
       <div>
         <PublicNavigation />
         <Outlet />
       </div>
     );
-  } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === false) {
+    // return onboarding page
+  } else if (isAuthenticated && profile?.data?.user[0]?.onboarded === true) {
     return (
       <div>
         <Onboarding />
       </div>
     );
-  } else {
+  } else if (
+    permissions.includes("admin") ||
+    permissions.includes("manager") ||
+    permissions.includes("supervisor")
+  ) {
     return (
       <>
         <Navigation>
           <Outlet />
         </Navigation>
       </>
+    );
+    // return private navigation
+  } else {
+    return (
+      <div>
+        <PublicNavigation />
+        <div className="py-20">
+          <Outlet />
+        </div>
+      </div>
     );
   }
 };

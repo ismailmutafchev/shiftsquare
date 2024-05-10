@@ -7,7 +7,7 @@ import {
   startOfWeek,
 } from "date-fns";
 import { useQuery } from "@apollo/client";
-import { getShifts } from "../../queries/shift/queries";
+import { getShiftsToPrint } from "../../queries/shift/queries";
 import logo from "./logo.png";
 import { useSession } from "../../hooks/session";
 
@@ -24,49 +24,49 @@ export const RotaPrint = ({ date }: { date: any }) => {
     end: new Date(endOfWeek(date, { weekStartsOn: 1 })),
   });
 
-  const { data: mondayShifts } = useQuery(getShifts, {
+  const { data: mondayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[0]),
       end: endOfDay(thisWeekDays[0]),
     },
   });
 
-  const { data: tuesdayShifts } = useQuery(getShifts, {
+  const { data: tuesdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[1]),
       end: endOfDay(thisWeekDays[1]),
     },
   });
 
-  const { data: wednesdayShifts } = useQuery(getShifts, {
+  const { data: wednesdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[2]),
       end: endOfDay(thisWeekDays[2]),
     },
   });
 
-  const { data: thursdayShifts } = useQuery(getShifts, {
+  const { data: thursdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[3]),
       end: endOfDay(thisWeekDays[3]),
     },
   });
 
-  const { data: fridayShifts } = useQuery(getShifts, {
+  const { data: fridayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[4]),
       end: endOfDay(thisWeekDays[4]),
     },
   });
 
-  const { data: saturdayShifts } = useQuery(getShifts, {
+  const { data: saturdayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[5]),
       end: endOfDay(thisWeekDays[5]),
     },
   });
 
-  const { data: sundayShifts } = useQuery(getShifts, {
+  const { data: sundayShifts } = useQuery(getShiftsToPrint, {
     variables: {
       start: startOfDay(thisWeekDays[6]),
       end: endOfDay(thisWeekDays[6]),
@@ -125,7 +125,7 @@ export const RotaPrint = ({ date }: { date: any }) => {
                       <tr className="divide-x divide-gray-200">
                         <th
                           scope="col"
-                          className="py-3.5 pl-4 pr-4 text-center text-md font-semibold text-gray-900 sm:pl-0"
+                          className="py-3.5 pl-4 pr-4 text-center text-4xl font-semibold text-gray-900 sm:pl-0"
                         >
                           Position
                         </th>
@@ -133,7 +133,7 @@ export const RotaPrint = ({ date }: { date: any }) => {
                           <th
                             key={day}
                             scope="col"
-                            className="px-4 py-3.5 text-center text-md font-semibold text-gray-900"
+                            className="px-4 py-3.5 text-center text-3xl font-semibold text-gray-900"
                           >
                             {format(new Date(day), "EEEE")}
                             <br />
@@ -143,12 +143,18 @@ export const RotaPrint = ({ date }: { date: any }) => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {positions?.map((position: any) => (
+                      {positions?.map((position: any) => {
+                        return (
                         <tr
                           key={position.id}
                           className="divide-x divide-gray-200"
                         >
-                          <td className="whitespace-nowrap py-4 pl-4 pr-4 text-md font-semibold text-gray-900 sm:pl-0">
+                          <td className={
+                            classNames(
+                              "whitespace-nowrap py-4 pl-4 pr-4 text-3xl font-semibold text-gray-900 sm:pl-0 text-center",
+                              "border-r-4 divide-solid border-["+position?.bgColor+"]"
+                            )
+                          } key={position.id} data-label="Position">
                             {position.name}
                           </td>
                           {config.map((day: any) => {
@@ -156,7 +162,7 @@ export const RotaPrint = ({ date }: { date: any }) => {
                               <td
                                 key={day && day?.data?.shift?.id}
                                 className={classNames(
-                                  "whitespace-nowrap text-md text-gray-500",
+                                  "whitespace-nowrap text-3xl text-gray-500",
                                   day?.data?.shift?.map((shift: any) => {
                                     if (shift.position.id === position.id) {
                                       return "bg-white";
@@ -193,7 +199,7 @@ export const RotaPrint = ({ date }: { date: any }) => {
                             );
                           })}
                         </tr>
-                      ))}
+                      )})}
                     </tbody>
                   </table>
                 </div>

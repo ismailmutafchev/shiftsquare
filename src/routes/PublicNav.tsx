@@ -7,7 +7,6 @@ import {
   XMarkIcon,
 } from "@heroicons/react/24/outline";
 import { Link, useLocation } from "react-router-dom";
-import LoginButton from "../components/LoginButon";
 import LogoutButton from "../components/LogoutButton";
 import { useAuth0 } from "@auth0/auth0-react";
 import Logo from "../components/Logo";
@@ -16,7 +15,6 @@ import { colors } from "../utils/colors";
 const userNavigation = [
   { name: "Your Profile", href: "/profile" },
   { name: "Setting", href: "/setting" },
-  { name: "Sign out", href: "/login" },
 ];
 
 //@ts-ignore
@@ -31,7 +29,7 @@ export default function PublicNavigation() {
     {
       name: "Home",
       href: "/",
-      current: pathname === "/dashboard",
+      current: pathname === "/calendar",
       icon: Cog6ToothIcon,
     },
     { name: "About", href: "/about", current: pathname === "/about" },
@@ -43,16 +41,16 @@ export default function PublicNavigation() {
   );
   const { isAuthenticated, user } = useAuth0();
 
-  const showDashboard = !navigation.some((item) => item.name === "Dashboard");
+  const showDashboard = !navigation.some((item) => item.name === "Calendar");
 
   useEffect(() => {
     if (isAuthenticated && showDashboard) {
       setNavigation([
         ...navigation,
         {
-          name: "Dashboard",
-          href: "/dashboard",
-          current: pathname === "/dashboard",
+          name: "Calendar",
+          href: "/calendar",
+          current: pathname === "/calendar",
         },
       ]);
     } else {
@@ -81,43 +79,44 @@ export default function PublicNavigation() {
                     </div>
                     <div className="hidden lg:ml-10 lg:block justify-self-center">
                       <div className="flex space-x-4">
-                        {navigation.map((item) => {
-                          return (
-                            <Link
-                              key={item.name}
-                              to={item.href === '/login' ? '/' : item.href}
-                              onMouseOver={() =>
-                                setScaleBottomBorder(item.name)
-                              }
-                              onMouseLeave={() => setScaleBottomBorder(null)}
-                              className={classNames(
-                                "rounded-md py-2 px-3 text-sm font-medium text-center text-steel-blue-900 relative"
-                              )}
-                              onClick={
-                                item.href === "/login"
-                                  ? () => loginWithRedirect()
-                                  : () => {}
-                              }
-                            >
-                              <p
-                                className={`${
-                                  scaleBottomBorder === item.name
-                                    ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative "
-                                    : ""
-                                } duration-500`}
+                        {!isAuthenticated &&
+                          navigation.map((item) => {
+                            return (
+                              <Link
+                                key={item.name}
+                                to={item.href === "/login" ? "/" : item.href}
+                                onMouseOver={() =>
+                                  setScaleBottomBorder(item.name)
+                                }
+                                onMouseLeave={() => setScaleBottomBorder(null)}
+                                className={classNames(
+                                  "rounded-md py-2 px-3 text-sm font-medium text-center text-steel-blue-900 relative"
+                                )}
+                                onClick={
+                                  item.href === "/login"
+                                    ? () => loginWithRedirect()
+                                    : () => {}
+                                }
                               >
-                                {item.name}
-                              </p>
-                              <div
-                                className={`bg-green-400 absolute h-1 left-0 ${
-                                  scaleBottomBorder === item.name
-                                    ? `w-full bottom-1 rounded-b-md `
-                                    : "w-0"
-                                }  duration-300`}
-                              ></div>
-                            </Link>
-                          );
-                        })}
+                                <p
+                                  className={`${
+                                    scaleBottomBorder === item.name
+                                      ? "bg-clip-text text-transparent bg-gradient-to-r from-[#ff80b5] to-[#9089fc] relative "
+                                      : ""
+                                  } duration-500`}
+                                >
+                                  {item.name}
+                                </p>
+                                <div
+                                  className={`bg-green-400 absolute h-1 left-0 ${
+                                    scaleBottomBorder === item.name
+                                      ? `w-full bottom-1 rounded-b-md `
+                                      : "w-0"
+                                  }  duration-300`}
+                                ></div>
+                              </Link>
+                            );
+                          })}
                         {/* <LoginButton /> */}
                       </div>
                     </div>
@@ -192,16 +191,8 @@ export default function PublicNavigation() {
                                 </Menu.Item>
                               ))}
                               <Menu.Item>
-                                <LoginButton />
-                              </Menu.Item>
-                              <Menu.Item>
-                                {({ active }) => (
-                                  <LogoutButton
-                                    className={classNames(
-                                      active ? "bg-gray-100" : "",
-                                      "block px-4 py-2 text-sm text-gray-700 "
-                                    )}
-                                  />
+                                {() => (
+                                  <LogoutButton className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" />
                                 )}
                               </Menu.Item>
                             </Menu.Items>
@@ -269,15 +260,18 @@ export default function PublicNavigation() {
                       {userNavigation.map((item) => (
                         <Disclosure.Button
                           key={item.name}
-                          as="a"
-                          href={item.href}
                           className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-polar-300 hover:bg-opacity-75"
                         >
                           {item.name}
                         </Disclosure.Button>
                       ))}
-                      <LoginButton />
-                      <LogoutButton />
+                      <Disclosure.Button
+                        as="a"
+                        href="/"
+                        className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-polar-300 hover:bg-opacity-75"
+                      >
+                        <LogoutButton />
+                      </Disclosure.Button>
                     </div>
                   </div>
                 )}

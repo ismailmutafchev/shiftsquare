@@ -2,12 +2,10 @@ import { useMutation } from "@apollo/client";
 import { getEmployees } from "../../../queries/user/queries.ts";
 
 import { useForm } from "react-hook-form";
-import {
-  addUserOne,
-  updateUserById,
-} from "../../../queries/user/mutations.ts";
+import { addUserOne, updateUserById } from "../../../queries/user/mutations.ts";
 import { Switch } from "@headlessui/react";
 import { useSession } from "../../../hooks/session.ts";
+import { useState } from "react";
 
 type UserProps = {
   firstName: string;
@@ -28,7 +26,7 @@ export function AddUser({ data }: any) {
   const { modalHandler } = data;
   const { positions: allPositions } = useSession();
 
-  const { register, handleSubmit, getValues } = useForm<UserProps>({
+  const { register, handleSubmit, setValue } = useForm<UserProps>({
     defaultValues: {
       firstName: data?.data?.firstName || "",
       lastName: data?.data?.lastName || "",
@@ -38,12 +36,10 @@ export function AddUser({ data }: any) {
         payRate: data?.data?.payDetails?.payRate || "",
         per: data?.data?.payDetails?.per || "",
       },
-      positions: data?.data?.positions || [],
     },
   });
 
-  const positions = getValues("positions");
-  const userPositions = positions?.map((position: any) => position.positionId);
+  const [positions, setPositions] = useState(data?.data?.positions || []);
 
   const [addUser] = useMutation(addUserOne);
   const [updateUser] = useMutation(updateUserById);
@@ -51,7 +47,12 @@ export function AddUser({ data }: any) {
   function submit(data: any) {
     if (update) {
       updateUser({
-        variables: { id: id, object: data },
+        variables: {
+          id: id,
+          object: {
+            ...data
+          },
+        },
         refetchQueries: [{ query: getEmployees }],
         onCompleted: () => modalHandler(false),
       });
@@ -59,7 +60,14 @@ export function AddUser({ data }: any) {
     }
 
     addUser({
-      variables: { object: data },
+      variables: {
+        object: {
+          ...data,
+          positions: {
+            data: data.positions.map((pos: any) => ({ positionId: pos })),
+          },
+        },
+      },
       refetchQueries: [{ query: getEmployees }],
       onCompleted: () => modalHandler(false),
     });
@@ -183,11 +191,11 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 {allPositions?.map((position: any) => {
-                  const enabled = userPositions?.includes(position.id);
                   return (
                     <Switch.Group
                       as="div"
                       className="flex items-center justify-between"
+                      key={position.id}
                     >
                       <Switch.Label
                         as="span"
@@ -201,17 +209,37 @@ export function AddUser({ data }: any) {
                         </span>
                       </Switch.Label>
                       <Switch
-                        onChange={() => console.log("hello")}
-                        checked={enabled}
+                        onChange={() => {
+                          setValue(
+                            "positions",
+                            positions?.includes(position.id)
+                              ? positions?.filter(
+                                  (pos: any) => pos !== position.id
+                                )
+                              : [...(positions ?? []), position.id]
+                          );
+                          setPositions(
+                            positions?.includes(position.id)
+                              ? positions?.filter(
+                                  (pos: any) => pos !== position.id
+                                )
+                              : [...(positions ?? []), position.id]
+                          );
+                        }}
+                        checked={positions?.includes(position.id)}
                         className={`${
-                          enabled ? "bg-blue-600" : "bg-gray-200"
+                          positions?.includes(position.id)
+                            ? "bg-polar-600"
+                            : "bg-gray-200"
                         } relative inline-flex h-6 w-11 items-center rounded-full`}
                       >
                         <span className="sr-only">Enable notifications</span>
                         <span
                           aria-hidden="true"
                           className={`${
-                            enabled ? "translate-x-6" : "translate-x-1"
+                            positions?.includes(position.id)
+                              ? "translate-x-6"
+                              : "translate-x-1"
                           } inline-block h-4 w-4 transform rounded-full bg-white transition`}
                         />
                       </Switch>

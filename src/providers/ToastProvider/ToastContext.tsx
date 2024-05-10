@@ -28,22 +28,3 @@ export const ToastProvider = ({ children }: any) => {
     </ToastContext.Provider>
   );
 };
-
-// Create the useToastDispatchContext hook
-// export const useToastDispatchContext = () => {
-//   const toastDispatch = useContext(ToastContext);
-//   if (!toastDispatch) {
-//     throw new Error(
-//       "useToastDispatchContext must be used within a ToastProvider"
-//     );
-//   }
-//   return toastDispatch;
-// };
-
-// export const useToastStateContext = () => {
-//   const toasts  = useContext(ToastContext);
-//   if (!toasts) {
-//     throw new Error("useToastStateContext must be used within a ToastProvider");
-//   }
-//   return toasts.toasts;
-// };

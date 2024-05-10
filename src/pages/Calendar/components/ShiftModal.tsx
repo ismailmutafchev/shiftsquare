@@ -25,6 +25,9 @@ export default function AddShift({ data }: any) {
       date: data.data.start
         ? format(new Date(data.data.start), "yyyy-MM-dd")
         : "",
+      endDate: data.data.end
+        ? format(new Date(data.data.end), "yyyy-MM-dd")
+        : "",
       start: data.data.start ? format(new Date(data.data.start), "HH:mm") : "",
       end: data.data.end ? format(new Date(data.data.end), "HH:mm") : "",
       length: data.data.length || 0,
@@ -40,7 +43,7 @@ export default function AddShift({ data }: any) {
   function submit(data: any) {
     const shiftLength = (
       differenceInMinutes(
-        new Date(data.date + "T" + data.end),
+        new Date(data.endDate + "T" + data.end),
         new Date(data.date + "T" + data.start)
       ) / 60
     ).toFixed(2);
@@ -50,7 +53,7 @@ export default function AddShift({ data }: any) {
         variables: {
           id: id,
           start: new Date(data.date + "T" + data.start).toISOString(),
-          end: new Date(data.date + "T" + data.end).toISOString(),
+          end: new Date(data.endDate + "T" + data.end).toISOString(),
           employeeId: data.employee,
           positionId: data.position,
           length: shiftLength,
@@ -79,7 +82,7 @@ export default function AddShift({ data }: any) {
       variables: {
         object: {
           start: new Date(data.date + "T" + data.start).toISOString(),
-          end: new Date(data.date + "T" + data.end).toISOString(),
+          end: new Date(data.endDate + "T" + data.end).toISOString(),
           employeeId: data.employee,
           positionId: data.position,
           length: shiftLength,
@@ -273,10 +276,10 @@ export default function AddShift({ data }: any) {
 
             <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
               <label
-                htmlFor="email"
+                htmlFor="date"
                 className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
               >
-                Date
+                Start Date
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
                 <input
@@ -313,6 +316,29 @@ export default function AddShift({ data }: any) {
                 {formErrors.start && (
                   <span className="text-red-500 absolute top-11 left-5 bg-red-200/50 py-0.5 px-1 rounded-b-md text-xs">
                     {formErrors.start.message}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+              <label
+                htmlFor="endDate"
+                className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+              >
+                End Date
+              </label>
+              <div className="mt-2 sm:col-span-2 sm:mt-0 relative">
+                <input
+                  type="date"
+                  // style={inputStyles}
+                  className={`relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm ${
+                    formErrors.date && "shadow-red-300/50"
+                  }`}
+                  {...register("endDate", { required: true })}
+                />
+                {formErrors.endDate && (
+                  <span className="text-red-500 absolute top-10 left-5 bg-red-200/50 py-0.5 px-1 rounded-b-md text-xs">
+                    {formErrors.endDate.message}
                   </span>
                 )}
               </div>

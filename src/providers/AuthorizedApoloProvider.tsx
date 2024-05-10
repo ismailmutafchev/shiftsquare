@@ -4,7 +4,7 @@ import { setContext } from 'apollo-link-context';
 import { LoadingAnimation } from '../assets/AnimationComponents/AnimationComponents';
 
 const AuthorizedApolloProvider = ({ children }: { children: any }) => {
-    const { getAccessTokenSilently, isAuthenticated, isLoading } = useAuth0();
+    const { getAccessTokenSilently, isAuthenticated, isLoading  } = useAuth0();
 
     if (isLoading) {
         return <LoadingAnimation />;
@@ -32,6 +32,7 @@ const AuthorizedApolloProvider = ({ children }: { children: any }) => {
             cache: new InMemoryCache(),
             connectToDevTools: true
         });
+
         return (
             <ApolloProvider client={apolloClient}>
                 {children}

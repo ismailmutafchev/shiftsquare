@@ -30,12 +30,13 @@ import {
   ChevronDownIcon,
   DocumentDuplicateIcon,
   ExclamationTriangleIcon,
+  PaperAirplaneIcon,
   PencilSquareIcon,
   PlusIcon,
   PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { deleteShiftById } from "../../../queries/shift/mutations";
+import { commitShiftsMany, deleteShiftById } from "../../../queries/shift/mutations";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import Datepicker from "../../../components/Datepicker";
 import jsPDF from "jspdf";
@@ -45,6 +46,7 @@ import AddShift from "../components/ShiftModal";
 import { CopyWeekModal } from "../components/CopyWeekModal";
 import { useCalendar } from "../../../hooks/calendar";
 import { useToast } from "../../../hooks/toast";
+import { useSession } from "../../../hooks/session";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -73,6 +75,13 @@ export default function DayView({
   const toast = useToast(4000);
 
   const { data, loading, error: dataError } = useCalendar();
+  const { permissions, profile } = useSession();
+
+  console.log(profile)
+
+  const allowedToEdit =
+    permissions.includes("admin") ||
+    permissions.includes("manager");
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -94,10 +103,33 @@ export default function DayView({
     ],
     onCompleted: () => {
       toast("success", "Shift deleted successfully");
-    }
+    },
+  });
+
+  const [commitShfts] = useMutation(commitShiftsMany, {
+    variables: {
+      start: startOfDay(selectedDay),
+      end: endOfDay(selectedDay),
+      organizationId: "1",
+    },
+    onCompleted: () => {
+      toast("success", "Rota committed successfully");
+    },
   });
 
   const { isLoading, error } = useAuth0();
+
+ function submit(){
+    commitShfts(
+      {
+        variables: {
+          start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
+          end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
+          organizationId: profile?.organizationId,
+        },
+      }
+    );
+ }
 
   if (error || dataError) {
     return <div>Oops... {dataError?.message}</div>;
@@ -124,19 +156,24 @@ export default function DayView({
     setShowCopyModal(state);
   }
 
-  const downloadPdf = () => {
+  const openPdf = () => {
     const capture = document.querySelector(".rota-print");
-    const doc = new jsPDF("portrait", "px", [2480, 3508], true);
+    const doc = new jsPDF("portrait", "px", [2480, 3510], true);
     doc.html(capture as HTMLElement, {
       callback: function (doc) {
-        doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+        // doc.save(`Rota ${format(selectedDay, "d MMMM yyyy")}.pdf`);
+        // Get the blob URL of the PDF content
+        const blob = doc.output("bloburl");
+
+        // Open the blob URL in a new tab
+        window.open(blob, "_blank");
       },
     });
   };
 
   return (
     <div className="flex flex-col">
-      <RotaPrint date={selectedDay} />
+      {allowedToEdit && <RotaPrint date={selectedDay} />}
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
           <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
@@ -147,9 +184,22 @@ export default function DayView({
           </p>
         </div>
         <div className="flex items-center space-x-2">
+        <button
+            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+              allowedToEdit ? "" : "hidden"
+            }`}
+            onClick={submit}
+          >
+            <p>
+              Commit Rota
+            </p>
+            <PaperAirplaneIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+          </button>
           <button
-            className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
-            onClick={downloadPdf}
+            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+              allowedToEdit ? "" : "hidden"
+            }`}
+            onClick={openPdf}
           >
             <p>
               Print <span className="text-red-500 text-xs">PDF</span>
@@ -157,7 +207,9 @@ export default function DayView({
             <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
-            className="inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300"
+            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+              allowedToEdit ? "" : "hidden"
+            }`}
             onClick={() => {
               setShowCopyModal(true);
             }}
@@ -168,6 +220,21 @@ export default function DayView({
               aria-hidden="true"
             />
           </button>
+          <div className="hidden md:ml-4 md:flex md:items-center">
+            <div className="ml-6 h-6 w-px bg-gray-300" />
+            <button
+              onClick={() => {
+                setShowModal(true), setUpdate({ isUpdate: false, data: {} });
+              }}
+              type="button"
+              className={`inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90 ${
+                allowedToEdit ? "" : "hidden"
+              }`}
+            >
+              <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
+              Add Shift
+            </button>
+          </div>
           <div className="relative flex items-center rounded-md bg-white shadow-sm md:items-stretch">
             <div
               className="pointer-events-none absolute inset-0 rounded-md ring-1 ring-inset ring-gray-300"
@@ -225,19 +292,7 @@ export default function DayView({
               See Today
             </button>
           </div>
-          <div className="hidden md:ml-4 md:flex md:items-center">
-            <div className="ml-6 h-6 w-px bg-gray-300" />
-            <button
-              onClick={() => {
-                setShowModal(true), setUpdate({ isUpdate: false, data: {} });
-              }}
-              type="button"
-              className="inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
-            >
-              <PlusIcon className="-ml-0.5 mr-2 h-4 w-4" aria-hidden="true" />
-              Add Shift
-            </button>
-          </div>
+
           <div className="hidden md:ml-4 md:flex md:items-center ">
             <div className="top-16 w-56 text-right z-10">
               <Menu as="div" className="relative inline-block text-left">
@@ -298,7 +353,7 @@ export default function DayView({
         <div className=" overflow-y-scroll overflow-scroll bg-white flex items-center justify-center ">
           <div
             ref={container}
-            className="flex flex-auto flex-col overflow-auto"
+            className="flex flex-auto flex-col overflow-clip"
           >
             <div
               ref={containerNav}
@@ -323,7 +378,8 @@ export default function DayView({
                         ? "bg-white"
                         : "bg-gray-50",
                       (isToday(day) || isSelected) && "font-semibold",
-                      isSelected && "font-semibold text-polar-600",
+                      isSelected &&
+                        "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
                       !isSelected &&
                         isSameMonth(day, selectedMonth) &&
                         !isToday(day) &&
@@ -347,7 +403,7 @@ export default function DayView({
                 );
               })}
             </div>
-            <div className="flex w-full flex-auto h-full items-center justify-center">
+            <div className="flex w-full flex-auto h-full items-center justify-center overflow-scroll">
               <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
                 <div
@@ -369,7 +425,7 @@ export default function DayView({
                 {/* Events */}
                 {data && data.shift.length !== 0 ? (
                   <ol
-                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full"
+                    className="col-start-1 col-end-4 row-start-1 grid grid-cols-12 w-full pt-12"
                     style={{
                       gridTemplateColumns:
                         "0 repeat(288, minmax(0.3rem, 1fr)) auto",
@@ -383,16 +439,24 @@ export default function DayView({
                     {data?.shift.map((shift: any) => {
                       const startTimeStr = shift.start;
                       const finishTimeStr = shift.end;
+                      const shiftStartToday =
+                        new Date(startTimeStr) > startOfDay(selectedDay);
+                      const shiftEndToday =
+                        new Date(finishTimeStr) < endOfDay(selectedDay);
 
                       let startHour = getHours(new Date(startTimeStr)) * 12;
                       let startMinute = getMinutes(new Date(startTimeStr)) / 5;
 
-                      const startNumber = startHour + startMinute + 2;
+                      const startNumber = shiftStartToday
+                        ? startHour + startMinute + 2
+                        : 2;
 
                       let endHour = getHours(new Date(finishTimeStr)) * 12;
                       let endMinute = getMinutes(new Date(finishTimeStr)) / 5;
 
-                      const endNumber = endHour + endMinute + 2 - startNumber;
+                      const endNumber = shiftEndToday
+                        ? endHour + endMinute + 2 - startNumber
+                        : 288 - startNumber;
                       return (
                         <Popover
                           key={shift.id}
@@ -410,6 +474,12 @@ export default function DayView({
                                   border:
                                     `1px solid ${shift.position.bgColor}` +
                                     "50",
+                                  borderRadius:
+                                    shiftEndToday && shiftStartToday
+                                      ? "0.5rem"
+                                      : shiftStartToday
+                                      ? "0.5rem 0 0 0.5rem"
+                                      : "0 0.5rem 0.5rem 0",
                                 }}
                                 className="group no-scrollbar min-h-8 justify-center w-full inset-1 flex flex-col rounded-lg p-1 text-xs max-h-16 overflow-scroll"
                               >
@@ -524,6 +594,7 @@ export default function DayView({
                 ) : (
                   <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 absolute flex items-center justify-center top-1/3 left-1/2 -translate-x-1/2">
                     <EmptyState
+                      showCreate={allowedToEdit}
                       title="Shift"
                       handler={() => setShowModal(true)}
                     />

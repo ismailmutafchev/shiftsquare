@@ -154,7 +154,7 @@ export default function Dashboard() {
     totalShifts.shift
       .map((shift: any) => {
         return {
-          total: shift?.employee?.payRate * shift?.length,
+          total: Number(shift?.employee?.payDetails?.payRate) * shift?.length,
           name: shift?.employee?.firstName,
         };
       })
@@ -245,7 +245,7 @@ export default function Dashboard() {
       color: "bg-red-200",
       iconColor: "bg-red-400",
       additionalInfo: "10% above average",
-      icon: <UserGroupIcon className="h-10 w-10 text-white" />,
+      icon: <UserGroupIcon className="h-7 w-7 text-white" />,
     },
     {
       id: 2,
@@ -254,7 +254,7 @@ export default function Dashboard() {
       color: "bg-yellow-200",
       iconColor: "bg-yellow-400",
       additionalInfo: "from 340 ",
-      icon: <CalendarDaysIcon className="h-10 w-10 text-white" />,
+      icon: <CalendarDaysIcon className="h-7 w-7 text-white" />,
     },
     {
       id: 3,
@@ -263,7 +263,7 @@ export default function Dashboard() {
       color: "bg-blue-200",
       iconColor: "bg-blue-400",
       additionalInfo: "Selected range",
-      icon: <BanknotesIcon className="h-10 w-10 text-white" />,
+      icon: <BanknotesIcon className="h-7 w-7 text-white" />,
     },
     {
       id: 4,
@@ -273,7 +273,7 @@ export default function Dashboard() {
       color: "bg-purple-200",
       iconColor: "bg-purple-400",
       additionalInfo: "This week",
-      icon: <BanknotesIcon className="h-10 w-10 text-white" />,
+      icon: <BanknotesIcon className="h-7 w-7 text-white" />,
     },
   ];
 
@@ -393,8 +393,8 @@ export default function Dashboard() {
       lastWeekHoursLoading ? (
         <LoadingAnimation />
       ) : (
-        <div className="grid grid-cols-4 grid-rows-3 items-center justify-center mt-10 gap-x-7 gap-y-7">
-          <div className="max-h-60 row-span-1 col-span-4 p-5 rounded-xl h-full bg-gradient-to-r from-purple-heart-50 to-jagged-ice-100 shadow-lg">
+        <div className="grid grid-cols-4 grid-rows-3 items-center justify-center mt-10 gap-x-5 gap-y-5">
+          <div className="max-h-60 row-span-1 col-span-4 p-5 rounded-xl h-full bg-gradient-to-r from-purple-heart-50 to-jagged-ice-100">
             <ResponsiveContainer width="100%" height="100%">
               <AreaChart
                 width={500}
@@ -432,22 +432,22 @@ export default function Dashboard() {
             return (
               <div
                 key={block.id}
-                className={`p-6 max-h-60 min-w-auto h-full flex flex-col items-start col-span-4 no-scrollbar md:col-span-1 justify-between rounded-2xl shadow-lg ${block.color}`}
+                className={`p-6 max-h-60 min-w-auto h-full flex flex-col items-start col-span-4 no-scrollbar md:col-span-1 justify-between rounded-xl ${block.color}`}
               >
                 <div className={`${block.iconColor} p-2 rounded-md`}>
                   {block.icon}
                 </div>
-                <p className="text-black font-bold text-4xl">{block.value} </p>
-                <p className="text-black font-normal text-xl">{block.title}</p>
+                <p className="text-black font-bold text-2xl">{block.value} </p>
+                <p className="text-black font-normal text-lg">{block.title}</p>
                 <p className="text-blue-500 font-normal text-sm">
                   {block.additionalInfo}
                 </p>
               </div>
             );
           })}
-          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-2xl bg-gradient-to-r from-orange-50 to-yellow-100 shadow-lg">
-            <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
-              <h1 className="text-2xl font-bold text-polar-700/80">
+          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-xl bg-gradient-to-r from-orange-50 to-yellow-100">
+            <div className="flex flex-col space-y-4 px-5 pt-3 h-full overflow-x-scroll no-scrollbar">
+              <h1 className="text-xl font-semibold text-gray-900">
                 Hours by Employee
               </h1>
               <div className="flex items-start no-scrollbar flex-col">
@@ -470,14 +470,14 @@ export default function Dashboard() {
                           }}
                         ></div>
                         <p
-                          className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                          className={`text-base text-gray-700 transition duration-100`}
                         >
                           {shift?.employee?.firstName}{" "}
                           {shift?.employee?.lastName}
                         </p>
                       </div>
                       <p
-                        className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                        className={`text-base text-gray-700 transition duration-100`}
                       >
                         {shift?.employee?.shift_aggregate.aggregate.sum.length}
                       </p>
@@ -522,9 +522,9 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-2xl bg-gradient-to-r from-pink-50 to-indigo-100 overflow-scroll shadow-lg">
-            <div className="flex flex-col space-y-10 pl-5 h-full overflow-x-scroll">
-              <h1 className="text-2xl font-bold text-polar-700/80">
+          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-xl bg-gradient-to-r from-pink-50 to-indigo-50 overflow-scroll">
+            <div className="flex flex-col space-y-4 px-5 pt-3 h-full overflow-x-scroll no-scrollbar">
+              <h1 className="text-xl font-semibold text-gray-900">
                 Hours by Position
               </h1>
               {(hoursByPosition && hoursByPosition.shift && (
@@ -552,13 +552,13 @@ export default function Dashboard() {
                             }}
                           ></div>
                           <p
-                            className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                            className={` text-gray-700 transition duration-100`}
                           >
                             {shift?.position?.name}
                           </p>
                         </div>
                         <p
-                          className={`text-lg font-semibold text-polar-700/80 transition duration-100`}
+                          className={` text-gray-700 transition duration-100`}
                         >
                           {
                             shift?.position?.shift_aggregate?.aggregate?.sum
