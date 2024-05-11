@@ -64,15 +64,12 @@ export default function Navigation({
 
   const pendingLeaveRequests = data?.leave;
 
-  console.log(pendingLeaveRequests, notReadRequests);
-
   useEffect(
     () => {
       if (pendingLeaveRequests) {
         const notRead = pendingLeaveRequests.filter(
           (leave: any) => !leave.readBy.includes(profile?.id)
         );
-        console.log(notRead);
         setNotReadRequests(notRead);
       }
     },

@@ -77,8 +77,6 @@ export default function DayView({
   const { data, loading, error: dataError } = useCalendar();
   const { permissions, profile } = useSession();
 
-  console.log(profile)
-
   const allowedToEdit =
     permissions.includes("admin") ||
     permissions.includes("manager");

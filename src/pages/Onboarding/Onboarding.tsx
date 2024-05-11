@@ -226,7 +226,6 @@ export default function Onboarding() {
         pagination={{
           type: "progressbar",
           renderProgressbar(progressbarFillClass) {
-            console.log(progressbarFillClass);
             return `<span class="border-2 border-polar-500  ${progressbarFillClass}"></span>`;
           },
 
