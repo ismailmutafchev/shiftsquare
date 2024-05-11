@@ -29,7 +29,7 @@ export default function Request() {
   });
 
   useEffect(() => {
-    updateLeave();
+    readBy !== undefined && readBy.length && updateLeave();
   }
   // eslint-disable-next-line
   ,[data]);
