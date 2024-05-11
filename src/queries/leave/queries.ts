@@ -11,6 +11,11 @@ export const getLeaveOne = gql`
       type
       status
       readBy
+      user {
+        id
+        firstName 
+        lastName
+      }
     }
   }
   ${LeaveFragment}
@@ -42,6 +47,26 @@ export const getPendingLeave = gql`
   ${LeaveFragment}
   query GetPendingLeave {
     leave(where: {status: {_eq: "pending"}}) {
+      id 
+      start
+      end
+      details
+      type
+      status
+      readBy
+      user {
+        id
+        firstName 
+        lastName
+      }
+    }
+  }
+`
+
+export const getApprovedLeave = gql`
+  ${LeaveFragment}
+  query GetApprovedLeave {
+    leave(where: {status: {_eq: "approved"}}) {
       id 
       start
       end
