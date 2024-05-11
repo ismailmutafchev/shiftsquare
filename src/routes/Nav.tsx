@@ -672,7 +672,13 @@ function RequestSlideOver({ data }: { data: any }) {
     { name: "Pending", current: false },
     { name: "Aproved", current: false },
   ]);
-  
+
+  const [openModal, setOpenModal] = useState(false);
+
+  function setOpenModalHandler(state: boolean) {
+    setOpenModal(state);
+  }
+
   const currentTabHandler = (tabName: string) => {
     setTabs(
       tabs.map((tab) => {
@@ -681,26 +687,26 @@ function RequestSlideOver({ data }: { data: any }) {
       })
     );
   };
-  const newRequests = data?.data.filter((request: any) =>
-    !request.readBy.includes(profile.id)
+  const newRequests = data?.data.filter(
+    (request: any) => !request.readBy.includes(profile.id)
   );
 
-  const pendingRequests = data?.data 
+  const pendingRequests = data?.data;
 
-  const approvedRequests = data?.data.filter((request: any) =>
-    request.status === "approved"
-  ); 
+  const approvedRequests = data?.data.filter(
+    (request: any) => request.status === "approved"
+  );
 
   const displayRequestsHandler = (tabName: string | undefined) => {
     if (tabName === "New") return newRequests;
     if (tabName === "Pending") return pendingRequests;
     if (tabName === "Approved") return approvedRequests;
-  }
+  };
 
-  console.log(data?.data);
+  const displayRequests = displayRequestsHandler(
+    tabs.find((tab) => tab.current)?.name
+  );
 
-  const displayRequests = displayRequestsHandler(tabs.find((tab) => tab.current)?.name);
-  
   return (
     <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
       <div className="p-6">
@@ -748,99 +754,108 @@ function RequestSlideOver({ data }: { data: any }) {
         role="list"
         className="flex-1 divide-y divide-gray-200 overflow-y-auto"
       >
-        {displayRequests ? displayRequests.map((request: any) => (
-          <li key={request.id}>
-            <div className="group relative flex items-center px-5 py-6">
-              <a href={request.href} className="-m-1 block flex-1 p-1">
-                <div
-                  className="absolute inset-0 group-hover:bg-gray-50"
-                  aria-hidden="true"
-                />
-                <div className="relative flex min-w-0 flex-1 items-center">
-                  <Avatar
-                    size={10}
-                    firstName={request.user.firstName}
-                    lastName={request.user.lastName}
-                    className={request.user.bgColor}
-                    imageUrl={request.user.picture}
+        {displayRequests ? (
+          displayRequests.map((request: any) => (
+            <li key={request.id}>
+              <div className="group relative flex items-center px-5 py-6">
+                <a href={request.href} className="-m-1 block flex-1 p-1">
+                  <div
+                    className="absolute inset-0 group-hover:bg-gray-50"
+                    aria-hidden="true"
                   />
-                  <div className="ml-4 truncate">
-                    <p className="truncate text-sm font-medium text-gray-900">
-                      {request.user.firstName} {request.user.lastName}
-                    </p>
-                    <p className="truncate text-sm text-gray-500">
-                      {"Requested " + request.type + " for the period "}
-                    </p>
-                    <p className="truncate text-sm text-gray-500">
-                      {format(new Date(request.start), "dd MMM yyyy") +
-                        " - " +
-                        format(new Date(request.end), "dd MMM yyyy")}
-                    </p>
-                  </div>
-                </div>
-              </a>
-              <Menu
-                as="div"
-                className="relative ml-2 inline-block flex-shrink-0 text-left"
-              >
-                <Menu.Button className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
-                  <span className="absolute -inset-1.5" />
-                  <span className="sr-only">Open options menu</span>
-                  <span className="flex h-full w-full items-center justify-center rounded-full">
-                    <EllipsisVerticalIcon
-                      className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
-                      aria-hidden="true"
+                  <div className="relative flex min-w-0 flex-1 items-center">
+                    <Avatar
+                      size={10}
+                      firstName={request.user.firstName}
+                      lastName={request.user.lastName}
+                      className={request.user.bgColor}
+                      imageUrl={request.user.picture}
                     />
-                  </span>
-                </Menu.Button>
-                <Transition
-                  as={Fragment}
-                  enter="transition ease-out duration-100"
-                  enterFrom="transform opacity-0 scale-95"
-                  enterTo="transform opacity-100 scale-100"
-                  leave="transition ease-in duration-75"
-                  leaveFrom="transform opacity-100 scale-100"
-                  leaveTo="transform opacity-0 scale-95"
-                >
-                  <Menu.Items className="absolute right-9 top-0 z-10 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                    <div className="py-1">
-                      <Menu.Item>
-                        {({ active }) => (
-                          <Link
-                            to={`/employees/${request.user.id}`}
-                            className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-2 text-sm"
-                            )}
-                          >
-                            View Profile
-                          </Link>
-                        )}
-                      </Menu.Item>
-                      <Menu.Item>
-                        {({ active }) => (
-                          <a
-                            href="#"
-                            className={classNames(
-                              active
-                                ? "bg-gray-100 text-gray-900"
-                                : "text-gray-700",
-                              "block px-4 py-2 text-sm"
-                            )}
-                          >
-                            Send message
-                          </a>
-                        )}
-                      </Menu.Item>
+                    <div className="ml-4 truncate">
+                      <p className="truncate text-sm font-medium text-gray-900">
+                        {request.user.firstName} {request.user.lastName}
+                      </p>
+                      <p className="truncate text-sm text-gray-500">
+                        {"Requested " + request.type + " for the period "}
+                      </p>
+                      <p className="truncate text-sm text-gray-500">
+                        {format(new Date(request.start), "dd MMM yyyy") +
+                          " - " +
+                          format(new Date(request.end), "dd MMM yyyy")}
+                      </p>
                     </div>
-                  </Menu.Items>
-                </Transition>
-              </Menu>
-            </div>
-          </li>
-        )) : (
+                  </div>
+                </a>
+                <Menu
+                  as="div"
+                  className="relative ml-2 inline-block flex-shrink-0 text-left"
+                >
+                  <Menu.Button className="group relative inline-flex h-8 w-8 items-center justify-center rounded-full bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                    <span className="absolute -inset-1.5" />
+                    <span className="sr-only">Open options menu</span>
+                    <span className="flex h-full w-full items-center justify-center rounded-full">
+                      <EllipsisVerticalIcon
+                        className="h-5 w-5 text-gray-400 group-hover:text-gray-500"
+                        aria-hidden="true"
+                      />
+                    </span>
+                  </Menu.Button>
+                  <Transition
+                    as={Fragment}
+                    enter="transition ease-out duration-100"
+                    enterFrom="transform opacity-0 scale-95"
+                    enterTo="transform opacity-100 scale-100"
+                    leave="transition ease-in duration-75"
+                    leaveFrom="transform opacity-100 scale-100"
+                    leaveTo="transform opacity-0 scale-95"
+                  >
+                    <Menu.Items className="absolute right-9 top-0 z-10 w-48 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                      <div className="py-1">
+                        <Menu.Item>
+                          {({ active }) => (
+                            <Link
+                              to={`/employees/${request.user.id}`}
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm"
+                              )}
+                            >
+                              View Profile
+                            </Link>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              onClick={() => setOpenModalHandler(true)}
+                              className={classNames(
+                                active
+                                  ? "bg-gray-100 text-gray-900"
+                                  : "text-gray-700",
+                                "block px-4 py-2 text-sm"
+                              )}
+                            >
+                              View Request
+                            </button>
+                          )}
+                        </Menu.Item>
+                      </div>
+                    </Menu.Items>
+                  </Transition>
+                </Menu>
+              </div>
+              <Modal
+                open={openModal}
+                children={RequestPreview}
+                data={request}
+                setOpen={setOpenModalHandler}
+                title="Leave Request"
+              />
+            </li>
+          ))
+        ) : (
           <li>
             <div className="group relative flex items-center px-5 py-6">
               <div className="relative flex min-w-0 flex-1 items-center">
@@ -855,5 +870,83 @@ function RequestSlideOver({ data }: { data: any }) {
         )}
       </ul>
     </div>
+  );
+}
+
+function RequestPreview({ data }: { data: any }) {
+  return (
+    <div className="flex-grow flex-shrink-0 flex items-center">
+      <div className="flex-1 min-w-0">
+        <div className="p-6">
+          <div className="flex items-start justify-between">
+            <Dialog.Title className="text-base font-semibold leading-6 text-gray-900">
+              Leave Request
+            </Dialog.Title>
+            <div className="ml-3 flex h-7 items-center">
+              <button
+                type="button"
+                className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-indigo-500"
+              >
+                <span className="absolute -inset-2.5" />
+                <span className="sr-only">Close panel</span>
+                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              </button>
+            </div>
+          </div>
+          <div className="mt-6">
+            <div className="sm:grid sm:grid-cols-2 sm:gap-6">
+              <div className="sm:col-span-2">
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  From
+                </label>
+                <div className="mt-1 flex rounded-md shadow-sm">
+                  <input
+                    type="date"
+                    className="w-full p-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                    value={format(new Date(data.start), "yyyy-MM-dd")}
+                    disabled
+                  />
+                </div>
+              </div>
+              <div className="sm:grid sm:grid-rows-2 sm:items-start sm:py-2">
+                <label
+                  htmlFor="email"
+                  className="row-span-1 block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5"
+                >
+                  To
+                </label>
+                <div className="mt-2 sm:col-span-2 sm:mt-0">
+                  <input
+                    type="date"
+                    className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                    value={format(new Date(data.end), "yyyy-MM-dd")}
+                    disabled
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="mt-6">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium leading-6 text-gray-900"
+              >
+                Reason
+              </label>
+              <div className="mt-1 flex rounded-md shadow-sm">
+                <textarea
+                  className="w-full p-2 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  value={data.message}
+                  disabled
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   );
 }
