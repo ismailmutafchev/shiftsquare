@@ -93,7 +93,6 @@ export default function Profile() {
               {tabs.map((tab) => (
                 <a
                   key={tab.name}
-                  href={tab.href}
                   className={classNames(
                     tab.current
                       ? "border-polar-500 text-polar-600"
