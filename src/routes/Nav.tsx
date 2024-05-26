@@ -25,9 +25,10 @@ import Modal from "../components/Modal";
 import Fuse from "fuse.js";
 import { useSession } from "../hooks/session";
 import { getApprovedLeave, getPendingLeave } from "../queries/leave/queries";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Slideover from "../components/SlideOver";
 import { format } from "date-fns";
+import { updateReadStatus } from "../queries/leave/mutations";
 const SearchOptions = {
   shouldSort: true,
   threshold: 0.4,
@@ -556,7 +557,7 @@ export default function Navigation({
               open={slideOverOpen}
               setOpen={openSlideOverHandler}
               setClose={closeSlideOverHandler}
-              children={RequestSlideOver}
+              children={RequestsSlideOver}
               data={pendingLeaveRequests?.concat(approvedLeaveRequests)}
             />
           </div>
@@ -663,7 +664,7 @@ function SearchInput({ data }: { data: any }) {
   );
 }
 
-function RequestSlideOver({ data }: { data: any }) {
+function RequestsSlideOver({ data }: { data: any }) {
   const { setOpen } = data;
   const { profile } = useSession();
 
@@ -673,10 +674,13 @@ function RequestSlideOver({ data }: { data: any }) {
     { name: "Aproved", current: false },
   ]);
 
-  const [openModal, setOpenModal] = useState(false);
+  const [requestPreview, setRequestPreview] = useState({
+    modalOpen: false,
+    data: {},
+  });
 
   function setOpenModalHandler(state: boolean) {
-    setOpenModal(state);
+    setRequestPreview({ modalOpen: state, data: requestPreview.data });
   }
 
   const currentTabHandler = (tabName: string) => {
@@ -829,7 +833,12 @@ function RequestSlideOver({ data }: { data: any }) {
                         <Menu.Item>
                           {({ active }) => (
                             <button
-                              onClick={() => setOpenModalHandler(true)}
+                              onClick={() => {
+                                setRequestPreview({
+                                  modalOpen: true,
+                                  data: request,
+                                });
+                              }}
                               className={classNames(
                                 active
                                   ? "bg-gray-100 text-gray-900"
@@ -847,9 +856,9 @@ function RequestSlideOver({ data }: { data: any }) {
                 </Menu>
               </div>
               <Modal
-                open={openModal}
+                open={requestPreview.modalOpen}
                 children={RequestPreview}
-                data={request}
+                data={requestPreview.data}
                 setOpen={setOpenModalHandler}
                 title="Leave Request"
               />
@@ -869,11 +878,39 @@ function RequestSlideOver({ data }: { data: any }) {
           </li>
         )}
       </ul>
+      <Modal
+        open={requestPreview.modalOpen}
+        children={RequestPreview}
+        data={requestPreview.data}
+        setOpen={setOpenModalHandler}
+        title="Leave Request"
+      />
     </div>
   );
 }
 
 function RequestPreview({ data }: { data: any }) {
+  const { profile } = useSession();
+  const { id } = data;
+  const readBy =
+    (data && !data.readBy.includes(profile.id) && data.readBy) || [];
+
+  const [updateLeave] = useMutation(updateReadStatus, {
+    variables: {
+      id: id,
+      readBy: [...readBy, profile.id],
+    },
+    refetchQueries: [{ query: getPendingLeave }],
+  });
+
+  useEffect(
+    () => {
+      readBy !== undefined && updateLeave();
+    },
+    // eslint-disable-next-line
+    [data]
+  );
+
   return (
     <div className="flex-grow flex-shrink-0 flex items-center">
       <div className="flex-1 min-w-0">
@@ -947,6 +984,5 @@ function RequestPreview({ data }: { data: any }) {
         </div>
       </div>
     </div>
-
   );
 }
