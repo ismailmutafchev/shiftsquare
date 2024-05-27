@@ -1,10 +1,11 @@
 import { CalendarProvider } from "./provider/CalendarProvider";
-import DayView from "./components/DayView";
+// import DayView from "./components/DayView"; <<-- This is the original working component 
 import { getShifts } from "../../queries/shift/queries";
 import { endOfDay, startOfDay } from "date-fns";
 import { useState } from "react";
 import { ToastProvider } from "../../providers/ToastProvider/ToastContext";
 import ToastContainer from "../../providers/ToastProvider/ToastContainer";
+import DayViewDraggable from "./components/DayViewDragable";
 
 export default function Calendar() {
   const [selectedDay, setSelectedDay] = useState(new Date());
@@ -21,7 +22,7 @@ export default function Calendar() {
           end: endOfDay(selectedDay),
         }}
       >
-        <DayView
+        <DayViewDraggable
           selectedDayHandler={selectedDayHandler}
           selectedDay={selectedDay}
         />
