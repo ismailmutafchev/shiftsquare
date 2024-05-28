@@ -2,6 +2,7 @@ import { Fragment, useRef } from "react";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/20/solid";
 import {
   addDays,
+  addHours,
   addMonths,
   eachDayOfInterval,
   eachMinuteOfInterval,
@@ -36,7 +37,10 @@ import {
   PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { commitShiftsMany, deleteShiftById } from "../../../queries/shift/mutations";
+import {
+  commitShiftsMany,
+  deleteShiftById,
+} from "../../../queries/shift/mutations";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import Datepicker from "../../../components/Datepicker";
 import jsPDF from "jspdf";
@@ -71,6 +75,7 @@ export default function DayViewDraggable({
     isUpdate: false,
     data: {},
   });
+  const [plusIconView, setPlusIconView] = useState<string | null>(null);
 
   const toast = useToast(4000);
 
@@ -78,8 +83,7 @@ export default function DayViewDraggable({
   const { permissions, profile } = useSession();
 
   const allowedToEdit =
-    permissions.includes("admin") ||
-    permissions.includes("manager");
+    permissions.includes("admin") || permissions.includes("manager");
 
   const days = eachDayOfInterval({
     start: new Date(
@@ -117,17 +121,15 @@ export default function DayViewDraggable({
 
   const { isLoading, error } = useAuth0();
 
- function submit(){
-    commitShfts(
-      {
-        variables: {
-          start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
-          end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
-          organizationId: profile?.organizationId,
-        },
-      }
-    );
- }
+  function submit() {
+    commitShfts({
+      variables: {
+        start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
+        end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
+        organizationId: profile?.organizationId,
+      },
+    });
+  }
 
   if (error || dataError) {
     return <div>Oops... {dataError?.message}</div>;
@@ -182,15 +184,13 @@ export default function DayViewDraggable({
           </p>
         </div>
         <div className="flex items-center space-x-2">
-        <button
+          <button
             className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={submit}
           >
-            <p>
-              Commit Rota
-            </p>
+            <p>Commit Rota</p>
             <PaperAirplaneIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
@@ -405,19 +405,38 @@ export default function DayViewDraggable({
               <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
                 <div
-                  className="row-start-1 col-start-1 grid divide-x divide-gray-100 h-full"
+                  className={classNames(
+                    "row-start-1 col-start-1 grid divide-x divide-gray-100 h-full"
+                  )}
                   style={{
                     gridTemplateColumns: "repeat(48, minmax(1.8rem, 1fr))",
                   }}
                 >
                   <div ref={containerOffset} className="col-end-1 h-7"></div>
                   {timeSlots.map((timeSlot, idx) => (
-                    <div key={timeSlot.toString() + idx} className="min-h-[80vh]" onClick={
-                        () => {
+                    <div
+                      key={timeSlot.toString() + idx}
+                      className="min-h-[80vh]"
+                      onClick={() => (
+                        setShowModal(true),
+                        setUpdate({
+                          isUpdate: false,
+                          data: { start: timeSlot, end: addHours(timeSlot, 8) },
+                        })
+                      )}
+                    >
+                      <div
+                        onMouseEnter={() =>
+                          setPlusIconView(timeSlot.toString())
                         }
-                    }>
-                      <div className="sticky w-10 items-center pl-0.5 bg-white border flex text-[10px] leading-5 text-gray-400">
-                        {format(timeSlot, "H:mm")}
+                        onMouseLeave={() => setPlusIconView(null)}
+                        className="sticky w-10 items-center pl-0.5 bg-white border flex text-[10px] leading-5 text-gray-400"
+                      >
+                        {plusIconView === timeSlot.toString() ? (
+                          <PlusIcon className="h-5 w-6 bg-polar-500 text-white rounded-sm cursor-pointer" />
+                        ) : (
+                          format(timeSlot, "H:mm")
+                        )}
                       </div>
                     </div>
                   ))}
@@ -593,14 +612,14 @@ export default function DayViewDraggable({
                     })}
                   </ol>
                 ) : (
-                    <></>
-                //   <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 absolute flex items-center justify-center top-1/3 left-1/2 -translate-x-1/2">
-                //     <EmptyState
-                //       showCreate={allowedToEdit}
-                //       title="Shift"
-                //       handler={() => setShowModal(true)}
-                //     />
-                //   </div>
+                  <></>
+                  //   <div className="bg-polar-50 rounded-lg p-10 border shadow-lg m-2 h-1/2 absolute flex items-center justify-center top-1/3 left-1/2 -translate-x-1/2">
+                  //     <EmptyState
+                  //       showCreate={allowedToEdit}
+                  //       title="Shift"
+                  //       handler={() => setShowModal(true)}
+                  //     />
+                  //   </div>
                 )}
               </div>
             </div>
