@@ -174,7 +174,7 @@ export default function DayView({
       {allowedToEdit && <RotaPrint date={selectedDay} />}
       <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
         <div>
-          <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
+          <h1 className="text-xs md:text-base font-poppins font-semibold leading-6 text-gray-900">
             {format(new Date(selectedDay), "d MMMM yyyy")}
           </h1>
           <p className="mt-1 text-sm text-gray-500">
@@ -183,7 +183,7 @@ export default function DayView({
         </div>
         <div className="flex items-center space-x-2">
         <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2 text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={submit}
@@ -194,7 +194,7 @@ export default function DayView({
             <PaperAirplaneIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2 text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={openPdf}
@@ -205,7 +205,7 @@ export default function DayView({
             <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2 text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={() => {
