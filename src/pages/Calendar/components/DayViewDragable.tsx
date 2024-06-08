@@ -93,6 +93,24 @@ export default function DayViewDraggable({
     end: new Date(endOfWeek(endOfMonth(selectedMonth), { weekStartsOn: 1 })),
   });
 
+  const weekDays = eachDayOfInterval({
+    start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
+    end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
+  });
+
+
+  const [weekSwiperArray, setWeekSwiperArray] = useState([
+    eachDayOfInterval({
+      start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+      end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+    }),
+    weekDays,
+    eachDayOfInterval({
+      start: startOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
+      end: endOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
+    }),
+  ]);
+
   const [deleteShift] = useMutation(deleteShiftById, {
     refetchQueries: [
       {
@@ -144,25 +162,6 @@ export default function DayViewDraggable({
     { step: 30 }
   );
 
-  const weekDays = eachDayOfInterval({
-    start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
-    end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
-  });
-
-  const [weekSwiperArray, setWeekSwiperArray] = useState([
-    eachDayOfInterval({
-      start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
-      end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
-    }),
-    weekDays,
-    eachDayOfInterval({
-      start: startOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
-      end: endOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
-    }),
-  ]);
-
-  console.log(weekSwiperArray);
-
   function modalHandler(state: boolean) {
     setShowModal(state);
   }
@@ -189,8 +188,8 @@ export default function DayViewDraggable({
   return (
     <div className="flex flex-col">
       {allowedToEdit && <RotaPrint date={selectedDay} />}
-      <header className="flex-col sm:flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
-        <div className="flex text-center justify-center items-baseline space-x-2">
+      <header className="sm:flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
+        <div className="flex text-center justify-center items-baseline space-x-2 md:flex-col">
           <h1 className="text-xs md:text-base font-poppins font-semibold leading-6 text-gray-900">
             {format(new Date(selectedDay), "d MMMM yyyy")}
           </h1>
@@ -370,6 +369,37 @@ export default function DayViewDraggable({
           >
             <Swiper
               ref={containerNav}
+                initialSlide={1}
+              onSlideNextTransitionEnd={() => {
+                // selectedDayHandler(addDays(selectedDay, 7));
+                setWeekSwiperArray([
+                  weekSwiperArray[1],
+                  weekSwiperArray[2],
+                  eachDayOfInterval({
+                    start: startOfWeek(addDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                    end: endOfWeek(addDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                  }),
+                ]);
+              }}
+              onSlidePrevTransitionEnd={() => {
+                // selectedDayHandler(subDays(selectedDay, 7));
+                setWeekSwiperArray([
+                  eachDayOfInterval({
+                    start: startOfWeek(subDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                    end: endOfWeek(subDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                  }),
+                  weekSwiperArray[0],
+                  weekSwiperArray[1],
+                ]);
+              }}
               className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
             >
               {/* Swiper slides */}

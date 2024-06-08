@@ -10,8 +10,6 @@ const profileJSON = localStorage.getItem("profile");
 const profile =
   profileJSON && profileJSON != "undefined" ? JSON.parse(profileJSON) : null;
 
-console.log(profile);
-
 let redudectUri =
   profile && profile.onboarded === true
     ? (import.meta.env.VITE_AUTH0_REDIRECT_URI as string)
