@@ -26,6 +26,7 @@ import { useAuth0 } from "@auth0/auth0-react";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
 import { getShifts } from "../../../queries/shift/queries";
 import { useMutation } from "@apollo/client";
+import { Swiper, SwiperSlide } from "swiper/react";
 import Modal from "../../../components/Modal";
 import {
   ChevronDownIcon,
@@ -92,6 +93,24 @@ export default function DayViewDraggable({
     end: new Date(endOfWeek(endOfMonth(selectedMonth), { weekStartsOn: 1 })),
   });
 
+  const weekDays = eachDayOfInterval({
+    start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
+    end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
+  });
+
+
+  const [weekSwiperArray, setWeekSwiperArray] = useState([
+    eachDayOfInterval({
+      start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+      end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+    }),
+    weekDays,
+    eachDayOfInterval({
+      start: startOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
+      end: endOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
+    }),
+  ]);
+
   const [deleteShift] = useMutation(deleteShiftById, {
     refetchQueries: [
       {
@@ -143,11 +162,6 @@ export default function DayViewDraggable({
     { step: 30 }
   );
 
-  const weekDays = eachDayOfInterval({
-    start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
-    end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
-  });
-
   function modalHandler(state: boolean) {
     setShowModal(state);
   }
@@ -174,18 +188,18 @@ export default function DayViewDraggable({
   return (
     <div className="flex flex-col">
       {allowedToEdit && <RotaPrint date={selectedDay} />}
-      <header className="flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
-        <div>
-          <h1 className="text-base font-poppins font-semibold leading-6 text-gray-900">
+      <header className="sm:flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
+        <div className="flex text-center justify-center items-baseline space-x-2 md:flex-col">
+          <h1 className="text-xs md:text-base font-poppins font-semibold leading-6 text-gray-900">
             {format(new Date(selectedDay), "d MMMM yyyy")}
           </h1>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-xs md:text-sm text-gray-500">
             {format(selectedDay, "iiii")}
           </p>
         </div>
         <div className="flex items-center space-x-2">
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={submit}
@@ -194,7 +208,7 @@ export default function DayViewDraggable({
             <PaperAirplaneIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={openPdf}
@@ -205,7 +219,7 @@ export default function DayViewDraggable({
             <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
           </button>
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={() => {
@@ -348,59 +362,141 @@ export default function DayViewDraggable({
           <LoadingAnimation />
         </div>
       ) : (
-        <div className=" overflow-y-scroll overflow-scroll bg-white flex items-center justify-center ">
+        <div className="overflow-y-scroll overflow-scroll bg-white flex items-center justify-center ">
           <div
             ref={container}
             className="flex flex-auto flex-col overflow-clip"
           >
-            <div
+            <Swiper
               ref={containerNav}
+                initialSlide={1}
+              onSlideNextTransitionEnd={() => {
+                // selectedDayHandler(addDays(selectedDay, 7));
+                setWeekSwiperArray([
+                  weekSwiperArray[1],
+                  weekSwiperArray[2],
+                  eachDayOfInterval({
+                    start: startOfWeek(addDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                    end: endOfWeek(addDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                  }),
+                ]);
+              }}
+              onSlidePrevTransitionEnd={() => {
+                // selectedDayHandler(subDays(selectedDay, 7));
+                setWeekSwiperArray([
+                  eachDayOfInterval({
+                    start: startOfWeek(subDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                    end: endOfWeek(subDays(selectedDay, 7), {
+                      weekStartsOn: 1,
+                    }),
+                  }),
+                  weekSwiperArray[0],
+                  weekSwiperArray[1],
+                ]);
+              }}
               className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
             >
-              {weekDays.map((day, idx) => {
-                const isSelected = selectedDay && isSameDay(selectedDay, day);
-                return (
-                  <button
-                    key={day.toDateString() + idx}
-                    onClick={() => {
-                      selectedDayHandler(day);
-                      setSelectedMonth(day);
-                      if (!isSameMonth(day, selectedMonth)) {
+              {/* Swiper slides */}
+              {weekSwiperArray.map((week, idx) => (
+                <SwiperSlide key={idx} className="grid grid-cols-7">
+                  {week.map((day, idx) => {
+                    const isSelected =
+                      selectedDay && isSameDay(selectedDay, day);
+                    return (
+                      <button
+                        key={day.toDateString() + idx}
+                        onClick={() => {
+                          selectedDayHandler(day);
+                          setSelectedMonth(day);
+                          if (!isSameMonth(day, selectedMonth)) {
+                            setSelectedMonth(day);
+                          }
+                        }}
+                        type="button"
+                        className={classNames(
+                          "py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center",
+                          isSameMonth(day, selectedMonth)
+                            ? "bg-white"
+                            : "bg-gray-50",
+                          (isToday(day) || isSelected) && "font-semibold",
+                          isSelected &&
+                            "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
+                          !isSelected &&
+                            isSameMonth(day, selectedMonth) &&
+                            !isToday(day) &&
+                            "text-gray-900",
+                          !isSelected &&
+                            !isSameMonth(day, selectedMonth) &&
+                            !isToday(day) &&
+                            "text-gray-400",
+                          isToday(day) && !isSelected && "text-polar-600",
+                          idx === 0 && "rounded-tl-lg",
+                          idx === 6 && "rounded-tr-lg",
+                          idx === days.length - 7 && "rounded-bl-lg",
+                          idx === days.length - 1 && "rounded-br-lg"
+                        )}
+                      >
+                        <span>{format(day, "E")}</span>
+                        <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
+                          {format(day, "dd")}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </SwiperSlide>
+              ))}
+              <SwiperSlide className="grid grid-cols-7">
+                {weekDays.map((day, idx) => {
+                  const isSelected = selectedDay && isSameDay(selectedDay, day);
+                  return (
+                    <button
+                      key={day.toDateString() + idx}
+                      onClick={() => {
+                        selectedDayHandler(day);
                         setSelectedMonth(day);
-                      }
-                    }}
-                    type="button"
-                    className={classNames(
-                      "py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center",
-                      isSameMonth(day, selectedMonth)
-                        ? "bg-white"
-                        : "bg-gray-50",
-                      (isToday(day) || isSelected) && "font-semibold",
-                      isSelected &&
-                        "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
-                      !isSelected &&
-                        isSameMonth(day, selectedMonth) &&
-                        !isToday(day) &&
-                        "text-gray-900",
-                      !isSelected &&
-                        !isSameMonth(day, selectedMonth) &&
-                        !isToday(day) &&
-                        "text-gray-400",
-                      isToday(day) && !isSelected && "text-polar-600",
-                      idx === 0 && "rounded-tl-lg",
-                      idx === 6 && "rounded-tr-lg",
-                      idx === days.length - 7 && "rounded-bl-lg",
-                      idx === days.length - 1 && "rounded-br-lg"
-                    )}
-                  >
-                    <span>{format(day, "E")}</span>
-                    <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
-                      {format(day, "dd")}
-                    </span>
-                  </button>
-                );
-              })}
-            </div>
+                        if (!isSameMonth(day, selectedMonth)) {
+                          setSelectedMonth(day);
+                        }
+                      }}
+                      type="button"
+                      className={classNames(
+                        "py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center",
+                        isSameMonth(day, selectedMonth)
+                          ? "bg-white"
+                          : "bg-gray-50",
+                        (isToday(day) || isSelected) && "font-semibold",
+                        isSelected &&
+                          "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
+                        !isSelected &&
+                          isSameMonth(day, selectedMonth) &&
+                          !isToday(day) &&
+                          "text-gray-900",
+                        !isSelected &&
+                          !isSameMonth(day, selectedMonth) &&
+                          !isToday(day) &&
+                          "text-gray-400",
+                        isToday(day) && !isSelected && "text-polar-600",
+                        idx === 0 && "rounded-tl-lg",
+                        idx === 6 && "rounded-tr-lg",
+                        idx === days.length - 7 && "rounded-bl-lg",
+                        idx === days.length - 1 && "rounded-br-lg"
+                      )}
+                    >
+                      <span>{format(day, "E")}</span>
+                      <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
+                        {format(day, "dd")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </SwiperSlide>
+            </Swiper>
             <div className="flex w-full flex-auto h-full items-center justify-center overflow-scroll">
               <div className="grid flex-row grid-cols-1 grid-rows-1">
                 {/* Vertical lines */}
