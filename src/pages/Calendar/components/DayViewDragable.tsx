@@ -93,10 +93,10 @@ export default function DayViewDraggable({
     end: new Date(endOfWeek(endOfMonth(selectedMonth), { weekStartsOn: 1 })),
   });
 
-  const prevWeek = eachDayOfInterval({
-    start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
-    end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
-  });
+  // const prevWeek = eachDayOfInterval({
+  //   start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+  //   end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+  // });
 
   const weekDays = eachDayOfInterval({
     start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
