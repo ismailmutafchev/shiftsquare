@@ -143,10 +143,10 @@ export const RotaPrint = ({ date }: { date: any }) => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-gray-200 bg-white">
-                      {positions?.map((position: any) => {
+                      {positions?.map((position: any, idx:number) => {
                         return (
                         <tr
-                          key={position.id}
+                          key={position?.id || idx}
                           className="divide-x divide-gray-200"
                         >
                           <td className={

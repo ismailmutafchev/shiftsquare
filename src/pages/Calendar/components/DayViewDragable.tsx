@@ -93,23 +93,20 @@ export default function DayViewDraggable({
     end: new Date(endOfWeek(endOfMonth(selectedMonth), { weekStartsOn: 1 })),
   });
 
+  // const prevWeek = eachDayOfInterval({
+  //   start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+  //   end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+  // });
+
   const weekDays = eachDayOfInterval({
     start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
     end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
   });
 
-
-  const [weekSwiperArray, setWeekSwiperArray] = useState([
-    eachDayOfInterval({
-      start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
-      end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
-    }),
-    weekDays,
-    eachDayOfInterval({
-      start: startOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
-      end: endOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
-    }),
-  ]);
+  const nextWeek = eachDayOfInterval({
+    start: startOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
+    end: endOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
+  });
 
   const [deleteShift] = useMutation(deleteShiftById, {
     refetchQueries: [
@@ -369,90 +366,65 @@ export default function DayViewDraggable({
           >
             <Swiper
               ref={containerNav}
-                initialSlide={1}
               onSlideNextTransitionEnd={() => {
+                selectedDayHandler(addDays(selectedDay, 7));
                 // selectedDayHandler(addDays(selectedDay, 7));
-                setWeekSwiperArray([
-                  weekSwiperArray[1],
-                  weekSwiperArray[2],
-                  eachDayOfInterval({
-                    start: startOfWeek(addDays(selectedDay, 7), {
-                      weekStartsOn: 1,
-                    }),
-                    end: endOfWeek(addDays(selectedDay, 7), {
-                      weekStartsOn: 1,
-                    }),
-                  }),
-                ]);
               }}
               onSlidePrevTransitionEnd={() => {
-                // selectedDayHandler(subDays(selectedDay, 7));
-                setWeekSwiperArray([
-                  eachDayOfInterval({
-                    start: startOfWeek(subDays(selectedDay, 7), {
-                      weekStartsOn: 1,
-                    }),
-                    end: endOfWeek(subDays(selectedDay, 7), {
-                      weekStartsOn: 1,
-                    }),
-                  }),
-                  weekSwiperArray[0],
-                  weekSwiperArray[1],
-                ]);
+                console.log("prev");
+                selectedDayHandler(subDays(selectedDay, 7));
               }}
               className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
             >
               {/* Swiper slides */}
-              {weekSwiperArray.map((week, idx) => (
-                <SwiperSlide key={idx} className="grid grid-cols-7">
-                  {week.map((day, idx) => {
-                    const isSelected =
-                      selectedDay && isSameDay(selectedDay, day);
-                    return (
-                      <button
-                        key={day.toDateString() + idx}
-                        onClick={() => {
-                          selectedDayHandler(day);
-                          setSelectedMonth(day);
-                          if (!isSameMonth(day, selectedMonth)) {
-                            setSelectedMonth(day);
-                          }
-                        }}
-                        type="button"
-                        className={classNames(
-                          "py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center",
-                          isSameMonth(day, selectedMonth)
-                            ? "bg-white"
-                            : "bg-gray-50",
-                          (isToday(day) || isSelected) && "font-semibold",
-                          isSelected &&
-                            "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
-                          !isSelected &&
-                            isSameMonth(day, selectedMonth) &&
-                            !isToday(day) &&
-                            "text-gray-900",
-                          !isSelected &&
-                            !isSameMonth(day, selectedMonth) &&
-                            !isToday(day) &&
-                            "text-gray-400",
-                          isToday(day) && !isSelected && "text-polar-600",
-                          idx === 0 && "rounded-tl-lg",
-                          idx === 6 && "rounded-tr-lg",
-                          idx === days.length - 7 && "rounded-bl-lg",
-                          idx === days.length - 1 && "rounded-br-lg"
-                        )}
-                      >
-                        <span>{format(day, "E")}</span>
-                        <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
-                          {format(day, "dd")}
-                        </span>
-                      </button>
-                    );
-                  })}
-                </SwiperSlide>
-              ))}
-              <SwiperSlide className="grid grid-cols-7">
+
+              <SwiperSlide defaultChecked className="grid grid-cols-7">
                 {weekDays.map((day, idx) => {
+                  const isSelected = selectedDay && isSameDay(selectedDay, day);
+                  return (
+                    <button
+                      key={day.toDateString() + idx}
+                      onClick={() => {
+                        selectedDayHandler(day);
+                        setSelectedMonth(day);
+                        if (!isSameMonth(day, selectedMonth)) {
+                          setSelectedMonth(day);
+                        }
+                      }}
+                      type="button"
+                      className={classNames(
+                        "py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center",
+                        isSameMonth(day, selectedMonth)
+                          ? "bg-white"
+                          : "bg-gray-50",
+                        (isToday(day) || isSelected) && "font-semibold",
+                        isSelected &&
+                          "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
+                        !isSelected &&
+                          isSameMonth(day, selectedMonth) &&
+                          !isToday(day) &&
+                          "text-gray-900",
+                        !isSelected &&
+                          !isSameMonth(day, selectedMonth) &&
+                          !isToday(day) &&
+                          "text-gray-400",
+                        isToday(day) && !isSelected && "text-polar-600",
+                        idx === 0 && "rounded-tl-lg",
+                        idx === 6 && "rounded-tr-lg",
+                        idx === days.length - 7 && "rounded-bl-lg",
+                        idx === days.length - 1 && "rounded-br-lg"
+                      )}
+                    >
+                      <span>{format(day, "E")}</span>
+                      <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
+                        {format(day, "dd")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </SwiperSlide>
+              <SwiperSlide className="grid grid-cols-7">
+                {nextWeek.map((day, idx) => {
                   const isSelected = selectedDay && isSameDay(selectedDay, day);
                   return (
                     <button
