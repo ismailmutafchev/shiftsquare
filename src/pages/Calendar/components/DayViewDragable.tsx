@@ -82,6 +82,7 @@ export default function DayViewDraggable({
 
   const { data, loading, error: dataError } = useCalendar();
   const { permissions, profile } = useSession();
+  const { isLoading, error } = useAuth0();
 
   const allowedToEdit =
     permissions.includes("admin") || permissions.includes("manager");
@@ -102,6 +103,11 @@ export default function DayViewDraggable({
     start: startOfWeek(selectedDay, { weekStartsOn: 1 }),
     end: endOfWeek(selectedDay, { weekStartsOn: 1 }),
   });
+
+  // const prevWeek = eachDayOfInterval({
+  //   start: startOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+  //   end: endOfWeek(subDays(selectedDay, 7), { weekStartsOn: 1 }),
+  // });
 
   const nextWeek = eachDayOfInterval({
     start: startOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
@@ -134,8 +140,6 @@ export default function DayViewDraggable({
       toast("success", "Rota committed successfully");
     },
   });
-
-  const { isLoading, error } = useAuth0();
 
   function submit() {
     commitShfts({
@@ -366,20 +370,28 @@ export default function DayViewDraggable({
           >
             <Swiper
               ref={containerNav}
-              onSlideNextTransitionEnd={() => {
-                selectedDayHandler(addDays(selectedDay, 7));
-                // selectedDayHandler(addDays(selectedDay, 7));
+              // initialSlide={1}
+              // onSlideNextTransitionEnd={() => {
+              //   selectedDayHandler(addDays(selectedDay, 7));
+              // }}
+              onTransitionStart={({ touches }) => {
+                console.log(touches.diff);
+                if (touches) {
+                  if (touches.diff > 20) {
+                    selectedDayHandler(subDays(selectedDay, 7));
+                  } else if (touches.diff < -20) {
+                    selectedDayHandler(addDays(selectedDay, 7));
+                  } else {
+                    return;
+                  }
+                }
               }}
-              onSlidePrevTransitionEnd={() => {
-                console.log("prev");
-                selectedDayHandler(subDays(selectedDay, 7));
-              }}
-              className="sticky top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
+              className="sticky relatice top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
             >
-              {/* Swiper slides */}
 
-              <SwiperSlide defaultChecked className="grid grid-cols-7">
-                {weekDays.map((day, idx) => {
+              {/* Swiper slides */}
+              {/* <SwiperSlide defaultChecked className="grid grid-cols-7">
+                {prevWeek.map((day, idx) => {
                   const isSelected = selectedDay && isSameDay(selectedDay, day);
                   return (
                     <button
@@ -400,6 +412,54 @@ export default function DayViewDraggable({
                         (isToday(day) || isSelected) && "font-semibold",
                         isSelected &&
                           "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
+                        !isSelected &&
+                          isSameMonth(day, selectedMonth) &&
+                          !isToday(day) &&
+                          "text-gray-900",
+                        !isSelected &&
+                          !isSameMonth(day, selectedMonth) &&
+                          !isToday(day) &&
+                          "text-gray-400",
+                        isToday(day) && !isSelected && "text-polar-600",
+                        idx === 0 && "rounded-tl-lg",
+                        idx === 6 && "rounded-tr-lg",
+                        idx === days.length - 7 && "rounded-bl-lg",
+                        idx === days.length - 1 && "rounded-br-lg"
+                      )}
+                    >
+                      <span>{format(day, "E")}</span>
+                      <span className="mt-3 flex h-8 w-8 items-center justify-center rounded-full text-base font-semibold">
+                        {format(day, "dd")}
+                      </span>
+                    </button>
+                  );
+                })}
+              </SwiperSlide> */}
+              <SwiperSlide
+                defaultChecked
+                className="grid grid-cols-7"
+              >
+                {weekDays.map((day, idx) => {
+                  const isSelected = selectedDay && isSameDay(selectedDay, day);
+                  return (
+                    <button
+                      key={day.toDateString() + idx}
+                      onClick={() => {
+                        selectedDayHandler(day);
+                        setSelectedMonth(day);
+                        if (!isSameMonth(day, selectedMonth)) {
+                          setSelectedMonth(day);
+                        }
+                      }}
+                      type="button"
+                      className={classNames(
+                        "py-1.5 hover:bg-gray-100 focus:z-10 flex flex-col items-center col-span-1 row-span-1",
+                        isSameMonth(day, selectedMonth)
+                          ? "bg-white"
+                          : "bg-gray-50",
+                        (isToday(day) || isSelected) && "font-semibold",
+                        isSelected &&
+                          "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-white",
                         !isSelected &&
                           isSameMonth(day, selectedMonth) &&
                           !isToday(day) &&
@@ -444,7 +504,7 @@ export default function DayViewDraggable({
                           : "bg-gray-50",
                         (isToday(day) || isSelected) && "font-semibold",
                         isSelected &&
-                          "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-gray-900",
+                          "font-semibold text-polar-600 border border-gray-200 rounded-lg bg-white-900",
                         !isSelected &&
                           isSameMonth(day, selectedMonth) &&
                           !isToday(day) &&
