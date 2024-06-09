@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const UserFields = gql`
-  fragment UserLines on User {
+  fragment UserLines on user {
   id
   createdAt
   updatedAt
@@ -14,13 +14,11 @@ export const UserFields = gql`
   organizationId
   roleId
   onboarded
-  payRate
   contractedHours
   bgColor
   role {
     id
     name
-    description
     createdAt
     updatedAt
   }

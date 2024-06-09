@@ -9,7 +9,8 @@
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "console": "cd ../shiftsquare-infrastructure/rm_migrations && hasura console",
-    "deploy-fns": "cd ../functions-sq && serverless deploy --aws-profile default"
+    "deploy-fns": "cd ../functions-sq && serverless deploy --aws-profile default",
+    "codegen": "graphql-codegen --config codegen.ts"
   },
   "dependencies": {
     "@apollo/client": "^3.7.14",
@@ -27,7 +28,7 @@
     "date-fns": "^2.30.0",
     "file-saver": "^2.0.5",
     "fuse.js": "^6.6.2",
-    "graphql": "^16.6.0",
+    "graphql": "^16.8.1",
     "html2canvas": "^1.4.1",
     "jspdf": "^2.5.1",
     "jwt-decode": "^4.0.0",
@@ -47,6 +48,8 @@
     "yup": "^1.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "5.0.2",
+    "@parcel/watcher": "^2.4.1",
     "@types/react": "^18.0.28",
     "@types/react-dom": "^18.0.11",
     "@types/react-resizable": "^3.0.4",
@@ -61,7 +64,9 @@
     "postcss": "^8.4.23",
     "react-error-overlay": "^6.0.9",
     "tailwindcss": "^3.3.2",
-    "typescript": "^5.0.2",
-    "vite": "^4.3.2"
+    "typescript": "^5.4.5",
+    "vite": "^4.3.2",
+    "@graphql-codegen/introspection": "4.0.3",
+    "@graphql-codegen/client-preset": "4.2.6"
   }
 }

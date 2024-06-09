@@ -2,15 +2,14 @@
 import { gql } from '@apollo/client';
 
 export const LeaveFragment = gql`
-  fragment LeaveFragment on Leave {
+  fragment LeaveFragment on leave {
     id
-    createdAt
-    updatedAt
+    created_at
+    updated_at
     details
     type
     status
     start
     end
-    duration
   }
 `;
