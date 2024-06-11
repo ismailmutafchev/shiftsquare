@@ -1,14 +1,7 @@
 import { useQuery } from "@apollo/client";
 import { endOfDay, endOfWeek, startOfDay, startOfWeek } from "date-fns";
 import { Fragment, useState } from "react";
-import {
-  getHoursByDay,
-  getHoursByEmployee,
-  getHoursByPosition,
-  getShifts,
-  getWorkingHours,
-} from "../../queries/shift/queries";
-import { getBookedHolidays, getContractedHours } from "../../queries/user/queries";
+import { getContractedHours } from "../../queries/user/queries";
 import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import {
   BanknotesIcon,
@@ -31,6 +24,8 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { colors } from "../../utils/colors";
+import { getHoursByDay, getHoursByEmployee, getHoursByPosition, getShifts, getWorkingHours } from "../../queries/shift/queries";
+
 
 export default function Dashboard() {
   //state for default date range
@@ -127,9 +122,9 @@ export default function Dashboard() {
   });
 
   //query for booked holidays
-  const { data: bookedHolidays } = useQuery(getBookedHolidays, {
-    fetchPolicy: "network-only",
-  });
+  // const { data: bookedHolidays } = useQuery(getBookedHolidays, {
+  //   fetchPolicy: "network-only",
+  // });
 
   //query for spent money
   const { data: totalShifts } = useQuery(getShifts, {
@@ -186,8 +181,8 @@ export default function Dashboard() {
     totalHours?.shift_aggregate?.aggregate?.sum?.length || 0;
 
   //total booked holidays
-  const totalBookedHolidays =
-    bookedHolidays?.leave_aggregate?.aggregate?.sum?.length || 0;
+  // const totalBookedHolidays =
+  //   bookedHolidays?.leave_aggregate?.aggregate?.sum?.length || 0;
 
   //pie chart on hover
   const onPieEnter = (data: any) => {
@@ -250,7 +245,7 @@ export default function Dashboard() {
     {
       id: 2,
       title: "Days Booked Holidays",
-      value: totalBookedHolidays,
+      value: "10",
       color: "bg-yellow-200",
       iconColor: "bg-yellow-400",
       additionalInfo: "from 340 ",
@@ -557,9 +552,7 @@ export default function Dashboard() {
                             {shift?.position?.name}
                           </p>
                         </div>
-                        <p
-                          className={` text-gray-700 transition duration-100`}
-                        >
+                        <p className={` text-gray-700 transition duration-100`}>
                           {
                             shift?.position?.shift_aggregate?.aggregate?.sum
                               .length
