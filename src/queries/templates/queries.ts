@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const getTemplate = gql` query($id: uuid!) {
+export const getTemplate = gql` query Template($id: uuid!) {
     template_by_pk(id: $id) {
         id
         createdAt
@@ -12,7 +12,7 @@ export const getTemplate = gql` query($id: uuid!) {
 }
 `;
 
-export const getTemplates = gql` query {
+export const getTemplates = gql` query Temlates{
     template {
         id
         createdAt

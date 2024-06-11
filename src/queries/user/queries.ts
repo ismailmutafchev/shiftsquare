@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const getEmployees = gql` query {    
+export const getEmployees = gql` query Users {    
         user {
             id
             firstName
@@ -20,7 +20,7 @@ export const getEmployees = gql` query {
     }
 `;
 
-export const getEmployee = gql` query($id: uuid!) {
+export const getEmployee = gql` query User($id: uuid!) {
     user_by_pk(id: $id) {
       id
             firstName
@@ -55,7 +55,7 @@ export const getProfile = gql` query getProfileByAuthId($authId: String!) {
 }
 `;
 
-export const getContractedHours = gql` query {
+export const getContractedHours = gql` query ContractedHours {
     user_aggregate {
       aggregate {
         sum {
@@ -65,13 +65,13 @@ export const getContractedHours = gql` query {
     }
   }
 `;
-export const getBookedHolidays = gql` query {
-    leave_aggregate(where: {type: {_eq: holiday}}) {
-      aggregate {
-        sum {
-          length
-        }
-      }
-    }
-  }
-`;
+// export const getBookedHolidays = gql` query BookedHolidays {
+//     leave_aggregate(where: {type: {_eq: holiday}}) {
+//       aggregate {
+//         sum {
+//           length
+//         }
+//       }
+//     }
+//   }
+// `;

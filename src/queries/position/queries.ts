@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const getPositions = gql` query {
+export const getPositions = gql` query Positions {
     position {
         id
         name
@@ -10,7 +10,7 @@ export const getPositions = gql` query {
 
 `;
 
-export const getPosition = gql` query($id: uuid!) {
+export const getPosition = gql` query Position($id: uuid!) {
     position_by_pk(id: $id) {
         id
         name

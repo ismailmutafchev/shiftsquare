@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client'
 
-export const insertTemplate = gql` mutation($object: template_insert_input!) {
+export const insertTemplate = gql` mutation addTemplateOne($object: template_insert_input!) {
     insert_template_one(object: $object) {
         id
         createdAt
@@ -10,7 +10,7 @@ export const insertTemplate = gql` mutation($object: template_insert_input!) {
 }
 `;
 
-export const updateTemplateById = gql` mutation($id: uuid!, $shifts: jsonb!) {
+export const updateTemplateById = gql` mutation updateTemplateOne($id: uuid!, $shifts: jsonb!) {
     update_template_by_pk(pk_columns: {id: $id}, _set: {shifts: $shifts}) {
         id
         createdAt
@@ -20,7 +20,7 @@ export const updateTemplateById = gql` mutation($id: uuid!, $shifts: jsonb!) {
 }
 `;
 
-export const deleteTemplateById = gql` mutation($id: uuid!) {
+export const deleteTemplateById = gql` mutation DeleteTemplateOne($id: uuid!) {
     delete_template_by_pk(id: $id) {
         id
         createdAt

@@ -1,6 +1,6 @@
 import { gql } from "@apollo/client";
 
-export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
+export const getShifts = gql` query Shifts($start: timestamptz!, $end: timestamptz!) {
     shift(where: {start: {_lte: $end}, end: {_gte: $start}}, order_by:{positionId: asc}) {
         id
         start
@@ -21,7 +21,7 @@ export const getShifts = gql` query($start: timestamptz!, $end: timestamptz!) {
 },
 `;
 
-export const getShiftsToPrint = gql` query($start: timestamptz!, $end: timestamptz!) {
+export const getShiftsToPrint = gql` query ShiftToPrint($start: timestamptz!, $end: timestamptz!) {
   shift(where: {start: {_gte: $start}, _and: {start: {_lte: $end}}}, order_by: {positionId: asc}) {
       id
       start
@@ -43,7 +43,7 @@ export const getShiftsToPrint = gql` query($start: timestamptz!, $end: timestamp
 `;
 
 export const getWorkingHours = gql`
-  query ($start: timestamptz!, $end: timestamptz!) {
+  query ShiftAggregate($start: timestamptz!, $end: timestamptz!) {
     shift_aggregate(where: { start: { _gte: $start }, end: { _lte: $end } }) {
       aggregate {
         sum {
@@ -56,7 +56,7 @@ export const getWorkingHours = gql`
 
 
 export const getShiftsByEmployee = gql`
-  query ($start: timestamptz!, $end: timestamptz!, $employeeId: uuid!) {
+  query ShiftByEmploye ($start: timestamptz!, $end: timestamptz!, $employeeId: uuid!) {
     shift(
       where: { start: { _gte: $start }, end: { _lte: $end }, employeeId: { _eq: $employeeId }, commited: { _eq: true } },
       order_by: { start: asc }
@@ -81,7 +81,7 @@ export const getShiftsByEmployee = gql`
 `;
 
 export const getHoursByPosition = gql`
-  query ($start: timestamptz!, $end: timestamptz!) {
+  query HoursByPosition ($start: timestamptz!, $end: timestamptz!) {
     shift(
       distinct_on: positionId
       where: { start: { _gte: $start }, end: { _lte: $end } }
@@ -105,7 +105,7 @@ export const getHoursByPosition = gql`
 `;
 
 export const getHoursByEmployee = gql`
-  query ($start: timestamptz!, $end: timestamptz!) {
+  query HoursByEmployee ($start: timestamptz!, $end: timestamptz!) {
     shift(
       distinct_on: [employeeId]
       where: { start: { _gte: $start }, end: { _lte: $end } }
@@ -131,7 +131,7 @@ export const getHoursByEmployee = gql`
 `;
 
 export const getHoursByDay = gql`
-  query MyQuery(
+  query HoursByDay(
     $monday: timestamptz
     $tuesday: timestamptz
     $wednesday: timestamptz
