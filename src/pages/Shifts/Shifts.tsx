@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { useSession } from "../../hooks/session";
-import { getShiftsByEmployee } from "../../queries/shift/queries";
+import { getShiftsByEmployee } from "../../queries/shift/queries.ts";
 import { endOfWeek, format, startOfWeek } from "date-fns";
 
 export default function Shifts() {
