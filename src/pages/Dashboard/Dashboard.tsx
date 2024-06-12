@@ -8,7 +8,7 @@ import {
   getShifts,
   getWorkingHours,
 } from "../../queries/shift/queries";
-import { getBookedHolidays, getContractedHours } from "../../queries/user/queries";
+import { getContractedHours } from "../../queries/user/queries";
 import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import {
   BanknotesIcon,
@@ -127,9 +127,9 @@ export default function Dashboard() {
   });
 
   //query for booked holidays
-  const { data: bookedHolidays } = useQuery(getBookedHolidays, {
-    fetchPolicy: "network-only",
-  });
+  // const { data: bookedHolidays } = useQuery(getBookedHolidays, {
+  //   fetchPolicy: "network-only",
+  // });
 
   //query for spent money
   const { data: totalShifts } = useQuery(getShifts, {
@@ -186,8 +186,8 @@ export default function Dashboard() {
     totalHours?.shift_aggregate?.aggregate?.sum?.length || 0;
 
   //total booked holidays
-  const totalBookedHolidays =
-    bookedHolidays?.leave_aggregate?.aggregate?.sum?.length || 0;
+  // const totalBookedHolidays =
+  //   bookedHolidays?.leave_aggregate?.aggregate?.sum?.length || 0;
 
   //pie chart on hover
   const onPieEnter = (data: any) => {
@@ -250,7 +250,7 @@ export default function Dashboard() {
     {
       id: 2,
       title: "Days Booked Holidays",
-      value: totalBookedHolidays,
+      value: "2",
       color: "bg-yellow-200",
       iconColor: "bg-yellow-400",
       additionalInfo: "from 340 ",
