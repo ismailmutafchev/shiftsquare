@@ -1,4 +1,4 @@
-export default function HomeSlide(props: any) {
+export default function HomeSlide(props: {animation: any, title: string, description: string, index: number}) {
     const Animation = props.animation;
     return (
         <div className="relative isolate">

@@ -11,7 +11,33 @@ import { Listbox, Transition } from "@headlessui/react";
 import { useSession } from "../../../hooks/session";
 import { useToast } from "../../../hooks/toast";
 
-export default function AddShift({ data }: any) {
+type FormValues = {
+  position: string;
+  employee: string;
+  date: string;
+  start: string;
+  endDate: string;
+  end: string;
+  length: number;
+};
+
+export default function AddShift({ data }: {
+  data: {
+    isUpdate: boolean;
+    data: {
+      id: string;
+      positionId: string;
+      employeeId: string;
+      start: string;
+      end: string;
+      length: number;
+    };
+    // eslint-disable-next-line no-unused-vars
+    modalHandler: (value: boolean) => void;
+    selectedDay: Date;
+  };
+
+}) {
   const update = data.isUpdate;
   const id = data?.data?.id || null;
   const { modalHandler, selectedDay } = data;
@@ -40,7 +66,7 @@ export default function AddShift({ data }: any) {
 
   const formErrors = formState.errors;
 
-  function submit(data: any) {
+  function submit(data: FormValues) {
     const shiftLength = (
       differenceInMinutes(
         new Date(data.endDate + "T" + data.end),

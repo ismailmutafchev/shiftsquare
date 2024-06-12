@@ -23,7 +23,6 @@ import {
 import { useState } from "react";
 import { useAuth0 } from "@auth0/auth0-react";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
-import { getShifts } from "../../../queries/shift/queries";
 import { useMutation } from "@apollo/client";
 import Modal from "../../../components/Modal";
 import {
@@ -36,7 +35,6 @@ import {
   PrinterIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { commitShiftsMany, deleteShiftById } from "../../../queries/shift/mutations";
 import { Menu, Popover, Transition } from "@headlessui/react";
 import Datepicker from "../../../components/Datepicker";
 import jsPDF from "jspdf";
@@ -47,6 +45,8 @@ import { CopyWeekModal } from "../components/CopyWeekModal";
 import { useCalendar } from "../../../hooks/calendar";
 import { useToast } from "../../../hooks/toast";
 import { useSession } from "../../../hooks/session";
+import { commitShiftsMany, deleteShiftById } from "../../../queries/shift/mutations";
+import { getShifts } from "../../../queries/shift/queries";
 
 //@ts-ignore
 function classNames(...classes) {

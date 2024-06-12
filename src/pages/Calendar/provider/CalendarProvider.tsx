@@ -9,24 +9,22 @@ interface QueryResult<TData> {
 
 interface QueryContextValue<TData> {
   queryData: QueryResult<TData>;
-//   refetch: () => Promise<ApolloQueryResult<TData>>;
+  //   refetch: () => Promise<ApolloQueryResult<TData>>;
 }
 
-export const CalendarContext = createContext<QueryContextValue<any> | undefined>(
-  undefined
-);
+export const CalendarContext = createContext<
+  QueryContextValue<any> | undefined
+>(undefined);
 
-export const CalendarProvider = ({ query,variables,  children }: any) => {
- 
-
+export const CalendarProvider = ({ query, variables, children }: any) => {
   const {
     loading,
     data,
-    error: dataError
+    error: dataError,
   } = useQuery(query, {
     variables,
     fetchPolicy: "cache-and-network",
- });
+  });
 
   const value = {
     queryData: { data, loading, dataError },

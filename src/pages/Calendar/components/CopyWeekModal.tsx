@@ -13,10 +13,32 @@ import {
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { Listbox, Switch, Transition } from "@headlessui/react";
-import { getShifts } from "../../../queries/shift/queries";
 import { useMutation, useQuery } from "@apollo/client";
-import { addShiftsMany } from "../../../queries/shift/mutations";
 import { useToast } from "../../../hooks/toast";
+import { getShifts } from "../../../queries/shift/queries";
+import { addShiftsMany } from "../../../queries/shift/mutations";
+
+type FormValues = {
+  week: {
+    start: Date;
+    end: Date;
+  };
+  shifts: {
+    employeeId: string;
+    positionId: string;
+    length: number;
+    start: Date;
+    end: Date;
+  }[];
+};
+
+type Shifts = {
+  employeeId: string;
+  positionId: string;
+  length: number;
+  start: Date;
+  end: Date;
+};
 
 const getDayOfWeek = (givenDate: Date, selectedDate: Date) => {
   const weekOfChoice = eachDayOfInterval({
@@ -44,7 +66,14 @@ const getDayOfWeek = (givenDate: Date, selectedDate: Date) => {
   }
 };
 
-export const CopyWeekModal = ({ data }: any) => {
+export const CopyWeekModal = ({ data }: {
+  data: {
+    // eslint-disable-next-line no-unused-vars
+    copyModalHandler: (value: boolean) => void;
+    selectedDay: Date;
+  };
+
+}) => {
   const [copyNames, setCopyNames] = useState(false);
   const { copyModalHandler, selectedDay } = data;
 
@@ -82,8 +111,8 @@ export const CopyWeekModal = ({ data }: any) => {
 
   const selectedWeek = watch("week");
 
-  const submit = (data: any) => {
-    let newShifts = data.shifts.map((shift: any) => {
+  const submit = (data: FormValues) => {
+    let newShifts = data.shifts.map((shift: Shifts ) => {
       const startDate = getDayOfWeek(shift.start, selectedDay) as
         | string
         | number

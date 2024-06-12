@@ -7,16 +7,17 @@ import {
   startOfWeek,
 } from "date-fns";
 import { useQuery } from "@apollo/client";
-import { getShiftsToPrint } from "../../queries/shift/queries";
 import logo from "./logo.png";
 import { useSession } from "../../hooks/session";
+import { getShiftsToPrint } from "../../queries/shift/queries";
+import { ShiftToPrintQuery } from "../../gql/graphql";
 
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const RotaPrint = ({ date }: { date: any }) => {
+export const RotaPrint = ({ date }: { date: Date }) => {
   const { positions, profile } = useSession();
 
   const thisWeekDays = eachDayOfInterval({
@@ -72,8 +73,11 @@ export const RotaPrint = ({ date }: { date: any }) => {
       end: endOfDay(thisWeekDays[6]),
     },
   });
+  type Config = {
+    data: ShiftToPrintQuery;
+  }[];
 
-  const config = [
+  const config:Config = [
     {
       data: mondayShifts,
     },
@@ -129,9 +133,9 @@ export const RotaPrint = ({ date }: { date: any }) => {
                         >
                           Position
                         </th>
-                        {thisWeekDays?.map((day: any) => (
+                        {thisWeekDays?.map((day: Date) => (
                           <th
-                            key={day}
+                            key={day.toDateString()}
                             scope="col"
                             className="px-4 py-3.5 text-center text-3xl font-semibold text-gray-900"
                           >
