@@ -495,7 +495,7 @@ export default function Navigation({
                       size={10}
                       firstName={profile?.firstName}
                       lastName={profile?.lastName}
-                      className={profile?.bgColor}
+                      className={profile?.bgColor || "bg-gray-400"}
                       imageUrl={profile?.picture}
                     />
                     <span className="hidden lg:flex lg:items-center">
