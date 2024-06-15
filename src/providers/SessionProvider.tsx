@@ -4,13 +4,17 @@ import { jwtDecode } from "jwt-decode";
 import React, { createContext, useState, useEffect } from "react";
 import { getEmployees, getProfile } from "../queries/user/queries";
 import { getPositions } from "../queries/position/queries";
-import { GetProfileByAuthIdQuery } from "../gql/graphql";
+import type { GetProfileByAuthIdQuery } from "../gql/graphql";
+
+type Profile = {
+  picture: string;
+} & GetProfileByAuthIdQuery["user"][0];
 
 interface SessionContextProps {
   session: {
     employees: any;
     positions: any;
-    profile: GetProfileByAuthIdQuery["user"][0] | null;
+    profile: Profile;
     user: any;
     userLoading: boolean;
     onboarded: boolean;

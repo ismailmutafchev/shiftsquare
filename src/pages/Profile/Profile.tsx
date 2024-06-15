@@ -51,9 +51,9 @@ export default function Profile() {
       <div className="border-b border-gray-200 pb-5 sm:pb-0">
         <div className="flex space-x-10 items-center px-10 py-5">
           <Avatar
-            firstName={profile.firstName}
-            lastName={profile.lastName}
-            imageUrl={profile.picture}
+            firstName={profile?.firstName}
+            lastName={profile?.lastName}
+            imageUrl={profile?.picture}
             size={16}
           />
           <div className="flex flex-col text-start">

@@ -495,7 +495,7 @@ export default function Navigation({
                       size={10}
                       firstName={profile?.firstName}
                       lastName={profile?.lastName}
-                      className={profile?.bgColor}
+                      className={profile?.bgColor || "bg-gray-400"}
                       imageUrl={profile?.picture}
                     />
                     <span className="hidden lg:flex lg:items-center">
@@ -692,7 +692,7 @@ function RequestsSlideOver({ data }: { data: any }) {
     );
   };
   const newRequests = data?.data.filter(
-    (request: any) => !request.readBy.includes(profile.id)
+    (request: any) => !request.readBy.includes(profile?.id)
   );
 
   const pendingRequests = data?.data;
@@ -893,12 +893,12 @@ function RequestPreview({ data }: { data: any }) {
   const { profile } = useSession();
   const { id } = data;
   const readBy =
-    (data && !data.readBy.includes(profile.id) && data.readBy) || [];
+    (data && !data.readBy.includes(profile?.id) && data.readBy) || [];
 
   const [updateLeave] = useMutation(updateReadStatus, {
     variables: {
       id: id,
-      readBy: [...readBy, profile.id],
+      readBy: [...readBy, profile?.id],
     },
     refetchQueries: [{ query: getPendingLeave }],
   });
