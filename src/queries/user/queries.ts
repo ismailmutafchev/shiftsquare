@@ -1,61 +1,79 @@
-import { gql } from '@apollo/client'
+import { gql } from "@apollo/client";
 
-export const getEmployees = gql` query Users {    
-        user {
-            id
-            firstName
-            lastName
-            email
-            bgColor
-            payDetails
-            contractedHours 
-            startDate
-            positions {
-             positionId
-            }
-            role{
-                name
-            }
-        }
+export const getEmployees = gql`
+  query Users {
+    user {
+      id
+      firstName
+      lastName
+      email
+      bgColor
+      payDetails
+      contractedHours
+      startDate
+      positions {
+        positionId
+      }
+      role {
+        name
+      }
     }
+  }
 `;
 
-export const getEmployee = gql` query User($id: uuid!) {
+export const getEmployee = gql`
+  query User($id: uuid!) {
     user_by_pk(id: $id) {
       id
-            firstName
-            lastName
-            email
-            bgColor
-            payDetails
-            contractedHours 
-            startDate
-            role{
-                name
-            }
-            positions {
-             positionId
-            }
+      firstName
+      lastName
+      email
+      bgColor
+      payDetails
+      contractedHours
+      startDate
+      role {
+        name
+      }
+      positions {
+        positionId
+      }
     }
-}
+  }
 `;
-export const getProfile = gql` query getProfileByAuthId($authId: String!) {
-    user(where: {authId: {_eq: $authId}}) {
-        id
-        email
-        organizationId
-        firstName
-        lastName
-        onboarded
-        authId
-        role {
-            name
+export const getProfile = gql`
+  query getProfileByAuthId($authId: String!) {
+    user(where: { authId: { _eq: $authId } }) {
+      id
+      createdAt
+      updatedAt
+      contractedHours
+      startDate
+      bgColor
+      email
+      organizationId
+      firstName
+      lastName
+      onboarded
+      authId
+      role {
+        name
+      }
+      approvedLeave: leave_aggregate(
+        where: { leave_status: { status: { _eq: "Approved" } } }
+      ) {
+        aggregate {
+          sum {
+            duration
+          }
         }
+      }
     }
-}
+  }
 `;
 
-export const getContractedHours = gql` query ContractedHours {
+export const getContractedHours = gql`
+  query ContractedHours {
     user_aggregate {
       aggregate {
         sum {

@@ -1,8 +1,13 @@
 import { useQuery } from "@apollo/client";
-import { endOfWeek, format, startOfWeek } from "date-fns";
-import { getShiftsByEmployee } from "../../../queries/shift/queries";
+import { format, startOfWeek } from "date-fns";
 import { useSession } from "../../../hooks/session";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
+import { getShiftsByEmployee } from "../../../queries/shift/queries";
+import { ShiftByEmployeQuery } from "../../../gql/graphql";
+import { backgroundColor } from "../../../types/types";
+
+type ShiftArray = ShiftByEmployeQuery["shift"];
+type Shift = ShiftArray[0];
 
 export default function Schedule() {
   function classNames(...classes: any[]) {
@@ -13,7 +18,6 @@ export default function Schedule() {
   const { data, loading } = useQuery(getShiftsByEmployee, {
     variables: {
       start: startOfWeek(new Date(), { weekStartsOn: 1 }),
-      end: endOfWeek(new Date(), { weekStartsOn: 1 }),
       employeeId: profile?.id,
     },
     fetchPolicy: "no-cache",
@@ -21,7 +25,7 @@ export default function Schedule() {
 
   if (loading) return <LoadingAnimation />;
 
-  const shifts = data?.shift;
+  const shifts:ShiftArray = data?.shift;
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -30,8 +34,8 @@ export default function Schedule() {
         className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4"
       >
         {shifts ? (
-          shifts.map((shift: any) => (
-            <div>
+          shifts.map((shift:Shift) => (
+            <div key={shift.id}>
               <p className="text-start py-2 font-semibold text-gray-700">
                 {format(new Date(shift.start), "EEEE")}
                 <span className="text-gray-500 font-normal"> {format(new Date(shift.start), " MMMM do yyyy")}</span>
@@ -44,18 +48,12 @@ export default function Schedule() {
                   className={classNames(
                     "flex w-16 flex-shrink-0 items-center justify-center rounded-l-md text-sm font-medium text-white p-4"
                   )}
-                  style={{ backgroundColor: shift.position.bgColor }}
+                  style={{ backgroundColor: shift?.position?.bgColor as backgroundColor["bgColor"]}}
                 >
-                  {shift.position.name}
+                  {shift?.position?.name}
                 </div>
                 <div className="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 bg-white">
                   <div className="flex-1 truncate px-4 py-2 text-sm">
-                    <a
-                      href={shift.href}
-                      className="font-medium text-gray-900 hover:text-gray-700"
-                    >
-                      {shift.name}
-                    </a>
                     <p className="text-gray-600">
                       {format(new Date(shift.start), "hh:mm a")} -{" "}
                       {format(new Date(shift.end), "hh:mm a")}

@@ -4,6 +4,7 @@ import "./index.css";
 import { Auth0Provider } from "@auth0/auth0-react";
 import AuthorizedApolloProvider from "./providers/AuthorizedApoloProvider.tsx";
 import { SessionProvider } from "./providers/SessionProvider.tsx";
+import { OrganizationProvider } from "./providers/OrganizationProvider.tsx";
 
 const profileJSON = localStorage.getItem("profile");
 
@@ -13,7 +14,9 @@ const profile =
 let redudectUri =
   profile && profile.onboarded === true
     ? (import.meta.env.VITE_AUTH0_REDIRECT_URI as string)
-    : !profile || profile === "undefined" ? (import.meta.env.VITE_AUTH0_REDIRECT_URI as string) : import.meta.env.VITE_AUTH0_ONBOARDING_REDIRECT_URI_NO as string;
+    : !profile || profile === "undefined"
+    ? (import.meta.env.VITE_AUTH0_REDIRECT_URI as string)
+    : (import.meta.env.VITE_AUTH0_ONBOARDING_REDIRECT_URI_NO as string);
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Auth0Provider
     domain={import.meta.env.VITE_AUTH0_DOMAIN as string}
@@ -25,7 +28,9 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   >
     <AuthorizedApolloProvider>
       <SessionProvider>
-      <App />
+        <OrganizationProvider>
+          <App />
+        </OrganizationProvider>
       </SessionProvider>
     </AuthorizedApolloProvider>
   </Auth0Provider>

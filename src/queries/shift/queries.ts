@@ -56,9 +56,9 @@ export const getWorkingHours = gql`
 
 
 export const getShiftsByEmployee = gql`
-  query ShiftByEmploye ($start: timestamptz!, $end: timestamptz!, $employeeId: uuid!) {
+  query ShiftByEmploye ($start: timestamptz!, $employeeId: uuid!) {
     shift(
-      where: { start: { _gte: $start }, end: { _lte: $end }, employeeId: { _eq: $employeeId }, commited: { _eq: true } },
+      where: { start: { _gte: $start }, employeeId: { _eq: $employeeId }, commited: { _eq: true } },
       order_by: { start: asc }
     ) {
       id

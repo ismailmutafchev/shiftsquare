@@ -7,6 +7,8 @@ import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
 import { LeaveRequest } from "./LeaveModal";
+import { useOrganization } from "../../../hooks/organization";
+import { daysInYear, differenceInDays, format } from "date-fns";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -14,28 +16,35 @@ function classNames(...classes: string[]) {
 
 export default function Absebce() {
   const { profile } = useSession();
+  const { yearEnd, holidayAllowance } = useOrganization();
   const [showModal, setShowModal] = useState(false);
   const [update, setUpdate] = useState({
     isUpdate: false,
-    data: { id: profile.id },
+    data: { id: profile?.id },
   });
 
   function modalHandler(state: boolean) {
     setShowModal(state);
   }
 
-  const { loading, error, data } = useQuery(getLeaveAll);
+  const daysForOneDayHoliday = daysInYear / holidayAllowance;
+
+  const yearEndFormatted = yearEnd && format(new Date(yearEnd), `MMMM dd ${format(new Date(), "yyyy")}`);
+
+  const daysTillYearEnd = differenceInDays(new Date(yearEndFormatted), new Date(profile?.startDate));
+
+  const userHolidayAllowance = daysTillYearEnd / daysForOneDayHoliday;
+
+  const { loading, error, data } = useQuery(getLeaveAll)
 
   const leaveData = data?.leave;
 
-  // const nextPendingHoliday = leaveData?.filter(
-  //   (holiday: any) => holiday.status === "pending"
-  // );
+  const userApprovedHoliday = profile?.approvedLeave?.aggregate?.sum?.duration;
 
   const holidayStats = [
     {
       name: "Time off taken",
-      value: "16/28",
+      value: userApprovedHoliday + " / " + userHolidayAllowance.toFixed(1),
       change: "+4",
       changeType: "positive",
       button: "Request Time Off",
@@ -87,7 +96,7 @@ export default function Absebce() {
                 type="button"
                 className="w-full mx-7 items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
                 onClick={() => {
-                  setShowModal(true), setUpdate({ isUpdate: false, data: {id: profile.id} });
+                  setShowModal(true), setUpdate({ isUpdate: false, data: {id: profile?.id} });
                 }}
               >
                 {stat.button}
