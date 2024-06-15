@@ -238,12 +238,12 @@ export default function Onboarding() {
         onPaginationUpdate={(swiper) => {
           if (
             profile &&
-            profile.organizationId &&
+            profile?.organizationId &&
             haveOrganizationPages.includes(swiper.activeIndex)
           ) {
             setAllowSwipeNext(true);
           } else if (
-            !profile.organizationId &&
+            !profile?.organizationId &&
             dontHaveOrganizationPages.includes(swiper.activeIndex)
           ) {
             setAllowSwipeNext(true);
@@ -280,7 +280,7 @@ export default function Onboarding() {
           </div>
         </SwiperSlide>
         {/* organization slide */}
-        {!profile.organizationId && (
+        {!profile?.organizationId && (
           <>
             <SwiperSlide
               key="11"

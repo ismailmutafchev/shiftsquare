@@ -18,12 +18,12 @@ export default function Request() {
 
 
 
-  const readBy = data && data.leave_by_pk && !data.leave_by_pk.readBy.includes(profile.id) && data.leave_by_pk.readBy || [];
+  const readBy = data && data.leave_by_pk && !data.leave_by_pk.readBy.includes(profile?.id) && data.leave_by_pk.readBy || [];
 
   const [updateLeave] = useMutation(updateReadStatus, {
     variables: {
       id: id,
-      readBy: [...readBy,profile.id],
+      readBy: [...readBy,profile?.id],
     },
     refetchQueries: [{ query: getPendingLeave}],
   });

@@ -692,7 +692,7 @@ function RequestsSlideOver({ data }: { data: any }) {
     );
   };
   const newRequests = data?.data.filter(
-    (request: any) => !request.readBy.includes(profile.id)
+    (request: any) => !request.readBy.includes(profile?.id)
   );
 
   const pendingRequests = data?.data;
@@ -893,12 +893,12 @@ function RequestPreview({ data }: { data: any }) {
   const { profile } = useSession();
   const { id } = data;
   const readBy =
-    (data && !data.readBy.includes(profile.id) && data.readBy) || [];
+    (data && !data.readBy.includes(profile?.id) && data.readBy) || [];
 
   const [updateLeave] = useMutation(updateReadStatus, {
     variables: {
       id: id,
-      readBy: [...readBy, profile.id],
+      readBy: [...readBy, profile?.id],
     },
     refetchQueries: [{ query: getPendingLeave }],
   });
