@@ -10,13 +10,13 @@ export default function Shifts() {
   function classNames(...classes: any[]) {
     return classes.filter(Boolean).join(" ");
   }
-  const { permissions } = useSession();
+  const { profile } = useSession();
 
   const { data } = useQuery(getShiftsByEmployee, {
     variables: {
       start: startOfWeek(new Date(), { weekStartsOn: 1 }),
       end: endOfWeek(new Date(), { weekStartsOn: 1 }),
-      employeeId: permissions["x-hasura-user-id"],
+      employeeId: profile?.id,
     },
   });
 

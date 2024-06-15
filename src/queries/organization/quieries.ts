@@ -7,3 +7,15 @@ export const getOrganizationByName = gql` query getOrganizationByName($name: Str
     }
 }`;
 
+export const getOrganizationById = gql` query getOrganizationById($id: uuid!) {
+    organization_by_pk(id: $id) {
+        id
+        createdAt
+        updatedAt
+        name
+        yearEnd
+        holidayAllowance
+        location
+    }
+}`;
+
