@@ -1,15 +1,19 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import Modal from "../../components/Modal";
-import { LeaveRequest } from "../Profile/Pages/LeaveModal";
+import { LeaveRequest } from "../Profile/Components/LeaveModal";
 import { useQuery } from "@apollo/client";
 import { getLeaveAll } from "../../queries/leave/queries";
 import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
 import { format, intervalToDuration } from "date-fns";
+import { GetLeaveAllQuery } from "../../gql/graphql";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+export type LeaveAll = GetLeaveAllQuery["leave"];
+export type Holiday = LeaveAll[0];
 
 export default function Leave() {
   const [showModal, setShowModal] = useState(false);
@@ -21,14 +25,14 @@ export default function Leave() {
 
   const { loading, error, data } = useQuery(getLeaveAll);
 
-  const leaveData = data?.leave;
+  const leaveData:LeaveAll = data?.leave;
 
   const nextPendingHoliday = leaveData?.filter(
-    (holiday: any) => holiday.status === "pending"
+    (holiday: Holiday) => holiday.status === "Pending"
   );
 
   const nextApprovedHoliday = leaveData?.filter(
-    (holiday: any) => holiday.status === "approved"
+    (holiday: Holiday) => holiday.status === "Approved"
   );
   const holidayStats = [
     {

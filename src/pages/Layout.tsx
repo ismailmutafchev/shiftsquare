@@ -45,7 +45,7 @@ const Layout = () => {
       </div>
     );
     // return onboarding page
-  } else if (isAuthenticated && profile?.onboarded === true) {
+  } else if (isAuthenticated && profile?.onboarded === false) {
     return (
       <div>
         <Onboarding />

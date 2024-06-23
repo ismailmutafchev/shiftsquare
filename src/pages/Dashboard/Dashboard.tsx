@@ -24,8 +24,14 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { colors } from "../../utils/colors";
-import { getHoursByDay, getHoursByEmployee, getHoursByPosition, getShifts, getWorkingHours } from "../../queries/shift/queries";
-
+import {
+  getHoursByDay,
+  getHoursByEmployee,
+  getHoursByPosition,
+  getShifts,
+  getWorkingHours,
+} from "../../queries/shift/queries";
+import { Shift } from "../../gql/graphql";
 
 export default function Dashboard() {
   //state for default date range
@@ -147,13 +153,13 @@ export default function Dashboard() {
     totalShifts &&
     totalShifts.shift &&
     totalShifts.shift
-      .map((shift: any) => {
+      .map((shift: Shift) => {
         return {
           total: Number(shift?.employee?.payDetails?.payRate) * shift?.length,
           name: shift?.employee?.firstName,
         };
       })
-      .reduce((a: any, b: any) => {
+      .reduce((a: number, b: { total: number; name: string }) => {
         return a + b.total;
       }, 0);
 
@@ -162,13 +168,13 @@ export default function Dashboard() {
     totalShiftsPrevWeek &&
     totalShiftsPrevWeek.shift &&
     totalShiftsPrevWeek.shift
-      .map((shift: any) => {
+      .map((shift: Shift) => {
         return {
-          total: shift?.employee?.payRate * shift?.length,
+          total: shift?.employee?.payDetails?.payRate * shift?.length,
           name: shift?.employee?.firstName,
         };
       })
-      .reduce((a: any, b: any) => {
+      .reduce((a: number, b: {total: number, name: string}) => {
         return a + b.total;
       }, 0);
 

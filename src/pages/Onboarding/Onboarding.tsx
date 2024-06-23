@@ -21,12 +21,29 @@ import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
 import { Listbox } from "@headlessui/react";
+import { RolesQuery } from "../../gql/graphql";
 
 
 //@ts-ignore
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
+type Role = RolesQuery["role"][0];
+type UserFormValues = {
+  firstName: string;
+  lastName: string;
+};
+
+type RoleFormValues = {
+  role: string;
+};
+
+type OrganizationFormValues = {
+  name: string;
+  yearEnd: Date;
+  holidayAllowance: number;
+  location: string;
+};
 
 export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
@@ -116,7 +133,7 @@ export default function Onboarding() {
     ],
   });
 
-  function submit(data: any) {
+  function submit(data: UserFormValues) {
     updateUser({
       variables: {
         id: profile?.id,
@@ -137,7 +154,7 @@ export default function Onboarding() {
     });
   }
 
-  function submitRole(data: any) {
+  function submitRole(data: RoleFormValues) {
     updateRole({
       variables: {
         id: profile?.id,
@@ -154,7 +171,7 @@ export default function Onboarding() {
     });
   }
 
-  function submitOrganization(data: any) {
+  function submitOrganization(data: OrganizationFormValues) {
     insertOrganization({
       variables: {
         object: {
@@ -326,7 +343,7 @@ export default function Onboarding() {
                                   <span className="block truncate text-gray-500">
                                     {roleWatcher.role
                                       ? roles?.role.find(
-                                          (role: any) =>
+                                          (role: Role) =>
                                             role.id === roleWatcher.role
                                         )?.name
                                       : "Select your role"}
@@ -334,7 +351,7 @@ export default function Onboarding() {
                                 </Listbox.Button>
                               </span>
                               <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-start">
-                                {roles?.role.map((role: any) => (
+                                {roles?.role.map((role: Role) => (
                                   <Listbox.Option
                                     key={role.id}
                                     value={role.id}

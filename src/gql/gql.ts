@@ -18,8 +18,8 @@ const documents = {
     "\n  \n  mutation UpdateLeaveById($id: uuid!, $object: leave_set_input!) {\n    update_leave_by_pk(pk_columns: { id: $id }, _set: $object) {\n      ...LeaveFragment\n    }\n  }\n": types.UpdateLeaveByIdDocument,
     "\n  \n  mutation DeleteLeaveById($id: uuid!) {\n    delete_leave_by_pk(id: $id) {\n      ...LeaveFragment\n    }\n  }\n": types.DeleteLeaveByIdDocument,
     "\n  mutation UpdateReadStatus($id: uuid!, $readBy: jsonb ) {\n    update_leave_by_pk(pk_columns: { id: $id }, _set: { readBy: $readBy }) {\n      id\n    }\n  }\n": types.UpdateReadStatusDocument,
-    "\n  query GetLeave($id: uuid!) {\n    leave_by_pk(id: $id) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n  \n": types.GetLeaveDocument,
-    "\n  \n  query GetLeaveAll {\n    leave(order_by: {start: asc}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n    }\n  }\n": types.GetLeaveAllDocument,
+    "\n  query GetLeave($id: uuid!) {\n    leave_by_pk(id: $id) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n  \n": types.GetLeaveDocument,
+    "\n  \n  query GetLeaveAll {\n    leave(order_by: {start: asc}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n    }\n  }\n": types.GetLeaveAllDocument,
     "\n  query GetLeaveTypes {\n    leave_type {\n      value\n      bgColor\n    }\n  }\n": types.GetLeaveTypesDocument,
     "\n  \n  query GetPendingLeave {\n    leave(where: {status: {_eq: Pending}}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n": types.GetPendingLeaveDocument,
     "\n  \n  query GetApprovedLeave {\n    leave(where: {status: {_eq: Approved}}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n": types.GetApprovedLeaveDocument,
@@ -99,11 +99,11 @@ export function graphql(source: "\n  mutation UpdateReadStatus($id: uuid!, $read
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query GetLeave($id: uuid!) {\n    leave_by_pk(id: $id) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n  \n"): (typeof documents)["\n  query GetLeave($id: uuid!) {\n    leave_by_pk(id: $id) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n  \n"];
+export function graphql(source: "\n  query GetLeave($id: uuid!) {\n    leave_by_pk(id: $id) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n  \n"): (typeof documents)["\n  query GetLeave($id: uuid!) {\n    leave_by_pk(id: $id) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n  \n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  \n  query GetLeaveAll {\n    leave(order_by: {start: asc}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n    }\n  }\n"): (typeof documents)["\n  \n  query GetLeaveAll {\n    leave(order_by: {start: asc}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n    }\n  }\n"];
+export function graphql(source: "\n  \n  query GetLeaveAll {\n    leave(order_by: {start: asc}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n    }\n  }\n"): (typeof documents)["\n  \n  query GetLeaveAll {\n    leave(order_by: {start: asc}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

@@ -6,9 +6,10 @@ import Modal from "../../../components/Modal";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
-import { LeaveRequest } from "./LeaveModal";
+import { LeaveRequest } from "../Components/LeaveModal";
 import { useOrganization } from "../../../hooks/organization";
 import { daysInYear, differenceInDays, format } from "date-fns";
+import { Holiday } from "../../Leave/Leave";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -120,8 +121,13 @@ export default function Absebce() {
                   />
                 </Disclosure.Button>
                 <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  {leaveData?.map((leave: any) => (
-                    <div key={leave.id} className="flex flex-col gap-y-2">
+                  {leaveData?.map((leave: Holiday) => (
+                    <div key={leave.id} className="flex flex-col gap-y-2" onClick={
+                      () => {
+                        setUpdate({ isUpdate: true, data: leave });
+                        setShowModal(true);
+                      }
+                    }>
                       <div className="flex justify-between">
                         <span className="font-semibold">{leave.type}</span>
                         <span className="text-gray-500">{leave.status}</span>

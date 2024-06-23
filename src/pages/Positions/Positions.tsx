@@ -11,10 +11,14 @@ import { deleteShiftsByPositionId } from '../../queries/shift/mutations'
 import { getShifts } from '../../queries/shift/queries'
 import { endOfMonth, startOfMonth } from 'date-fns'
 import { AddPosition } from './component/PositionModal'
+import { PositionsQuery } from '../../gql/graphql'
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ')
 }
+
+type GetPositions = PositionsQuery['position']
+type Position = GetPositions[0]
 
 export default function Positions() {
   const [showModal, setShowModal] = useState(false)
@@ -40,7 +44,7 @@ export default function Positions() {
   if (loading) return <LoadingAnimation />
   if (error) return <p>Error :(</p>;
 
-  const positions = data?.position
+  const positions: GetPositions = data?.position
 
   function modalHandler(state: boolean) {
     setShowModal(state)
@@ -74,7 +78,7 @@ export default function Positions() {
       <div>
         <h2 className="text-sm font-medium text-gray-500">Pinned Projects</h2>
         <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
-          {positions && positions.map((position: any) => {
+          {positions && positions.map((position: Position) => {
             return (
               <li key={position.name} className="col-span-1 flex rounded-md shadow-sm">
                 <div
@@ -83,7 +87,7 @@ export default function Positions() {
                   )}
                   style={
                     {
-                      backgroundColor: position.bgColor,
+                      backgroundColor: position.bgColor as string,
                       opacity: 0.8
                     }
                   }
@@ -92,10 +96,10 @@ export default function Positions() {
                 </div>
                 <div className="flex flex-1 items-center justify-between rounded-r-md border-b border-r border-t border-gray-200 bg-white">
                   <div className="flex-1 truncate px-4 py-2 text-sm">
-                    <a href={position.href} className="font-medium text-gray-900 hover:text-gray-600">
+                    <a className="font-medium text-gray-900 hover:text-gray-600">
                       {position.name}
                     </a>
-                    <p className="text-gray-500">{position.members} Members</p>
+                    <p className="text-gray-500">Members</p>
                   </div>
                   <div className="flex-shrink-0 pr-2 relative">
                     <Menu as="div" className="relative text-left">
@@ -122,7 +126,7 @@ export default function Positions() {
                                   className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <PencilSquareIcon
-                                    color={position.bgColor}
+                                    color={position.bgColor as string}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -137,7 +141,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <Square2StackIcon
-                                    color={position.bgColor}
+                                    color={position.bgColor as string}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -154,7 +158,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <ArchiveBoxIcon
-                                    color={position.bgColor}
+                                    color={position.bgColor as string}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -169,7 +173,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <ArrowsPointingOutIcon
-                                    color={position.bgColor}
+                                    color={position.bgColor as string}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />
@@ -190,7 +194,7 @@ export default function Positions() {
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <TrashIcon
-                                    color={position.bgColor}
+                                    color={position.bgColor as string}
                                     className="mr-2 h-5 w-5"
                                     aria-hidden="true"
                                   />

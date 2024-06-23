@@ -7,6 +7,8 @@ import {
   updateLeaveOne,
 } from "../../../queries/leave/mutations";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
+import { Holiday } from "../../Leave/Leave";
+import { SetStateAction } from "react";
 
 type LeaveProps = {
   start: Date | string;
@@ -17,7 +19,16 @@ type LeaveProps = {
   duration: number;
 };
 
-export function LeaveRequest({ data }: any) {
+export function LeaveRequest({ data }: {
+  data: {
+    isUpdate: boolean;
+    data: Holiday;
+    // eslint-disable-next-line no-unused-vars
+    modalHandler: (state:boolean) => SetStateAction<boolean>;
+  };
+
+}) {
+
   const update = data.isUpdate;
   const id = data.data.id;
   const { modalHandler } = data;
@@ -33,7 +44,7 @@ export function LeaveRequest({ data }: any) {
       details: data?.data?.details,
       type: data?.data?.type,
       duration: data?.data?.duration,
-    },
+    } || undefined,
   });
 
   const [addLeave] = useMutation(insertLeave);

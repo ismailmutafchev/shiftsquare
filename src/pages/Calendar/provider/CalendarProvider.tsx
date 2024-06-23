@@ -1,9 +1,8 @@
-import { useQuery } from "@apollo/client";
-import { createContext } from "react";
-
+import { ApolloError, DocumentNode, useQuery } from "@apollo/client";
+import { createContext, ReactNode } from "react";
 interface QueryResult<TData> {
   data?: TData;
-  error?: any;
+  error?: ApolloError | undefined;
   loading: boolean;
 }
 
@@ -16,7 +15,15 @@ export const CalendarContext = createContext<
   QueryContextValue<any> | undefined
 >(undefined);
 
-export const CalendarProvider = ({ query, variables, children }: any) => {
+export const CalendarProvider = ({
+  query,
+  variables,
+  children,
+}: {
+  query: DocumentNode;
+  variables: any;
+  children: ReactNode;
+}) => {
   const {
     loading,
     data,

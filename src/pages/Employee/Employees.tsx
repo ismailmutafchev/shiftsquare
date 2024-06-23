@@ -18,6 +18,11 @@ import {
   LoadingAnimation,
 } from "../../assets/AnimationComponents/AnimationComponents.tsx";
 import { AddUser } from "./components/EmployeModal.tsx";
+import { UsersQuery } from "../../gql/graphql.ts";
+
+type Users = UsersQuery["user"];
+
+type User = Users[0];
 
 export default function Employees() {
   const [showModal, setShowModal] = useState(false);
@@ -33,13 +38,10 @@ export default function Employees() {
     setShowModal(state);
   }
 
-
-
-
   if (loading) return <LoadingAnimation />;
   if (error) return <ErrorAnimation message={error.message} />;
 
-  const users = data?.user;
+  const users:Users = data?.user;
   return (
     <div className="px-4 sm:px-6 lg:px-8">
       <div className="border-b border-gray-200 pb-5 sm:flex sm:items-center sm:justify-between py-10">
@@ -63,7 +65,7 @@ export default function Employees() {
         role="list"
         className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {users.map((person: any) => (
+        {users.map((person: User) => (
           <li
             key={person.id}
             className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
@@ -83,15 +85,12 @@ export default function Employees() {
                     {person ? person.role?.name.toUpperCase() : "No Role"}
                   </span>
                 </div>
-                <p className="mt-1 truncate text-sm text-gray-500">
-                  {person.title}
-                </p>
               </div>
               <Avatar
                 size={10}
                 firstName={person.firstName}
                 lastName={person.lastName}
-                className={person.bgColor}
+                className={person?.bgColor as string}
               />
             </div>
             <div>

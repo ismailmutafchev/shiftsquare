@@ -11,6 +11,7 @@ export const getLeaveOne = gql`
       type
       status
       readBy
+      duration
       user {
         id
         firstName 
@@ -31,6 +32,7 @@ export const getLeaveAll = gql`
       type
       status
       readBy
+      duration
     }
   }
 `
