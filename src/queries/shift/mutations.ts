@@ -86,3 +86,21 @@ export const commitShiftsMany = gql`
     }
   }
 `;
+
+export const updateShiftStartTime = gql`
+  mutation updateShiftStartTime($id: uuid!, $start: timestamptz!) {
+    update_shift_by_pk(pk_columns: { id: $id }, _set: { start: $start }) {
+      id
+      start
+    }
+  }
+`;
+
+export const updateShiftEndTime = gql`
+  mutation updateShiftEndTime($id: uuid!, $end: timestamptz!) {
+    update_shift_by_pk(pk_columns: { id: $id }, _set: { end: $end }) {
+      id
+      end
+    }
+  }
+`;

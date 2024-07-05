@@ -1,10 +1,12 @@
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { getEmployees } from "../../../queries/user/queries.ts";
 
 import { useForm } from "react-hook-form";
 import { addUserOne, updateUserById } from "../../../queries/user/mutations.ts";
 import { Switch } from "@headlessui/react";
 import { useSession } from "../../../hooks/session.ts";
+import { addUserPosition, deleteUserPosition } from "../../../queries/position/mutations.ts";
+import { getUserPositions } from "../../../queries/shift/queries.ts";
 import { useState } from "react";
 
 type UserProps = {
@@ -20,13 +22,21 @@ type UserProps = {
   positions?: { id: string }[];
 };
 
+type UserPositionType = {
+  positions: string[];
+};
+
 export function AddUser({ data }: any) {
   const update = data.isUpdate;
   const id = data?.data?.id || null;
   const { modalHandler } = data;
   const { positions: allPositions } = useSession();
 
-  const { register, handleSubmit, setValue } = useForm<UserProps>({
+  const [userPositions, setUserPositions] = useState<UserPositionType>({
+    positions: [],
+  });
+
+  const { register, handleSubmit } = useForm<UserProps>({
     defaultValues: {
       firstName: data?.data?.firstName || "",
       lastName: data?.data?.lastName || "",
@@ -39,10 +49,32 @@ export function AddUser({ data }: any) {
     },
   });
 
-  const [positions, setPositions] = useState(data?.data?.positions || []);
+  useQuery(getUserPositions, {
+    variables: {
+      userId: id
+    },
+    onCompleted: (data) => {
+      setUserPositions({
+        positions: data?.user_position?.map((pos: any) => pos.positionId),
+      });
+    }
+  });
+
+  console.log(userPositions);
+
 
   const [addUser] = useMutation(addUserOne);
   const [updateUser] = useMutation(updateUserById);
+
+  const [addUserPositionOne] = useMutation(addUserPosition, {
+    refetchQueries: [{ query: getUserPositions, variables: { userId: id }}],
+  });
+
+  const [deleteUserPositionOne] = useMutation(deleteUserPosition, {
+    refetchQueries: [{ query: getUserPositions, variables: { userId: id }}],
+  });
+
+ 
 
   function submit(data: any) {
     if (update) {
@@ -191,6 +223,7 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 {allPositions?.map((position: any) => {
+                  const checked = userPositions?.positions?.includes(position.id);
                   return (
                     <Switch.Group
                       as="div"
@@ -210,25 +243,52 @@ export function AddUser({ data }: any) {
                       </Switch.Label>
                       <Switch
                         onChange={() => {
-                          setValue(
-                            "positions",
-                            positions?.includes(position.id)
-                              ? positions?.filter(
+                          checked ? 
+                          deleteUserPositionOne({
+                            variables: {
+                              userId: id,
+                              positionId: position.id,
+                            },
+                            onCompleted: () => {
+                              setUserPositions({
+                                positions: userPositions.positions.filter(
                                   (pos: any) => pos !== position.id
-                                )
-                              : [...(positions ?? []), position.id]
-                          );
-                          setPositions(
-                            positions?.includes(position.id)
-                              ? positions?.filter(
-                                  (pos: any) => pos !== position.id
-                                )
-                              : [...(positions ?? []), position.id]
-                          );
+                                ),
+                              });
+                            }
+                          }) :
+                          addUserPositionOne({
+                            variables: {
+                              object: {
+                                userId: id,
+                                positionId: position.id,
+                              },
+                            },
+                            onCompleted: () => {
+                              setUserPositions({
+                                positions: [...userPositions.positions, position.id],
+                              });
+                            }
+                          });
+                          // setValue(
+                          //   "positions",
+                          //   positions?.includes(position.id)
+                          //     ? positions?.filter(
+                          //         (pos: any) => pos !== position.id
+                          //       )
+                          //     : [...(positions ?? []), position.id]
+                          // );
+                          // setPositions(
+                          //   positions?.includes(position.id)
+                          //     ? positions?.filter(
+                          //         (pos: any) => pos !== position.id
+                          //       )
+                          //     : [...(positions ?? []), position.id]
+                          // );
                         }}
-                        checked={positions?.includes(position.id)}
+                        checked={checked}
                         className={`${
-                          positions?.includes(position.id)
+                          checked
                             ? "bg-polar-600"
                             : "bg-gray-200"
                         } relative inline-flex h-6 w-11 items-center rounded-full`}
@@ -237,7 +297,7 @@ export function AddUser({ data }: any) {
                         <span
                           aria-hidden="true"
                           className={`${
-                            positions?.includes(position.id)
+                            checked
                               ? "translate-x-6"
                               : "translate-x-1"
                           } inline-block h-4 w-4 transform rounded-full bg-white transition`}

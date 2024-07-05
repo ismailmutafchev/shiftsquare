@@ -24,3 +24,16 @@ export const updatePositionById = gql` mutation updatePositionById($id: uuid!, $
         bgColor
     }
 }`;
+
+export const addUserPosition = gql` mutation addUserPosition($object: user_position_insert_input!) {
+    insert_user_position_one(object: $object) {
+        userId
+        positionId
+    }
+}`;
+
+export const deleteUserPosition = gql` mutation deleteUserPosition($userId: uuid!, $positionId: uuid!) {
+    delete_user_position(where: {userId: {_eq: $userId}, positionId: {_eq: $positionId}}) {
+        affected_rows
+    }
+}`;
