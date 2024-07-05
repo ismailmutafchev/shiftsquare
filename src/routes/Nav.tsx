@@ -6,13 +6,11 @@ import {
   Battery50Icon,
   BellIcon,
   CalendarDaysIcon,
-  CheckBadgeIcon,
   ChevronDownIcon,
   Cog6ToothIcon,
   EllipsisVerticalIcon,
   MagnifyingGlassIcon,
   Square3Stack3DIcon,
-  SquaresPlusIcon,
   UsersIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -137,18 +135,18 @@ export default function Navigation({
         current: pathname === "/positions",
         icon: Square3Stack3DIcon,
       },
-      {
-        name: "Templates",
-        href: "/templates",
-        current: pathname === "/templates",
-        icon: SquaresPlusIcon,
-      },
-      {
-        name: "Availability",
-        href: "/availability",
-        current: pathname === "/availability",
-        icon: CheckBadgeIcon,
-      },
+      // {
+      //   name: "Templates",
+      //   href: "/templates",
+      //   current: pathname === "/templates",
+      //   icon: SquaresPlusIcon,
+      // },
+      // {
+      //   name: "Availability",
+      //   href: "/availability",
+      //   current: pathname === "/availability",
+      //   icon: CheckBadgeIcon,
+      // },
     ];
   } else if (permissions && permissions?.includes("employee")) {
     navigation = [
@@ -271,11 +269,11 @@ export default function Navigation({
                             ))}
                           </ul>
                         </li>
-                        <li>
+                        {/* <li>
                           <div className="text-xs font-semibold leading-6 text-gray-400">
                             Your teams
                           </div>
-                        </li>
+                        </li> */}
                         <li className="mt-auto">
                           <Link
                             to="/setting"

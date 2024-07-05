@@ -209,3 +209,18 @@ export const getHoursByDay = gql`
     }
   }
 `;
+
+
+export const getUserPositions = gql`
+  query UserPositions($userId: uuid!) {
+    user_position(where: { userId: { _eq: $userId } }) {
+      id
+      positionId
+      position {
+        id
+        name
+        bgColor
+      }
+    }
+  }
+`;

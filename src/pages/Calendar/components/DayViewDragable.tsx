@@ -104,6 +104,40 @@ export default function DayViewDraggable({
     end: endOfWeek(addDays(selectedDay, 7), { weekStartsOn: 1 }),
   });
 
+  //update shift start and end time buy cliclink nect to the remove button
+
+  // const [updateStartTime] = useMutation(updateShiftStartTime, {
+  //   refetchQueries: [
+  //     {
+  //       query: getShifts,
+  //       variables: {
+  //         start: startOfDay(selectedDay),
+  //         end: endOfDay(selectedDay),
+  //       },
+  //       fetchPolicy: "network-only",
+  //     },
+  //   ],
+  //   onCompleted: () => {
+  //     toast("success", "Shift updated successfully");
+  //   },
+  // });
+
+  // const [updateEndTime] = useMutation(updateShiftEndTime, {
+  //   refetchQueries: [
+  //     {
+  //       query: getShifts,
+  //       variables: {
+  //         start: startOfDay(selectedDay),
+  //         end: endOfDay(selectedDay),
+  //       },
+  //       fetchPolicy: "network-only",
+  //     },
+  //   ],
+  //   onCompleted: () => {
+  //     toast("success", "Shift updated successfully");
+  //   },
+  // });
+
   const [deleteShift] = useMutation(deleteShiftById, {
     refetchQueries: [
       {
@@ -378,7 +412,6 @@ export default function DayViewDraggable({
               }}
               className="sticky relatice top-0 z-10 grid flex-none grid-cols-7 bg-white text-xs text-gray-500 shadow ring-1 ring-black ring-opacity-5 md:hidden"
             >
-
               {/* Swiper slides */}
               {/* <SwiperSlide defaultChecked className="grid grid-cols-7">
                 {prevWeek.map((day, idx) => {
@@ -425,10 +458,7 @@ export default function DayViewDraggable({
                   );
                 })}
               </SwiperSlide> */}
-              <SwiperSlide
-                defaultChecked
-                className="grid grid-cols-7"
-              >
+              <SwiperSlide defaultChecked className="grid grid-cols-7">
                 {weekDays.map((day, idx) => {
                   const isSelected = selectedDay && isSameDay(selectedDay, day);
                   return (
@@ -718,6 +748,58 @@ export default function DayViewDraggable({
                                             Remove
                                           </button>
                                         </div>
+                                        {/* <div className="flex items-center col-span-1">
+                                          <div
+                                            className="inline-flex items-center rounded-md bg-polar-600/90 px-2 py-1 text-xs font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-red-600/90 hover:ring-1 ring-red-600/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600/90"
+                                          >
+                                            <button
+                                            onClick={
+                                              () => {
+                                                updateEndTime({
+                                                  variables: {
+                                                    id: shift.id,
+                                                    end: subMinutes(
+                                                      new Date(shift.end),
+                                                      5
+                                                    ),
+                                                  },
+                                                });
+                                              }
+                                            }
+                                            >
+                                              <MinusIcon
+                                                className=" mx-1 h-4 w-4"
+                                                aria-hidden="true"
+                                              />
+                                            </button>
+                                            <p>
+                                              {format(
+                                                new Date(shift.end),
+                                                "H:mm"
+                                              )}
+                                            </p>
+                                            <button
+                                            onClick={
+                                              () => {
+                                                updateEndTime({
+                                                  variables: {
+                                                    id: shift.id,
+                                                    end: addMinutes(
+                                                      new Date(shift.end),
+                                                      5
+                                                    ),
+                                                  },
+                                                });
+                                              }
+                                            }
+                                            >
+                                              <PlusIcon
+                                                className=" mx-1 h-4 w-4"
+                                                aria-hidden="true"
+                                              />
+                                            </button>
+                                          </div>
+                                        </div> */}
                                       </div>
                                     </div>
                                   </div>
