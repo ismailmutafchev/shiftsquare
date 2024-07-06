@@ -523,7 +523,7 @@ export default function Dashboard() {
               )}
             </div>
           </div>
-          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-xl bg-gradient-to-r from-pink-50 to-indigo-50 overflow-scroll">
+          <div className="max-h-60 min-w-auto h-full flex col-span-4 md:col-span-2 items-center justify-between rounded-xl bg-gradient-to-r from-pink-50 to-polar-50 overflow-scroll">
             <div className="flex flex-col space-y-4 px-5 pt-3 h-full overflow-x-scroll no-scrollbar">
               <h1 className="text-xl font-semibold text-gray-900">
                 Hours by Position

@@ -14,14 +14,12 @@ import { useAuth0 } from "@auth0/auth0-react";
 import Login from "./pages/Login";
 import Employee from "./pages/Employee/Employee";
 import Onboarding from "./pages/Onboarding/Onboarding";
-import Timeoff from "./pages/Leave/Leave";
 import NotFound from "./pages/NotFound/NotFound";
 import Shifts from "./pages/Shifts/Shifts";
 import { TemplateProvider } from "./providers/TemplateContext";
 import { useSession } from "./hooks/session";
 import "swiper/css";
 import "swiper/css/pagination";
-import Request from "./pages/Leave/Request";
 
 function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
   if (!permissions) return false;
@@ -90,26 +88,11 @@ function App() {
                 <Route path="/availability" element={<Layout />}>
                   <Route index element={<Availability />} />
                 </Route> */}
-              <Route path="/time-off/:id" element={<Layout />}>
-                <Route index element={<Request />} />
-              </Route>
-              <Route path="/shifts" element={<Layout />}>
-                <Route index element={<Shifts />} />
-              </Route>
-              <Route path="/time-off" element={<Layout />}>
-                <Route index element={<Timeoff />} />
-              </Route>
-              <Route path="/time-off/:id" element={<Layout />}>
-                <Route index element={<Request />} />
-              </Route>
             </>
           ) : (
             <>
               <Route path="/profile" element={<Layout />}>
                 <Route index element={<Profile />} />
-              </Route>
-              <Route path="/time-off/:id" element={<Layout />}>
-                <Route index element={<Request />} />
               </Route>
               <Route path="/shifts" element={<Layout />}>
                 <Route index element={<Shifts />} />
