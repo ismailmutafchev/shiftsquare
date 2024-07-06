@@ -33,6 +33,11 @@ export const getLeaveAll = gql`
       status
       readBy
       duration
+      user {
+        id
+        firstName 
+        lastName
+      }
     }
   }
 `
@@ -56,6 +61,7 @@ export const getPendingLeave = gql`
       type
       status
       readBy
+      duration
       user {
         id
         firstName 
@@ -76,6 +82,7 @@ export const getApprovedLeave = gql`
       type
       status
       readBy
+      duration
       user {
         id
         firstName 

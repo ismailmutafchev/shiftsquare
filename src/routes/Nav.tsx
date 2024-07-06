@@ -60,7 +60,7 @@ export default function Navigation({
     () => {
       if (pendingLeaveRequests) {
         const notRead = pendingLeaveRequests.filter(
-          (leave: any) => !leave.readBy.includes(profile?.id)
+          (leave: any) => !leave.readBy?.includes(profile?.id)
         );
         setNotReadRequests(notRead);
       }

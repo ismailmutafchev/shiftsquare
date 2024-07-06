@@ -6,7 +6,7 @@ import Avatar from "../../components/Avatar";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import Modal from "../../components/Modal";
-import RequestPreview from "../../pages/Profile/Components/ReuestPreview";
+import RequestPreview from "../../pages/Profile/Components/RequestPreview";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -41,7 +41,7 @@ export default function RequestsSlideOver({ data }: { data: any }) {
       );
     };
     const newRequests = data?.data.filter(
-      (request: any) => !request.readBy.includes(profile?.id)
+      (request: any) => !request.readBy?.includes(profile?.id)
     );
   
     const pendingRequests = data?.data;

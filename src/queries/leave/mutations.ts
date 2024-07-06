@@ -35,3 +35,11 @@ export const updateReadStatus = gql`
     }
   }
 `;
+
+export const UpdateLeaveStatus = gql`
+  mutation UpdateLeaveStatus($id: uuid!, $status: leave_status_enum! ) {
+    update_leave_by_pk(pk_columns: { id: $id }, _set: { status: $status }) {
+      id
+    }
+  }
+`;
