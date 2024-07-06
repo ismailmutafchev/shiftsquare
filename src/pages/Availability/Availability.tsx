@@ -78,7 +78,7 @@ export default function Availability() {
                         checked={true}
                         onChange={() => console.log("hello")}
                         className={`${
-                          true ? "bg-indigo-500" : "bg-gray-200"
+                          true ? "bg-polar-500" : "bg-gray-200"
                         } relative inline-flex items-center h-6 rounded-full w-11`}
                       >
                         <span className="sr-only">Enable notifications</span>

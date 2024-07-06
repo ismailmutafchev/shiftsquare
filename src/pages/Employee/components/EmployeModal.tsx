@@ -60,9 +60,6 @@ export function AddUser({ data }: any) {
     }
   });
 
-  console.log(userPositions);
-
-
   const [addUser] = useMutation(addUserOne);
   const [updateUser] = useMutation(updateUserById);
 

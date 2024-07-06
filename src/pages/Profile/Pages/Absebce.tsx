@@ -6,14 +6,17 @@ import Modal from "../../../components/Modal";
 import { Disclosure } from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
-import { LeaveRequest } from "../Components/LeaveModal";
+import {  LeaveRequest } from "../Components/LeaveModal";
 import { useOrganization } from "../../../hooks/organization";
 import { daysInYear, differenceInDays, format } from "date-fns";
-import { Holiday } from "../../Leave/Leave";
+import { GetLeaveAllQuery } from "../../../gql/graphql";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
+
+export type LeaveAll = GetLeaveAllQuery["leave"];
+export type Holiday = LeaveAll[0];
 
 export default function Absebce() {
   const { profile } = useSession();

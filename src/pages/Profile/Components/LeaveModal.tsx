@@ -7,8 +7,8 @@ import {
   updateLeaveOne,
 } from "../../../queries/leave/mutations";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
-import { Holiday } from "../../Leave/Leave";
 import { SetStateAction } from "react";
+import { Holiday } from "../Pages/Absebce";
 
 type LeaveProps = {
   start: Date | string;
