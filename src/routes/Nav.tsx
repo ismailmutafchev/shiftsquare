@@ -1,6 +1,6 @@
 import { Fragment, useEffect } from "react";
 import React from "react";
-import { Dialog, Menu, Transition } from "@headlessui/react";
+import { Dialog, DialogPanel, Menu, MenuButton, MenuItem, MenuItems, Transition, TransitionChild } from "@headlessui/react";
 import {
   Bars3Icon,
   Battery50Icon,
@@ -60,7 +60,7 @@ export default function Navigation({
     () => {
       if (pendingLeaveRequests) {
         const notRead = pendingLeaveRequests.filter(
-          (leave: any) => !leave.readBy.includes(profile?.id)
+          (leave: any) => !leave.readBy?.includes(profile?.id)
         );
         setNotReadRequests(notRead);
       }
@@ -173,13 +173,13 @@ export default function Navigation({
   return (
     <>
       <div>
-        <Transition.Root show={sidebarOpen} as={Fragment}>
+        <Transition show={sidebarOpen} as={Fragment}>
           <Dialog
             as="div"
             className="relative z-50 lg:hidden"
             onClose={setSidebarOpen}
           >
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="transition-opacity ease-linear duration-300"
               enterFrom="opacity-0"
@@ -189,10 +189,10 @@ export default function Navigation({
               leaveTo="opacity-0"
             >
               <div className="fixed inset-0 bg-polar-800/40 backdrop-blur-sm" />
-            </Transition.Child>
+            </TransitionChild>
 
             <div className="fixed inset-0 flex">
-              <Transition.Child
+              <TransitionChild
                 as={Fragment}
                 enter="transition ease-in-out duration-300 transform"
                 enterFrom="-translate-x-full"
@@ -201,8 +201,8 @@ export default function Navigation({
                 leaveFrom="translate-x-0"
                 leaveTo="-translate-x-full"
               >
-                <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
-                  <Transition.Child
+                <DialogPanel className="relative mr-16 flex w-full max-w-xs flex-1">
+                  <TransitionChild
                     as={Fragment}
                     enter="ease-in-out duration-300"
                     enterFrom="opacity-0"
@@ -224,7 +224,7 @@ export default function Navigation({
                         />
                       </button>
                     </div>
-                  </Transition.Child>
+                  </TransitionChild>
                   {/* Sidebar component, swap this element with another sidebar if you like */}
                   <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
                     <div className="flex h-20 shrink-0 items-center">
@@ -276,11 +276,11 @@ export default function Navigation({
                       </ul>
                     </nav>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                </DialogPanel>
+              </TransitionChild>
             </div>
           </Dialog>
-        </Transition.Root>
+        </Transition>
 
         {/* Static sidebar for desktop */}
         <div
@@ -380,7 +380,7 @@ export default function Navigation({
 
                 {/* Notification Dropdown */}
                 <Menu as="div" className="relative">
-                  <Menu.Button
+                  <MenuButton
                     className="-m-1.5 flex items-center p-1.5 relative"
                     onClick={() => {
                       setSlideOverOpen(!slideOverOpen);
@@ -396,7 +396,7 @@ export default function Navigation({
                       className="ml-2 h-6 w-6 text-gray-400"
                       aria-hidden="true"
                     />
-                  </Menu.Button>
+                  </MenuButton>
                 </Menu>
 
                 {/* Separator */}
@@ -407,7 +407,7 @@ export default function Navigation({
 
                 {/* Profile dropdown */}
                 <Menu as="div" className="relative">
-                  <Menu.Button className="-m-1.5 flex items-center p-1.5">
+                  <MenuButton className="-m-1.5 flex items-center p-1.5">
                     <span className="sr-only">Open user menu</span>
                     <Avatar
                       size={10}
@@ -428,7 +428,7 @@ export default function Navigation({
                         aria-hidden="true"
                       />
                     </span>
-                  </Menu.Button>
+                  </MenuButton>
                   <Transition
                     as={Fragment}
                     enter="transition ease-out duration-100"
@@ -438,28 +438,28 @@ export default function Navigation({
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute right-0 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                    <MenuItems className="absolute right-0 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
                       {userNavigation.map((item) => (
-                        <Menu.Item key={item.name}>
-                          {({ active }) => (
+                        <MenuItem key={item.name}>
+                          {({ focus }) => (
                             <Link
                               to={item.href}
                               className={classNames(
-                                active ? "bg-gray-50" : "",
+                                focus ? "bg-gray-50" : "",
                                 "block px-3 py-1 text-sm leading-6 text-gray-900"
                               )}
                             >
                               {item.name}
                             </Link>
                           )}
-                        </Menu.Item>
+                        </MenuItem>
                       ))}
-                      <Menu.Item>
+                      <MenuItem>
                         <div className="block px-3 py-1 text-sm leading-6 text-gray-900 hover:bg-gray-50 hover:cursor-pointer">
                           <LogoutButton />
                         </div>
-                      </Menu.Item>
-                    </Menu.Items>
+                      </MenuItem>
+                    </MenuItems>
                   </Transition>
                 </Menu>
               </div>
@@ -471,6 +471,7 @@ export default function Navigation({
               data={{ close: closeSearchHandler }}
               search
             />
+          </div>
             <Slideover
               open={slideOverOpen}
               setOpen={openSlideOverHandler}
@@ -478,7 +479,6 @@ export default function Navigation({
               children={RequestsSlideOver}
               data={pendingLeaveRequests?.concat(approvedLeaveRequests)}
             />
-          </div>
 
           <main>
             <div>{children}</div>

@@ -1,12 +1,19 @@
 import { useState } from "react";
 import { useQuery } from "@apollo/client";
-import { getLeaveAll } from "../../../queries/leave/queries";
+import {
+  getLeaveAll,
+  getUserApprovedLeave,
+} from "../../../queries/leave/queries";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
 import Modal from "../../../components/Modal";
-import { Disclosure } from "@headlessui/react";
+import {
+  Disclosure,
+  DisclosureButton,
+  DisclosurePanel,
+} from "@headlessui/react";
 import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
-import {  LeaveRequest } from "../Components/LeaveModal";
+import { LeaveRequest } from "../Components/LeaveModal";
 import { useOrganization } from "../../../hooks/organization";
 import { daysInYear, differenceInDays, format } from "date-fns";
 import { GetLeaveAllQuery } from "../../../gql/graphql";
@@ -27,30 +34,54 @@ export default function Absebce() {
     data: { id: profile?.id },
   });
 
+  const { loading, error, data } = useQuery(getLeaveAll);
+  const { data: userApprovedHoliday } = useQuery(getUserApprovedLeave, {
+    variables: {
+      userId: profile?.id,
+    },
+  });
+
   function modalHandler(state: boolean) {
     setShowModal(state);
   }
 
   const daysForOneDayHoliday = daysInYear / holidayAllowance;
 
-  const yearEndFormatted = yearEnd && format(new Date(yearEnd), `MMMM dd ${format(new Date(), "yyyy")}`);
+  const yearEndFormatted =
+    yearEnd &&
+    format(new Date(yearEnd), `MMMM dd ${format(new Date(), "yyyy")}`);
 
-  const daysTillYearEnd = differenceInDays(new Date(yearEndFormatted), new Date(profile?.startDate));
+  const daysTillYearEnd = differenceInDays(
+    new Date(yearEndFormatted),
+    new Date(profile?.startDate)
+  );
 
-  const userHolidayAllowance = daysTillYearEnd / daysForOneDayHoliday;
 
-  const { loading, error, data } = useQuery(getLeaveAll)
+  // Time Off Values
+  const userHolidayAllowance = (daysTillYearEnd / daysForOneDayHoliday).toFixed(
+    1
+  );
+
+  const holidayValue =
+    userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration +
+    " / " +
+    userHolidayAllowance;
+
+  const timeOffChange =
+    Number(userHolidayAllowance) -
+    Number(
+      userApprovedHoliday &&
+        userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration
+    );
 
   const leaveData = data?.leave;
-
-  const userApprovedHoliday = profile?.approvedLeave?.aggregate?.sum?.duration;
 
   const holidayStats = [
     {
       name: "Time off taken",
-      value: userApprovedHoliday + " / " + userHolidayAllowance.toFixed(1),
-      change: "+4",
-      changeType: "positive",
+      value: holidayValue,
+      change: timeOffChange,
+      changeType: timeOffChange > 0 ? "positive" : "negative",
       button: "Request Time Off",
     },
     {
@@ -64,7 +95,7 @@ export default function Absebce() {
       value: "2",
       change: "+1",
       changeType: "positive",
-    }
+    },
   ];
 
   if (loading) return <LoadingAnimation />;
@@ -100,7 +131,8 @@ export default function Absebce() {
                 type="button"
                 className="w-full mx-7 items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90"
                 onClick={() => {
-                  setShowModal(true), setUpdate({ isUpdate: false, data: {id: profile?.id} });
+                  setShowModal(true),
+                    setUpdate({ isUpdate: false, data: { id: profile?.id } });
                 }}
               >
                 {stat.button}
@@ -115,46 +147,48 @@ export default function Absebce() {
           <Disclosure>
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500/75">
+                <DisclosureButton className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500/75">
                   <span>Future Absence</span>
                   <ChevronUpIcon
                     className={`${
                       open ? "rotate-180 transform" : ""
                     } h-5 w-5 text-polar-500`}
                   />
-                </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                </DisclosureButton>
+                <DisclosurePanel className="px-4 pb-2 pt-4 text-sm text-gray-500">
                   {leaveData?.map((leave: Holiday) => (
-                    <div key={leave.id} className="flex flex-col gap-y-2" onClick={
-                      () => {
+                    <div
+                      key={leave.id}
+                      className="flex flex-col gap-y-2"
+                      onClick={() => {
                         setUpdate({ isUpdate: true, data: leave });
                         setShowModal(true);
-                      }
-                    }>
+                      }}
+                    >
                       <div className="flex justify-between">
                         <span className="font-semibold">{leave.type}</span>
                         <span className="text-gray-500">{leave.status}</span>
                       </div>
                     </div>
                   ))}
-                </Disclosure.Panel>
+                </DisclosurePanel>
               </>
             )}
           </Disclosure>
           <Disclosure as="div" className="mt-2">
             {({ open }) => (
               <>
-                <Disclosure.Button className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500/75">
+                <DisclosureButton className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500/75">
                   <span>Do you offer technical support?</span>
                   <ChevronUpIcon
                     className={`${
                       open ? "rotate-180 transform" : ""
                     } h-5 w-5 text-polar-500`}
                   />
-                </Disclosure.Button>
-                <Disclosure.Panel className="px-4 pb-2 pt-4 text-sm text-gray-500">
+                </DisclosureButton>
+                <DisclosurePanel className="px-4 pb-2 pt-4 text-sm text-gray-500">
                   No.
-                </Disclosure.Panel>
+                </DisclosurePanel>
               </>
             )}
           </Disclosure>

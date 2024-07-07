@@ -6,7 +6,7 @@ import { getPositions } from "../../../queries/position/queries";
 import { useMutation } from "@apollo/client";
 import { useForm } from "react-hook-form";
 import { SketchPicker } from "react-color";
-import { Disclosure, Transition } from "@headlessui/react";
+import { Disclosure, DisclosureButton, DisclosurePanel, Transition } from "@headlessui/react";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 
@@ -80,14 +80,14 @@ export function AddPosition({ data }: any) {
                   <Disclosure>
                     {({ open }) => (
                       <>
-                        <Disclosure.Button className="py-2 w-full flex justify-between items-center">
+                        <DisclosureButton className="py-2 w-full flex justify-between items-center">
                           Show Color Picker
                           <ChevronRightIcon
                             className={`${
                               open ? "rotate-90 transform" : ""
                             } w-4 h-4`}
                           />
-                        </Disclosure.Button>
+                        </DisclosureButton>
                         <Transition
                           enter="transition duration-200 delay-50 ease-out"
                           enterFrom="transform scale-95 opacity-0"
@@ -96,7 +96,7 @@ export function AddPosition({ data }: any) {
                           leaveFrom="transform scale-100 opacity-100"
                           leaveTo="transform scale-95 opacity-0"
                         >
-                          <Disclosure.Panel className="text-gray-500">
+                          <DisclosurePanel className="text-gray-500">
                             <div className="w-full flex justify-center">
                               <SketchPicker
                                 styles={{
@@ -138,7 +138,7 @@ export function AddPosition({ data }: any) {
                                 }}
                               />
                             </div>
-                          </Disclosure.Panel>
+                          </DisclosurePanel>
                         </Transition>
                       </>
                     )}

@@ -12,7 +12,7 @@ import {
   updateTemplateById,
 } from "../../queries/templates/mutations";
 import { LoadingAnimation } from "../../assets/AnimationComponents/AnimationComponents";
-import { Menu, Popover, Transition } from "@headlessui/react";
+import { Menu, MenuButton, MenuItem, MenuItems, Popover, PopoverButton, PopoverPanel, Transition } from "@headlessui/react";
 import {
   eachMinuteOfInterval,
   endOfDay,
@@ -307,7 +307,7 @@ export default function Templates() {
                                           >
                                             {({ open }) => (
                                               <>
-                                                <Popover.Button
+                                                <PopoverButton
                                                   style={{
                                                     backgroundColor:
                                                       shift.position.bgColor,
@@ -315,7 +315,7 @@ export default function Templates() {
                                                   className="group no-scrollbar min-h-8 items-center shadow-light justify-center w-full inset-1 flex flex-col overflow-y-auto rounded-lg p-2 text-xs  hover:scale-[1.01] duration-200"
                                                 >
                                                   <p className="font-semibold text-gray-800 text-base">{`${shift.start} ${shift.end} `}</p>
-                                                </Popover.Button>
+                                                </PopoverButton>
                                                 <Transition
                                                   show={open}
                                                   as={Fragment}
@@ -326,14 +326,14 @@ export default function Templates() {
                                                   leaveFrom="opacity-100 translate-y-0"
                                                   leaveTo="opacity-0 translate-y-1"
                                                 >
-                                                  <Popover.Panel
+                                                  <PopoverPanel
                                                     static
                                                     className="absolute z-10 max-w-sm px-2 -top-8 transform -translate-x-1/2 left-1/2 sm:px-0 "
                                                   >
                                                     <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
                                                       <div className="relative grid gap-6 bg-white p-1"></div>
                                                     </div>
-                                                  </Popover.Panel>
+                                                  </PopoverPanel>
                                                 </Transition>
                                               </>
                                             )}
@@ -392,13 +392,13 @@ export default function Templates() {
                         {template.name}
                       </div>
                       <Menu as="div" className="relative ml-auto">
-                        <Menu.Button className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
+                        <MenuButton className="-m-2.5 block p-2.5 text-gray-400 hover:text-gray-500">
                           <span className="sr-only">Open options</span>
                           <EllipsisHorizontalIcon
                             className="h-5 w-5"
                             aria-hidden="true"
                           />
-                        </Menu.Button>
+                        </MenuButton>
                         <Transition
                           as={Fragment}
                           enter="transition ease-out duration-100"
@@ -408,9 +408,9 @@ export default function Templates() {
                           leaveFrom="transform opacity-100 scale-100"
                           leaveTo="transform opacity-0 scale-95"
                         >
-                          <Menu.Items className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
-                            <Menu.Item>
-                              {({ active }) => (
+                          <MenuItems className="absolute right-0 z-10 mt-0.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none">
+                            <MenuItem>
+                              {({ focus }) => (
                                 <a
                                   onClick={() => {
                                     setUpdate({
@@ -420,7 +420,7 @@ export default function Templates() {
                                     builderHandler(true);
                                   }}
                                   className={classNames(
-                                    active ? "bg-gray-50" : "",
+                                    focus ? "bg-gray-50" : "",
                                     "block px-3 py-1 text-sm leading-6 text-gray-900"
                                   )}
                                 >
@@ -430,13 +430,13 @@ export default function Templates() {
                                   </span>
                                 </a>
                               )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
+                            </MenuItem>
+                            <MenuItem>
+                              {({ focus }) => (
                                 <a
                                   onClick={() => deleteHandler(template.id)}
                                   className={classNames(
-                                    active ? "bg-gray-50" : "",
+                                    focus ? "bg-gray-50" : "",
                                     "block px-3 py-1 text-sm leading-6 text-gray-900"
                                   )}
                                 >
@@ -446,8 +446,8 @@ export default function Templates() {
                                   </span>
                                 </a>
                               )}
-                            </Menu.Item>
-                          </Menu.Items>
+                            </MenuItem>
+                          </MenuItems>
                         </Transition>
                       </Menu>
                     </div>

@@ -20,7 +20,7 @@ import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
-import { Listbox } from "@headlessui/react";
+import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
 import { RolesQuery } from "../../gql/graphql";
 
 
@@ -334,12 +334,12 @@ export default function Onboarding() {
                       >
                         {() => (
                           <>
-                            <Listbox.Label className="block text-base font-medium text-gray-700 text-start pb-4">
+                            <Label className="block text-base font-medium text-gray-700 text-start pb-4">
                               Please select your role in the organization
-                            </Listbox.Label>
+                            </Label>
                             <div className="relative">
                               <span className="inline-block w-full rounded-md shadow-sm">
-                                <Listbox.Button className="cursor-default relative w-full rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm">
+                                <ListboxButton className="cursor-default relative w-full rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-polar-300 sm:text-sm">
                                   <span className="block truncate text-gray-500">
                                     {roleWatcher.role
                                       ? roles?.role.find(
@@ -348,16 +348,16 @@ export default function Onboarding() {
                                         )?.name
                                       : "Select your role"}
                                   </span>
-                                </Listbox.Button>
+                                </ListboxButton>
                               </span>
-                              <Listbox.Options className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-start">
+                              <ListboxOptions className="absolute z-10 w-full py-1 mt-1 overflow-auto text-base bg-white rounded-md shadow-lg max-h-60 ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm text-start">
                                 {roles?.role.map((role: Role) => (
-                                  <Listbox.Option
+                                  <ListboxOption
                                     key={role.id}
                                     value={role.id}
-                                    className={({ active }) =>
+                                    className={({ focus }) =>
                                       classNames(
-                                        active
+                                        focus
                                           ? "text-white bg-polar-600"
                                           : "text-gray-900",
                                         "cursor-default select-none relative py-2 pl-3 pr-9"
@@ -377,9 +377,9 @@ export default function Onboarding() {
                                           role?.name?.slice(1)}
                                       </span>
                                     )}
-                                  </Listbox.Option>
+                                  </ListboxOption>
                                 ))}
-                              </Listbox.Options>
+                              </ListboxOptions>
                             </div>
                           </>
                         )}

@@ -70,7 +70,7 @@ export function LeaveRequest({ data }: {
         object: {
           ...data,
           userId: id,
-          status: "pending",
+          status: "Pending",
         },
       },
       refetchQueries: [{ query: getLeaveAll }, { query: getPendingLeave }],

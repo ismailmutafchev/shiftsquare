@@ -71,7 +71,7 @@ export default function Profile() {
             <select
               id="current-tab"
               name="current-tab"
-              className="block w-full rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-polar-500 focus:outline-none focus:ring-polar-500 sm:text-sm"
+              className="block w-full cursor-pointer rounded-md border-gray-300 py-2 pl-3 pr-10 text-base focus:border-polar-500 focus:outline-none focus:ring-polar-500 sm:text-sm"
               onChange={(e) => {
                 currentTabHandler(e.target.value);
               }}

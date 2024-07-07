@@ -5,7 +5,7 @@ import { useMutation } from "@apollo/client";
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { addShiftOne, updateShiftById } from "../../../queries/shift/mutations";
-import { Listbox, Transition } from "@headlessui/react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Transition } from "@headlessui/react";
 // import { shiftSchema } from "../../../validations/shift";
 // import { yupResolver } from "@hookform/resolvers/yup";
 import { useSession } from "../../../hooks/session";
@@ -158,7 +158,7 @@ export default function AddShift({ data }: {
                 render={({ field: { onChange } }) => (
                   <Listbox onChange={onChange}>
                     <div className="relative mt-1">
-                      <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <ListboxButton className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                         <span className="block truncate">
                           {(selectedPositionDisplay &&
                             selectedPositionDisplay.name) ||
@@ -170,21 +170,21 @@ export default function AddShift({ data }: {
                             aria-hidden="true"
                           />
                         </span>
-                      </Listbox.Button>
+                      </ListboxButton>
                       <Transition
                         as={Fragment}
                         leave="transition ease-in duration-100"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
+                        <ListboxOptions className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
                           {positions &&
                             positions.map((position: any) => (
-                              <Listbox.Option
+                              <ListboxOption
                                 key={position.id}
-                                className={({ active }) =>
+                                className={({ focus }) =>
                                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                    active
+                                    focus
                                       ? "bg-polar-100 text-polar-900/80"
                                       : "text-polar-900"
                                   }`
@@ -210,9 +210,9 @@ export default function AddShift({ data }: {
                                     ) : null}
                                   </>
                                 )}
-                              </Listbox.Option>
+                              </ListboxOption>
                             ))}
-                        </Listbox.Options>
+                        </ListboxOptions>
                       </Transition>
                     </div>
                   </Listbox>
@@ -233,7 +233,7 @@ export default function AddShift({ data }: {
                 render={({ field: { onChange } }) => (
                   <Listbox onChange={onChange}>
                     <div className="relative mt-1">
-                      <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                      <ListboxButton className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                         <span className="block truncate">
                           {(selectedEmployeeDisplay &&
                             selectedEmployeeDisplay.firstName +
@@ -250,17 +250,17 @@ export default function AddShift({ data }: {
                             aria-hidden="true"
                           />
                         </span>
-                      </Listbox.Button>
+                      </ListboxButton>
                       <Transition
                         as={Fragment}
                         leave="transition ease-in duration-100"
                         leaveFrom="opacity-100"
                         leaveTo="opacity-0"
                       >
-                        <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
+                        <ListboxOptions className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
                           {employees &&
                             employees.map((employee: any) => (
-                              <Listbox.Option
+                              <ListboxOption
                                 key={employee.id}
                                 className={({ active }) =>
                                   `relative cursor-default select-none py-2 pl-10 pr-4 ${
@@ -290,9 +290,9 @@ export default function AddShift({ data }: {
                                     ) : null}
                                   </>
                                 )}
-                              </Listbox.Option>
+                              </ListboxOption>
                             ))}
-                        </Listbox.Options>
+                        </ListboxOptions>
                       </Transition>
                     </div>
                   </Listbox>

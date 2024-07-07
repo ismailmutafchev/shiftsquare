@@ -12,7 +12,7 @@ import {
 } from "date-fns";
 import { useForm, Controller } from "react-hook-form";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { Listbox, Switch, Transition } from "@headlessui/react";
+import { Listbox, ListboxButton, ListboxOption, ListboxOptions, Switch, Transition } from "@headlessui/react";
 import { useMutation, useQuery } from "@apollo/client";
 import { useToast } from "../../../hooks/toast";
 import { getShifts } from "../../../queries/shift/queries";
@@ -210,7 +210,7 @@ export const CopyWeekModal = ({ data }: {
                         render={({ field: { onChange } }) => (
                           <Listbox onChange={onChange}>
                             <div className="relative mt-1">
-                              <Listbox.Button className=" relative w-full cursor-default rounded-lg bg-white py-4 pl-3 pr-10 text-right shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
+                              <ListboxButton className=" relative w-full cursor-default rounded-lg bg-white py-4 pl-3 pr-10 text-right shadow-md focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm">
                                 <span className="pointer-events-none absolute inset-y-0 flex items-center justify-between w-full pr-2">
                                   {selectedWeek &&
                                     `${format(
@@ -225,21 +225,21 @@ export const CopyWeekModal = ({ data }: {
                                     aria-hidden="true"
                                   />
                                 </span>
-                              </Listbox.Button>
+                              </ListboxButton>
                               <Transition
                                 as={Fragment}
                                 leave="transition ease-in duration-100"
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                               >
-                                <Listbox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
+                                <ListboxOptions className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm z-10">
                                   {pastWeeks &&
                                     pastWeeks.map((week: any) => (
-                                      <Listbox.Option
+                                      <ListboxOption
                                         key={week.start}
-                                        className={({ active }) =>
+                                        className={({ focus }) =>
                                           `relative cursor-default select-none py-2 pl-10 pr-4 ${
-                                            active
+                                            focus
                                               ? "bg-polar-100 text-polar-900/80"
                                               : "text-polar-900"
                                           }`
@@ -274,9 +274,9 @@ export const CopyWeekModal = ({ data }: {
                                             ) : null}
                                           </>
                                         )}
-                                      </Listbox.Option>
+                                      </ListboxOption>
                                     ))}
-                                </Listbox.Options>
+                                </ListboxOptions>
                               </Transition>
                             </div>
                           </Listbox>
