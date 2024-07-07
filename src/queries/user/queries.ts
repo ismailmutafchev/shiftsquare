@@ -59,15 +59,6 @@ export const getProfile = gql`
       role {
         name
       }
-      approvedLeave: leave_aggregate(
-        where: { leave_status: { status: { _eq: "Approved" } } }
-      ) {
-        aggregate {
-          sum {
-            duration
-          }
-        }
-      }
     }
   }
 `;

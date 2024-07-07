@@ -10,7 +10,7 @@ import {
   UserGroupIcon,
 } from "@heroicons/react/24/outline";
 import Datepicker from "../../components/Datepicker";
-import { Menu, Transition } from "@headlessui/react";
+import { Menu, MenuButton, MenuItems, Transition } from "@headlessui/react";
 import {
   Cell,
   Pie,
@@ -293,7 +293,7 @@ export default function Dashboard() {
               {({ open }) => (
                 <>
                   <div>
-                    <Menu.Button
+                    <MenuButton
                       className={`inline-flex items-center rounded-md
                         px-3 py-2 text-sm font-semibold
                         shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1
@@ -310,7 +310,7 @@ export default function Dashboard() {
                         className="ml-2 -mr-1 h-5 w-5"
                         aria-hidden="true"
                       />
-                    </Menu.Button>
+                    </MenuButton>
                   </div>
                   <Transition
                     as={Fragment}
@@ -321,7 +321,7 @@ export default function Dashboard() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items static>
+                    <MenuItems static>
                       <div className="relative">
                         <div className="absolute z[999] w-[220%] top-6 -left-32">
                           <Datepicker
@@ -330,7 +330,7 @@ export default function Dashboard() {
                           />
                         </div>
                       </div>
-                    </Menu.Items>
+                    </MenuItems>
                   </Transition>
                 </>
               )}
@@ -341,7 +341,7 @@ export default function Dashboard() {
               {({ open }) => (
                 <>
                   <div>
-                    <Menu.Button
+                    <MenuButton
                       className={`inline-flex items-center rounded-md
                         px-3 py-2 text-sm font-semibold 
                         shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1
@@ -358,7 +358,7 @@ export default function Dashboard() {
                         className="ml-2 -mr-1 h-5 w-5"
                         aria-hidden="true"
                       />
-                    </Menu.Button>
+                    </MenuButton>
                   </div>
                   <Transition
                     as={Fragment}
@@ -369,7 +369,7 @@ export default function Dashboard() {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items static>
+                    <MenuItems static>
                       <div className="relative">
                         <div className="absolute z[999] w-[220%] top-6 -left-32">
                           <Datepicker
@@ -378,7 +378,7 @@ export default function Dashboard() {
                           />
                         </div>
                       </div>
-                    </Menu.Items>
+                    </MenuItems>
                   </Transition>
                 </>
               )}

@@ -24,6 +24,7 @@ const documents = {
     "\n  query GetLeaveTypes {\n    leave_type {\n      value\n      bgColor\n    }\n  }\n": types.GetLeaveTypesDocument,
     "\n  \n  query GetPendingLeave {\n    leave(where: {status: {_eq: Pending}}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n": types.GetPendingLeaveDocument,
     "\n  \n  query GetApprovedLeave {\n    leave(where: {status: {_eq: Approved}}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n": types.GetApprovedLeaveDocument,
+    "\n  query GetLeaveStatus {\n    leave_status {\n      status\n    }\n  }\n": types.GetLeaveStatusDocument,
     " mutation addOrganizationOne($object: organization_insert_input!) {\n    insert_organization_one(object: $object) {\n        id\n        name\n    }\n}\n": types.AddOrganizationOneDocument,
     " query getOrganizationByName($name: String) {\n    organization(where: {name: {_eq: $name}}) {\n        id\n        name\n    }\n}": types.GetOrganizationByNameDocument,
     " query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n        id\n        createdAt\n        updatedAt\n        name\n        yearEnd\n        holidayAllowance\n        location\n    }\n}": types.GetOrganizationByIdDocument,
@@ -64,7 +65,7 @@ const documents = {
     " mutation updateUserById($id: uuid!, $object: user_set_input!) {\n    update_user_by_pk(pk_columns: {id: $id}, _set: $object) {\n        id\n        firstName\n        lastName\n        email\n            role{\n                name\n            }\n    }\n}": types.UpdateUserByIdDocument,
     "\n  query Users {\n    user {\n      id\n      firstName\n      lastName\n      email\n      bgColor\n      payDetails\n      contractedHours\n      startDate\n      positions {\n        positionId\n      }\n      role {\n        name\n      }\n    }\n  }\n": types.UsersDocument,
     "\n  query User($id: uuid!) {\n    user_by_pk(id: $id) {\n      id\n      firstName\n      lastName\n      email\n      bgColor\n      payDetails\n      contractedHours\n      startDate\n      role {\n        name\n      }\n      positions {\n        positionId\n      }\n    }\n  }\n": types.UserDocument,
-    "\n  query getProfileByAuthId($authId: String!) {\n    user(where: { authId: { _eq: $authId } }) {\n      id\n      createdAt\n      updatedAt\n      contractedHours\n      startDate\n      bgColor\n      email\n      organizationId\n      firstName\n      lastName\n      onboarded\n      authId\n      role {\n        name\n      }\n      approvedLeave: leave_aggregate(\n        where: { leave_status: { status: { _eq: \"Approved\" } } }\n      ) {\n        aggregate {\n          sum {\n            duration\n          }\n        }\n      }\n    }\n  }\n": types.GetProfileByAuthIdDocument,
+    "\n  query getProfileByAuthId($authId: String!) {\n    user(where: { authId: { _eq: $authId } }) {\n      id\n      createdAt\n      updatedAt\n      contractedHours\n      startDate\n      bgColor\n      email\n      organizationId\n      firstName\n      lastName\n      onboarded\n      authId\n      role {\n        name\n      }\n    }\n  }\n": types.GetProfileByAuthIdDocument,
     "\n  query ContractedHours {\n    user_aggregate {\n      aggregate {\n        sum {\n          contractedHours\n        }\n      }\n    }\n  }\n": types.ContractedHoursDocument,
 };
 
@@ -126,6 +127,10 @@ export function graphql(source: "\n  \n  query GetPendingLeave {\n    leave(wher
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  \n  query GetApprovedLeave {\n    leave(where: {status: {_eq: Approved}}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n"): (typeof documents)["\n  \n  query GetApprovedLeave {\n    leave(where: {status: {_eq: Approved}}) {\n      id \n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName \n        lastName\n      }\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query GetLeaveStatus {\n    leave_status {\n      status\n    }\n  }\n"): (typeof documents)["\n  query GetLeaveStatus {\n    leave_status {\n      status\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
@@ -289,7 +294,7 @@ export function graphql(source: "\n  query User($id: uuid!) {\n    user_by_pk(id
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "\n  query getProfileByAuthId($authId: String!) {\n    user(where: { authId: { _eq: $authId } }) {\n      id\n      createdAt\n      updatedAt\n      contractedHours\n      startDate\n      bgColor\n      email\n      organizationId\n      firstName\n      lastName\n      onboarded\n      authId\n      role {\n        name\n      }\n      approvedLeave: leave_aggregate(\n        where: { leave_status: { status: { _eq: \"Approved\" } } }\n      ) {\n        aggregate {\n          sum {\n            duration\n          }\n        }\n      }\n    }\n  }\n"): (typeof documents)["\n  query getProfileByAuthId($authId: String!) {\n    user(where: { authId: { _eq: $authId } }) {\n      id\n      createdAt\n      updatedAt\n      contractedHours\n      startDate\n      bgColor\n      email\n      organizationId\n      firstName\n      lastName\n      onboarded\n      authId\n      role {\n        name\n      }\n      approvedLeave: leave_aggregate(\n        where: { leave_status: { status: { _eq: \"Approved\" } } }\n      ) {\n        aggregate {\n          sum {\n            duration\n          }\n        }\n      }\n    }\n  }\n"];
+export function graphql(source: "\n  query getProfileByAuthId($authId: String!) {\n    user(where: { authId: { _eq: $authId } }) {\n      id\n      createdAt\n      updatedAt\n      contractedHours\n      startDate\n      bgColor\n      email\n      organizationId\n      firstName\n      lastName\n      onboarded\n      authId\n      role {\n        name\n      }\n    }\n  }\n"): (typeof documents)["\n  query getProfileByAuthId($authId: String!) {\n    user(where: { authId: { _eq: $authId } }) {\n      id\n      createdAt\n      updatedAt\n      contractedHours\n      startDate\n      bgColor\n      email\n      organizationId\n      firstName\n      lastName\n      onboarded\n      authId\n      role {\n        name\n      }\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

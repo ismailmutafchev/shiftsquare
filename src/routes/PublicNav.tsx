@@ -1,5 +1,5 @@
 import { Fragment, useState, useEffect } from "react";
-import { Disclosure, Menu, Transition } from "@headlessui/react";
+import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems, Transition } from "@headlessui/react";
 import {
   Bars3Icon,
   BellIcon,
@@ -123,7 +123,7 @@ export default function PublicNavigation() {
                   </div>
                   <div className="flex lg:hidden">
                     {/* Mobile menu button */}
-                    <Disclosure.Button className="inline-flex items-center justify-center rounded-md p-1">
+                    <DisclosureButton className="inline-flex items-center justify-center rounded-md p-1">
                       <span className="sr-only">Open main menu</span>
                       {open ? (
                         <XMarkIcon
@@ -136,7 +136,7 @@ export default function PublicNavigation() {
                           aria-hidden="true"
                         />
                       )}
-                    </Disclosure.Button>
+                    </DisclosureButton>
                   </div>
                   {isAuthenticated && user && (
                     <div className="hidden lg:ml-4 lg:block">
@@ -156,14 +156,14 @@ export default function PublicNavigation() {
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3 flex-shrink-0">
                           <div>
-                            <Menu.Button className="flex rounded-full text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
+                            <MenuButton className="flex rounded-full text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
                               <span className="sr-only">Open user menu</span>
                               <img
                                 className="rounded-full h-8 w-8"
                                 src={user.picture}
                                 alt=""
                               />
-                            </Menu.Button>
+                            </MenuButton>
                           </div>
                           <Transition
                             as={Fragment}
@@ -174,9 +174,9 @@ export default function PublicNavigation() {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                           >
-                            <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <MenuItems className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               {userNavigation.map((item) => (
-                                <Menu.Item key={item.name}>
+                                <MenuItem key={item.name}>
                                   {({ active }) => (
                                     <a
                                       href={item.href}
@@ -188,14 +188,14 @@ export default function PublicNavigation() {
                                       {item.name}
                                     </a>
                                   )}
-                                </Menu.Item>
+                                </MenuItem>
                               ))}
-                              <Menu.Item>
+                              <MenuItem>
                                 {() => (
                                   <LogoutButton className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer" />
                                 )}
-                              </Menu.Item>
-                            </Menu.Items>
+                              </MenuItem>
+                            </MenuItems>
                           </Transition>
                         </Menu>
                       </div>
@@ -204,10 +204,10 @@ export default function PublicNavigation() {
                 </div>
               </div>
 
-              <Disclosure.Panel className="lg:hidden  w-full z-10 ">
+              <DisclosurePanel className="lg:hidden  w-full z-10 ">
                 <div className="space-y-1 px-2 py-10 w-full h-screen bg-white z-10 divide-y absolute pointer-events-auto overflow-scroll items-center flex flex-col text-start">
                   {navigation.map((item) => (
-                    <Disclosure.Button
+                    <DisclosureButton
                       key={item.name}
                       as="a"
                       href={item.href}
@@ -225,7 +225,7 @@ export default function PublicNavigation() {
                       aria-current={item.current ? "page" : undefined}
                     >
                       {item.name}
-                    </Disclosure.Button>
+                    </DisclosureButton>
                   ))}
                   <div>{/* TODO: add icons to the pages     */}</div>
                 </div>
@@ -258,24 +258,24 @@ export default function PublicNavigation() {
                     </div>
                     <div className="mt-3 space-y-1 px-2">
                       {userNavigation.map((item) => (
-                        <Disclosure.Button
+                        <DisclosureButton
                           key={item.name}
                           className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-polar-300 hover:bg-opacity-75"
                         >
                           {item.name}
-                        </Disclosure.Button>
+                        </DisclosureButton>
                       ))}
-                      <Disclosure.Button
+                      <DisclosureButton
                         as="a"
                         href="/"
                         className="block rounded-md px-3 py-2 text-base font-medium text-white hover:bg-polar-300 hover:bg-opacity-75"
                       >
                         <LogoutButton />
-                      </Disclosure.Button>
+                      </DisclosureButton>
                     </div>
                   </div>
                 )}
-              </Disclosure.Panel>
+              </DisclosurePanel>
             </>
           )}
         </Disclosure>

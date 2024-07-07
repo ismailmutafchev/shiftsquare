@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import { Dialog, DialogPanel, Transition } from "@headlessui/react";
 
 export default function Slideover({
   open,
@@ -16,7 +16,7 @@ export default function Slideover({
 }) {
   const Children = children;
   return (
-    <Transition.Root show={open} as={Fragment}>
+    <Transition show={open} as={Fragment}>
       <Dialog className="relative z-10" onClose={setClose}>
         <div className="fixed inset-0" />
 
@@ -32,14 +32,14 @@ export default function Slideover({
                 leaveFrom="translate-x-0"
                 leaveTo="translate-x-full"
               >
-                <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
+                <DialogPanel className="pointer-events-auto w-screen max-w-md">
                   <Children data={{ data, setOpen, setClose }} />
-                </Dialog.Panel>
+                </DialogPanel>
               </Transition.Child>
             </div>
           </div>
         </div>
       </Dialog>
-    </Transition.Root>
+    </Transition>
   );
 }

@@ -4,7 +4,7 @@ import { LeaveFragment } from "./fragment";
 export const getLeaveOne = gql`
   query GetLeave($id: uuid!) {
     leave_by_pk(id: $id) {
-      id 
+      id
       start
       end
       details
@@ -14,18 +14,18 @@ export const getLeaveOne = gql`
       duration
       user {
         id
-        firstName 
+        firstName
         lastName
       }
     }
   }
   ${LeaveFragment}
-`
+`;
 export const getLeaveAll = gql`
   ${LeaveFragment}
   query GetLeaveAll {
-    leave(order_by: {start: asc}) {
-      id 
+    leave(order_by: { start: asc }) {
+      id
       start
       end
       details
@@ -35,12 +35,12 @@ export const getLeaveAll = gql`
       duration
       user {
         id
-        firstName 
+        firstName
         lastName
       }
     }
   }
-`
+`;
 
 export const getLeaveTypes = gql`
   query GetLeaveTypes {
@@ -49,12 +49,12 @@ export const getLeaveTypes = gql`
       bgColor
     }
   }
-`
+`;
 export const getPendingLeave = gql`
   ${LeaveFragment}
   query GetPendingLeave {
-    leave(where: {status: {_eq: Pending}}) {
-      id 
+    leave(where: { status: { _eq: Pending } }) {
+      id
       start
       end
       details
@@ -64,18 +64,18 @@ export const getPendingLeave = gql`
       duration
       user {
         id
-        firstName 
+        firstName
         lastName
       }
     }
   }
-`
+`;
 
 export const getApprovedLeave = gql`
   ${LeaveFragment}
   query GetApprovedLeave {
-    leave(where: {status: {_eq: Approved}}) {
-      id 
+    leave(where: { status: { _eq: Approved } }) {
+      id
       start
       end
       details
@@ -85,9 +85,31 @@ export const getApprovedLeave = gql`
       duration
       user {
         id
-        firstName 
+        firstName
         lastName
       }
     }
   }
-`
+`;
+
+export const getLeaveStatus = gql`
+  query GetLeaveStatus {
+    leave_status {
+      status
+    }
+  }
+`;
+
+export const getUserApprovedLeave = gql`
+  query userApprovedLeave($userId: uuid) {
+    leave_aggregate(
+      where: { userId: { _eq: $userId }, status: { _eq: Approved } }
+    ) {
+      aggregate {
+        sum {
+          duration
+        }
+      }
+    }
+  }
+`;

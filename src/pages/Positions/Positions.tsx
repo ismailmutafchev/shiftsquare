@@ -6,7 +6,7 @@ import { deletePositionById } from '../../queries/position/mutations'
 import { getPositions } from '../../queries/position/queries'
 import { useMutation, useQuery } from '@apollo/client'
 import { LoadingAnimation } from '../../assets/AnimationComponents/AnimationComponents'
-import { Menu, Transition } from '@headlessui/react'
+import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
 import { deleteShiftsByPositionId } from '../../queries/shift/mutations'
 import { getShifts } from '../../queries/shift/queries'
 import { endOfMonth, startOfMonth } from 'date-fns'
@@ -76,7 +76,6 @@ export default function Positions() {
         </div>
       </div >
       <div>
-        <h2 className="text-sm font-medium text-gray-500">Pinned Projects</h2>
         <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
           {positions && positions.map((position: Position) => {
             return (
@@ -103,9 +102,9 @@ export default function Positions() {
                   </div>
                   <div className="flex-shrink-0 pr-2 relative">
                     <Menu as="div" className="relative text-left">
-                      <Menu.Button className="flex">
+                      <MenuButton className="flex">
                         <EllipsisVerticalIcon className="h-5 w-5 hover:text-gray-500" aria-hidden="true" />
-                      </Menu.Button>
+                      </MenuButton>
                       <Transition
                         as={Fragment}
                         enter="transition ease-out duration-100"
@@ -115,15 +114,15 @@ export default function Positions() {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute right-0 top-6 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <MenuItems className="absolute right-0 top-6 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="px-1 py-1 ">
-                            <Menu.Item>
-                              {({ active }) => (
+                            <MenuItem>
+                              {({ focus }) => (
                                 <button
                                   onClick={() => {
                                     setShowModal(true), setUpdate({ isUpdate: true, data: { position } })
                                   }}
-                                  className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                  className={`${focus ? 'bg-polar-800/90 text-white' : 'text-gray-900'} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <PencilSquareIcon
                                     color={position.bgColor as string}
@@ -133,11 +132,11 @@ export default function Positions() {
                                   Edit
                                 </button>
                               )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
+                            </MenuItem>
+                            <MenuItem>
+                              {({ focus }) => (
                                 <button
-                                  className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'
+                                  className={`${focus ? 'bg-polar-800/90 text-white' : 'text-gray-900'
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <Square2StackIcon
@@ -148,13 +147,13 @@ export default function Positions() {
                                   Duplicate
                                 </button>
                               )}
-                            </Menu.Item>
+                            </MenuItem>
                           </div>
                           <div className="px-1 py-1">
-                            <Menu.Item>
-                              {({ active }) => (
+                            <MenuItem>
+                              {({ focus }) => (
                                 <button
-                                  className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'
+                                  className={`${focus ? 'bg-polar-800/90 text-white' : 'text-gray-900'
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <ArchiveBoxIcon
@@ -165,11 +164,11 @@ export default function Positions() {
                                   Archive
                                 </button>
                               )}
-                            </Menu.Item>
-                            <Menu.Item>
-                              {({ active }) => (
+                            </MenuItem>
+                            <MenuItem>
+                              {({ focus }) => (
                                 <button
-                                  className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'
+                                  className={`${focus ? 'bg-polar-800/90 text-white' : 'text-gray-900'
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <ArrowsPointingOutIcon
@@ -180,17 +179,17 @@ export default function Positions() {
                                   Move
                                 </button>
                               )}
-                            </Menu.Item>
+                            </MenuItem>
                           </div>
                           <div className="px-1 py-1">
-                            <Menu.Item>
-                              {({ active }) => (
+                            <MenuItem>
+                              {({ focus }) => (
                                 <button
                                   onClick={() => confirm('Are you sure you want to delete this position?')
                                     ? deleteHandler(position.id)
                                     : null
                                   }
-                                  className={`${active ? 'bg-polar-800/90 text-white' : 'text-gray-900'
+                                  className={`${focus ? 'bg-polar-800/90 text-white' : 'text-gray-900'
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                 >
                                   <TrashIcon
@@ -201,9 +200,9 @@ export default function Positions() {
                                   Delete
                                 </button>
                               )}
-                            </Menu.Item>
+                            </MenuItem>
                           </div>
-                        </Menu.Items>
+                        </MenuItems>
                       </Transition>
                     </Menu>
                   </div>
