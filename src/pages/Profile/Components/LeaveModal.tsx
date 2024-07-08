@@ -69,7 +69,7 @@ export function LeaveRequest({ data }: {
       variables: {
         object: {
           ...data,
-          userId: id,
+          // userId: id,
           status: "Pending",
         },
       },
