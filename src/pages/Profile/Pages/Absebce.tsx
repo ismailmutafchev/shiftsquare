@@ -15,7 +15,14 @@ import { ChevronUpIcon } from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
 import { LeaveRequest } from "../Components/LeaveModal";
 import { useOrganization } from "../../../hooks/organization";
-import { daysInYear, differenceInDays, format } from "date-fns";
+import {
+  addYears,
+  daysInYear,
+  differenceInDays,
+  endOfYear,
+  format,
+  lastDayOfYear,
+} from "date-fns";
 import { GetLeaveAllQuery } from "../../../gql/graphql";
 
 function classNames(...classes: string[]) {
@@ -47,25 +54,37 @@ export default function Absebce() {
 
   const daysForOneDayHoliday = daysInYear / holidayAllowance;
 
-  const yearEndFormatted =
+  const isEndOfYear =
     yearEnd &&
-    format(new Date(yearEnd), `MMMM dd ${format(new Date(), "yyyy")}`);
+    format(new Date(yearEnd), "dd MM yyyy") ===
+      format(new Date(lastDayOfYear(new Date())), "dd MM yyyy");
+
+  const yearEndDate = isEndOfYear
+    ? endOfYear(new Date())
+    : addYears(new Date(yearEnd && yearEnd || null), 1);
+
+  console.log(yearEndDate);
+
+  const yearEndFormatted = format(yearEndDate, `MMMM dd ${format(new Date(), "yyyy")}`);
+
+  console.log(yearEndFormatted);
 
   const daysTillYearEnd = differenceInDays(
     new Date(yearEndFormatted),
     new Date(profile?.startDate)
   );
 
-
   // Time Off Values
   const userHolidayAllowance = (daysTillYearEnd / daysForOneDayHoliday).toFixed(
     1
   );
-
   const holidayValue =
-    userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration +
-    " / " +
-    userHolidayAllowance;
+    userApprovedHoliday &&
+    userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration !== null
+      ? userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration +
+        " / " +
+        userHolidayAllowance
+      : userHolidayAllowance + " / " + userHolidayAllowance;
 
   const timeOffChange =
     Number(userHolidayAllowance) -
@@ -73,6 +92,7 @@ export default function Absebce() {
       userApprovedHoliday &&
         userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration
     );
+
 
   const leaveData = data?.leave;
 
