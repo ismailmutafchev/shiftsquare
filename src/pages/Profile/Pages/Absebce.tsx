@@ -19,9 +19,9 @@ import {
   addYears,
   daysInYear,
   differenceInDays,
-  endOfYear,
-  format,
-  lastDayOfYear,
+  getYear,
+  isAfter,
+  setYear,
 } from "date-fns";
 import { GetLeaveAllQuery } from "../../../gql/graphql";
 
@@ -34,7 +34,7 @@ export type Holiday = LeaveAll[0];
 
 export default function Absebce() {
   const { profile } = useSession();
-  const { yearEnd, holidayAllowance } = useOrganization();
+  const { yearEnd: organizationYearEnd, holidayAllowance } = useOrganization();
   const [showModal, setShowModal] = useState(false);
   const [update, setUpdate] = useState({
     isUpdate: false,
@@ -48,51 +48,74 @@ export default function Absebce() {
     },
   });
 
+  const yearEnd = organizationYearEnd || "2022-12-31";
+
+  function getThisYearsDate(date: Date) {
+    const currentYear = getYear(new Date());
+    const thisYearsDate = setYear(date, currentYear);
+
+    if (isAfter(new Date(), thisYearsDate)) {
+      return addYears(thisYearsDate, 1);
+    }
+
+    return thisYearsDate;
+  }
+
+  function leaveHandler(data: {
+    daysInYear: number;
+    holidayAllowance: number;
+    yearEnd: string;
+    profile: any;
+    userApprovedHoliday: any;
+  }) {
+    const {
+      daysInYear,
+      holidayAllowance,
+      yearEnd,
+      profile,
+      userApprovedHoliday,
+    } = data;
+
+    const daysForOneDayHoliday = daysInYear / holidayAllowance;
+    const yearEndDate = new Date(yearEnd);
+
+    // Get the adjusted year-end date
+    const finalYearEndDate = getThisYearsDate(yearEndDate);
+
+    // Calculate days till year end
+    const daysTillYearEnd = differenceInDays(
+      finalYearEndDate,
+      new Date(profile?.startDate)
+    );
+
+    // Time Off Values
+    const userHolidayAllowance = (
+      daysTillYearEnd / daysForOneDayHoliday
+    ).toFixed(1);
+    const userApprovedHolidayDuration =
+      userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration || 0;
+
+    const holidayValue = `${userApprovedHolidayDuration} / ${userHolidayAllowance}`;
+    const timeOffChange =
+      Number(userHolidayAllowance) - Number(userApprovedHolidayDuration);
+    return { holidayValue, timeOffChange };
+  }
+
   function modalHandler(state: boolean) {
     setShowModal(state);
   }
 
-  const daysForOneDayHoliday = daysInYear / holidayAllowance;
+  // const daysForOneDayHoliday = daysInYear / holidayAllowance;
 
-  const isEndOfYear =
-    yearEnd &&
-    format(new Date(yearEnd), "dd MM yyyy") ===
-      format(new Date(lastDayOfYear(new Date())), "dd MM yyyy");
+  const { holidayValue, timeOffChange } = leaveHandler({
+    daysInYear,
+    holidayAllowance,
+    yearEnd,
+    profile,
+    userApprovedHoliday,
+  });
 
-  const yearEndDate = isEndOfYear
-    ? endOfYear(new Date())
-    : addYears(new Date(yearEnd && yearEnd || null), 1);
-
-  console.log(yearEndDate);
-
-  const yearEndFormatted = format(yearEndDate, `MMMM dd ${format(new Date(), "yyyy")}`);
-
-  console.log(yearEndFormatted);
-
-  const daysTillYearEnd = differenceInDays(
-    new Date(yearEndFormatted),
-    new Date(profile?.startDate)
-  );
-
-  // Time Off Values
-  const userHolidayAllowance = (daysTillYearEnd / daysForOneDayHoliday).toFixed(
-    1
-  );
-  const holidayValue =
-    userApprovedHoliday &&
-    userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration !== null
-      ? userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration +
-        " / " +
-        userHolidayAllowance
-      : userHolidayAllowance + " / " + userHolidayAllowance;
-
-  const timeOffChange =
-    Number(userHolidayAllowance) -
-    Number(
-      userApprovedHoliday &&
-        userApprovedHoliday?.leave_aggregate?.aggregate?.sum?.duration
-    );
-
+  console.log(timeOffChange, holidayValue);
 
   const leaveData = data?.leave;
 
@@ -137,7 +160,7 @@ export default function Absebce() {
               className={classNames(
                 stat.changeType === "negative"
                   ? "text-rose-600"
-                  : "text-gray-700",
+                  : "text-green-700",
                 "text-xs font-medium"
               )}
             >
