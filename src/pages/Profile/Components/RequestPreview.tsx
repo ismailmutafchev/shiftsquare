@@ -35,7 +35,6 @@ export default function RequestPreview({
       data.data.readBy) ||
     [];
 
-  console.log(data);
   const { setValue, handleSubmit } = useForm({
     defaultValues: {
       status: data.data?.status,
@@ -75,7 +74,6 @@ export default function RequestPreview({
     // eslint-disable-next-line
     [data]
   );
-  console.log(data);
 
   function submit(data: any) {
     updateLeaveStat({

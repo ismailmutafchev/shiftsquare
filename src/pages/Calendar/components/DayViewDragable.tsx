@@ -399,7 +399,6 @@ export default function DayViewDraggable({
               //   selectedDayHandler(addDays(selectedDay, 7));
               // }}
               onTransitionStart={({ touches }) => {
-                console.log(touches.diff);
                 if (touches) {
                   if (touches.diff > 20) {
                     selectedDayHandler(subDays(selectedDay, 7));

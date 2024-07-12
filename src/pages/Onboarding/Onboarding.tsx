@@ -20,9 +20,14 @@ import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
 import { useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
-import { Label, Listbox, ListboxButton, ListboxOption, ListboxOptions } from "@headlessui/react";
+import {
+  Label,
+  Listbox,
+  ListboxButton,
+  ListboxOption,
+  ListboxOptions,
+} from "@headlessui/react";
 import { RolesQuery } from "../../gql/graphql";
-
 
 //@ts-ignore
 function classNames(...classes) {
@@ -245,7 +250,6 @@ export default function Onboarding() {
           renderProgressbar(progressbarFillClass) {
             return `<span class="border-2 border-polar-500  ${progressbarFillClass}"></span>`;
           },
-
         }}
         navigation={true}
         modules={[Pagination, Navigation]}
@@ -503,22 +507,24 @@ export default function Onboarding() {
                             (errorsOrganization.yearEnd &&
                               "border-red-500 ring-red-500 ring-1 on-focus:border-red-500 focus-visible:ring-red-500 focus-visible:ring-1 focus-visible:ring-offset-red-500 focus-visible:ring-offset-1")
                         )}
-                        {...registerOrganization("yearEnd")}
+                        {...registerOrganization("yearEnd", {
+                          required: true,
+                        })}
                       >
                         <option value="" disabled>
                           Select your year end
                         </option>
-                        <option value="2021-12-31">January</option>
-                        <option value="2021-12-31">February</option>
-                        <option value="2021-12-31">March</option>
-                        <option value="2021-12-31">April</option>
-                        <option value="2021-12-31">May</option>
-                        <option value="2021-12-31">June</option>
-                        <option value="2021-12-31">July</option>
-                        <option value="2021-12-31">August</option>
-                        <option value="2021-12-31">September</option>
-                        <option value="2021-12-31">October</option>
-                        <option value="2021-12-31">November</option>
+                        <option value="2021-01-31">January</option>
+                        <option value="2021-02-31">February</option>
+                        <option value="2021-03-31">March</option>
+                        <option value="2021-04-31">April</option>
+                        <option value="2021-05-31">May</option>
+                        <option value="2021-06-31">June</option>
+                        <option value="2021-07-31">July</option>
+                        <option value="2021-08-31">August</option>
+                        <option value="2021-09-31">September</option>
+                        <option value="2021-10-31">October</option>
+                        <option value="2021-11-31">November</option>
                         <option value="2021-12-31">December</option>
                       </select>
                       <p className="text-xs absolute text-red-500">

@@ -12,6 +12,12 @@ const Layout = () => {
   const { profile, onboarded, userLoading, permissions } = useSession();
   const { pathname } = useLocation();
 
+  console.log(profile, "profile");
+  console.log(onboarded, "onboarded");
+  console.log(userLoading, "userLoading");  
+  console.log(permissions, "permissions");
+  console.log(isAuthenticated, "isAuthenticated");
+
   if (userLoading) {
     return <LoadingAnimation />;
   }

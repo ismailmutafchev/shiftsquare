@@ -53,19 +53,20 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
     // eslint-disable-next-line
   }, []);
 
+  console.log(permissions, "permissions")
   const employees = useQuery(getEmployees);
   const positions = useQuery(getPositions);
   const { data: profile, loading: userLoading } = useQuery(getProfile, {
     variables: {
-      authId: user?.sub,
+      authId: user?.sub || localStorage.getItem("auth0|user_id"),
     },
   });
 
   const onboarded = () => {
-    if (profile?.user[0]?.onboarded === false || profile?.onboarded === false) {
-      return false;
-    } else {
+    if (profile?.user[0]?.onboarded === true || profile?.onboarded === true) {
       return true;
+    } else {
+      return false;
     }
   };
 
