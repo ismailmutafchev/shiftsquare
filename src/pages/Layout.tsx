@@ -12,15 +12,23 @@ const Layout = () => {
   const { profile, onboarded, userLoading, permissions } = useSession();
   const { pathname } = useLocation();
 
-  console.log(profile, "profile");
-  console.log(onboarded, "onboarded");
-  console.log(userLoading, "userLoading");  
-  console.log(permissions, "permissions");
-  console.log(isAuthenticated, "isAuthenticated");
-
   if (userLoading) {
     return <LoadingAnimation />;
   }
+
+  console.log(profile, "profile");
+  console.log(permissions, "permissions");
+
+
+  if (profile === null || permissions.length === 0) {
+    return (
+      <div>
+        <PublicNavigation />
+        <Outlet />
+      </div>
+    );
+  }
+
   //return onboarding page
   if (
     !onboarded &&

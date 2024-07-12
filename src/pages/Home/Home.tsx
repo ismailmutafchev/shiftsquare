@@ -1,6 +1,19 @@
+import { useLocation } from "react-router-dom";
 import Logo from "../../components/Logo";
+import { useAuth0 } from "@auth0/auth0-react";
 
 export default function Home() {
+  const { search } = useLocation();
+  const { loginWithRedirect } = useAuth0();
+
+  if (search.includes("signup")) {
+    loginWithRedirect({
+      authorizationParams: {
+        screen_hint: "signup",
+      },
+    });
+  }
+
   return (
     <div className="relative ">
       <main className="h-[95vh] w-full snap-y no-scrollbar snap-mandatory flex flex-col place-items-center">

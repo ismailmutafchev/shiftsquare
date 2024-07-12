@@ -115,15 +115,13 @@ export default function Absebce() {
     userApprovedHoliday,
   });
 
-  console.log(timeOffChange, holidayValue);
-
   const leaveData = data?.leave;
 
   const holidayStats = [
     {
       name: "Time off taken",
       value: holidayValue,
-      change: timeOffChange,
+      change: timeOffChange.toFixed(1),
       changeType: timeOffChange > 0 ? "positive" : "negative",
       button: "Request Time Off",
     },

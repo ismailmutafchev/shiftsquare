@@ -13,6 +13,10 @@ export default function LogoutButton({ className }: Props) {
         returnTo: window.location.origin,
       },
     });
+    localStorage.removeItem("permissions");
+    localStorage.removeItem("onboarded");
+    localStorage.removeItem("profile");
+    localStorage.removeItem("user");
   };
 
   return (
