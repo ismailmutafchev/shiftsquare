@@ -16,10 +16,6 @@ const Layout = () => {
     return <LoadingAnimation />;
   }
 
-  console.log(profile, "profile");
-  console.log(permissions, "permissions");
-
-
   if (profile === null || permissions.length === 0) {
     return (
       <div>
