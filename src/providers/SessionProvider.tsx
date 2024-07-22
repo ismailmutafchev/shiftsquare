@@ -53,7 +53,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
     // eslint-disable-next-line
   }, []);
 
-  console.log(permissions, "permissions")
   const employees = useQuery(getEmployees);
   const positions = useQuery(getPositions);
   const { data: profile, loading: userLoading } = useQuery(getProfile, {

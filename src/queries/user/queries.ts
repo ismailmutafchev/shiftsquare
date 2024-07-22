@@ -52,6 +52,7 @@ export const getProfile = gql`
       bgColor
       email
       organizationId
+      contactDetails
       firstName
       lastName
       onboarded
