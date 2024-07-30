@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useForm } from "react-hook-form";
-import { getLeaveAll, getLeaveTypes, getPendingLeave } from "../../../queries/leave/queries";
+import { getLeaveAll, getLeaveTypes, getPendingLeave, getUserLeaveAll } from "../../../queries/leave/queries";
 import {
   deleteLeaveOne,
   insertLeave,
@@ -9,6 +9,7 @@ import {
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
 import { SetStateAction } from "react";
 import { Holiday } from "../Pages/Absebce";
+import { endOfDay, startOfDay } from "date-fns";
 
 type LeaveProps = {
   start: Date | string;
@@ -39,8 +40,8 @@ export function LeaveRequest({ data }: {
 
   const { handleSubmit, register } = useForm<LeaveProps>({
     defaultValues: update && {
-      start:data && data.data && new Date(data?.data?.start).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
-      end:data && data.data && new Date(data?.data?.end).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
+      start:data && data.data && startOfDay(new Date(data?.data?.start)).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
+      end:data && data.data && endOfDay(new Date(data?.data?.end)).toISOString().split("T")[0] || new Date().toISOString().split("T")[0],
       details: data?.data?.details,
       type: data?.data?.type,
       duration: data?.data?.duration,
@@ -69,11 +70,11 @@ export function LeaveRequest({ data }: {
       variables: {
         object: {
           ...data,
-          // userId: id,
+          userId: id,
           status: "Pending",
         },
       },
-      refetchQueries: [{ query: getLeaveAll }, { query: getPendingLeave }],
+      refetchQueries: [{ query: getLeaveAll }, { query: getPendingLeave }, { query: getUserLeaveAll }],
       onCompleted: () => modalHandler(false),
     });
   }

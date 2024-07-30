@@ -3,6 +3,7 @@ import { useQuery } from "@apollo/client";
 import {
   getLeaveAll,
   getUserApprovedLeave,
+  getUserLeaveAll,
 } from "../../../queries/leave/queries";
 import { LoadingAnimation } from "../../../assets/AnimationComponents/AnimationComponents";
 import Modal from "../../../components/Modal";
@@ -11,7 +12,11 @@ import {
   DisclosureButton,
   DisclosurePanel,
 } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/24/outline";
+import {
+  ArrowTopRightOnSquareIcon,
+  ChevronUpIcon,
+  PencilSquareIcon,
+} from "@heroicons/react/24/outline";
 import { useSession } from "../../../hooks/session";
 import { LeaveRequest } from "../Components/LeaveModal";
 import { useOrganization } from "../../../hooks/organization";
@@ -19,11 +24,13 @@ import {
   addYears,
   daysInYear,
   differenceInDays,
+  format,
   getYear,
   isAfter,
   setYear,
 } from "date-fns";
 import { GetLeaveAllQuery } from "../../../gql/graphql";
+import Badge from "../../../components/Badge";
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
@@ -41,8 +48,14 @@ export default function Absebce() {
     data: { id: profile?.id },
   });
 
-  const { loading, error, data } = useQuery(getLeaveAll);
+  const { loading, error } = useQuery(getLeaveAll);
   const { data: userApprovedHoliday } = useQuery(getUserApprovedLeave, {
+    variables: {
+      userId: profile?.id,
+    },
+  });
+
+  const { data: userHolidayAll } = useQuery(getUserLeaveAll, {
     variables: {
       userId: profile?.id,
     },
@@ -114,8 +127,6 @@ export default function Absebce() {
     profile,
     userApprovedHoliday,
   });
-
-  const leaveData = data?.leave;
 
   const holidayStats = [
     {
@@ -189,7 +200,7 @@ export default function Absebce() {
             {({ open }) => (
               <>
                 <DisclosureButton className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500/75">
-                  <span>Future Absence</span>
+                  <span>My Absence</span>
                   <ChevronUpIcon
                     className={`${
                       open ? "rotate-180 transform" : ""
@@ -197,21 +208,82 @@ export default function Absebce() {
                   />
                 </DisclosureButton>
                 <DisclosurePanel className="px-4 pb-2 pt-4 text-sm text-gray-500">
-                  {leaveData?.map((leave: Holiday) => (
-                    <div
-                      key={leave.id}
-                      className="flex flex-col gap-y-2"
-                      onClick={() => {
-                        setUpdate({ isUpdate: true, data: leave });
-                        setShowModal(true);
-                      }}
-                    >
-                      <div className="flex justify-between">
-                        <span className="font-semibold">{leave.type}</span>
-                        <span className="text-gray-500">{leave.status}</span>
-                      </div>
-                    </div>
-                  ))}
+                  <ul
+                    role="list"
+                    className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+                  >
+                    {userHolidayAll?.leave.map((leave: Holiday) => {
+                      const type =
+                        leave.type.charAt(0).toUpperCase() +
+                        leave.type
+                          .slice(1)
+                          .replace(/([A-Z])/g, " $1")
+                          .trim();
+                      return (
+                        <li
+                          key={leave.id}
+                          className="col-span-1 divide-y divide-gray-200 rounded-lg bg-white shadow"
+                        >
+                          <div className="flex w-full items-center justify-between space-x-6 p-6">
+                            <div className="flex-1 truncate">
+                              <div className="flex items-center space-x-3">
+                                <h3 className="truncate text-sm font-medium text-gray-900">
+                                  {leave?.user?.firstName}{" "}
+                                  {leave?.user?.lastName}
+                                </h3>
+                                <Badge
+                                  color={leave?.leave_status?.bgColor}
+                                  content={leave.status}
+                                />
+                                <Badge
+                                  color={leave.leave_type.bgColor}
+                                  content={type}
+                                />
+                              </div>
+                              <p className="mt-1 truncate text-base text-gray-500 text-start">
+                                {format(new Date(leave.start), "dd MMM yyyy")} -{" "}
+                                {format(new Date(leave.end), "dd MMM yyyy")}
+                              </p>
+                            </div>
+                          </div>
+                          <div>
+                            <div className="-mt-px flex divide-x divide-gray-200">
+                              <div className="flex w-0 flex-1">
+                                <button
+                                  onClick={() => {
+                                    setUpdate({ isUpdate: true, data: leave });
+                                    setShowModal(true);
+                                  }}
+                                  className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-bl-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                                >
+                                  <ArrowTopRightOnSquareIcon
+                                    aria-hidden="true"
+                                    className="h-5 w-5 text-gray-400"
+                                  />
+                                  View
+                                </button>
+                              </div>
+                              <div className="-ml-px flex w-0 flex-1">
+                                <button
+                                  onClick={() => {
+                                    setUpdate({ isUpdate: true, data: leave });
+                                    setShowModal(true);
+                                  }}
+                                  className="relative inline-flex w-0 flex-1 items-center justify-center gap-x-3 rounded-br-lg border border-transparent py-4 text-sm font-semibold text-gray-900"
+                                >
+                                  <PencilSquareIcon
+                                    aria-hidden="true"
+                                    className="h-5 w-5 text-gray-400"
+                                  />
+                                  Request Change
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </li>
+                      );
+                    })}
+                  </ul>
                 </DisclosurePanel>
               </>
             )}
@@ -220,7 +292,7 @@ export default function Absebce() {
             {({ open }) => (
               <>
                 <DisclosureButton className="flex w-full justify-between rounded-lg bg-polar-100 px-4 py-2 text-left text-sm font-medium text-polar-900 hover:bg-polar-200 focus:outline-none focus-visible:ring focus-visible:ring-polar-500/75">
-                  <span>Do you offer technical support?</span>
+                  <span>Team Future Absence</span>
                   <ChevronUpIcon
                     className={`${
                       open ? "rotate-180 transform" : ""

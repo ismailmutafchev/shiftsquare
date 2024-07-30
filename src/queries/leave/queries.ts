@@ -17,6 +17,10 @@ export const getLeaveOne = gql`
         firstName
         lastName
       }
+      leave_status {
+        status
+        bgColor
+      }
     }
   }
   ${LeaveFragment}
@@ -37,6 +41,14 @@ export const getLeaveAll = gql`
         id
         firstName
         lastName
+      }
+      leave_type {
+        value
+        bgColor
+      }
+      leave_status {
+        status
+        bgColor
       }
     }
   }
@@ -109,6 +121,35 @@ export const getUserApprovedLeave = gql`
         sum {
           duration
         }
+      }
+    }
+  }
+`;
+
+export const getUserLeaveAll = gql`
+  ${LeaveFragment}
+  query GetUserLeave($userId: uuid!) {
+    leave(where: { userId: { _eq: $userId } }) {
+      id
+      start
+      end
+      details
+      type
+      status
+      readBy
+      duration
+      user {
+        id
+        firstName
+        lastName
+      }
+      leave_type {
+        value
+        bgColor
+      }
+      leave_status {
+        status
+        bgColor
       }
     }
   }

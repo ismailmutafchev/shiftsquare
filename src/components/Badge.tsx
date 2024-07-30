@@ -11,49 +11,49 @@ export default function Badge({
 
   switch (color) {
     case "green":
-      bgColor = "bg-green-100";
-      textColor = "text-green-800";
-      borderColor = "border-green-800";
+      bgColor = "bg-green-50";
+      textColor = "text-green-700";
+      borderColor = "border-green-600/20";
       break;
     case "red":
-      bgColor = "bg-red-100";
-      textColor = "text-red-800";
-      borderColor = "border-red-800";
+      bgColor = "bg-red-50";
+      textColor = "text-red-700";
+      borderColor = "border-red-600/20";
       break;
     case "yellow":
-      bgColor = "bg-yellow-100";
-      textColor = "text-yellow-800";
-      borderColor = "border-yellow-800";
+      bgColor = "bg-yellow-50";
+      textColor = "text-yellow-700";
+      borderColor = "border-yellow-600/20";
       break;
     case "blue":
-      bgColor = "bg-blue-100";
-      textColor = "text-blue-800";
-      borderColor = "border-blue-800";
+      bgColor = "bg-blue-50";
+      textColor = "text-blue-700";
+      borderColor = "border-blue-600/20";
       break;
     case "indigo":
-      bgColor = "bg-indigo-100";
-      textColor = "text-indigo-800";
-      borderColor = "border-indigo-800";
+      bgColor = "bg-indigo-50";
+      textColor = "text-indigo-700";
+      borderColor = "border-indigo-600/20";
       break;
     case "purple":
-      bgColor = "bg-purple-100";
-      textColor = "text-purple-800";
-      borderColor = "border-purple-800";
+      bgColor = "bg-purple-50";
+      textColor = "text-purple-700";
+      borderColor = "border-purple-600/20";
       break;
     case "pink":
-      bgColor = "bg-pink-100";
+      bgColor = "bg-pink-50";
       textColor = "text-pink-800";
-      borderColor = "border-pink-800";
+      borderColor = "border-pink-600/20";
       break;
     case "gray":
-      bgColor = "bg-gray-100";
+      bgColor = "bg-gray-50";
       textColor = "text-gray-800";
-      borderColor = "border-gray-800";
+      borderColor = "border-gray-600/20";
       break;
     case "orange":
-      bgColor = "bg-orange-100";
+      bgColor = "bg-orange-50";
       textColor = "text-orange-800";
-      borderColor = "border-orange-800";
+      borderColor = "border-orange-600/20";
       break;
     default:
       break;
@@ -61,7 +61,7 @@ export default function Badge({
 
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor} border ${borderColor} opacity-80`}
+      className={`inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium ${bgColor} ${textColor} border ${borderColor} opacity-80`}
     >
       {content}
     </span>
