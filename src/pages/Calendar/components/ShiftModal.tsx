@@ -98,7 +98,8 @@ export default function AddShift({ data }: {
           toast("success", "Shift updated successfully");
         },
         onError: (error) => {
-          toast("error", error.message === "database query error" ? "Employee is busy" : error.message);
+         //@ts-ignore
+        toast("error", error.graphQLErrors[0].extensions.internal.error.message);
         }
       });
       return;
@@ -125,7 +126,8 @@ export default function AddShift({ data }: {
       ],
       onCompleted: () => modalHandler(false),
       onError: (error) => {
-        toast("error", error.message === "database query error" ? "Employee is busy" : error.message);
+        //@ts-ignore
+        toast("error", error.graphQLErrors[0].extensions.internal.error.message);
       }
     });
   }
