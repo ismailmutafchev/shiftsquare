@@ -19,6 +19,8 @@
     "@heroicons/react": "^2.0.18",
     "@hookform/resolvers": "^3.2.0",
     "@splinetool/react-spline": "^2.2.6",
+    "@stripe/react-stripe-js": "^2.7.3",
+    "@stripe/stripe-js": "^4.1.0",
     "@types/react-beautiful-dnd": "^13.1.4",
     "@types/react-color": "^3.0.6",
     "@types/react-lottie": "^1.2.6",
