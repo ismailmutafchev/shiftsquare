@@ -28,7 +28,7 @@ export const CheckoutForm = () => {
         //   "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
         // },
         body: JSON.stringify({
-          items: [{ id: "photo-subscription" }],
+          items: [{ id: "photo-subscription", priceId: "price_1" }],
         }),
       }
     )
