@@ -78,12 +78,19 @@ export default function Home() {
                     empowering your business to thrive.
                   </p>
                   <div className="mt-6 lg:mt-8 flex items-center gap-x-8 mx-8 w-full lg:pl-8 justify-center lg:justify-start">
-                    <a
+                    <form
+                      className="rounded-md shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
+                      action="https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/"
+                      method="POST"
+                    >
+                      <button type="submit">Get Started</button>
+                    </form>
+                    {/* <a
                       href="#"
                       className="rounded-md shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
                     >
                       Get started
-                    </a>
+                    </a> */}
                     <a
                       href="#"
                       className="text-sm font-semibold leading-6 text-gray-900"
