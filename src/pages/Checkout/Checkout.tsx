@@ -20,9 +20,6 @@ export const CheckoutForm = () => {
       "https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/",
       {
         method: "POST",
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
           priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
         }),
