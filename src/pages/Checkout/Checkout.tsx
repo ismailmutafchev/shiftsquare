@@ -14,18 +14,27 @@ const stripePromise = loadStripe(
 );
 
 export const CheckoutForm = () => {
-    const fetchClientSecret = useCallback(() => {
-      // Create a Checkout Session
-      return fetch('https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*',
-        },
-      })
-        .then((res) => res.json())
-        .then((data) => data.clientSecret);
-    }, []);
+  const fetchClientSecret = useCallback(() => {
+    // Create a Checkout Session
+    return fetch(
+      "https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/",
+      {
+        method: "POST",
+        // mode: 'cors',
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   'Access-Control-Allow-Origin': '*',
+        //   'Origin': 'http://localhost:5173/',
+        //   "Access-Control-Allow-Methods": "OPTIONS,POST,GET"
+        // },
+        body: JSON.stringify({
+          items: [{ id: "photo-subscription" }],
+        }),
+      }
+    )
+      .then((res) => res.json())
+      .then((data) => data.clientSecret);
+  }, []);
 
   const options = { fetchClientSecret };
 
