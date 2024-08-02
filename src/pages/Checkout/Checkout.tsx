@@ -29,7 +29,7 @@ export const CheckoutForm = () => {
         // },
         body: JSON.stringify({
           items: [{ id: "photo-subscription", name: "Photo Subscription" }],
-          priceId: "prod_QaaZsS1Fl1Z9uR",
+          priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
         }),
       }
     )
