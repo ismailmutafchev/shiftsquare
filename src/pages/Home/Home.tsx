@@ -205,35 +205,35 @@ export default function Home() {
           </div>
         </section>
         <button
-                      className="rounded-md hover:cursor-pointer shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
-                      onClick={() =>
-                        fetch(
-                          "https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/",
-                          {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                              priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
-                            }),
-                          }
-                        )
-                          .then((res) => {
-                            console.log(res);
-                            return res.json();
-                          })
-                          .then((data) => {
-                            console.log({ data });
-                            return data.clientSecret;
-                          })
-                          .catch((error) => {
-                            console.error("Error:", error);
-                          })
-                      }
-                    >
-                      Get Started
-                    </button>
+          className="rounded-md hover:cursor-pointer shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
+          onClick={() =>
+            fetch(
+              "https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/",
+              {
+                method: "POST",
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
+                }),
+              }
+            )
+              .then((res) => {
+                console.log(res);
+                return res.json();
+              })
+              .then((data) => {
+                console.log({ data });
+                return data.clientSecret;
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              })
+          }
+        >
+          Get Started
+        </button>
       </main>
     </div>
   );
