@@ -78,42 +78,12 @@ export default function Home() {
                     empowering your business to thrive.
                   </p>
                   <div className="mt-6 lg:mt-8 flex items-center gap-x-8 mx-8 w-full lg:pl-8 justify-center lg:justify-start">
-                    <button
-                      className="rounded-md hover:cursor-pointer shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
-                      onClick={() =>
-                        fetch(
-                          "https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/",
-                          {
-                            method: "POST",
-                            headers: {
-                              "Content-Type": "application/json",
-                            },
-                            body: JSON.stringify({
-                              priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
-                            }),
-                          }
-                        )
-                          .then((res) => {
-                            console.log(res);
-                            return res.json();
-                          })
-                          .then((data) => {
-                            console.log({ data });
-                            return data.clientSecret;
-                          })
-                          .catch((error) => {
-                            console.error("Error:", error);
-                          })
-                      }
-                    >
-                      Get Started
-                    </button>
-                    {/* <a
+                    <a
                       href="#"
                       className="rounded-md shadow-sm bg-polar-500 px-3.5 py-2.5 text-sm font-semibold text-white hover:bg-polar-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800"
                     >
                       Get started
-                    </a> */}
+                    </a>
                     <a
                       href="#"
                       className="text-sm font-semibold leading-6 text-gray-900"
@@ -203,21 +173,6 @@ export default function Home() {
               </p>
             </div>
           </div>
-        </section>
-        <section>
-          <div className="product">
-            <img
-              src="https://i.imgur.com/EHyR2nP.png"
-              alt="The cover of Stubborn Attachments"
-            />
-            <div className="description">
-              <h3>Stubborn Attachments</h3>
-              <h5>$20.00</h5>
-            </div>
-          </div>
-          <form action="https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/" method="POST" >
-            <button type="submit">Checkout</button>
-          </form>
         </section>
       </main>
     </div>

@@ -20,6 +20,7 @@ import { TemplateProvider } from "./providers/TemplateContext";
 import { useSession } from "./hooks/session";
 import "swiper/css";
 import "swiper/css/pagination";
+import { CheckoutForm, Return } from "./pages/Checkout/Checkout";
 // import { CheckoutForm, Return } from "./pages/Checkout/Checkout";
 
 function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
@@ -58,8 +59,8 @@ function App() {
           <Route path="/login" element={<Layout />}>
             <Route index element={<Login />} />
           </Route>
-          {/* <Route path="/checkout" element={<CheckoutForm />} />
-          <Route path="/return" element={<Return />} /> */}
+          <Route path="/checkout" element={<CheckoutForm />} />
+          <Route path="/return" element={<Return />} />
           {onboarded === false ? (
             <Route path="/onboarding" element={<Layout />}>
               <Route index element={<Onboarding />} />
