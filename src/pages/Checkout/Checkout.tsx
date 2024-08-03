@@ -9,22 +9,22 @@ import { Navigate } from "react-router-dom";
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
 // This is your test secret API key.
-const stripePromise = loadStripe(
-  "pk_test_51PihYpE7LxujRcaNA9B1hGsyHgIDNLLjiZ0KMapoxQtg6yI2VzyitloVk6MOklKrSk7vOw2GQqOo8fyMrwWaSZeq00N7h2k9L5"
-);
+
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_TEST_KEY;
+const url = import.meta.env.VITE_STRIPE_AWS_LAMBDA_ENDPOINT;
+const stripePromise = loadStripe(stripeKey as string);
+
+console.log({ stripeKey, url });
 
 export const CheckoutForm = () => {
   const fetchClientSecret = useCallback(() => {
     // Create a Checkout Session
-    return fetch(
-      "https://7vxuwb2bf6ifaow6bypl7hwikm0bcjeu.lambda-url.eu-west-2.on.aws/",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
-        }),
-      }
-    )
+    return fetch(url, {
+      method: "POST",
+      body: JSON.stringify({
+        priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
+      }),
+    })
       .then((res) => {
         console.log(res);
         return res.json();
@@ -39,8 +39,6 @@ export const CheckoutForm = () => {
   }, []);
 
   const options = { fetchClientSecret };
-
- 
 
   return (
     <div id="checkout">
