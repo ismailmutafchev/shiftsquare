@@ -14,8 +14,6 @@ const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_TEST_KEY;
 const url = import.meta.env.VITE_STRIPE_AWS_LAMBDA_ENDPOINT;
 const stripePromise = loadStripe(stripeKey as string);
 
-console.log({ stripeKey, url });
-
 export const CheckoutForm = () => {
   const fetchClientSecret = useCallback(() => {
     // Create a Checkout Session
@@ -58,7 +56,12 @@ export const Return = () => {
     const urlParams = new URLSearchParams(queryString);
     const sessionId = urlParams.get("session_id");
 
-    fetch(`/session-status?session_id=${sessionId}`)
+    fetch(`https://2tuullqzucugs3tx7hngaqz7si0upjrr.lambda-url.eu-west-2.on.aws/`, {
+        method: "POST",
+        body: JSON.stringify({
+            sessionId,
+        }),
+    })
       .then((res) => res.json())
       .then((data) => {
         setStatus(data.status);
