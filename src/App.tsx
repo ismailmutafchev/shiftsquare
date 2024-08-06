@@ -20,7 +20,8 @@ import { TemplateProvider } from "./providers/TemplateContext";
 import { useSession } from "./hooks/session";
 import "swiper/css";
 import "swiper/css/pagination";
-import { CheckoutForm, Return } from "./pages/Checkout/Checkout";
+import { CheckoutForm } from "./pages/Checkout/Checkout";
+import { Return } from "./pages/Checkout/Return";
 // import { CheckoutForm, Return } from "./pages/Checkout/Checkout";
 
 function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
