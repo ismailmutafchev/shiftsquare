@@ -312,6 +312,224 @@ export type Availability_Updates = {
   where: Availability_Bool_Exp;
 };
 
+/** columns and relationships of "branch" */
+export type Branch = {
+  __typename?: 'branch';
+  created_at: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  name: Scalars['String']['output'];
+  /** An object relationship */
+  organization?: Maybe<Organization>;
+  organization_id: Scalars['uuid']['output'];
+  updated_at: Scalars['timestamptz']['output'];
+};
+
+/** aggregated selection of "branch" */
+export type Branch_Aggregate = {
+  __typename?: 'branch_aggregate';
+  aggregate?: Maybe<Branch_Aggregate_Fields>;
+  nodes: Array<Branch>;
+};
+
+export type Branch_Aggregate_Bool_Exp = {
+  count?: InputMaybe<Branch_Aggregate_Bool_Exp_Count>;
+};
+
+export type Branch_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<Branch_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<Branch_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "branch" */
+export type Branch_Aggregate_Fields = {
+  __typename?: 'branch_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<Branch_Max_Fields>;
+  min?: Maybe<Branch_Min_Fields>;
+};
+
+
+/** aggregate fields of "branch" */
+export type Branch_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<Branch_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "branch" */
+export type Branch_Aggregate_Order_By = {
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<Branch_Max_Order_By>;
+  min?: InputMaybe<Branch_Min_Order_By>;
+};
+
+/** input type for inserting array relation for remote table "branch" */
+export type Branch_Arr_Rel_Insert_Input = {
+  data: Array<Branch_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Branch_On_Conflict>;
+};
+
+/** Boolean expression to filter rows from the table "branch". All fields are combined with a logical 'AND'. */
+export type Branch_Bool_Exp = {
+  _and?: InputMaybe<Array<Branch_Bool_Exp>>;
+  _not?: InputMaybe<Branch_Bool_Exp>;
+  _or?: InputMaybe<Array<Branch_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  name?: InputMaybe<String_Comparison_Exp>;
+  organization?: InputMaybe<Organization_Bool_Exp>;
+  organization_id?: InputMaybe<Uuid_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "branch" */
+export enum Branch_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  BranchPkey = 'branch_pkey'
+}
+
+/** input type for inserting data into table "branch" */
+export type Branch_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  organization?: InputMaybe<Organization_Obj_Rel_Insert_Input>;
+  organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** aggregate max on columns */
+export type Branch_Max_Fields = {
+  __typename?: 'branch_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  organization_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by max() on columns of table "branch" */
+export type Branch_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  organization_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type Branch_Min_Fields = {
+  __typename?: 'branch_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  name?: Maybe<Scalars['String']['output']>;
+  organization_id?: Maybe<Scalars['uuid']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+};
+
+/** order by min() on columns of table "branch" */
+export type Branch_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  organization_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "branch" */
+export type Branch_Mutation_Response = {
+  __typename?: 'branch_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Branch>;
+};
+
+/** on_conflict condition type for table "branch" */
+export type Branch_On_Conflict = {
+  constraint: Branch_Constraint;
+  update_columns?: Array<Branch_Update_Column>;
+  where?: InputMaybe<Branch_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "branch". */
+export type Branch_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  name?: InputMaybe<Order_By>;
+  organization?: InputMaybe<Organization_Order_By>;
+  organization_id?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: branch */
+export type Branch_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** select columns of table "branch" */
+export enum Branch_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  OrganizationId = 'organization_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+/** input type for updating data in table "branch" */
+export type Branch_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** Streaming cursor of the table "branch" */
+export type Branch_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Branch_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Branch_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  organization_id?: InputMaybe<Scalars['uuid']['input']>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+};
+
+/** update columns of table "branch" */
+export enum Branch_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  OrganizationId = 'organization_id',
+  /** column name */
+  UpdatedAt = 'updated_at'
+}
+
+export type Branch_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<Branch_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: Branch_Bool_Exp;
+};
+
 /** ordering argument of a cursor */
 export enum Cursor_Ordering {
   /** ascending ordering of the cursor */
@@ -930,15 +1148,15 @@ export enum Leave_Type_Constraint {
 }
 
 export enum Leave_Type_Enum {
-  /** #ce8df3 */
+  /** green */
   Holiday = 'holiday',
-  /** #fb923c */
+  /** pink */
   Maternity = 'maternity',
-  /** #facc14 */
+  /** blue */
   Paternity = 'paternity',
-  /** #7fdee1 */
+  /** orange */
   SickLeave = 'sickLeave',
-  /** #ef4444 */
+  /** red */
   UnpaidLeave = 'unpaidLeave'
 }
 
@@ -1133,6 +1351,10 @@ export type Mutation_Root = {
   delete_availability?: Maybe<Availability_Mutation_Response>;
   /** delete single row from the table: "availability" */
   delete_availability_by_pk?: Maybe<Availability>;
+  /** delete data from the table: "branch" */
+  delete_branch?: Maybe<Branch_Mutation_Response>;
+  /** delete single row from the table: "branch" */
+  delete_branch_by_pk?: Maybe<Branch>;
   /** delete data from the table: "leave" */
   delete_leave?: Maybe<Leave_Mutation_Response>;
   /** delete single row from the table: "leave" */
@@ -1177,6 +1399,10 @@ export type Mutation_Root = {
   insert_availability?: Maybe<Availability_Mutation_Response>;
   /** insert a single row into the table: "availability" */
   insert_availability_one?: Maybe<Availability>;
+  /** insert data into the table: "branch" */
+  insert_branch?: Maybe<Branch_Mutation_Response>;
+  /** insert a single row into the table: "branch" */
+  insert_branch_one?: Maybe<Branch>;
   /** insert data into the table: "leave" */
   insert_leave?: Maybe<Leave_Mutation_Response>;
   /** insert a single row into the table: "leave" */
@@ -1223,6 +1449,12 @@ export type Mutation_Root = {
   update_availability_by_pk?: Maybe<Availability>;
   /** update multiples rows of table: "availability" */
   update_availability_many?: Maybe<Array<Maybe<Availability_Mutation_Response>>>;
+  /** update data of the table: "branch" */
+  update_branch?: Maybe<Branch_Mutation_Response>;
+  /** update single row of the table: "branch" */
+  update_branch_by_pk?: Maybe<Branch>;
+  /** update multiples rows of table: "branch" */
+  update_branch_many?: Maybe<Array<Maybe<Branch_Mutation_Response>>>;
   /** update data of the table: "leave" */
   update_leave?: Maybe<Leave_Mutation_Response>;
   /** update single row of the table: "leave" */
@@ -1294,6 +1526,18 @@ export type Mutation_RootDelete_AvailabilityArgs = {
 
 /** mutation root */
 export type Mutation_RootDelete_Availability_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_BranchArgs = {
+  where: Branch_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Branch_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -1429,6 +1673,20 @@ export type Mutation_RootInsert_AvailabilityArgs = {
 export type Mutation_RootInsert_Availability_OneArgs = {
   object: Availability_Insert_Input;
   on_conflict?: InputMaybe<Availability_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_BranchArgs = {
+  objects: Array<Branch_Insert_Input>;
+  on_conflict?: InputMaybe<Branch_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Branch_OneArgs = {
+  object: Branch_Insert_Input;
+  on_conflict?: InputMaybe<Branch_On_Conflict>;
 };
 
 
@@ -1599,6 +1857,26 @@ export type Mutation_RootUpdate_Availability_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Availability_ManyArgs = {
   updates: Array<Availability_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_BranchArgs = {
+  _set?: InputMaybe<Branch_Set_Input>;
+  where: Branch_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Branch_By_PkArgs = {
+  _set?: InputMaybe<Branch_Set_Input>;
+  pk_columns: Branch_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Branch_ManyArgs = {
+  updates: Array<Branch_Updates>;
 };
 
 
@@ -1873,6 +2151,10 @@ export enum Order_By {
 /** columns and relationships of "organization" */
 export type Organization = {
   __typename?: 'organization';
+  /** An array relationship */
+  branch: Array<Branch>;
+  /** An aggregate relationship */
+  branch_aggregate: Branch_Aggregate;
   createdAt: Scalars['timestamptz']['output'];
   holidayAllowance: Scalars['Int']['output'];
   id: Scalars['uuid']['output'];
@@ -1880,6 +2162,26 @@ export type Organization = {
   name: Scalars['String']['output'];
   updatedAt: Scalars['timestamptz']['output'];
   yearEnd: Scalars['timestamptz']['output'];
+};
+
+
+/** columns and relationships of "organization" */
+export type OrganizationBranchArgs = {
+  distinct_on?: InputMaybe<Array<Branch_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Branch_Order_By>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
+};
+
+
+/** columns and relationships of "organization" */
+export type OrganizationBranch_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Branch_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Branch_Order_By>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
 };
 
 /** aggregated selection of "organization" */
@@ -1923,6 +2225,8 @@ export type Organization_Bool_Exp = {
   _and?: InputMaybe<Array<Organization_Bool_Exp>>;
   _not?: InputMaybe<Organization_Bool_Exp>;
   _or?: InputMaybe<Array<Organization_Bool_Exp>>;
+  branch?: InputMaybe<Branch_Bool_Exp>;
+  branch_aggregate?: InputMaybe<Branch_Aggregate_Bool_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   holidayAllowance?: InputMaybe<Int_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
@@ -1947,6 +2251,7 @@ export type Organization_Inc_Input = {
 
 /** input type for inserting data into table "organization" */
 export type Organization_Insert_Input = {
+  branch?: InputMaybe<Branch_Arr_Rel_Insert_Input>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   holidayAllowance?: InputMaybe<Scalars['Int']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
@@ -1989,6 +2294,13 @@ export type Organization_Mutation_Response = {
   returning: Array<Organization>;
 };
 
+/** input type for inserting object relation for remote table "organization" */
+export type Organization_Obj_Rel_Insert_Input = {
+  data: Organization_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<Organization_On_Conflict>;
+};
+
 /** on_conflict condition type for table "organization" */
 export type Organization_On_Conflict = {
   constraint: Organization_Constraint;
@@ -1998,6 +2310,7 @@ export type Organization_On_Conflict = {
 
 /** Ordering options when selecting data from "organization". */
 export type Organization_Order_By = {
+  branch_aggregate?: InputMaybe<Branch_Aggregate_Order_By>;
   createdAt?: InputMaybe<Order_By>;
   holidayAllowance?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
@@ -2133,6 +2446,7 @@ export type Organization_Variance_Fields = {
 export type Position = {
   __typename?: 'position';
   bgColor?: Maybe<Scalars['String']['output']>;
+  branch_id: Scalars['uuid']['output'];
   createdAt: Scalars['timestamptz']['output'];
   id: Scalars['uuid']['output'];
   name: Scalars['String']['output'];
@@ -2216,6 +2530,7 @@ export type Position_Bool_Exp = {
   _not?: InputMaybe<Position_Bool_Exp>;
   _or?: InputMaybe<Array<Position_Bool_Exp>>;
   bgColor?: InputMaybe<String_Comparison_Exp>;
+  branch_id?: InputMaybe<Uuid_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   id?: InputMaybe<Uuid_Comparison_Exp>;
   name?: InputMaybe<String_Comparison_Exp>;
@@ -2238,6 +2553,7 @@ export enum Position_Constraint {
 /** input type for inserting data into table "position" */
 export type Position_Insert_Input = {
   bgColor?: InputMaybe<Scalars['String']['input']>;
+  branch_id?: InputMaybe<Scalars['uuid']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2251,6 +2567,7 @@ export type Position_Insert_Input = {
 export type Position_Max_Fields = {
   __typename?: 'position_max_fields';
   bgColor?: Maybe<Scalars['String']['output']>;
+  branch_id?: Maybe<Scalars['uuid']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -2262,6 +2579,7 @@ export type Position_Max_Fields = {
 export type Position_Min_Fields = {
   __typename?: 'position_min_fields';
   bgColor?: Maybe<Scalars['String']['output']>;
+  branch_id?: Maybe<Scalars['uuid']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   id?: Maybe<Scalars['uuid']['output']>;
   name?: Maybe<Scalars['String']['output']>;
@@ -2295,6 +2613,7 @@ export type Position_On_Conflict = {
 /** Ordering options when selecting data from "position". */
 export type Position_Order_By = {
   bgColor?: InputMaybe<Order_By>;
+  branch_id?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   id?: InputMaybe<Order_By>;
   name?: InputMaybe<Order_By>;
@@ -2314,6 +2633,8 @@ export enum Position_Select_Column {
   /** column name */
   BgColor = 'bgColor',
   /** column name */
+  BranchId = 'branch_id',
+  /** column name */
   CreatedAt = 'createdAt',
   /** column name */
   Id = 'id',
@@ -2328,6 +2649,7 @@ export enum Position_Select_Column {
 /** input type for updating data in table "position" */
 export type Position_Set_Input = {
   bgColor?: InputMaybe<Scalars['String']['input']>;
+  branch_id?: InputMaybe<Scalars['uuid']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2346,6 +2668,7 @@ export type Position_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Position_Stream_Cursor_Value_Input = {
   bgColor?: InputMaybe<Scalars['String']['input']>;
+  branch_id?: InputMaybe<Scalars['uuid']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   id?: InputMaybe<Scalars['uuid']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
@@ -2357,6 +2680,8 @@ export type Position_Stream_Cursor_Value_Input = {
 export enum Position_Update_Column {
   /** column name */
   BgColor = 'bgColor',
+  /** column name */
+  BranchId = 'branch_id',
   /** column name */
   CreatedAt = 'createdAt',
   /** column name */
@@ -2384,6 +2709,12 @@ export type Query_Root = {
   availability_aggregate: Availability_Aggregate;
   /** fetch data from the table: "availability" using primary key columns */
   availability_by_pk?: Maybe<Availability>;
+  /** An array relationship */
+  branch: Array<Branch>;
+  /** An aggregate relationship */
+  branch_aggregate: Branch_Aggregate;
+  /** fetch data from the table: "branch" using primary key columns */
+  branch_by_pk?: Maybe<Branch>;
   /** An array relationship */
   leave: Array<Leave>;
   /** An aggregate relationship */
@@ -2466,6 +2797,29 @@ export type Query_RootAvailability_AggregateArgs = {
 
 
 export type Query_RootAvailability_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootBranchArgs = {
+  distinct_on?: InputMaybe<Array<Branch_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Branch_Order_By>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
+};
+
+
+export type Query_RootBranch_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Branch_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Branch_Order_By>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
+};
+
+
+export type Query_RootBranch_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
@@ -2881,6 +3235,7 @@ export type Role_Updates = {
 /** columns and relationships of "shift" */
 export type Shift = {
   __typename?: 'shift';
+  branchId?: Maybe<Scalars['uuid']['output']>;
   commited: Scalars['Boolean']['output'];
   createdAt: Scalars['timestamptz']['output'];
   createdBy: Scalars['uuid']['output'];
@@ -2993,6 +3348,7 @@ export type Shift_Bool_Exp = {
   _and?: InputMaybe<Array<Shift_Bool_Exp>>;
   _not?: InputMaybe<Shift_Bool_Exp>;
   _or?: InputMaybe<Array<Shift_Bool_Exp>>;
+  branchId?: InputMaybe<Uuid_Comparison_Exp>;
   commited?: InputMaybe<Boolean_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
   createdBy?: InputMaybe<Uuid_Comparison_Exp>;
@@ -3021,6 +3377,7 @@ export type Shift_Inc_Input = {
 
 /** input type for inserting data into table "shift" */
 export type Shift_Insert_Input = {
+  branchId?: InputMaybe<Scalars['uuid']['input']>;
   commited?: InputMaybe<Scalars['Boolean']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<Scalars['uuid']['input']>;
@@ -3039,6 +3396,7 @@ export type Shift_Insert_Input = {
 /** aggregate max on columns */
 export type Shift_Max_Fields = {
   __typename?: 'shift_max_fields';
+  branchId?: Maybe<Scalars['uuid']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdBy?: Maybe<Scalars['uuid']['output']>;
   employeeId?: Maybe<Scalars['uuid']['output']>;
@@ -3053,6 +3411,7 @@ export type Shift_Max_Fields = {
 
 /** order by max() on columns of table "shift" */
 export type Shift_Max_Order_By = {
+  branchId?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   createdBy?: InputMaybe<Order_By>;
   employeeId?: InputMaybe<Order_By>;
@@ -3068,6 +3427,7 @@ export type Shift_Max_Order_By = {
 /** aggregate min on columns */
 export type Shift_Min_Fields = {
   __typename?: 'shift_min_fields';
+  branchId?: Maybe<Scalars['uuid']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   createdBy?: Maybe<Scalars['uuid']['output']>;
   employeeId?: Maybe<Scalars['uuid']['output']>;
@@ -3082,6 +3442,7 @@ export type Shift_Min_Fields = {
 
 /** order by min() on columns of table "shift" */
 export type Shift_Min_Order_By = {
+  branchId?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   createdBy?: InputMaybe<Order_By>;
   employeeId?: InputMaybe<Order_By>;
@@ -3112,6 +3473,7 @@ export type Shift_On_Conflict = {
 
 /** Ordering options when selecting data from "shift". */
 export type Shift_Order_By = {
+  branchId?: InputMaybe<Order_By>;
   commited?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
   createdBy?: InputMaybe<Order_By>;
@@ -3134,6 +3496,8 @@ export type Shift_Pk_Columns_Input = {
 
 /** select columns of table "shift" */
 export enum Shift_Select_Column {
+  /** column name */
+  BranchId = 'branchId',
   /** column name */
   Commited = 'commited',
   /** column name */
@@ -3172,6 +3536,7 @@ export enum Shift_Select_Column_Shift_Aggregate_Bool_Exp_Bool_Or_Arguments_Colum
 
 /** input type for updating data in table "shift" */
 export type Shift_Set_Input = {
+  branchId?: InputMaybe<Scalars['uuid']['input']>;
   commited?: InputMaybe<Scalars['Boolean']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<Scalars['uuid']['input']>;
@@ -3228,6 +3593,7 @@ export type Shift_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Shift_Stream_Cursor_Value_Input = {
+  branchId?: InputMaybe<Scalars['uuid']['input']>;
   commited?: InputMaybe<Scalars['Boolean']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
   createdBy?: InputMaybe<Scalars['uuid']['input']>;
@@ -3254,6 +3620,8 @@ export type Shift_Sum_Order_By = {
 
 /** update columns of table "shift" */
 export enum Shift_Update_Column {
+  /** column name */
+  BranchId = 'branchId',
   /** column name */
   Commited = 'commited',
   /** column name */
@@ -3330,6 +3698,14 @@ export type Subscription_Root = {
   availability_by_pk?: Maybe<Availability>;
   /** fetch data from the table in a streaming manner: "availability" */
   availability_stream: Array<Availability>;
+  /** An array relationship */
+  branch: Array<Branch>;
+  /** An aggregate relationship */
+  branch_aggregate: Branch_Aggregate;
+  /** fetch data from the table: "branch" using primary key columns */
+  branch_by_pk?: Maybe<Branch>;
+  /** fetch data from the table in a streaming manner: "branch" */
+  branch_stream: Array<Branch>;
   /** An array relationship */
   leave: Array<Leave>;
   /** An aggregate relationship */
@@ -3440,6 +3816,36 @@ export type Subscription_RootAvailability_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Availability_Stream_Cursor_Input>>;
   where?: InputMaybe<Availability_Bool_Exp>;
+};
+
+
+export type Subscription_RootBranchArgs = {
+  distinct_on?: InputMaybe<Array<Branch_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Branch_Order_By>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
+};
+
+
+export type Subscription_RootBranch_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<Branch_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<Branch_Order_By>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
+};
+
+
+export type Subscription_RootBranch_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootBranch_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<Branch_Stream_Cursor_Input>>;
+  where?: InputMaybe<Branch_Bool_Exp>;
 };
 
 
@@ -4058,6 +4464,7 @@ export type User = {
   __typename?: 'user';
   authId?: Maybe<Scalars['String']['output']>;
   bgColor?: Maybe<Scalars['String']['output']>;
+  branchId?: Maybe<Scalars['uuid']['output']>;
   contactDetails?: Maybe<Scalars['jsonb']['output']>;
   contractedHours?: Maybe<Scalars['Int']['output']>;
   createdAt: Scalars['timestamptz']['output'];
@@ -4213,6 +4620,7 @@ export type User_Bool_Exp = {
   _or?: InputMaybe<Array<User_Bool_Exp>>;
   authId?: InputMaybe<String_Comparison_Exp>;
   bgColor?: InputMaybe<String_Comparison_Exp>;
+  branchId?: InputMaybe<Uuid_Comparison_Exp>;
   contactDetails?: InputMaybe<Jsonb_Comparison_Exp>;
   contractedHours?: InputMaybe<Int_Comparison_Exp>;
   createdAt?: InputMaybe<Timestamptz_Comparison_Exp>;
@@ -4276,6 +4684,7 @@ export type User_Inc_Input = {
 export type User_Insert_Input = {
   authId?: InputMaybe<Scalars['String']['input']>;
   bgColor?: InputMaybe<Scalars['String']['input']>;
+  branchId?: InputMaybe<Scalars['uuid']['input']>;
   contactDetails?: InputMaybe<Scalars['jsonb']['input']>;
   contractedHours?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -4303,6 +4712,7 @@ export type User_Max_Fields = {
   __typename?: 'user_max_fields';
   authId?: Maybe<Scalars['String']['output']>;
   bgColor?: Maybe<Scalars['String']['output']>;
+  branchId?: Maybe<Scalars['uuid']['output']>;
   contractedHours?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
@@ -4322,6 +4732,7 @@ export type User_Min_Fields = {
   __typename?: 'user_min_fields';
   authId?: Maybe<Scalars['String']['output']>;
   bgColor?: Maybe<Scalars['String']['output']>;
+  branchId?: Maybe<Scalars['uuid']['output']>;
   contractedHours?: Maybe<Scalars['Int']['output']>;
   createdAt?: Maybe<Scalars['timestamptz']['output']>;
   email?: Maybe<Scalars['String']['output']>;
@@ -4363,6 +4774,7 @@ export type User_On_Conflict = {
 export type User_Order_By = {
   authId?: InputMaybe<Order_By>;
   bgColor?: InputMaybe<Order_By>;
+  branchId?: InputMaybe<Order_By>;
   contactDetails?: InputMaybe<Order_By>;
   contractedHours?: InputMaybe<Order_By>;
   createdAt?: InputMaybe<Order_By>;
@@ -4640,6 +5052,8 @@ export enum User_Select_Column {
   /** column name */
   BgColor = 'bgColor',
   /** column name */
+  BranchId = 'branchId',
+  /** column name */
   ContactDetails = 'contactDetails',
   /** column name */
   ContractedHours = 'contractedHours',
@@ -4675,6 +5089,7 @@ export enum User_Select_Column {
 export type User_Set_Input = {
   authId?: InputMaybe<Scalars['String']['input']>;
   bgColor?: InputMaybe<Scalars['String']['input']>;
+  branchId?: InputMaybe<Scalars['uuid']['input']>;
   contactDetails?: InputMaybe<Scalars['jsonb']['input']>;
   contractedHours?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -4725,6 +5140,7 @@ export type User_Stream_Cursor_Input = {
 export type User_Stream_Cursor_Value_Input = {
   authId?: InputMaybe<Scalars['String']['input']>;
   bgColor?: InputMaybe<Scalars['String']['input']>;
+  branchId?: InputMaybe<Scalars['uuid']['input']>;
   contactDetails?: InputMaybe<Scalars['jsonb']['input']>;
   contractedHours?: InputMaybe<Scalars['Int']['input']>;
   createdAt?: InputMaybe<Scalars['timestamptz']['input']>;
@@ -4755,6 +5171,8 @@ export enum User_Update_Column {
   AuthId = 'authId',
   /** column name */
   BgColor = 'bgColor',
+  /** column name */
+  BranchId = 'branchId',
   /** column name */
   ContactDetails = 'contactDetails',
   /** column name */
@@ -4933,7 +5351,7 @@ export type GetUserLeaveQueryVariables = Exact<{
 }>;
 
 
-export type GetUserLeaveQuery = { __typename?: 'query_root', leave: Array<{ __typename?: 'leave', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_type: { __typename?: 'leave_type', value: string, bgColor: string } }> };
+export type GetUserLeaveQuery = { __typename?: 'query_root', leave: Array<{ __typename?: 'leave', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_type: { __typename?: 'leave_type', value: string, bgColor: string }, leave_status: { __typename?: 'leave_status', status: string, bgColor: string } }> };
 
 export type AddOrganizationOneMutationVariables = Exact<{
   object: Organization_Insert_Input;
@@ -5254,7 +5672,7 @@ export const GetPendingLeaveDocument = {"kind":"Document","definitions":[{"kind"
 export const GetApprovedLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetApprovedLeave"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Approved"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GetApprovedLeaveQuery, GetApprovedLeaveQueryVariables>;
 export const GetLeaveStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetLeaveStatusQuery, GetLeaveStatusQueryVariables>;
 export const UserApprovedLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userApprovedLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Approved"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UserApprovedLeaveQuery, UserApprovedLeaveQueryVariables>;
-export const GetUserLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetUserLeaveQuery, GetUserLeaveQueryVariables>;
+export const GetUserLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetUserLeaveQuery, GetUserLeaveQueryVariables>;
 export const AddOrganizationOneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addOrganizationOne"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"organization_insert_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_organization_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<AddOrganizationOneMutation, AddOrganizationOneMutationVariables>;
 export const GetOrganizationByNameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrganizationByName"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetOrganizationByNameQuery, GetOrganizationByNameQueryVariables>;
 export const GetOrganizationByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrganizationById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"yearEnd"}},{"kind":"Field","name":{"kind":"Name","value":"holidayAllowance"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>;

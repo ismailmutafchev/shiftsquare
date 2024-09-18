@@ -25,7 +25,7 @@ export default function Modal({
 
   return (
     <Transition show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-40" onClose={setOpen}>
+      <Dialog as="div" className="relative z-40 top-10" onClose={setOpen}>
         <TransitionChild
           as={Fragment}
           enter="ease-out duration-300"
@@ -49,7 +49,7 @@ export default function Modal({
               leaveFrom="opacity-100 translate-y-0 sm:scale-100"
               leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
             >
-              <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all md:my-8 md:w-full md:max-w-lg sm:p-6">
+              <DialogPanel className="relative max-h-[90vh] no-scrollbar overflow-scroll transform rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all md:my-8 md:w-full md:max-w-lg sm:p-6">
                 <div>
                   {title && (
                     <>

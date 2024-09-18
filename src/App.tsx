@@ -84,9 +84,9 @@ function App() {
               <Route path="/dashboard" element={<Layout />}>
                 <Route index element={<Dashboard />} />
               </Route>
-              <Route path="/onboarding" element={<Layout />}>
+              {/* <Route path="/onboarding" element={<Layout />}>
                 <Route index element={<Onboarding />} />
-              </Route>
+              </Route> */}
               <Route path="/profile" element={<Layout />}>
                 <Route index element={<Profile />} />
               </Route>
