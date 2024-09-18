@@ -28,7 +28,7 @@ export default function Toast({
                   onClick={() => {
                     dispatch.removeToast(id);
                   }}
-                  className="inline-flex bg-green-50 rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600"
+                  className="inline-flex bg-green-50 rounded-md p-1.5 text-green-500 hover:bg-green-100 focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-green-600"
                 >
                   <span className="sr-only">Dismiss</span>
 
@@ -66,7 +66,7 @@ export default function Toast({
                   onClick={() => {
                     dispatch.removeToast(id);
                   }}
-                  className="inline-flex bg-red-50 rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-red-600"
+                  className="inline-flex bg-red-50 rounded-md p-1.5 text-red-500 hover:bg-red-100 focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-offset-green-50 focus:ring-red-600"
                 >
                   <span className="sr-only">Dismiss</span>
 

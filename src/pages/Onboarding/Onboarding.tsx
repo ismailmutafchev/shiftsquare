@@ -278,7 +278,7 @@ export default function Onboarding() {
             <div />
             <div className="px-16 space-y-10 items-start justify-start flex flex-col">
               <h1 className="text-3xl font-semibold text-polar-900 animate-fadeUp text-start">
-                Welcome to Shift Square! 🎉
+                Welcome to Shift Square! 👋
               </h1>
               <p className="text-base text-gray-400 animate-fadeUp text-start max-w-xl">
                 We are excited to have you on board. Let's get you started with
@@ -292,7 +292,7 @@ export default function Onboarding() {
                   "font-semibold text-center  text-white p-2 rounded-lg bg-polar-400 w-full max-w-xl justify-self-start"
                 )}
               >
-                Let's get started
+                Continue
               </button>
             </div>
             <div>
@@ -393,7 +393,7 @@ export default function Onboarding() {
                   <div className="flex items-center space-x-4">
                     <input
                       type="checkbox"
-                      className="h-4 w-4 text-polar-600 focus:ring-gray-500 border-gray-300 rounded"
+                      className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                       checked={createNewOrganization}
                       onChange={createNewOrganizationhandler}
                     />
@@ -450,7 +450,7 @@ export default function Onboarding() {
                         type="text"
                         // style={inputStyles}
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
+                          "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none ",
                           !organizationWatcher.name ||
                             organizationWatcher.name === "" ||
                             (errorsOrganization.name &&
@@ -476,7 +476,7 @@ export default function Onboarding() {
                         type="text"
                         // style={inputStyles}
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
+                          "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none ",
                           !organizationWatcher.location ||
                             organizationWatcher.location === "" ||
                             (errorsOrganization.location &&
@@ -545,7 +545,7 @@ export default function Onboarding() {
                       <input
                         type="number"
                         className={classNames(
-                          "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
+                          "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none ",
                           !organizationWatcher.holidayAllowance ||
                             organizationWatcher.holidayAllowance === null ||
                             (errorsOrganization.holidayAllowance &&
@@ -658,7 +658,7 @@ export default function Onboarding() {
                     type="text"
                     // style={inputStyles}
                     className={classNames(
-                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
+                      "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none ",
                       !watcher.firstName ||
                         watcher.firstName === "" ||
                         (errors.firstName &&
@@ -684,7 +684,7 @@ export default function Onboarding() {
                     type="text"
                     // style={inputStyles}
                     className={classNames(
-                      "relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left border-gray-200 border-2 focus:outline-none focus-visible:border-polar-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-gray-300 sm:text-sm ",
+                      "block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none ",
                       !watcher.lastName ||
                         watcher.lastName === "" ||
                         (errors.lastName &&

@@ -76,7 +76,7 @@ export default function RequestsSlideOver({ data }: { data: any }) {
           <div className="ml-3 flex h-7 items-center">
             <button
               type="button"
-              className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-2 focus:ring-polar-500"
+              className="relative rounded-md bg-white text-gray-400 hover:text-gray-500 focus:ring-1 focus:ring-polar-500"
               onClick={() => setOpen(false)}
             >
               <span className="absolute -inset-2.5" />

@@ -30,10 +30,10 @@ export default function Badge({
       textColor = "text-blue-700";
       borderColor = "border-blue-600/20";
       break;
-    case "indigo":
-      bgColor = "bg-indigo-50";
-      textColor = "text-indigo-700";
-      borderColor = "border-indigo-600/20";
+    case "polar":
+      bgColor = "bg-polar-50";
+      textColor = "text-polar-700";
+      borderColor = "border-polar-600/20";
       break;
     case "purple":
       bgColor = "bg-purple-50";

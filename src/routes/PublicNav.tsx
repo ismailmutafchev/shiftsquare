@@ -143,7 +143,7 @@ export default function PublicNavigation() {
                       <div className="flex items-center">
                         <button
                           type="button"
-                          className="flex-shrink-0 rounded-full p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
+                          className="flex-shrink-0 rounded-full p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-1 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
                         >
                           <span className="sr-only">View notifications</span>
                           <BellIcon
@@ -156,7 +156,7 @@ export default function PublicNavigation() {
                         {/* Profile dropdown */}
                         <Menu as="div" className="relative ml-3 flex-shrink-0">
                           <div>
-                            <MenuButton className="flex rounded-full text-sm text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
+                            <MenuButton className="flex rounded-full text-sm text-white focus:outline-none focus:ring-1 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600">
                               <span className="sr-only">Open user menu</span>
                               <img
                                 className="rounded-full h-8 w-8"
@@ -250,7 +250,7 @@ export default function PublicNavigation() {
                       </div>
                       <button
                         type="button"
-                        className="ml-auto flex-shrink-0 rounded-full p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
+                        className="ml-auto flex-shrink-0 rounded-full p-1 text-blue-200 hover:text-white focus:outline-none focus:ring-1 focus:ring-white focus:ring-offset-2 focus:ring-offset-polar-600"
                       >
                         <span className="sr-only">View notifications</span>
                         ting <BellIcon className="h-6 w-6" aria-hidden="true" />

@@ -214,7 +214,7 @@ export default function DayViewDraggable({
     <div className="flex flex-col">
       {allowedToEdit && <RotaPrint date={selectedDay} />}
       <header className="sm:flex flex-none items-center justify-between border-b border-gray-200 px-6 py-4">
-        <div className="flex text-center justify-center items-baseline space-x-2 md:flex-col">
+        <div className=" text-center justify-center items-baseline space-x-2 md:flex-col hidden xl:block">
           <h1 className="text-xs md:text-base font-poppins font-semibold leading-6 text-gray-900">
             {format(new Date(selectedDay), "d MMMM yyyy")}
           </h1>
@@ -224,16 +224,16 @@ export default function DayViewDraggable({
         </div>
         <div className="flex items-center space-x-2">
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 truncate ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={submit}
           >
             <p>Commit Rota</p>
-            <PaperAirplaneIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            <PaperAirplaneIcon className="ml-2 h-4 w-4 hidden xl:block" aria-hidden="true" />
           </button>
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 truncate ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={openPdf}
@@ -241,10 +241,10 @@ export default function DayViewDraggable({
             <p>
               Print <span className="text-red-500 text-xs">PDF</span>
             </p>
-            <PrinterIcon className="ml-2 h-4 w-4" aria-hidden="true" />
+            <PrinterIcon className="ml-2 h-4 w-4 hidden xl:block" aria-hidden="true" />
           </button>
           <button
-            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 ${
+            className={`inline-flex items-center rounded-md bg-white-600 px-1 md:px-3 py-1 md:py-2  text-xs md:text-sm font-semibold text-black shadow-sm hover:bg-gray-50 ring-1 ring-inset ring-gray-300 truncate ${
               allowedToEdit ? "" : "hidden"
             }`}
             onClick={() => {
@@ -253,7 +253,7 @@ export default function DayViewDraggable({
           >
             <p>Copy Week</p>
             <DocumentDuplicateIcon
-              className="ml-2 h-4 w-4"
+              className="ml-2 h-4 w-4 hidden xl:block"
               aria-hidden="true"
             />
           </button>
@@ -264,7 +264,7 @@ export default function DayViewDraggable({
                 setShowModal(true), setUpdate({ isUpdate: false, data: {} });
               }}
               type="button"
-              className={`inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90 ${
+              className={`inline-flex items-center rounded-md bg-polar-800/90 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-200 hover:text-polar-800/90 hover:ring-1 ring-polar-800/90 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-polar-800/90 truncate ${
                 allowedToEdit ? "" : "hidden"
               }`}
             >
@@ -324,7 +324,7 @@ export default function DayViewDraggable({
                   setSelectedMonth(new Date());
                 }
               }}
-              className="ml-6 rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm border border-gray-300 hover:bg-gray-50 "
+              className="ml-6 rounded-md bg-white-600 px-3 py-2 text-sm font-semibold text-black shadow-sm border border-gray-300 hover:bg-gray-50 truncate"
             >
               See Today
             </button>

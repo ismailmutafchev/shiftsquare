@@ -130,7 +130,7 @@ export function AddUser({ data }: any) {
                 First name
               </label>
               <input
-                className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                 {...register("firstName", { required: true })}
               />
             </div>
@@ -144,7 +144,7 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
-                  className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                   {...register("lastName", { required: true })}
                 />
               </div>
@@ -159,7 +159,7 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
-                  className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                   {...register("email", { required: true })}
                 />
               </div>
@@ -173,7 +173,7 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
-                  className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                   {...register("contractedHours", { required: true })}
                 />
               </div>
@@ -189,7 +189,7 @@ export function AddUser({ data }: any) {
                 <div className="mt-2 sm:col-span-2 sm:mt-0">
                   <input
                     type="date"
-                    className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                     {...register("startDate", { required: true })}
                   />
                 </div>
@@ -204,7 +204,7 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <input
-                  className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                   {...register("payDetails.payRate", { required: true })}
                 />
               </div>
@@ -218,7 +218,7 @@ export function AddUser({ data }: any) {
               </label>
               <div className="mt-2 sm:col-span-2 sm:mt-0">
                 <select
-                  className="w-full row-span-2 p-1 border-2 border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-polar-700 focus:border-polar-800/90"
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-1 focus:ring-inset focus:ring-polar-600 sm:text-sm sm:leading-6 p-2 focus:outline-none"
                   {...register("payDetails.per", { required: true })}
                 >
                   <option value="hour">Hour</option>
