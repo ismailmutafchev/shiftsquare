@@ -62,6 +62,10 @@ function App() {
           </Route>
           <Route path="/checkout" element={<CheckoutForm />} />
           <Route path="/return" element={<Return />} />
+          {/* To be removed */}
+          <Route path="/onboarding" element={<Layout />}>
+              <Route index element={<Onboarding />} />
+            </Route>
           {onboarded === false ? (
             <Route path="/onboarding" element={<Layout />}>
               <Route index element={<Onboarding />} />

@@ -28,8 +28,8 @@ const documents = {
     "\n  query userApprovedLeave($userId: uuid) {\n    leave_aggregate(\n      where: { userId: { _eq: $userId }, status: { _eq: Approved } }\n    ) {\n      aggregate {\n        sum {\n          duration\n        }\n      }\n    }\n  }\n": types.UserApprovedLeaveDocument,
     "\n  \n  query GetUserLeave($userId: uuid!) {\n    leave(where: { userId: { _eq: $userId } }) {\n      id\n      start\n      end\n      details\n      type\n      status\n      readBy\n      duration\n      user {\n        id\n        firstName\n        lastName\n      }\n      leave_type {\n        value\n        bgColor\n      }\n      leave_status {\n        status\n        bgColor\n      }\n    }\n  }\n": types.GetUserLeaveDocument,
     " mutation addOrganizationOne($object: organization_insert_input!) {\n    insert_organization_one(object: $object) {\n        id\n        name\n    }\n}\n": types.AddOrganizationOneDocument,
-    " query getOrganizationByName($name: String) {\n    organization(where: {name: {_eq: $name}}) {\n        id\n        name\n    }\n}": types.GetOrganizationByNameDocument,
-    " query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n        id\n        createdAt\n        updatedAt\n        name\n        yearEnd\n        holidayAllowance\n        location\n    }\n}": types.GetOrganizationByIdDocument,
+    "\n  query getOrganizationByName($name: String) {\n    organization(where: { name: { _eq: $name } }) {\n      id\n      name\n    }\n  }\n": types.GetOrganizationByNameDocument,
+    "\n  query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n      id\n      createdAt\n      updatedAt\n      name\n      yearEnd\n      holidayAllowance\n      location\n    }\n  }\n": types.GetOrganizationByIdDocument,
     " mutation addPositionOne($object: position_insert_input!) {\n    insert_position_one(object: $object) {\n        id\n        name\n        bgColor\n    }\n}\n": types.AddPositionOneDocument,
     " mutation deletePositionById($id: uuid!) {\n    delete_position_by_pk(id: $id) {\n        id\n        name\n        bgColor\n    }\n}": types.DeletePositionByIdDocument,
     " mutation updatePositionById($id: uuid!, $object: position_set_input!) {\n    update_position_by_pk(pk_columns: {id: $id}, _set: $object) {\n        id\n        name\n        bgColor\n    }\n}": types.UpdatePositionByIdDocument,
@@ -148,11 +148,11 @@ export function graphql(source: " mutation addOrganizationOne($object: organizat
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: " query getOrganizationByName($name: String) {\n    organization(where: {name: {_eq: $name}}) {\n        id\n        name\n    }\n}"): (typeof documents)[" query getOrganizationByName($name: String) {\n    organization(where: {name: {_eq: $name}}) {\n        id\n        name\n    }\n}"];
+export function graphql(source: "\n  query getOrganizationByName($name: String) {\n    organization(where: { name: { _eq: $name } }) {\n      id\n      name\n    }\n  }\n"): (typeof documents)["\n  query getOrganizationByName($name: String) {\n    organization(where: { name: { _eq: $name } }) {\n      id\n      name\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: " query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n        id\n        createdAt\n        updatedAt\n        name\n        yearEnd\n        holidayAllowance\n        location\n    }\n}"): (typeof documents)[" query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n        id\n        createdAt\n        updatedAt\n        name\n        yearEnd\n        holidayAllowance\n        location\n    }\n}"];
+export function graphql(source: "\n  query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n      id\n      createdAt\n      updatedAt\n      name\n      yearEnd\n      holidayAllowance\n      location\n    }\n  }\n"): (typeof documents)["\n  query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n      id\n      createdAt\n      updatedAt\n      name\n      yearEnd\n      holidayAllowance\n      location\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
