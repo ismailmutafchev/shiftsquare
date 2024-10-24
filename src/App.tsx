@@ -36,7 +36,7 @@ function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
 
 function App() {
   const { isAuthenticated } = useAuth0();
-  const { permissions, onboarded } = useSession();
+  const { permissions, onboarded, productId } = useSession();
 
   return (
     <BrowserRouter>
@@ -60,12 +60,12 @@ function App() {
           <Route path="/login" element={<Layout />}>
             <Route index element={<Login />} />
           </Route>
-          <Route path="/checkout" element={<CheckoutForm />} />
+          <Route path="/checkout" element={<CheckoutForm productId={productId} />} />
           <Route path="/return" element={<Return />} />
           {/* To be removed */}
           <Route path="/onboarding" element={<Layout />}>
-              <Route index element={<Onboarding />} />
-            </Route>
+            <Route index element={<Onboarding />} />
+          </Route>
           {onboarded === false ? (
             <Route path="/onboarding" element={<Layout />}>
               <Route index element={<Onboarding />} />

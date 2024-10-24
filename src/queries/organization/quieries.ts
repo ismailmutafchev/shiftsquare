@@ -31,6 +31,7 @@ export const getPlans = gql`
       description
       id
       featured
+      priceId
     }
   }
 `;

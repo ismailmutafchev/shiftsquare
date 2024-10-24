@@ -9,13 +9,14 @@ const stripeKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_TEST_KEY;
 const url = import.meta.env.VITE_STRIPE_AWS_LAMBDA_ENDPOINT;
 const stripePromise = loadStripe(stripeKey as string);
 
-export const CheckoutForm = () => {
+export const CheckoutForm = (productId: {productId: string | undefined}) => {
+  console.log(productId);
   const fetchClientSecret = useCallback(() => {
     // Create a Checkout Session
     return fetch(url, {
       method: "POST",
       body: JSON.stringify({
-        priceId: "price_1PjPOaE7LxujRcaNb5gXVps3",
+        priceId: productId.productId,
       }),
     })
       .then((res) => {

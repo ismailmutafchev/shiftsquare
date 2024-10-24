@@ -21,7 +21,7 @@ import {
 import { format } from "date-fns";
 import { getRoles } from "../../queries/role/queries";
 import { updateUserRole } from "../../queries/role/mutations";
-import { redirect, useNavigate } from "react-router-dom";
+import { Link, redirect, useNavigate } from "react-router-dom";
 import LogoutButton from "../../components/LogoutButton";
 import {
   Label,
@@ -29,10 +29,8 @@ import {
   ListboxButton,
   ListboxOption,
   ListboxOptions,
-  RadioGroup,
 } from "@headlessui/react";
 import { Plans, RolesQuery } from "../../gql/graphql";
-import { CheckIcon } from "@heroicons/react/24/outline";
 
 //@ts-ignore
 function classNames(...classes) {
@@ -57,7 +55,7 @@ type OrganizationFormValues = {
 
 export default function Onboarding() {
   const [createNewOrganization, setCreateNewOrganization] = useState(false);
-  const { profile } = useSession();
+  const { profile, setProductId } = useSession();
   const { data: roles } = useQuery(getRoles);
   const { data: plans } = useQuery(getPlans);
 
@@ -737,26 +735,10 @@ export default function Onboarding() {
             </div>
           </div>
         </SwiperSlide>
-        <SwiperSlide className="flex flex-col items-start justify-center ">
+        <SwiperSlide className="flex flex-col items-center justify-center overflow-scroll ">
           <div className="w-3/4 space-y-10 flex flex-col">
-            <h1 className="text-4xl font-bold text-gray-800 animate-fadeUp text-start px-16">
-              Select Plan
-            </h1>
-            <div className="bg-white py-24 sm:py-32">
+            <div className="bg-white py-2 sm:py-32">
               <div className="mx-auto max-w-7xl px-6 lg:px-8">
-                <div className="mx-auto max-w-4xl text-center">
-                  <h2 className="text-base font-semibold leading-7 text-indigo-600">
-                    Pricing
-                  </h2>
-                  <p className="mt-2 text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-6xl">
-                    Pricing that grows with you
-                  </p>
-                </div>
-                <p className="mx-auto mt-6 max-w-2xl text-pretty text-center text-lg font-medium text-gray-600 sm:text-xl/8">
-                  Choose an affordable plan that’s packed with the best features
-                  for engaging your audience, creating customer loyalty, and
-                  driving sales.
-                </p>
                 <div className="mt-16 flex justify-center">
                   <fieldset aria-label="Payment frequency">
                     {/* <RadioGroup
@@ -776,7 +758,7 @@ export default function Onboarding() {
             </RadioGroup> */}
                   </fieldset>
                 </div>
-                <div className="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+                <div className="isolate mx-auto grid max-w-md grid-cols-1 gap-2 lg:mx-0 lg:max-w-none overflow-scroll">
                   {plans?.plans?.map((tier: Plans) => (
                     <div
                       key={tier.id}
@@ -784,14 +766,14 @@ export default function Onboarding() {
                         tier.featured
                           ? "bg-gray-900 ring-gray-900"
                           : "ring-gray-200",
-                        "rounded-3xl p-8 ring-1 xl:p-10"
+                        "rounded-3xl p-2 ring-1 xl:p-4"
                       )}
                     >
                       <h3
                         id={tier.id}
                         className={classNames(
                           tier.featured ? "text-white" : "text-gray-900",
-                          "text-lg font-semibold leading-8"
+                          "text-base font-semibold leading-8"
                         )}
                       >
                         {tier.name}
@@ -799,16 +781,16 @@ export default function Onboarding() {
                       <p
                         className={classNames(
                           tier.featured ? "text-gray-300" : "text-gray-600",
-                          "mt-4 text-sm leading-6"
+                          "mt-1 text-sm leading-6"
                         )}
                       >
                         {tier.description}
                       </p>
-                      <p className="mt-6 flex items-baseline gap-x-1">
+                      <p className="mt-1 flex items-baseline gap-x-1">
                         <span
                           className={classNames(
                             tier.featured ? "text-white" : "text-gray-900",
-                            "text-4xl font-semibold tracking-tight"
+                            "text-xl font-semibold tracking-tight"
                           )}
                         >
                           £ {tier.price / 100}
@@ -824,23 +806,28 @@ export default function Onboarding() {
                   </span>
                 ) : null} */}
                       </p>
-                      <button
+                      <Link
+                        to={ tier.name === "Enterprise" ? "../contact" : "../checkout"}
                         type="button"
                         className={classNames(
                           tier.featured
                             ? "bg-indigo-600 text-white"
                             : "bg-gray-900 text-white",
-                          "mt-8 inline-block px-6 py-3 text-sm font-semibold leading-6 rounded-full"
+                          "mt-2 inline-block px-6 py-1 text-sm font-semibold leading-6 rounded-full"
                         )}
-                        onClick={() => redirect("/checkout")}
+                        onClick={() => {
+                          tier.name === "Enterprise"
+                            ? redirect("/contact")
+                            : setProductId(tier?.priceId as string);
+                        }}
                       >
-                        Buy now
-                      </button>
+                        {tier.name === "Enterprise" ? "Contact us" : "Buy now"}
+                      </Link>
                       <ul
                         role="list"
                         className={classNames(
                           tier.featured ? "text-gray-300" : "text-gray-600",
-                          "mt-8 space-y-3 text-sm leading-6 xl:mt-10"
+                          "mt-2 space-y-3 text-sm leading-6 xl:mt-4"
                         )}
                       >
                         {/* {tier.features.map((feature) => (

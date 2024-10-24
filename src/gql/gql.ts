@@ -30,6 +30,7 @@ const documents = {
     " mutation addOrganizationOne($object: organization_insert_input!) {\n    insert_organization_one(object: $object) {\n        id\n        name\n    }\n}\n": types.AddOrganizationOneDocument,
     "\n  query getOrganizationByName($name: String) {\n    organization(where: { name: { _eq: $name } }) {\n      id\n      name\n    }\n  }\n": types.GetOrganizationByNameDocument,
     "\n  query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n      id\n      createdAt\n      updatedAt\n      name\n      yearEnd\n      holidayAllowance\n      location\n    }\n  }\n": types.GetOrganizationByIdDocument,
+    "\n  query MyQuery {\n    plans {\n      name\n      price\n      description\n      id\n      featured\n      priceId\n    }\n  }\n": types.MyQueryDocument,
     " mutation addPositionOne($object: position_insert_input!) {\n    insert_position_one(object: $object) {\n        id\n        name\n        bgColor\n    }\n}\n": types.AddPositionOneDocument,
     " mutation deletePositionById($id: uuid!) {\n    delete_position_by_pk(id: $id) {\n        id\n        name\n        bgColor\n    }\n}": types.DeletePositionByIdDocument,
     " mutation updatePositionById($id: uuid!, $object: position_set_input!) {\n    update_position_by_pk(pk_columns: {id: $id}, _set: $object) {\n        id\n        name\n        bgColor\n    }\n}": types.UpdatePositionByIdDocument,
@@ -153,6 +154,10 @@ export function graphql(source: "\n  query getOrganizationByName($name: String) 
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function graphql(source: "\n  query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n      id\n      createdAt\n      updatedAt\n      name\n      yearEnd\n      holidayAllowance\n      location\n    }\n  }\n"): (typeof documents)["\n  query getOrganizationById($id: uuid!) {\n    organization_by_pk(id: $id) {\n      id\n      createdAt\n      updatedAt\n      name\n      yearEnd\n      holidayAllowance\n      location\n    }\n  }\n"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function graphql(source: "\n  query MyQuery {\n    plans {\n      name\n      price\n      description\n      id\n      featured\n      priceId\n    }\n  }\n"): (typeof documents)["\n  query MyQuery {\n    plans {\n      name\n      price\n      description\n      id\n      featured\n      priceId\n    }\n  }\n"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */

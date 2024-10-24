@@ -19,6 +19,8 @@ interface SessionContextProps {
     userLoading: boolean;
     onboarded: boolean;
     permissions: any;
+    productId: string | undefined;
+    setProductId: React.Dispatch<React.SetStateAction<string | undefined>>;
   };
 }
 
@@ -29,6 +31,7 @@ export const SessionContext = createContext<SessionContextProps | undefined>(
 export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [productId, setProductId] = useState<string | undefined>(undefined);
   const token = async () => {
     return await getAccessTokenSilently();
   };
@@ -80,6 +83,8 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
     userLoading: userLoading,
     onboarded: onboarded(),
     permissions: (permissions && permissions["x-hasura-allowed-roles"]) || [],
+    productId,
+    setProductId,
   };
   return (
     <SessionContext.Provider value={{ session }}>
