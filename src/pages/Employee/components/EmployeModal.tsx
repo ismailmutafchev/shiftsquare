@@ -39,7 +39,6 @@ export function AddUser({ data }: any) {
         payRate: data?.data?.payDetails?.payRate || "",
         per: data?.data?.payDetails?.per || "",
       },
-      leaveAllowance: data?.data?.leaveAllowance || "",
     },
   });
 
