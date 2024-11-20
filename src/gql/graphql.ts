@@ -620,9 +620,9 @@ export type Leave = {
   period_end: Scalars['date']['output'];
   period_start: Scalars['date']['output'];
   /** An array relationship */
-  requests: Array<Leave_Request>;
+  requests: Array<LeaveRequest>;
   /** An aggregate relationship */
-  requests_aggregate: Leave_Request_Aggregate;
+  requests_aggregate: LeaveRequest_Aggregate;
   updated_at: Scalars['timestamptz']['output'];
   user_id: Scalars['uuid']['output'];
 };
@@ -630,21 +630,813 @@ export type Leave = {
 
 /** columns and relationships of "leave" */
 export type LeaveRequestsArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
 };
 
 
 /** columns and relationships of "leave" */
 export type LeaveRequests_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+/** columns and relationships of "leave_request" */
+export type LeaveRequest = {
+  __typename?: 'leaveRequest';
+  created_at: Scalars['timestamptz']['output'];
+  details: Scalars['String']['output'];
+  duration: Scalars['Int']['output'];
+  end: Scalars['timestamptz']['output'];
+  id: Scalars['uuid']['output'];
+  leave_id?: Maybe<Scalars['uuid']['output']>;
+  /** An object relationship */
+  leave_status: LeaveStatus;
+  /** An object relationship */
+  leave_type: LeaveType;
+  readBy?: Maybe<Scalars['jsonb']['output']>;
+  start: Scalars['timestamptz']['output'];
+  status: LeaveStatus_Enum;
+  type: LeaveType_Enum;
+  updated_at: Scalars['timestamptz']['output'];
+  /** An object relationship */
+  user?: Maybe<User>;
+  userId: Scalars['uuid']['output'];
+};
+
+
+/** columns and relationships of "leave_request" */
+export type LeaveRequestReadByArgs = {
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregated selection of "leave_request" */
+export type LeaveRequest_Aggregate = {
+  __typename?: 'leaveRequest_aggregate';
+  aggregate?: Maybe<LeaveRequest_Aggregate_Fields>;
+  nodes: Array<LeaveRequest>;
+};
+
+export type LeaveRequest_Aggregate_Bool_Exp = {
+  count?: InputMaybe<LeaveRequest_Aggregate_Bool_Exp_Count>;
+};
+
+export type LeaveRequest_Aggregate_Bool_Exp_Count = {
+  arguments?: InputMaybe<Array<LeaveRequest_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+  filter?: InputMaybe<LeaveRequest_Bool_Exp>;
+  predicate: Int_Comparison_Exp;
+};
+
+/** aggregate fields of "leave_request" */
+export type LeaveRequest_Aggregate_Fields = {
+  __typename?: 'leaveRequest_aggregate_fields';
+  avg?: Maybe<LeaveRequest_Avg_Fields>;
+  count: Scalars['Int']['output'];
+  max?: Maybe<LeaveRequest_Max_Fields>;
+  min?: Maybe<LeaveRequest_Min_Fields>;
+  stddev?: Maybe<LeaveRequest_Stddev_Fields>;
+  stddev_pop?: Maybe<LeaveRequest_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<LeaveRequest_Stddev_Samp_Fields>;
+  sum?: Maybe<LeaveRequest_Sum_Fields>;
+  var_pop?: Maybe<LeaveRequest_Var_Pop_Fields>;
+  var_samp?: Maybe<LeaveRequest_Var_Samp_Fields>;
+  variance?: Maybe<LeaveRequest_Variance_Fields>;
+};
+
+
+/** aggregate fields of "leave_request" */
+export type LeaveRequest_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LeaveRequest_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** order by aggregate values of table "leave_request" */
+export type LeaveRequest_Aggregate_Order_By = {
+  avg?: InputMaybe<LeaveRequest_Avg_Order_By>;
+  count?: InputMaybe<Order_By>;
+  max?: InputMaybe<LeaveRequest_Max_Order_By>;
+  min?: InputMaybe<LeaveRequest_Min_Order_By>;
+  stddev?: InputMaybe<LeaveRequest_Stddev_Order_By>;
+  stddev_pop?: InputMaybe<LeaveRequest_Stddev_Pop_Order_By>;
+  stddev_samp?: InputMaybe<LeaveRequest_Stddev_Samp_Order_By>;
+  sum?: InputMaybe<LeaveRequest_Sum_Order_By>;
+  var_pop?: InputMaybe<LeaveRequest_Var_Pop_Order_By>;
+  var_samp?: InputMaybe<LeaveRequest_Var_Samp_Order_By>;
+  variance?: InputMaybe<LeaveRequest_Variance_Order_By>;
+};
+
+/** append existing jsonb value of filtered columns with new jsonb value */
+export type LeaveRequest_Append_Input = {
+  readBy?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** input type for inserting array relation for remote table "leave_request" */
+export type LeaveRequest_Arr_Rel_Insert_Input = {
+  data: Array<LeaveRequest_Insert_Input>;
+  /** upsert condition */
+  on_conflict?: InputMaybe<LeaveRequest_On_Conflict>;
+};
+
+/** aggregate avg on columns */
+export type LeaveRequest_Avg_Fields = {
+  __typename?: 'leaveRequest_avg_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by avg() on columns of table "leave_request" */
+export type LeaveRequest_Avg_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** Boolean expression to filter rows from the table "leave_request". All fields are combined with a logical 'AND'. */
+export type LeaveRequest_Bool_Exp = {
+  _and?: InputMaybe<Array<LeaveRequest_Bool_Exp>>;
+  _not?: InputMaybe<LeaveRequest_Bool_Exp>;
+  _or?: InputMaybe<Array<LeaveRequest_Bool_Exp>>;
+  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  details?: InputMaybe<String_Comparison_Exp>;
+  duration?: InputMaybe<Int_Comparison_Exp>;
+  end?: InputMaybe<Timestamptz_Comparison_Exp>;
+  id?: InputMaybe<Uuid_Comparison_Exp>;
+  leave_id?: InputMaybe<Uuid_Comparison_Exp>;
+  leave_status?: InputMaybe<LeaveStatus_Bool_Exp>;
+  leave_type?: InputMaybe<LeaveType_Bool_Exp>;
+  readBy?: InputMaybe<Jsonb_Comparison_Exp>;
+  start?: InputMaybe<Timestamptz_Comparison_Exp>;
+  status?: InputMaybe<LeaveStatus_Enum_Comparison_Exp>;
+  type?: InputMaybe<LeaveType_Enum_Comparison_Exp>;
+  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
+  user?: InputMaybe<User_Bool_Exp>;
+  userId?: InputMaybe<Uuid_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "leave_request" */
+export enum LeaveRequest_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  LeavePkey = 'leave_pkey'
+}
+
+/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+export type LeaveRequest_Delete_At_Path_Input = {
+  readBy?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+export type LeaveRequest_Delete_Elem_Input = {
+  readBy?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** delete key/value pair or string element. key/value pairs are matched based on their key value */
+export type LeaveRequest_Delete_Key_Input = {
+  readBy?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** input type for incrementing numeric columns in table "leave_request" */
+export type LeaveRequest_Inc_Input = {
+  duration?: InputMaybe<Scalars['Int']['input']>;
+};
+
+/** input type for inserting data into table "leave_request" */
+export type LeaveRequest_Insert_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
+  duration?: InputMaybe<Scalars['Int']['input']>;
+  end?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  leave_id?: InputMaybe<Scalars['uuid']['input']>;
+  leave_status?: InputMaybe<LeaveStatus_Obj_Rel_Insert_Input>;
+  leave_type?: InputMaybe<LeaveType_Obj_Rel_Insert_Input>;
+  readBy?: InputMaybe<Scalars['jsonb']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
+  status?: InputMaybe<LeaveStatus_Enum>;
+  type?: InputMaybe<LeaveType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  user?: InputMaybe<User_Obj_Rel_Insert_Input>;
+  userId?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate max on columns */
+export type LeaveRequest_Max_Fields = {
+  __typename?: 'leaveRequest_max_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
+  duration?: Maybe<Scalars['Int']['output']>;
+  end?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  leave_id?: Maybe<Scalars['uuid']['output']>;
+  start?: Maybe<Scalars['timestamptz']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  userId?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by max() on columns of table "leave_request" */
+export type LeaveRequest_Max_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  duration?: InputMaybe<Order_By>;
+  end?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  leave_id?: InputMaybe<Order_By>;
+  start?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  userId?: InputMaybe<Order_By>;
+};
+
+/** aggregate min on columns */
+export type LeaveRequest_Min_Fields = {
+  __typename?: 'leaveRequest_min_fields';
+  created_at?: Maybe<Scalars['timestamptz']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
+  duration?: Maybe<Scalars['Int']['output']>;
+  end?: Maybe<Scalars['timestamptz']['output']>;
+  id?: Maybe<Scalars['uuid']['output']>;
+  leave_id?: Maybe<Scalars['uuid']['output']>;
+  start?: Maybe<Scalars['timestamptz']['output']>;
+  updated_at?: Maybe<Scalars['timestamptz']['output']>;
+  userId?: Maybe<Scalars['uuid']['output']>;
+};
+
+/** order by min() on columns of table "leave_request" */
+export type LeaveRequest_Min_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  duration?: InputMaybe<Order_By>;
+  end?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  leave_id?: InputMaybe<Order_By>;
+  start?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  userId?: InputMaybe<Order_By>;
+};
+
+/** response of any mutation on the table "leave_request" */
+export type LeaveRequest_Mutation_Response = {
+  __typename?: 'leaveRequest_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LeaveRequest>;
+};
+
+/** on_conflict condition type for table "leave_request" */
+export type LeaveRequest_On_Conflict = {
+  constraint: LeaveRequest_Constraint;
+  update_columns?: Array<LeaveRequest_Update_Column>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "leave_request". */
+export type LeaveRequest_Order_By = {
+  created_at?: InputMaybe<Order_By>;
+  details?: InputMaybe<Order_By>;
+  duration?: InputMaybe<Order_By>;
+  end?: InputMaybe<Order_By>;
+  id?: InputMaybe<Order_By>;
+  leave_id?: InputMaybe<Order_By>;
+  leave_status?: InputMaybe<LeaveStatus_Order_By>;
+  leave_type?: InputMaybe<LeaveType_Order_By>;
+  readBy?: InputMaybe<Order_By>;
+  start?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+  type?: InputMaybe<Order_By>;
+  updated_at?: InputMaybe<Order_By>;
+  user?: InputMaybe<User_Order_By>;
+  userId?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: leave_request */
+export type LeaveRequest_Pk_Columns_Input = {
+  id: Scalars['uuid']['input'];
+};
+
+/** prepend existing jsonb value of filtered columns with new jsonb value */
+export type LeaveRequest_Prepend_Input = {
+  readBy?: InputMaybe<Scalars['jsonb']['input']>;
+};
+
+/** select columns of table "leave_request" */
+export enum LeaveRequest_Select_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Details = 'details',
+  /** column name */
+  Duration = 'duration',
+  /** column name */
+  End = 'end',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LeaveId = 'leave_id',
+  /** column name */
+  ReadBy = 'readBy',
+  /** column name */
+  Start = 'start',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'userId'
+}
+
+/** input type for updating data in table "leave_request" */
+export type LeaveRequest_Set_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
+  duration?: InputMaybe<Scalars['Int']['input']>;
+  end?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  leave_id?: InputMaybe<Scalars['uuid']['input']>;
+  readBy?: InputMaybe<Scalars['jsonb']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
+  status?: InputMaybe<LeaveStatus_Enum>;
+  type?: InputMaybe<LeaveType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  userId?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate stddev on columns */
+export type LeaveRequest_Stddev_Fields = {
+  __typename?: 'leaveRequest_stddev_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev() on columns of table "leave_request" */
+export type LeaveRequest_Stddev_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_pop on columns */
+export type LeaveRequest_Stddev_Pop_Fields = {
+  __typename?: 'leaveRequest_stddev_pop_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_pop() on columns of table "leave_request" */
+export type LeaveRequest_Stddev_Pop_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** aggregate stddev_samp on columns */
+export type LeaveRequest_Stddev_Samp_Fields = {
+  __typename?: 'leaveRequest_stddev_samp_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by stddev_samp() on columns of table "leave_request" */
+export type LeaveRequest_Stddev_Samp_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** Streaming cursor of the table "leaveRequest" */
+export type LeaveRequest_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LeaveRequest_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LeaveRequest_Stream_Cursor_Value_Input = {
+  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
+  duration?: InputMaybe<Scalars['Int']['input']>;
+  end?: InputMaybe<Scalars['timestamptz']['input']>;
+  id?: InputMaybe<Scalars['uuid']['input']>;
+  leave_id?: InputMaybe<Scalars['uuid']['input']>;
+  readBy?: InputMaybe<Scalars['jsonb']['input']>;
+  start?: InputMaybe<Scalars['timestamptz']['input']>;
+  status?: InputMaybe<LeaveStatus_Enum>;
+  type?: InputMaybe<LeaveType_Enum>;
+  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
+  userId?: InputMaybe<Scalars['uuid']['input']>;
+};
+
+/** aggregate sum on columns */
+export type LeaveRequest_Sum_Fields = {
+  __typename?: 'leaveRequest_sum_fields';
+  duration?: Maybe<Scalars['Int']['output']>;
+};
+
+/** order by sum() on columns of table "leave_request" */
+export type LeaveRequest_Sum_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** update columns of table "leave_request" */
+export enum LeaveRequest_Update_Column {
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Details = 'details',
+  /** column name */
+  Duration = 'duration',
+  /** column name */
+  End = 'end',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  LeaveId = 'leave_id',
+  /** column name */
+  ReadBy = 'readBy',
+  /** column name */
+  Start = 'start',
+  /** column name */
+  Status = 'status',
+  /** column name */
+  Type = 'type',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'userId'
+}
+
+export type LeaveRequest_Updates = {
+  /** append existing jsonb value of filtered columns with new jsonb value */
+  _append?: InputMaybe<LeaveRequest_Append_Input>;
+  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
+  _delete_at_path?: InputMaybe<LeaveRequest_Delete_At_Path_Input>;
+  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
+  _delete_elem?: InputMaybe<LeaveRequest_Delete_Elem_Input>;
+  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
+  _delete_key?: InputMaybe<LeaveRequest_Delete_Key_Input>;
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: InputMaybe<LeaveRequest_Inc_Input>;
+  /** prepend existing jsonb value of filtered columns with new jsonb value */
+  _prepend?: InputMaybe<LeaveRequest_Prepend_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LeaveRequest_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LeaveRequest_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type LeaveRequest_Var_Pop_Fields = {
+  __typename?: 'leaveRequest_var_pop_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_pop() on columns of table "leave_request" */
+export type LeaveRequest_Var_Pop_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** aggregate var_samp on columns */
+export type LeaveRequest_Var_Samp_Fields = {
+  __typename?: 'leaveRequest_var_samp_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by var_samp() on columns of table "leave_request" */
+export type LeaveRequest_Var_Samp_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** aggregate variance on columns */
+export type LeaveRequest_Variance_Fields = {
+  __typename?: 'leaveRequest_variance_fields';
+  duration?: Maybe<Scalars['Float']['output']>;
+};
+
+/** order by variance() on columns of table "leave_request" */
+export type LeaveRequest_Variance_Order_By = {
+  duration?: InputMaybe<Order_By>;
+};
+
+/** columns and relationships of "leave_status" */
+export type LeaveStatus = {
+  __typename?: 'leaveStatus';
+  bgColor: Scalars['String']['output'];
+  status: Scalars['String']['output'];
+};
+
+/** aggregated selection of "leave_status" */
+export type LeaveStatus_Aggregate = {
+  __typename?: 'leaveStatus_aggregate';
+  aggregate?: Maybe<LeaveStatus_Aggregate_Fields>;
+  nodes: Array<LeaveStatus>;
+};
+
+/** aggregate fields of "leave_status" */
+export type LeaveStatus_Aggregate_Fields = {
+  __typename?: 'leaveStatus_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<LeaveStatus_Max_Fields>;
+  min?: Maybe<LeaveStatus_Min_Fields>;
+};
+
+
+/** aggregate fields of "leave_status" */
+export type LeaveStatus_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LeaveStatus_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "leave_status". All fields are combined with a logical 'AND'. */
+export type LeaveStatus_Bool_Exp = {
+  _and?: InputMaybe<Array<LeaveStatus_Bool_Exp>>;
+  _not?: InputMaybe<LeaveStatus_Bool_Exp>;
+  _or?: InputMaybe<Array<LeaveStatus_Bool_Exp>>;
+  bgColor?: InputMaybe<String_Comparison_Exp>;
+  status?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "leave_status" */
+export enum LeaveStatus_Constraint {
+  /** unique or primary key constraint on columns "bgColor" */
+  LeaveStatusBgColorKey = 'leave_status_bgColor_key',
+  /** unique or primary key constraint on columns "status" */
+  LeaveStatusPkey = 'leave_status_pkey'
+}
+
+export enum LeaveStatus_Enum {
+  /** green */
+  Approved = 'Approved',
+  /** red */
+  Canceled = 'Canceled',
+  /** orange */
+  Pending = 'Pending',
+  /** blue */
+  Returned = 'Returned'
+}
+
+/** Boolean expression to compare columns of type "leaveStatus_enum". All fields are combined with logical 'AND'. */
+export type LeaveStatus_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<LeaveStatus_Enum>;
+  _in?: InputMaybe<Array<LeaveStatus_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<LeaveStatus_Enum>;
+  _nin?: InputMaybe<Array<LeaveStatus_Enum>>;
+};
+
+/** input type for inserting data into table "leave_status" */
+export type LeaveStatus_Insert_Input = {
+  bgColor?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type LeaveStatus_Max_Fields = {
+  __typename?: 'leaveStatus_max_fields';
+  bgColor?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type LeaveStatus_Min_Fields = {
+  __typename?: 'leaveStatus_min_fields';
+  bgColor?: Maybe<Scalars['String']['output']>;
+  status?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "leave_status" */
+export type LeaveStatus_Mutation_Response = {
+  __typename?: 'leaveStatus_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LeaveStatus>;
+};
+
+/** input type for inserting object relation for remote table "leave_status" */
+export type LeaveStatus_Obj_Rel_Insert_Input = {
+  data: LeaveStatus_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<LeaveStatus_On_Conflict>;
+};
+
+/** on_conflict condition type for table "leave_status" */
+export type LeaveStatus_On_Conflict = {
+  constraint: LeaveStatus_Constraint;
+  update_columns?: Array<LeaveStatus_Update_Column>;
+  where?: InputMaybe<LeaveStatus_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "leave_status". */
+export type LeaveStatus_Order_By = {
+  bgColor?: InputMaybe<Order_By>;
+  status?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: leave_status */
+export type LeaveStatus_Pk_Columns_Input = {
+  status: Scalars['String']['input'];
+};
+
+/** select columns of table "leave_status" */
+export enum LeaveStatus_Select_Column {
+  /** column name */
+  BgColor = 'bgColor',
+  /** column name */
+  Status = 'status'
+}
+
+/** input type for updating data in table "leave_status" */
+export type LeaveStatus_Set_Input = {
+  bgColor?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "leaveStatus" */
+export type LeaveStatus_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LeaveStatus_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LeaveStatus_Stream_Cursor_Value_Input = {
+  bgColor?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "leave_status" */
+export enum LeaveStatus_Update_Column {
+  /** column name */
+  BgColor = 'bgColor',
+  /** column name */
+  Status = 'status'
+}
+
+export type LeaveStatus_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LeaveStatus_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LeaveStatus_Bool_Exp;
+};
+
+/** columns and relationships of "leave_type" */
+export type LeaveType = {
+  __typename?: 'leaveType';
+  bgColor: Scalars['String']['output'];
+  value: Scalars['String']['output'];
+};
+
+/** aggregated selection of "leave_type" */
+export type LeaveType_Aggregate = {
+  __typename?: 'leaveType_aggregate';
+  aggregate?: Maybe<LeaveType_Aggregate_Fields>;
+  nodes: Array<LeaveType>;
+};
+
+/** aggregate fields of "leave_type" */
+export type LeaveType_Aggregate_Fields = {
+  __typename?: 'leaveType_aggregate_fields';
+  count: Scalars['Int']['output'];
+  max?: Maybe<LeaveType_Max_Fields>;
+  min?: Maybe<LeaveType_Min_Fields>;
+};
+
+
+/** aggregate fields of "leave_type" */
+export type LeaveType_Aggregate_FieldsCountArgs = {
+  columns?: InputMaybe<Array<LeaveType_Select_Column>>;
+  distinct?: InputMaybe<Scalars['Boolean']['input']>;
+};
+
+/** Boolean expression to filter rows from the table "leave_type". All fields are combined with a logical 'AND'. */
+export type LeaveType_Bool_Exp = {
+  _and?: InputMaybe<Array<LeaveType_Bool_Exp>>;
+  _not?: InputMaybe<LeaveType_Bool_Exp>;
+  _or?: InputMaybe<Array<LeaveType_Bool_Exp>>;
+  bgColor?: InputMaybe<String_Comparison_Exp>;
+  value?: InputMaybe<String_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "leave_type" */
+export enum LeaveType_Constraint {
+  /** unique or primary key constraint on columns "value" */
+  LeaveTypePkey = 'leave_type_pkey'
+}
+
+export enum LeaveType_Enum {
+  /** green */
+  Holiday = 'holiday',
+  /** pink */
+  Maternity = 'maternity',
+  /** blue */
+  Paternity = 'paternity',
+  /** orange */
+  SickLeave = 'sickLeave',
+  /** red */
+  UnpaidLeave = 'unpaidLeave'
+}
+
+/** Boolean expression to compare columns of type "leaveType_enum". All fields are combined with logical 'AND'. */
+export type LeaveType_Enum_Comparison_Exp = {
+  _eq?: InputMaybe<LeaveType_Enum>;
+  _in?: InputMaybe<Array<LeaveType_Enum>>;
+  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
+  _neq?: InputMaybe<LeaveType_Enum>;
+  _nin?: InputMaybe<Array<LeaveType_Enum>>;
+};
+
+/** input type for inserting data into table "leave_type" */
+export type LeaveType_Insert_Input = {
+  bgColor?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** aggregate max on columns */
+export type LeaveType_Max_Fields = {
+  __typename?: 'leaveType_max_fields';
+  bgColor?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** aggregate min on columns */
+export type LeaveType_Min_Fields = {
+  __typename?: 'leaveType_min_fields';
+  bgColor?: Maybe<Scalars['String']['output']>;
+  value?: Maybe<Scalars['String']['output']>;
+};
+
+/** response of any mutation on the table "leave_type" */
+export type LeaveType_Mutation_Response = {
+  __typename?: 'leaveType_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int']['output'];
+  /** data from the rows affected by the mutation */
+  returning: Array<LeaveType>;
+};
+
+/** input type for inserting object relation for remote table "leave_type" */
+export type LeaveType_Obj_Rel_Insert_Input = {
+  data: LeaveType_Insert_Input;
+  /** upsert condition */
+  on_conflict?: InputMaybe<LeaveType_On_Conflict>;
+};
+
+/** on_conflict condition type for table "leave_type" */
+export type LeaveType_On_Conflict = {
+  constraint: LeaveType_Constraint;
+  update_columns?: Array<LeaveType_Update_Column>;
+  where?: InputMaybe<LeaveType_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "leave_type". */
+export type LeaveType_Order_By = {
+  bgColor?: InputMaybe<Order_By>;
+  value?: InputMaybe<Order_By>;
+};
+
+/** primary key columns input for table: leave_type */
+export type LeaveType_Pk_Columns_Input = {
+  value: Scalars['String']['input'];
+};
+
+/** select columns of table "leave_type" */
+export enum LeaveType_Select_Column {
+  /** column name */
+  BgColor = 'bgColor',
+  /** column name */
+  Value = 'value'
+}
+
+/** input type for updating data in table "leave_type" */
+export type LeaveType_Set_Input = {
+  bgColor?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** Streaming cursor of the table "leaveType" */
+export type LeaveType_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: LeaveType_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: InputMaybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LeaveType_Stream_Cursor_Value_Input = {
+  bgColor?: InputMaybe<Scalars['String']['input']>;
+  value?: InputMaybe<Scalars['String']['input']>;
+};
+
+/** update columns of table "leave_type" */
+export enum LeaveType_Update_Column {
+  /** column name */
+  BgColor = 'bgColor',
+  /** column name */
+  Value = 'value'
+}
+
+export type LeaveType_Updates = {
+  /** sets the columns of the filtered rows to the given values */
+  _set?: InputMaybe<LeaveType_Set_Input>;
+  /** filter the rows which have to be updated */
+  where: LeaveType_Bool_Exp;
 };
 
 /** aggregated selection of "leave" */
@@ -697,8 +1489,8 @@ export type Leave_Bool_Exp = {
   organization_id?: InputMaybe<Uuid_Comparison_Exp>;
   period_end?: InputMaybe<Date_Comparison_Exp>;
   period_start?: InputMaybe<Date_Comparison_Exp>;
-  requests?: InputMaybe<Leave_Request_Bool_Exp>;
-  requests_aggregate?: InputMaybe<Leave_Request_Aggregate_Bool_Exp>;
+  requests?: InputMaybe<LeaveRequest_Bool_Exp>;
+  requests_aggregate?: InputMaybe<LeaveRequest_Aggregate_Bool_Exp>;
   updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
   user_id?: InputMaybe<Uuid_Comparison_Exp>;
 };
@@ -725,7 +1517,7 @@ export type Leave_Insert_Input = {
   organization_id?: InputMaybe<Scalars['uuid']['input']>;
   period_end?: InputMaybe<Scalars['date']['input']>;
   period_start?: InputMaybe<Scalars['date']['input']>;
-  requests?: InputMaybe<Leave_Request_Arr_Rel_Insert_Input>;
+  requests?: InputMaybe<LeaveRequest_Arr_Rel_Insert_Input>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
 };
@@ -793,7 +1585,7 @@ export type Leave_Order_By = {
   organization_id?: InputMaybe<Order_By>;
   period_end?: InputMaybe<Order_By>;
   period_start?: InputMaybe<Order_By>;
-  requests_aggregate?: InputMaybe<Leave_Request_Aggregate_Order_By>;
+  requests_aggregate?: InputMaybe<LeaveRequest_Aggregate_Order_By>;
   updated_at?: InputMaybe<Order_By>;
   user_id?: InputMaybe<Order_By>;
 };
@@ -801,472 +1593,6 @@ export type Leave_Order_By = {
 /** primary key columns input for table: leave */
 export type Leave_Pk_Columns_Input = {
   id: Scalars['uuid']['input'];
-};
-
-/** columns and relationships of "leave_request" */
-export type Leave_Request = {
-  __typename?: 'leave_request';
-  created_at: Scalars['timestamptz']['output'];
-  details: Scalars['String']['output'];
-  duration: Scalars['Int']['output'];
-  end: Scalars['timestamptz']['output'];
-  id: Scalars['uuid']['output'];
-  leave_id?: Maybe<Scalars['uuid']['output']>;
-  /** An object relationship */
-  leave_status: Leave_Status;
-  /** An object relationship */
-  leave_type: Leave_Type;
-  readBy?: Maybe<Scalars['jsonb']['output']>;
-  start: Scalars['timestamptz']['output'];
-  status: Leave_Status_Enum;
-  type: Leave_Type_Enum;
-  updated_at: Scalars['timestamptz']['output'];
-  /** An object relationship */
-  user?: Maybe<User>;
-  userId: Scalars['uuid']['output'];
-};
-
-
-/** columns and relationships of "leave_request" */
-export type Leave_RequestReadByArgs = {
-  path?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** aggregated selection of "leave_request" */
-export type Leave_Request_Aggregate = {
-  __typename?: 'leave_request_aggregate';
-  aggregate?: Maybe<Leave_Request_Aggregate_Fields>;
-  nodes: Array<Leave_Request>;
-};
-
-export type Leave_Request_Aggregate_Bool_Exp = {
-  count?: InputMaybe<Leave_Request_Aggregate_Bool_Exp_Count>;
-};
-
-export type Leave_Request_Aggregate_Bool_Exp_Count = {
-  arguments?: InputMaybe<Array<Leave_Request_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-  filter?: InputMaybe<Leave_Request_Bool_Exp>;
-  predicate: Int_Comparison_Exp;
-};
-
-/** aggregate fields of "leave_request" */
-export type Leave_Request_Aggregate_Fields = {
-  __typename?: 'leave_request_aggregate_fields';
-  avg?: Maybe<Leave_Request_Avg_Fields>;
-  count: Scalars['Int']['output'];
-  max?: Maybe<Leave_Request_Max_Fields>;
-  min?: Maybe<Leave_Request_Min_Fields>;
-  stddev?: Maybe<Leave_Request_Stddev_Fields>;
-  stddev_pop?: Maybe<Leave_Request_Stddev_Pop_Fields>;
-  stddev_samp?: Maybe<Leave_Request_Stddev_Samp_Fields>;
-  sum?: Maybe<Leave_Request_Sum_Fields>;
-  var_pop?: Maybe<Leave_Request_Var_Pop_Fields>;
-  var_samp?: Maybe<Leave_Request_Var_Samp_Fields>;
-  variance?: Maybe<Leave_Request_Variance_Fields>;
-};
-
-
-/** aggregate fields of "leave_request" */
-export type Leave_Request_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Leave_Request_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** order by aggregate values of table "leave_request" */
-export type Leave_Request_Aggregate_Order_By = {
-  avg?: InputMaybe<Leave_Request_Avg_Order_By>;
-  count?: InputMaybe<Order_By>;
-  max?: InputMaybe<Leave_Request_Max_Order_By>;
-  min?: InputMaybe<Leave_Request_Min_Order_By>;
-  stddev?: InputMaybe<Leave_Request_Stddev_Order_By>;
-  stddev_pop?: InputMaybe<Leave_Request_Stddev_Pop_Order_By>;
-  stddev_samp?: InputMaybe<Leave_Request_Stddev_Samp_Order_By>;
-  sum?: InputMaybe<Leave_Request_Sum_Order_By>;
-  var_pop?: InputMaybe<Leave_Request_Var_Pop_Order_By>;
-  var_samp?: InputMaybe<Leave_Request_Var_Samp_Order_By>;
-  variance?: InputMaybe<Leave_Request_Variance_Order_By>;
-};
-
-/** append existing jsonb value of filtered columns with new jsonb value */
-export type Leave_Request_Append_Input = {
-  readBy?: InputMaybe<Scalars['jsonb']['input']>;
-};
-
-/** input type for inserting array relation for remote table "leave_request" */
-export type Leave_Request_Arr_Rel_Insert_Input = {
-  data: Array<Leave_Request_Insert_Input>;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Leave_Request_On_Conflict>;
-};
-
-/** aggregate avg on columns */
-export type Leave_Request_Avg_Fields = {
-  __typename?: 'leave_request_avg_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by avg() on columns of table "leave_request" */
-export type Leave_Request_Avg_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** Boolean expression to filter rows from the table "leave_request". All fields are combined with a logical 'AND'. */
-export type Leave_Request_Bool_Exp = {
-  _and?: InputMaybe<Array<Leave_Request_Bool_Exp>>;
-  _not?: InputMaybe<Leave_Request_Bool_Exp>;
-  _or?: InputMaybe<Array<Leave_Request_Bool_Exp>>;
-  created_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  details?: InputMaybe<String_Comparison_Exp>;
-  duration?: InputMaybe<Int_Comparison_Exp>;
-  end?: InputMaybe<Timestamptz_Comparison_Exp>;
-  id?: InputMaybe<Uuid_Comparison_Exp>;
-  leave_id?: InputMaybe<Uuid_Comparison_Exp>;
-  leave_status?: InputMaybe<Leave_Status_Bool_Exp>;
-  leave_type?: InputMaybe<Leave_Type_Bool_Exp>;
-  readBy?: InputMaybe<Jsonb_Comparison_Exp>;
-  start?: InputMaybe<Timestamptz_Comparison_Exp>;
-  status?: InputMaybe<Leave_Status_Enum_Comparison_Exp>;
-  type?: InputMaybe<Leave_Type_Enum_Comparison_Exp>;
-  updated_at?: InputMaybe<Timestamptz_Comparison_Exp>;
-  user?: InputMaybe<User_Bool_Exp>;
-  userId?: InputMaybe<Uuid_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "leave_request" */
-export enum Leave_Request_Constraint {
-  /** unique or primary key constraint on columns "id" */
-  LeavePkey = 'leave_pkey'
-}
-
-/** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-export type Leave_Request_Delete_At_Path_Input = {
-  readBy?: InputMaybe<Array<Scalars['String']['input']>>;
-};
-
-/** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-export type Leave_Request_Delete_Elem_Input = {
-  readBy?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** delete key/value pair or string element. key/value pairs are matched based on their key value */
-export type Leave_Request_Delete_Key_Input = {
-  readBy?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** input type for incrementing numeric columns in table "leave_request" */
-export type Leave_Request_Inc_Input = {
-  duration?: InputMaybe<Scalars['Int']['input']>;
-};
-
-/** input type for inserting data into table "leave_request" */
-export type Leave_Request_Insert_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  details?: InputMaybe<Scalars['String']['input']>;
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  end?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  leave_id?: InputMaybe<Scalars['uuid']['input']>;
-  leave_status?: InputMaybe<Leave_Status_Obj_Rel_Insert_Input>;
-  leave_type?: InputMaybe<Leave_Type_Obj_Rel_Insert_Input>;
-  readBy?: InputMaybe<Scalars['jsonb']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
-  status?: InputMaybe<Leave_Status_Enum>;
-  type?: InputMaybe<Leave_Type_Enum>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  user?: InputMaybe<User_Obj_Rel_Insert_Input>;
-  userId?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate max on columns */
-export type Leave_Request_Max_Fields = {
-  __typename?: 'leave_request_max_fields';
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
-  duration?: Maybe<Scalars['Int']['output']>;
-  end?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['uuid']['output']>;
-  leave_id?: Maybe<Scalars['uuid']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
-  userId?: Maybe<Scalars['uuid']['output']>;
-};
-
-/** order by max() on columns of table "leave_request" */
-export type Leave_Request_Max_Order_By = {
-  created_at?: InputMaybe<Order_By>;
-  details?: InputMaybe<Order_By>;
-  duration?: InputMaybe<Order_By>;
-  end?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  leave_id?: InputMaybe<Order_By>;
-  start?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-  userId?: InputMaybe<Order_By>;
-};
-
-/** aggregate min on columns */
-export type Leave_Request_Min_Fields = {
-  __typename?: 'leave_request_min_fields';
-  created_at?: Maybe<Scalars['timestamptz']['output']>;
-  details?: Maybe<Scalars['String']['output']>;
-  duration?: Maybe<Scalars['Int']['output']>;
-  end?: Maybe<Scalars['timestamptz']['output']>;
-  id?: Maybe<Scalars['uuid']['output']>;
-  leave_id?: Maybe<Scalars['uuid']['output']>;
-  start?: Maybe<Scalars['timestamptz']['output']>;
-  updated_at?: Maybe<Scalars['timestamptz']['output']>;
-  userId?: Maybe<Scalars['uuid']['output']>;
-};
-
-/** order by min() on columns of table "leave_request" */
-export type Leave_Request_Min_Order_By = {
-  created_at?: InputMaybe<Order_By>;
-  details?: InputMaybe<Order_By>;
-  duration?: InputMaybe<Order_By>;
-  end?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  leave_id?: InputMaybe<Order_By>;
-  start?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-  userId?: InputMaybe<Order_By>;
-};
-
-/** response of any mutation on the table "leave_request" */
-export type Leave_Request_Mutation_Response = {
-  __typename?: 'leave_request_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Leave_Request>;
-};
-
-/** on_conflict condition type for table "leave_request" */
-export type Leave_Request_On_Conflict = {
-  constraint: Leave_Request_Constraint;
-  update_columns?: Array<Leave_Request_Update_Column>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "leave_request". */
-export type Leave_Request_Order_By = {
-  created_at?: InputMaybe<Order_By>;
-  details?: InputMaybe<Order_By>;
-  duration?: InputMaybe<Order_By>;
-  end?: InputMaybe<Order_By>;
-  id?: InputMaybe<Order_By>;
-  leave_id?: InputMaybe<Order_By>;
-  leave_status?: InputMaybe<Leave_Status_Order_By>;
-  leave_type?: InputMaybe<Leave_Type_Order_By>;
-  readBy?: InputMaybe<Order_By>;
-  start?: InputMaybe<Order_By>;
-  status?: InputMaybe<Order_By>;
-  type?: InputMaybe<Order_By>;
-  updated_at?: InputMaybe<Order_By>;
-  user?: InputMaybe<User_Order_By>;
-  userId?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: leave_request */
-export type Leave_Request_Pk_Columns_Input = {
-  id: Scalars['uuid']['input'];
-};
-
-/** prepend existing jsonb value of filtered columns with new jsonb value */
-export type Leave_Request_Prepend_Input = {
-  readBy?: InputMaybe<Scalars['jsonb']['input']>;
-};
-
-/** select columns of table "leave_request" */
-export enum Leave_Request_Select_Column {
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Details = 'details',
-  /** column name */
-  Duration = 'duration',
-  /** column name */
-  End = 'end',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  LeaveId = 'leave_id',
-  /** column name */
-  ReadBy = 'readBy',
-  /** column name */
-  Start = 'start',
-  /** column name */
-  Status = 'status',
-  /** column name */
-  Type = 'type',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UserId = 'userId'
-}
-
-/** input type for updating data in table "leave_request" */
-export type Leave_Request_Set_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  details?: InputMaybe<Scalars['String']['input']>;
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  end?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  leave_id?: InputMaybe<Scalars['uuid']['input']>;
-  readBy?: InputMaybe<Scalars['jsonb']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
-  status?: InputMaybe<Leave_Status_Enum>;
-  type?: InputMaybe<Leave_Type_Enum>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  userId?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate stddev on columns */
-export type Leave_Request_Stddev_Fields = {
-  __typename?: 'leave_request_stddev_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev() on columns of table "leave_request" */
-export type Leave_Request_Stddev_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_pop on columns */
-export type Leave_Request_Stddev_Pop_Fields = {
-  __typename?: 'leave_request_stddev_pop_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_pop() on columns of table "leave_request" */
-export type Leave_Request_Stddev_Pop_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** aggregate stddev_samp on columns */
-export type Leave_Request_Stddev_Samp_Fields = {
-  __typename?: 'leave_request_stddev_samp_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by stddev_samp() on columns of table "leave_request" */
-export type Leave_Request_Stddev_Samp_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** Streaming cursor of the table "leave_request" */
-export type Leave_Request_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Leave_Request_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Leave_Request_Stream_Cursor_Value_Input = {
-  created_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  details?: InputMaybe<Scalars['String']['input']>;
-  duration?: InputMaybe<Scalars['Int']['input']>;
-  end?: InputMaybe<Scalars['timestamptz']['input']>;
-  id?: InputMaybe<Scalars['uuid']['input']>;
-  leave_id?: InputMaybe<Scalars['uuid']['input']>;
-  readBy?: InputMaybe<Scalars['jsonb']['input']>;
-  start?: InputMaybe<Scalars['timestamptz']['input']>;
-  status?: InputMaybe<Leave_Status_Enum>;
-  type?: InputMaybe<Leave_Type_Enum>;
-  updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
-  userId?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** aggregate sum on columns */
-export type Leave_Request_Sum_Fields = {
-  __typename?: 'leave_request_sum_fields';
-  duration?: Maybe<Scalars['Int']['output']>;
-};
-
-/** order by sum() on columns of table "leave_request" */
-export type Leave_Request_Sum_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** update columns of table "leave_request" */
-export enum Leave_Request_Update_Column {
-  /** column name */
-  CreatedAt = 'created_at',
-  /** column name */
-  Details = 'details',
-  /** column name */
-  Duration = 'duration',
-  /** column name */
-  End = 'end',
-  /** column name */
-  Id = 'id',
-  /** column name */
-  LeaveId = 'leave_id',
-  /** column name */
-  ReadBy = 'readBy',
-  /** column name */
-  Start = 'start',
-  /** column name */
-  Status = 'status',
-  /** column name */
-  Type = 'type',
-  /** column name */
-  UpdatedAt = 'updated_at',
-  /** column name */
-  UserId = 'userId'
-}
-
-export type Leave_Request_Updates = {
-  /** append existing jsonb value of filtered columns with new jsonb value */
-  _append?: InputMaybe<Leave_Request_Append_Input>;
-  /** delete the field or element with specified path (for JSON arrays, negative integers count from the end) */
-  _delete_at_path?: InputMaybe<Leave_Request_Delete_At_Path_Input>;
-  /** delete the array element with specified index (negative integers count from the end). throws an error if top level container is not an array */
-  _delete_elem?: InputMaybe<Leave_Request_Delete_Elem_Input>;
-  /** delete key/value pair or string element. key/value pairs are matched based on their key value */
-  _delete_key?: InputMaybe<Leave_Request_Delete_Key_Input>;
-  /** increments the numeric columns with given value of the filtered values */
-  _inc?: InputMaybe<Leave_Request_Inc_Input>;
-  /** prepend existing jsonb value of filtered columns with new jsonb value */
-  _prepend?: InputMaybe<Leave_Request_Prepend_Input>;
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Leave_Request_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Leave_Request_Bool_Exp;
-};
-
-/** aggregate var_pop on columns */
-export type Leave_Request_Var_Pop_Fields = {
-  __typename?: 'leave_request_var_pop_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_pop() on columns of table "leave_request" */
-export type Leave_Request_Var_Pop_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** aggregate var_samp on columns */
-export type Leave_Request_Var_Samp_Fields = {
-  __typename?: 'leave_request_var_samp_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by var_samp() on columns of table "leave_request" */
-export type Leave_Request_Var_Samp_Order_By = {
-  duration?: InputMaybe<Order_By>;
-};
-
-/** aggregate variance on columns */
-export type Leave_Request_Variance_Fields = {
-  __typename?: 'leave_request_variance_fields';
-  duration?: Maybe<Scalars['Float']['output']>;
-};
-
-/** order by variance() on columns of table "leave_request" */
-export type Leave_Request_Variance_Order_By = {
-  duration?: InputMaybe<Order_By>;
 };
 
 /** select columns of table "leave" */
@@ -1305,169 +1631,6 @@ export type Leave_Set_Input = {
   period_start?: InputMaybe<Scalars['date']['input']>;
   updated_at?: InputMaybe<Scalars['timestamptz']['input']>;
   user_id?: InputMaybe<Scalars['uuid']['input']>;
-};
-
-/** columns and relationships of "leave_status" */
-export type Leave_Status = {
-  __typename?: 'leave_status';
-  bgColor: Scalars['String']['output'];
-  status: Scalars['String']['output'];
-};
-
-/** aggregated selection of "leave_status" */
-export type Leave_Status_Aggregate = {
-  __typename?: 'leave_status_aggregate';
-  aggregate?: Maybe<Leave_Status_Aggregate_Fields>;
-  nodes: Array<Leave_Status>;
-};
-
-/** aggregate fields of "leave_status" */
-export type Leave_Status_Aggregate_Fields = {
-  __typename?: 'leave_status_aggregate_fields';
-  count: Scalars['Int']['output'];
-  max?: Maybe<Leave_Status_Max_Fields>;
-  min?: Maybe<Leave_Status_Min_Fields>;
-};
-
-
-/** aggregate fields of "leave_status" */
-export type Leave_Status_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Leave_Status_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** Boolean expression to filter rows from the table "leave_status". All fields are combined with a logical 'AND'. */
-export type Leave_Status_Bool_Exp = {
-  _and?: InputMaybe<Array<Leave_Status_Bool_Exp>>;
-  _not?: InputMaybe<Leave_Status_Bool_Exp>;
-  _or?: InputMaybe<Array<Leave_Status_Bool_Exp>>;
-  bgColor?: InputMaybe<String_Comparison_Exp>;
-  status?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "leave_status" */
-export enum Leave_Status_Constraint {
-  /** unique or primary key constraint on columns "bgColor" */
-  LeaveStatusBgColorKey = 'leave_status_bgColor_key',
-  /** unique or primary key constraint on columns "status" */
-  LeaveStatusPkey = 'leave_status_pkey'
-}
-
-export enum Leave_Status_Enum {
-  /** green */
-  Approved = 'Approved',
-  /** red */
-  Canceled = 'Canceled',
-  /** orange */
-  Pending = 'Pending',
-  /** blue */
-  Returned = 'Returned'
-}
-
-/** Boolean expression to compare columns of type "leave_status_enum". All fields are combined with logical 'AND'. */
-export type Leave_Status_Enum_Comparison_Exp = {
-  _eq?: InputMaybe<Leave_Status_Enum>;
-  _in?: InputMaybe<Array<Leave_Status_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _neq?: InputMaybe<Leave_Status_Enum>;
-  _nin?: InputMaybe<Array<Leave_Status_Enum>>;
-};
-
-/** input type for inserting data into table "leave_status" */
-export type Leave_Status_Insert_Input = {
-  bgColor?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** aggregate max on columns */
-export type Leave_Status_Max_Fields = {
-  __typename?: 'leave_status_max_fields';
-  bgColor?: Maybe<Scalars['String']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregate min on columns */
-export type Leave_Status_Min_Fields = {
-  __typename?: 'leave_status_min_fields';
-  bgColor?: Maybe<Scalars['String']['output']>;
-  status?: Maybe<Scalars['String']['output']>;
-};
-
-/** response of any mutation on the table "leave_status" */
-export type Leave_Status_Mutation_Response = {
-  __typename?: 'leave_status_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Leave_Status>;
-};
-
-/** input type for inserting object relation for remote table "leave_status" */
-export type Leave_Status_Obj_Rel_Insert_Input = {
-  data: Leave_Status_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Leave_Status_On_Conflict>;
-};
-
-/** on_conflict condition type for table "leave_status" */
-export type Leave_Status_On_Conflict = {
-  constraint: Leave_Status_Constraint;
-  update_columns?: Array<Leave_Status_Update_Column>;
-  where?: InputMaybe<Leave_Status_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "leave_status". */
-export type Leave_Status_Order_By = {
-  bgColor?: InputMaybe<Order_By>;
-  status?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: leave_status */
-export type Leave_Status_Pk_Columns_Input = {
-  status: Scalars['String']['input'];
-};
-
-/** select columns of table "leave_status" */
-export enum Leave_Status_Select_Column {
-  /** column name */
-  BgColor = 'bgColor',
-  /** column name */
-  Status = 'status'
-}
-
-/** input type for updating data in table "leave_status" */
-export type Leave_Status_Set_Input = {
-  bgColor?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Streaming cursor of the table "leave_status" */
-export type Leave_Status_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Leave_Status_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Leave_Status_Stream_Cursor_Value_Input = {
-  bgColor?: InputMaybe<Scalars['String']['input']>;
-  status?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** update columns of table "leave_status" */
-export enum Leave_Status_Update_Column {
-  /** column name */
-  BgColor = 'bgColor',
-  /** column name */
-  Status = 'status'
-}
-
-export type Leave_Status_Updates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Leave_Status_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Leave_Status_Bool_Exp;
 };
 
 /** aggregate stddev on columns */
@@ -1518,169 +1681,6 @@ export type Leave_Sum_Fields = {
   __typename?: 'leave_sum_fields';
   allowance_days?: Maybe<Scalars['Int']['output']>;
   allowance_hours?: Maybe<Scalars['Int']['output']>;
-};
-
-/** columns and relationships of "leave_type" */
-export type Leave_Type = {
-  __typename?: 'leave_type';
-  bgColor: Scalars['String']['output'];
-  value: Scalars['String']['output'];
-};
-
-/** aggregated selection of "leave_type" */
-export type Leave_Type_Aggregate = {
-  __typename?: 'leave_type_aggregate';
-  aggregate?: Maybe<Leave_Type_Aggregate_Fields>;
-  nodes: Array<Leave_Type>;
-};
-
-/** aggregate fields of "leave_type" */
-export type Leave_Type_Aggregate_Fields = {
-  __typename?: 'leave_type_aggregate_fields';
-  count: Scalars['Int']['output'];
-  max?: Maybe<Leave_Type_Max_Fields>;
-  min?: Maybe<Leave_Type_Min_Fields>;
-};
-
-
-/** aggregate fields of "leave_type" */
-export type Leave_Type_Aggregate_FieldsCountArgs = {
-  columns?: InputMaybe<Array<Leave_Type_Select_Column>>;
-  distinct?: InputMaybe<Scalars['Boolean']['input']>;
-};
-
-/** Boolean expression to filter rows from the table "leave_type". All fields are combined with a logical 'AND'. */
-export type Leave_Type_Bool_Exp = {
-  _and?: InputMaybe<Array<Leave_Type_Bool_Exp>>;
-  _not?: InputMaybe<Leave_Type_Bool_Exp>;
-  _or?: InputMaybe<Array<Leave_Type_Bool_Exp>>;
-  bgColor?: InputMaybe<String_Comparison_Exp>;
-  value?: InputMaybe<String_Comparison_Exp>;
-};
-
-/** unique or primary key constraints on table "leave_type" */
-export enum Leave_Type_Constraint {
-  /** unique or primary key constraint on columns "value" */
-  LeaveTypePkey = 'leave_type_pkey'
-}
-
-export enum Leave_Type_Enum {
-  /** green */
-  Holiday = 'holiday',
-  /** pink */
-  Maternity = 'maternity',
-  /** blue */
-  Paternity = 'paternity',
-  /** orange */
-  SickLeave = 'sickLeave',
-  /** red */
-  UnpaidLeave = 'unpaidLeave'
-}
-
-/** Boolean expression to compare columns of type "leave_type_enum". All fields are combined with logical 'AND'. */
-export type Leave_Type_Enum_Comparison_Exp = {
-  _eq?: InputMaybe<Leave_Type_Enum>;
-  _in?: InputMaybe<Array<Leave_Type_Enum>>;
-  _is_null?: InputMaybe<Scalars['Boolean']['input']>;
-  _neq?: InputMaybe<Leave_Type_Enum>;
-  _nin?: InputMaybe<Array<Leave_Type_Enum>>;
-};
-
-/** input type for inserting data into table "leave_type" */
-export type Leave_Type_Insert_Input = {
-  bgColor?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** aggregate max on columns */
-export type Leave_Type_Max_Fields = {
-  __typename?: 'leave_type_max_fields';
-  bgColor?: Maybe<Scalars['String']['output']>;
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** aggregate min on columns */
-export type Leave_Type_Min_Fields = {
-  __typename?: 'leave_type_min_fields';
-  bgColor?: Maybe<Scalars['String']['output']>;
-  value?: Maybe<Scalars['String']['output']>;
-};
-
-/** response of any mutation on the table "leave_type" */
-export type Leave_Type_Mutation_Response = {
-  __typename?: 'leave_type_mutation_response';
-  /** number of rows affected by the mutation */
-  affected_rows: Scalars['Int']['output'];
-  /** data from the rows affected by the mutation */
-  returning: Array<Leave_Type>;
-};
-
-/** input type for inserting object relation for remote table "leave_type" */
-export type Leave_Type_Obj_Rel_Insert_Input = {
-  data: Leave_Type_Insert_Input;
-  /** upsert condition */
-  on_conflict?: InputMaybe<Leave_Type_On_Conflict>;
-};
-
-/** on_conflict condition type for table "leave_type" */
-export type Leave_Type_On_Conflict = {
-  constraint: Leave_Type_Constraint;
-  update_columns?: Array<Leave_Type_Update_Column>;
-  where?: InputMaybe<Leave_Type_Bool_Exp>;
-};
-
-/** Ordering options when selecting data from "leave_type". */
-export type Leave_Type_Order_By = {
-  bgColor?: InputMaybe<Order_By>;
-  value?: InputMaybe<Order_By>;
-};
-
-/** primary key columns input for table: leave_type */
-export type Leave_Type_Pk_Columns_Input = {
-  value: Scalars['String']['input'];
-};
-
-/** select columns of table "leave_type" */
-export enum Leave_Type_Select_Column {
-  /** column name */
-  BgColor = 'bgColor',
-  /** column name */
-  Value = 'value'
-}
-
-/** input type for updating data in table "leave_type" */
-export type Leave_Type_Set_Input = {
-  bgColor?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** Streaming cursor of the table "leave_type" */
-export type Leave_Type_Stream_Cursor_Input = {
-  /** Stream column input with initial value */
-  initial_value: Leave_Type_Stream_Cursor_Value_Input;
-  /** cursor ordering */
-  ordering?: InputMaybe<Cursor_Ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Leave_Type_Stream_Cursor_Value_Input = {
-  bgColor?: InputMaybe<Scalars['String']['input']>;
-  value?: InputMaybe<Scalars['String']['input']>;
-};
-
-/** update columns of table "leave_type" */
-export enum Leave_Type_Update_Column {
-  /** column name */
-  BgColor = 'bgColor',
-  /** column name */
-  Value = 'value'
-}
-
-export type Leave_Type_Updates = {
-  /** sets the columns of the filtered rows to the given values */
-  _set?: InputMaybe<Leave_Type_Set_Input>;
-  /** filter the rows which have to be updated */
-  where: Leave_Type_Bool_Exp;
 };
 
 /** update columns of table "leave" */
@@ -1750,20 +1750,20 @@ export type Mutation_Root = {
   delete_branch_by_pk?: Maybe<Branch>;
   /** delete data from the table: "leave" */
   delete_leave?: Maybe<Leave_Mutation_Response>;
+  /** delete data from the table: "leave_request" */
+  delete_leaveRequest?: Maybe<LeaveRequest_Mutation_Response>;
+  /** delete single row from the table: "leave_request" */
+  delete_leaveRequest_by_pk?: Maybe<LeaveRequest>;
+  /** delete data from the table: "leave_status" */
+  delete_leaveStatus?: Maybe<LeaveStatus_Mutation_Response>;
+  /** delete single row from the table: "leave_status" */
+  delete_leaveStatus_by_pk?: Maybe<LeaveStatus>;
+  /** delete data from the table: "leave_type" */
+  delete_leaveType?: Maybe<LeaveType_Mutation_Response>;
+  /** delete single row from the table: "leave_type" */
+  delete_leaveType_by_pk?: Maybe<LeaveType>;
   /** delete single row from the table: "leave" */
   delete_leave_by_pk?: Maybe<Leave>;
-  /** delete data from the table: "leave_request" */
-  delete_leave_request?: Maybe<Leave_Request_Mutation_Response>;
-  /** delete single row from the table: "leave_request" */
-  delete_leave_request_by_pk?: Maybe<Leave_Request>;
-  /** delete data from the table: "leave_status" */
-  delete_leave_status?: Maybe<Leave_Status_Mutation_Response>;
-  /** delete single row from the table: "leave_status" */
-  delete_leave_status_by_pk?: Maybe<Leave_Status>;
-  /** delete data from the table: "leave_type" */
-  delete_leave_type?: Maybe<Leave_Type_Mutation_Response>;
-  /** delete single row from the table: "leave_type" */
-  delete_leave_type_by_pk?: Maybe<Leave_Type>;
   /** delete data from the table: "organization" */
   delete_organization?: Maybe<Organization_Mutation_Response>;
   /** delete single row from the table: "organization" */
@@ -1808,20 +1808,20 @@ export type Mutation_Root = {
   insert_branch_one?: Maybe<Branch>;
   /** insert data into the table: "leave" */
   insert_leave?: Maybe<Leave_Mutation_Response>;
+  /** insert data into the table: "leave_request" */
+  insert_leaveRequest?: Maybe<LeaveRequest_Mutation_Response>;
+  /** insert a single row into the table: "leave_request" */
+  insert_leaveRequest_one?: Maybe<LeaveRequest>;
+  /** insert data into the table: "leave_status" */
+  insert_leaveStatus?: Maybe<LeaveStatus_Mutation_Response>;
+  /** insert a single row into the table: "leave_status" */
+  insert_leaveStatus_one?: Maybe<LeaveStatus>;
+  /** insert data into the table: "leave_type" */
+  insert_leaveType?: Maybe<LeaveType_Mutation_Response>;
+  /** insert a single row into the table: "leave_type" */
+  insert_leaveType_one?: Maybe<LeaveType>;
   /** insert a single row into the table: "leave" */
   insert_leave_one?: Maybe<Leave>;
-  /** insert data into the table: "leave_request" */
-  insert_leave_request?: Maybe<Leave_Request_Mutation_Response>;
-  /** insert a single row into the table: "leave_request" */
-  insert_leave_request_one?: Maybe<Leave_Request>;
-  /** insert data into the table: "leave_status" */
-  insert_leave_status?: Maybe<Leave_Status_Mutation_Response>;
-  /** insert a single row into the table: "leave_status" */
-  insert_leave_status_one?: Maybe<Leave_Status>;
-  /** insert data into the table: "leave_type" */
-  insert_leave_type?: Maybe<Leave_Type_Mutation_Response>;
-  /** insert a single row into the table: "leave_type" */
-  insert_leave_type_one?: Maybe<Leave_Type>;
   /** insert data into the table: "organization" */
   insert_organization?: Maybe<Organization_Mutation_Response>;
   /** insert a single row into the table: "organization" */
@@ -1872,28 +1872,28 @@ export type Mutation_Root = {
   update_branch_many?: Maybe<Array<Maybe<Branch_Mutation_Response>>>;
   /** update data of the table: "leave" */
   update_leave?: Maybe<Leave_Mutation_Response>;
+  /** update data of the table: "leave_request" */
+  update_leaveRequest?: Maybe<LeaveRequest_Mutation_Response>;
+  /** update single row of the table: "leave_request" */
+  update_leaveRequest_by_pk?: Maybe<LeaveRequest>;
+  /** update multiples rows of table: "leave_request" */
+  update_leaveRequest_many?: Maybe<Array<Maybe<LeaveRequest_Mutation_Response>>>;
+  /** update data of the table: "leave_status" */
+  update_leaveStatus?: Maybe<LeaveStatus_Mutation_Response>;
+  /** update single row of the table: "leave_status" */
+  update_leaveStatus_by_pk?: Maybe<LeaveStatus>;
+  /** update multiples rows of table: "leave_status" */
+  update_leaveStatus_many?: Maybe<Array<Maybe<LeaveStatus_Mutation_Response>>>;
+  /** update data of the table: "leave_type" */
+  update_leaveType?: Maybe<LeaveType_Mutation_Response>;
+  /** update single row of the table: "leave_type" */
+  update_leaveType_by_pk?: Maybe<LeaveType>;
+  /** update multiples rows of table: "leave_type" */
+  update_leaveType_many?: Maybe<Array<Maybe<LeaveType_Mutation_Response>>>;
   /** update single row of the table: "leave" */
   update_leave_by_pk?: Maybe<Leave>;
   /** update multiples rows of table: "leave" */
   update_leave_many?: Maybe<Array<Maybe<Leave_Mutation_Response>>>;
-  /** update data of the table: "leave_request" */
-  update_leave_request?: Maybe<Leave_Request_Mutation_Response>;
-  /** update single row of the table: "leave_request" */
-  update_leave_request_by_pk?: Maybe<Leave_Request>;
-  /** update multiples rows of table: "leave_request" */
-  update_leave_request_many?: Maybe<Array<Maybe<Leave_Request_Mutation_Response>>>;
-  /** update data of the table: "leave_status" */
-  update_leave_status?: Maybe<Leave_Status_Mutation_Response>;
-  /** update single row of the table: "leave_status" */
-  update_leave_status_by_pk?: Maybe<Leave_Status>;
-  /** update multiples rows of table: "leave_status" */
-  update_leave_status_many?: Maybe<Array<Maybe<Leave_Status_Mutation_Response>>>;
-  /** update data of the table: "leave_type" */
-  update_leave_type?: Maybe<Leave_Type_Mutation_Response>;
-  /** update single row of the table: "leave_type" */
-  update_leave_type_by_pk?: Maybe<Leave_Type>;
-  /** update multiples rows of table: "leave_type" */
-  update_leave_type_many?: Maybe<Array<Maybe<Leave_Type_Mutation_Response>>>;
   /** update data of the table: "organization" */
   update_organization?: Maybe<Organization_Mutation_Response>;
   /** update single row of the table: "organization" */
@@ -1980,44 +1980,44 @@ export type Mutation_RootDelete_LeaveArgs = {
 
 
 /** mutation root */
-export type Mutation_RootDelete_Leave_By_PkArgs = {
+export type Mutation_RootDelete_LeaveRequestArgs = {
+  where: LeaveRequest_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_LeaveRequest_By_PkArgs = {
   id: Scalars['uuid']['input'];
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Leave_RequestArgs = {
-  where: Leave_Request_Bool_Exp;
+export type Mutation_RootDelete_LeaveStatusArgs = {
+  where: LeaveStatus_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Leave_Request_By_PkArgs = {
-  id: Scalars['uuid']['input'];
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Leave_StatusArgs = {
-  where: Leave_Status_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootDelete_Leave_Status_By_PkArgs = {
+export type Mutation_RootDelete_LeaveStatus_By_PkArgs = {
   status: Scalars['String']['input'];
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Leave_TypeArgs = {
-  where: Leave_Type_Bool_Exp;
+export type Mutation_RootDelete_LeaveTypeArgs = {
+  where: LeaveType_Bool_Exp;
 };
 
 
 /** mutation root */
-export type Mutation_RootDelete_Leave_Type_By_PkArgs = {
+export type Mutation_RootDelete_LeaveType_By_PkArgs = {
   value: Scalars['String']['input'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Leave_By_PkArgs = {
+  id: Scalars['uuid']['input'];
 };
 
 
@@ -2159,51 +2159,51 @@ export type Mutation_RootInsert_LeaveArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInsert_LeaveRequestArgs = {
+  objects: Array<LeaveRequest_Insert_Input>;
+  on_conflict?: InputMaybe<LeaveRequest_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LeaveRequest_OneArgs = {
+  object: LeaveRequest_Insert_Input;
+  on_conflict?: InputMaybe<LeaveRequest_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LeaveStatusArgs = {
+  objects: Array<LeaveStatus_Insert_Input>;
+  on_conflict?: InputMaybe<LeaveStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LeaveStatus_OneArgs = {
+  object: LeaveStatus_Insert_Input;
+  on_conflict?: InputMaybe<LeaveStatus_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LeaveTypeArgs = {
+  objects: Array<LeaveType_Insert_Input>;
+  on_conflict?: InputMaybe<LeaveType_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_LeaveType_OneArgs = {
+  object: LeaveType_Insert_Input;
+  on_conflict?: InputMaybe<LeaveType_On_Conflict>;
+};
+
+
+/** mutation root */
 export type Mutation_RootInsert_Leave_OneArgs = {
   object: Leave_Insert_Input;
   on_conflict?: InputMaybe<Leave_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Leave_RequestArgs = {
-  objects: Array<Leave_Request_Insert_Input>;
-  on_conflict?: InputMaybe<Leave_Request_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Leave_Request_OneArgs = {
-  object: Leave_Request_Insert_Input;
-  on_conflict?: InputMaybe<Leave_Request_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Leave_StatusArgs = {
-  objects: Array<Leave_Status_Insert_Input>;
-  on_conflict?: InputMaybe<Leave_Status_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Leave_Status_OneArgs = {
-  object: Leave_Status_Insert_Input;
-  on_conflict?: InputMaybe<Leave_Status_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Leave_TypeArgs = {
-  objects: Array<Leave_Type_Insert_Input>;
-  on_conflict?: InputMaybe<Leave_Type_On_Conflict>;
-};
-
-
-/** mutation root */
-export type Mutation_RootInsert_Leave_Type_OneArgs = {
-  object: Leave_Type_Insert_Input;
-  on_conflict?: InputMaybe<Leave_Type_On_Conflict>;
 };
 
 
@@ -2392,6 +2392,78 @@ export type Mutation_RootUpdate_LeaveArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_LeaveRequestArgs = {
+  _append?: InputMaybe<LeaveRequest_Append_Input>;
+  _delete_at_path?: InputMaybe<LeaveRequest_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<LeaveRequest_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<LeaveRequest_Delete_Key_Input>;
+  _inc?: InputMaybe<LeaveRequest_Inc_Input>;
+  _prepend?: InputMaybe<LeaveRequest_Prepend_Input>;
+  _set?: InputMaybe<LeaveRequest_Set_Input>;
+  where: LeaveRequest_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveRequest_By_PkArgs = {
+  _append?: InputMaybe<LeaveRequest_Append_Input>;
+  _delete_at_path?: InputMaybe<LeaveRequest_Delete_At_Path_Input>;
+  _delete_elem?: InputMaybe<LeaveRequest_Delete_Elem_Input>;
+  _delete_key?: InputMaybe<LeaveRequest_Delete_Key_Input>;
+  _inc?: InputMaybe<LeaveRequest_Inc_Input>;
+  _prepend?: InputMaybe<LeaveRequest_Prepend_Input>;
+  _set?: InputMaybe<LeaveRequest_Set_Input>;
+  pk_columns: LeaveRequest_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveRequest_ManyArgs = {
+  updates: Array<LeaveRequest_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveStatusArgs = {
+  _set?: InputMaybe<LeaveStatus_Set_Input>;
+  where: LeaveStatus_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveStatus_By_PkArgs = {
+  _set?: InputMaybe<LeaveStatus_Set_Input>;
+  pk_columns: LeaveStatus_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveStatus_ManyArgs = {
+  updates: Array<LeaveStatus_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveTypeArgs = {
+  _set?: InputMaybe<LeaveType_Set_Input>;
+  where: LeaveType_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveType_By_PkArgs = {
+  _set?: InputMaybe<LeaveType_Set_Input>;
+  pk_columns: LeaveType_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_LeaveType_ManyArgs = {
+  updates: Array<LeaveType_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Leave_By_PkArgs = {
   _inc?: InputMaybe<Leave_Inc_Input>;
   _set?: InputMaybe<Leave_Set_Input>;
@@ -2402,78 +2474,6 @@ export type Mutation_RootUpdate_Leave_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Leave_ManyArgs = {
   updates: Array<Leave_Updates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_RequestArgs = {
-  _append?: InputMaybe<Leave_Request_Append_Input>;
-  _delete_at_path?: InputMaybe<Leave_Request_Delete_At_Path_Input>;
-  _delete_elem?: InputMaybe<Leave_Request_Delete_Elem_Input>;
-  _delete_key?: InputMaybe<Leave_Request_Delete_Key_Input>;
-  _inc?: InputMaybe<Leave_Request_Inc_Input>;
-  _prepend?: InputMaybe<Leave_Request_Prepend_Input>;
-  _set?: InputMaybe<Leave_Request_Set_Input>;
-  where: Leave_Request_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_Request_By_PkArgs = {
-  _append?: InputMaybe<Leave_Request_Append_Input>;
-  _delete_at_path?: InputMaybe<Leave_Request_Delete_At_Path_Input>;
-  _delete_elem?: InputMaybe<Leave_Request_Delete_Elem_Input>;
-  _delete_key?: InputMaybe<Leave_Request_Delete_Key_Input>;
-  _inc?: InputMaybe<Leave_Request_Inc_Input>;
-  _prepend?: InputMaybe<Leave_Request_Prepend_Input>;
-  _set?: InputMaybe<Leave_Request_Set_Input>;
-  pk_columns: Leave_Request_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_Request_ManyArgs = {
-  updates: Array<Leave_Request_Updates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_StatusArgs = {
-  _set?: InputMaybe<Leave_Status_Set_Input>;
-  where: Leave_Status_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_Status_By_PkArgs = {
-  _set?: InputMaybe<Leave_Status_Set_Input>;
-  pk_columns: Leave_Status_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_Status_ManyArgs = {
-  updates: Array<Leave_Status_Updates>;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_TypeArgs = {
-  _set?: InputMaybe<Leave_Type_Set_Input>;
-  where: Leave_Type_Bool_Exp;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_Type_By_PkArgs = {
-  _set?: InputMaybe<Leave_Type_Set_Input>;
-  pk_columns: Leave_Type_Pk_Columns_Input;
-};
-
-
-/** mutation root */
-export type Mutation_RootUpdate_Leave_Type_ManyArgs = {
-  updates: Array<Leave_Type_Updates>;
 };
 
 
@@ -3799,28 +3799,28 @@ export type Query_Root = {
   branch_by_pk?: Maybe<Branch>;
   /** fetch data from the table: "leave" */
   leave: Array<Leave>;
+  /** fetch data from the table: "leave_request" */
+  leaveRequest: Array<LeaveRequest>;
+  /** fetch aggregated fields from the table: "leave_request" */
+  leaveRequest_aggregate: LeaveRequest_Aggregate;
+  /** fetch data from the table: "leave_request" using primary key columns */
+  leaveRequest_by_pk?: Maybe<LeaveRequest>;
+  /** fetch data from the table: "leave_status" */
+  leaveStatus: Array<LeaveStatus>;
+  /** fetch aggregated fields from the table: "leave_status" */
+  leaveStatus_aggregate: LeaveStatus_Aggregate;
+  /** fetch data from the table: "leave_status" using primary key columns */
+  leaveStatus_by_pk?: Maybe<LeaveStatus>;
+  /** fetch data from the table: "leave_type" */
+  leaveType: Array<LeaveType>;
+  /** fetch aggregated fields from the table: "leave_type" */
+  leaveType_aggregate: LeaveType_Aggregate;
+  /** fetch data from the table: "leave_type" using primary key columns */
+  leaveType_by_pk?: Maybe<LeaveType>;
   /** fetch aggregated fields from the table: "leave" */
   leave_aggregate: Leave_Aggregate;
   /** fetch data from the table: "leave" using primary key columns */
   leave_by_pk?: Maybe<Leave>;
-  /** fetch data from the table: "leave_request" */
-  leave_request: Array<Leave_Request>;
-  /** fetch aggregated fields from the table: "leave_request" */
-  leave_request_aggregate: Leave_Request_Aggregate;
-  /** fetch data from the table: "leave_request" using primary key columns */
-  leave_request_by_pk?: Maybe<Leave_Request>;
-  /** fetch data from the table: "leave_status" */
-  leave_status: Array<Leave_Status>;
-  /** fetch aggregated fields from the table: "leave_status" */
-  leave_status_aggregate: Leave_Status_Aggregate;
-  /** fetch data from the table: "leave_status" using primary key columns */
-  leave_status_by_pk?: Maybe<Leave_Status>;
-  /** fetch data from the table: "leave_type" */
-  leave_type: Array<Leave_Type>;
-  /** fetch aggregated fields from the table: "leave_type" */
-  leave_type_aggregate: Leave_Type_Aggregate;
-  /** fetch data from the table: "leave_type" using primary key columns */
-  leave_type_by_pk?: Maybe<Leave_Type>;
   /** fetch data from the table: "organization" */
   organization: Array<Organization>;
   /** fetch aggregated fields from the table: "organization" */
@@ -3931,6 +3931,75 @@ export type Query_RootLeaveArgs = {
 };
 
 
+export type Query_RootLeaveRequestArgs = {
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+
+export type Query_RootLeaveRequest_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+
+export type Query_RootLeaveRequest_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Query_RootLeaveStatusArgs = {
+  distinct_on?: InputMaybe<Array<LeaveStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveStatus_Order_By>>;
+  where?: InputMaybe<LeaveStatus_Bool_Exp>;
+};
+
+
+export type Query_RootLeaveStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LeaveStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveStatus_Order_By>>;
+  where?: InputMaybe<LeaveStatus_Bool_Exp>;
+};
+
+
+export type Query_RootLeaveStatus_By_PkArgs = {
+  status: Scalars['String']['input'];
+};
+
+
+export type Query_RootLeaveTypeArgs = {
+  distinct_on?: InputMaybe<Array<LeaveType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveType_Order_By>>;
+  where?: InputMaybe<LeaveType_Bool_Exp>;
+};
+
+
+export type Query_RootLeaveType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LeaveType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveType_Order_By>>;
+  where?: InputMaybe<LeaveType_Bool_Exp>;
+};
+
+
+export type Query_RootLeaveType_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
 export type Query_RootLeave_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Leave_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -3942,75 +4011,6 @@ export type Query_RootLeave_AggregateArgs = {
 
 export type Query_RootLeave_By_PkArgs = {
   id: Scalars['uuid']['input'];
-};
-
-
-export type Query_RootLeave_RequestArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
-};
-
-
-export type Query_RootLeave_Request_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
-};
-
-
-export type Query_RootLeave_Request_By_PkArgs = {
-  id: Scalars['uuid']['input'];
-};
-
-
-export type Query_RootLeave_StatusArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Status_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Status_Order_By>>;
-  where?: InputMaybe<Leave_Status_Bool_Exp>;
-};
-
-
-export type Query_RootLeave_Status_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Status_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Status_Order_By>>;
-  where?: InputMaybe<Leave_Status_Bool_Exp>;
-};
-
-
-export type Query_RootLeave_Status_By_PkArgs = {
-  status: Scalars['String']['input'];
-};
-
-
-export type Query_RootLeave_TypeArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Type_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Type_Order_By>>;
-  where?: InputMaybe<Leave_Type_Bool_Exp>;
-};
-
-
-export type Query_RootLeave_Type_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Type_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Type_Order_By>>;
-  where?: InputMaybe<Leave_Type_Bool_Exp>;
-};
-
-
-export type Query_RootLeave_Type_By_PkArgs = {
-  value: Scalars['String']['input'];
 };
 
 
@@ -4870,36 +4870,36 @@ export type Subscription_Root = {
   branch_stream: Array<Branch>;
   /** fetch data from the table: "leave" */
   leave: Array<Leave>;
+  /** fetch data from the table: "leave_request" */
+  leaveRequest: Array<LeaveRequest>;
+  /** fetch aggregated fields from the table: "leave_request" */
+  leaveRequest_aggregate: LeaveRequest_Aggregate;
+  /** fetch data from the table: "leave_request" using primary key columns */
+  leaveRequest_by_pk?: Maybe<LeaveRequest>;
+  /** fetch data from the table in a streaming manner: "leave_request" */
+  leaveRequest_stream: Array<LeaveRequest>;
+  /** fetch data from the table: "leave_status" */
+  leaveStatus: Array<LeaveStatus>;
+  /** fetch aggregated fields from the table: "leave_status" */
+  leaveStatus_aggregate: LeaveStatus_Aggregate;
+  /** fetch data from the table: "leave_status" using primary key columns */
+  leaveStatus_by_pk?: Maybe<LeaveStatus>;
+  /** fetch data from the table in a streaming manner: "leave_status" */
+  leaveStatus_stream: Array<LeaveStatus>;
+  /** fetch data from the table: "leave_type" */
+  leaveType: Array<LeaveType>;
+  /** fetch aggregated fields from the table: "leave_type" */
+  leaveType_aggregate: LeaveType_Aggregate;
+  /** fetch data from the table: "leave_type" using primary key columns */
+  leaveType_by_pk?: Maybe<LeaveType>;
+  /** fetch data from the table in a streaming manner: "leave_type" */
+  leaveType_stream: Array<LeaveType>;
   /** fetch aggregated fields from the table: "leave" */
   leave_aggregate: Leave_Aggregate;
   /** fetch data from the table: "leave" using primary key columns */
   leave_by_pk?: Maybe<Leave>;
-  /** fetch data from the table: "leave_request" */
-  leave_request: Array<Leave_Request>;
-  /** fetch aggregated fields from the table: "leave_request" */
-  leave_request_aggregate: Leave_Request_Aggregate;
-  /** fetch data from the table: "leave_request" using primary key columns */
-  leave_request_by_pk?: Maybe<Leave_Request>;
-  /** fetch data from the table in a streaming manner: "leave_request" */
-  leave_request_stream: Array<Leave_Request>;
-  /** fetch data from the table: "leave_status" */
-  leave_status: Array<Leave_Status>;
-  /** fetch aggregated fields from the table: "leave_status" */
-  leave_status_aggregate: Leave_Status_Aggregate;
-  /** fetch data from the table: "leave_status" using primary key columns */
-  leave_status_by_pk?: Maybe<Leave_Status>;
-  /** fetch data from the table in a streaming manner: "leave_status" */
-  leave_status_stream: Array<Leave_Status>;
   /** fetch data from the table in a streaming manner: "leave" */
   leave_stream: Array<Leave>;
-  /** fetch data from the table: "leave_type" */
-  leave_type: Array<Leave_Type>;
-  /** fetch aggregated fields from the table: "leave_type" */
-  leave_type_aggregate: Leave_Type_Aggregate;
-  /** fetch data from the table: "leave_type" using primary key columns */
-  leave_type_by_pk?: Maybe<Leave_Type>;
-  /** fetch data from the table in a streaming manner: "leave_type" */
-  leave_type_stream: Array<Leave_Type>;
   /** fetch data from the table: "organization" */
   organization: Array<Organization>;
   /** fetch aggregated fields from the table: "organization" */
@@ -5042,6 +5042,96 @@ export type Subscription_RootLeaveArgs = {
 };
 
 
+export type Subscription_RootLeaveRequestArgs = {
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveRequest_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveRequest_By_PkArgs = {
+  id: Scalars['uuid']['input'];
+};
+
+
+export type Subscription_RootLeaveRequest_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LeaveRequest_Stream_Cursor_Input>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveStatusArgs = {
+  distinct_on?: InputMaybe<Array<LeaveStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveStatus_Order_By>>;
+  where?: InputMaybe<LeaveStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveStatus_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LeaveStatus_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveStatus_Order_By>>;
+  where?: InputMaybe<LeaveStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveStatus_By_PkArgs = {
+  status: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootLeaveStatus_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LeaveStatus_Stream_Cursor_Input>>;
+  where?: InputMaybe<LeaveStatus_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveTypeArgs = {
+  distinct_on?: InputMaybe<Array<LeaveType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveType_Order_By>>;
+  where?: InputMaybe<LeaveType_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveType_AggregateArgs = {
+  distinct_on?: InputMaybe<Array<LeaveType_Select_Column>>;
+  limit?: InputMaybe<Scalars['Int']['input']>;
+  offset?: InputMaybe<Scalars['Int']['input']>;
+  order_by?: InputMaybe<Array<LeaveType_Order_By>>;
+  where?: InputMaybe<LeaveType_Bool_Exp>;
+};
+
+
+export type Subscription_RootLeaveType_By_PkArgs = {
+  value: Scalars['String']['input'];
+};
+
+
+export type Subscription_RootLeaveType_StreamArgs = {
+  batch_size: Scalars['Int']['input'];
+  cursor: Array<InputMaybe<LeaveType_Stream_Cursor_Input>>;
+  where?: InputMaybe<LeaveType_Bool_Exp>;
+};
+
+
 export type Subscription_RootLeave_AggregateArgs = {
   distinct_on?: InputMaybe<Array<Leave_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
@@ -5056,100 +5146,10 @@ export type Subscription_RootLeave_By_PkArgs = {
 };
 
 
-export type Subscription_RootLeave_RequestArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_Request_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_Request_By_PkArgs = {
-  id: Scalars['uuid']['input'];
-};
-
-
-export type Subscription_RootLeave_Request_StreamArgs = {
-  batch_size: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<Leave_Request_Stream_Cursor_Input>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_StatusArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Status_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Status_Order_By>>;
-  where?: InputMaybe<Leave_Status_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_Status_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Status_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Status_Order_By>>;
-  where?: InputMaybe<Leave_Status_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_Status_By_PkArgs = {
-  status: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootLeave_Status_StreamArgs = {
-  batch_size: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<Leave_Status_Stream_Cursor_Input>>;
-  where?: InputMaybe<Leave_Status_Bool_Exp>;
-};
-
-
 export type Subscription_RootLeave_StreamArgs = {
   batch_size: Scalars['Int']['input'];
   cursor: Array<InputMaybe<Leave_Stream_Cursor_Input>>;
   where?: InputMaybe<Leave_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_TypeArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Type_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Type_Order_By>>;
-  where?: InputMaybe<Leave_Type_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_Type_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Type_Select_Column>>;
-  limit?: InputMaybe<Scalars['Int']['input']>;
-  offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Type_Order_By>>;
-  where?: InputMaybe<Leave_Type_Bool_Exp>;
-};
-
-
-export type Subscription_RootLeave_Type_By_PkArgs = {
-  value: Scalars['String']['input'];
-};
-
-
-export type Subscription_RootLeave_Type_StreamArgs = {
-  batch_size: Scalars['Int']['input'];
-  cursor: Array<InputMaybe<Leave_Type_Stream_Cursor_Input>>;
-  where?: InputMaybe<Leave_Type_Bool_Exp>;
 };
 
 
@@ -5745,9 +5745,9 @@ export type User = {
   /** An object relationship */
   leave?: Maybe<Leave>;
   /** An array relationship */
-  leave_requests: Array<Leave_Request>;
+  leave_requests: Array<LeaveRequest>;
   /** An aggregate relationship */
-  leave_requests_aggregate: Leave_Request_Aggregate;
+  leave_requests_aggregate: LeaveRequest_Aggregate;
   onboarded: Scalars['Boolean']['output'];
   organizationId?: Maybe<Scalars['uuid']['output']>;
   payDetails?: Maybe<Scalars['jsonb']['output']>;
@@ -5778,21 +5778,21 @@ export type UserContactDetailsArgs = {
 
 /** columns and relationships of "user" */
 export type UserLeave_RequestsArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
 };
 
 
 /** columns and relationships of "user" */
 export type UserLeave_Requests_AggregateArgs = {
-  distinct_on?: InputMaybe<Array<Leave_Request_Select_Column>>;
+  distinct_on?: InputMaybe<Array<LeaveRequest_Select_Column>>;
   limit?: InputMaybe<Scalars['Int']['input']>;
   offset?: InputMaybe<Scalars['Int']['input']>;
-  order_by?: InputMaybe<Array<Leave_Request_Order_By>>;
-  where?: InputMaybe<Leave_Request_Bool_Exp>;
+  order_by?: InputMaybe<Array<LeaveRequest_Order_By>>;
+  where?: InputMaybe<LeaveRequest_Bool_Exp>;
 };
 
 
@@ -5956,8 +5956,8 @@ export type User_Bool_Exp = {
   lastName?: InputMaybe<String_Comparison_Exp>;
   lastSeen?: InputMaybe<Timestamptz_Comparison_Exp>;
   leave?: InputMaybe<Leave_Bool_Exp>;
-  leave_requests?: InputMaybe<Leave_Request_Bool_Exp>;
-  leave_requests_aggregate?: InputMaybe<Leave_Request_Aggregate_Bool_Exp>;
+  leave_requests?: InputMaybe<LeaveRequest_Bool_Exp>;
+  leave_requests_aggregate?: InputMaybe<LeaveRequest_Aggregate_Bool_Exp>;
   onboarded?: InputMaybe<Boolean_Comparison_Exp>;
   organizationId?: InputMaybe<Uuid_Comparison_Exp>;
   payDetails?: InputMaybe<Jsonb_Comparison_Exp>;
@@ -6021,7 +6021,7 @@ export type User_Insert_Input = {
   lastName?: InputMaybe<Scalars['String']['input']>;
   lastSeen?: InputMaybe<Scalars['timestamptz']['input']>;
   leave?: InputMaybe<Leave_Obj_Rel_Insert_Input>;
-  leave_requests?: InputMaybe<Leave_Request_Arr_Rel_Insert_Input>;
+  leave_requests?: InputMaybe<LeaveRequest_Arr_Rel_Insert_Input>;
   onboarded?: InputMaybe<Scalars['Boolean']['input']>;
   organizationId?: InputMaybe<Scalars['uuid']['input']>;
   payDetails?: InputMaybe<Scalars['jsonb']['input']>;
@@ -6150,7 +6150,7 @@ export type User_Order_By = {
   lastName?: InputMaybe<Order_By>;
   lastSeen?: InputMaybe<Order_By>;
   leave?: InputMaybe<Leave_Order_By>;
-  leave_requests_aggregate?: InputMaybe<Leave_Request_Aggregate_Order_By>;
+  leave_requests_aggregate?: InputMaybe<LeaveRequest_Aggregate_Order_By>;
   onboarded?: InputMaybe<Order_By>;
   organizationId?: InputMaybe<Order_By>;
   payDetails?: InputMaybe<Order_By>;
@@ -6679,26 +6679,26 @@ export type Uuid_Comparison_Exp = {
   _nin?: InputMaybe<Array<Scalars['uuid']['input']>>;
 };
 
-export type LeaveFragmentFragment = { __typename?: 'leave_request', id: any, created_at: any, updated_at: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, start: any, end: any } & { ' $fragmentName'?: 'LeaveFragmentFragment' };
+export type LeaveFragmentFragment = { __typename?: 'leaveRequest', id: any, created_at: any, updated_at: any, details: string, type: LeaveType_Enum, status: LeaveStatus_Enum, start: any, end: any } & { ' $fragmentName'?: 'LeaveFragmentFragment' };
 
 export type CreateLeaveOneMutationVariables = Exact<{
-  object: Leave_Request_Insert_Input;
+  object: LeaveRequest_Insert_Input;
 }>;
 
 
-export type CreateLeaveOneMutation = { __typename?: 'mutation_root', insert_leave_request_one?: (
-    { __typename?: 'leave_request' }
+export type CreateLeaveOneMutation = { __typename?: 'mutation_root', insert_leaveRequest_one?: (
+    { __typename?: 'leaveRequest' }
     & { ' $fragmentRefs'?: { 'LeaveFragmentFragment': LeaveFragmentFragment } }
   ) | null };
 
 export type UpdateLeaveByIdMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
-  object: Leave_Request_Set_Input;
+  object: LeaveRequest_Set_Input;
 }>;
 
 
-export type UpdateLeaveByIdMutation = { __typename?: 'mutation_root', update_leave_request_by_pk?: (
-    { __typename?: 'leave_request' }
+export type UpdateLeaveByIdMutation = { __typename?: 'mutation_root', update_leaveRequest_by_pk?: (
+    { __typename?: 'leaveRequest' }
     & { ' $fragmentRefs'?: { 'LeaveFragmentFragment': LeaveFragmentFragment } }
   ) | null };
 
@@ -6707,8 +6707,8 @@ export type DeleteLeaveByIdMutationVariables = Exact<{
 }>;
 
 
-export type DeleteLeaveByIdMutation = { __typename?: 'mutation_root', delete_leave_request_by_pk?: (
-    { __typename?: 'leave_request' }
+export type DeleteLeaveByIdMutation = { __typename?: 'mutation_root', delete_leaveRequest_by_pk?: (
+    { __typename?: 'leaveRequest' }
     & { ' $fragmentRefs'?: { 'LeaveFragmentFragment': LeaveFragmentFragment } }
   ) | null };
 
@@ -6718,61 +6718,61 @@ export type UpdateReadStatusMutationVariables = Exact<{
 }>;
 
 
-export type UpdateReadStatusMutation = { __typename?: 'mutation_root', update_leave_request_by_pk?: { __typename?: 'leave_request', id: any } | null };
+export type UpdateReadStatusMutation = { __typename?: 'mutation_root', update_leaveRequest_by_pk?: { __typename?: 'leaveRequest', id: any } | null };
 
 export type UpdateLeaveStatusMutationVariables = Exact<{
   id: Scalars['uuid']['input'];
-  status: Leave_Status_Enum;
+  status: LeaveStatus_Enum;
 }>;
 
 
-export type UpdateLeaveStatusMutation = { __typename?: 'mutation_root', update_leave_request_by_pk?: { __typename?: 'leave_request', id: any } | null };
+export type UpdateLeaveStatusMutation = { __typename?: 'mutation_root', update_leaveRequest_by_pk?: { __typename?: 'leaveRequest', id: any } | null };
 
 export type GetLeaveQueryVariables = Exact<{
   id: Scalars['uuid']['input'];
 }>;
 
 
-export type GetLeaveQuery = { __typename?: 'query_root', leave_request_by_pk?: { __typename?: 'leave_request', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_status: { __typename?: 'leave_status', status: string, bgColor: string } } | null };
+export type GetLeaveQuery = { __typename?: 'query_root', leaveRequest_by_pk?: { __typename?: 'leaveRequest', id: any, start: any, end: any, details: string, type: LeaveType_Enum, status: LeaveStatus_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_status: { __typename?: 'leaveStatus', status: string, bgColor: string } } | null };
 
 export type GetLeaveAllQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLeaveAllQuery = { __typename?: 'query_root', leave_request: Array<{ __typename?: 'leave_request', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_type: { __typename?: 'leave_type', value: string, bgColor: string }, leave_status: { __typename?: 'leave_status', status: string, bgColor: string } }> };
+export type GetLeaveAllQuery = { __typename?: 'query_root', leaveRequest: Array<{ __typename?: 'leaveRequest', id: any, start: any, end: any, details: string, type: LeaveType_Enum, status: LeaveStatus_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_type: { __typename?: 'leaveType', value: string, bgColor: string }, leave_status: { __typename?: 'leaveStatus', status: string, bgColor: string } }> };
 
 export type GetLeaveTypesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLeaveTypesQuery = { __typename?: 'query_root', leave_type: Array<{ __typename?: 'leave_type', value: string, bgColor: string }> };
+export type GetLeaveTypesQuery = { __typename?: 'query_root', leaveType: Array<{ __typename?: 'leaveType', value: string, bgColor: string }> };
 
 export type GetPendingLeaveQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetPendingLeaveQuery = { __typename?: 'query_root', leave_request: Array<{ __typename?: 'leave_request', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null }> };
+export type GetPendingLeaveQuery = { __typename?: 'query_root', leaveRequest: Array<{ __typename?: 'leaveRequest', id: any, start: any, end: any, details: string, type: LeaveType_Enum, status: LeaveStatus_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null }> };
 
 export type GetApprovedLeaveQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetApprovedLeaveQuery = { __typename?: 'query_root', leave_request: Array<{ __typename?: 'leave_request', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null }> };
+export type GetApprovedLeaveQuery = { __typename?: 'query_root', leaveRequest: Array<{ __typename?: 'leaveRequest', id: any, start: any, end: any, details: string, type: LeaveType_Enum, status: LeaveStatus_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null }> };
 
 export type GetLeaveStatusQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLeaveStatusQuery = { __typename?: 'query_root', leave_status: Array<{ __typename?: 'leave_status', status: string }> };
+export type GetLeaveStatusQuery = { __typename?: 'query_root', leaveStatus: Array<{ __typename?: 'leaveStatus', status: string }> };
 
 export type UserApprovedLeaveQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['uuid']['input']>;
 }>;
 
 
-export type UserApprovedLeaveQuery = { __typename?: 'query_root', leave_request_aggregate: { __typename?: 'leave_request_aggregate', aggregate?: { __typename?: 'leave_request_aggregate_fields', sum?: { __typename?: 'leave_request_sum_fields', duration?: number | null } | null } | null } };
+export type UserApprovedLeaveQuery = { __typename?: 'query_root', leaveRequest_aggregate: { __typename?: 'leaveRequest_aggregate', aggregate?: { __typename?: 'leaveRequest_aggregate_fields', sum?: { __typename?: 'leaveRequest_sum_fields', duration?: number | null } | null } | null } };
 
 export type GetUserLeaveQueryVariables = Exact<{
   userId: Scalars['uuid']['input'];
 }>;
 
 
-export type GetUserLeaveQuery = { __typename?: 'query_root', leave_request: Array<{ __typename?: 'leave_request', id: any, start: any, end: any, details: string, type: Leave_Type_Enum, status: Leave_Status_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_type: { __typename?: 'leave_type', value: string, bgColor: string }, leave_status: { __typename?: 'leave_status', status: string, bgColor: string } }> };
+export type GetUserLeaveQuery = { __typename?: 'query_root', leaveRequest: Array<{ __typename?: 'leaveRequest', id: any, start: any, end: any, details: string, type: LeaveType_Enum, status: LeaveStatus_Enum, readBy?: any | null, duration: number, user?: { __typename?: 'user', id: any, firstName: string, lastName: string } | null, leave_type: { __typename?: 'leaveType', value: string, bgColor: string }, leave_status: { __typename?: 'leaveStatus', status: string, bgColor: string } }> };
 
 export type AddOrganizationOneMutationVariables = Exact<{
   object: Organization_Insert_Input;
@@ -7083,22 +7083,22 @@ export type ContractedHoursQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type ContractedHoursQuery = { __typename?: 'query_root', user_aggregate: { __typename?: 'user_aggregate', aggregate?: { __typename?: 'user_aggregate_fields', sum?: { __typename?: 'user_sum_fields', contractedHours?: number | null } | null } | null } };
 
-export const LeaveFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leave_request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<LeaveFragmentFragment, unknown>;
+export const LeaveFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leaveRequest"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<LeaveFragmentFragment, unknown>;
 export const ShiftFragmentFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"ShiftFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"shift"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<ShiftFragmentFragment, unknown>;
 export const UserLinesFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"UserLines"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"user"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"contactDetails"}},{"kind":"Field","name":{"kind":"Name","value":"authId"}},{"kind":"Field","name":{"kind":"Name","value":"lastSeen"}},{"kind":"Field","name":{"kind":"Name","value":"organizationId"}},{"kind":"Field","name":{"kind":"Name","value":"roleId"}},{"kind":"Field","name":{"kind":"Name","value":"onboarded"}},{"kind":"Field","name":{"kind":"Name","value":"contractedHours"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}},{"kind":"Field","name":{"kind":"Name","value":"contactDetails"}},{"kind":"Field","name":{"kind":"Name","value":"role"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}}]}}]}}]} as unknown as DocumentNode<UserLinesFragment, unknown>;
-export const CreateLeaveOneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateLeaveOne"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"leave_request_insert_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_leave_request_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LeaveFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leave_request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<CreateLeaveOneMutation, CreateLeaveOneMutationVariables>;
-export const UpdateLeaveByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateLeaveById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"leave_request_set_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_leave_request_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LeaveFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leave_request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<UpdateLeaveByIdMutation, UpdateLeaveByIdMutationVariables>;
-export const DeleteLeaveByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteLeaveById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_leave_request_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LeaveFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leave_request"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<DeleteLeaveByIdMutation, DeleteLeaveByIdMutationVariables>;
-export const UpdateReadStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateReadStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"readBy"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"jsonb"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_leave_request_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"readBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"readBy"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateReadStatusMutation, UpdateReadStatusMutationVariables>;
-export const UpdateLeaveStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateLeaveStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"leave_status_enum"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_leave_request_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateLeaveStatusMutation, UpdateLeaveStatusMutationVariables>;
-export const GetLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_request_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetLeaveQuery, GetLeaveQueryVariables>;
-export const GetLeaveAllDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveAll"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"start"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetLeaveAllQuery, GetLeaveAllQueryVariables>;
-export const GetLeaveTypesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveTypes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]} as unknown as DocumentNode<GetLeaveTypesQuery, GetLeaveTypesQueryVariables>;
-export const GetPendingLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPendingLeave"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Pending"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GetPendingLeaveQuery, GetPendingLeaveQueryVariables>;
-export const GetApprovedLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetApprovedLeave"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Approved"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GetApprovedLeaveQuery, GetApprovedLeaveQueryVariables>;
-export const GetLeaveStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetLeaveStatusQuery, GetLeaveStatusQueryVariables>;
-export const UserApprovedLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userApprovedLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_request_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Approved"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UserApprovedLeaveQuery, UserApprovedLeaveQueryVariables>;
-export const GetUserLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leave_request"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetUserLeaveQuery, GetUserLeaveQueryVariables>;
+export const CreateLeaveOneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreateLeaveOne"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"leaveRequest_insert_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_leaveRequest_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LeaveFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leaveRequest"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<CreateLeaveOneMutation, CreateLeaveOneMutationVariables>;
+export const UpdateLeaveByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateLeaveById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"leaveRequest_set_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_leaveRequest_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LeaveFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leaveRequest"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<UpdateLeaveByIdMutation, UpdateLeaveByIdMutationVariables>;
+export const DeleteLeaveByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"DeleteLeaveById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"delete_leaveRequest_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"LeaveFragment"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"LeaveFragment"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"leaveRequest"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"created_at"}},{"kind":"Field","name":{"kind":"Name","value":"updated_at"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}}]}}]} as unknown as DocumentNode<DeleteLeaveByIdMutation, DeleteLeaveByIdMutationVariables>;
+export const UpdateReadStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateReadStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"readBy"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"jsonb"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_leaveRequest_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"readBy"},"value":{"kind":"Variable","name":{"kind":"Name","value":"readBy"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateReadStatusMutation, UpdateReadStatusMutationVariables>;
+export const UpdateLeaveStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UpdateLeaveStatus"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"status"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"leaveStatus_enum"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"update_leaveRequest_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"pk_columns"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}]}},{"kind":"Argument","name":{"kind":"Name","value":"_set"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"Variable","name":{"kind":"Name","value":"status"}}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]} as unknown as DocumentNode<UpdateLeaveStatusMutation, UpdateLeaveStatusMutationVariables>;
+export const GetLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveRequest_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetLeaveQuery, GetLeaveQueryVariables>;
+export const GetLeaveAllDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveAll"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"order_by"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"start"},"value":{"kind":"EnumValue","value":"asc"}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetLeaveAllQuery, GetLeaveAllQueryVariables>;
+export const GetLeaveTypesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveTypes"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveType"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]} as unknown as DocumentNode<GetLeaveTypesQuery, GetLeaveTypesQueryVariables>;
+export const GetPendingLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPendingLeave"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Pending"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GetPendingLeaveQuery, GetPendingLeaveQueryVariables>;
+export const GetApprovedLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetApprovedLeave"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Approved"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}}]}}]}}]} as unknown as DocumentNode<GetApprovedLeaveQuery, GetApprovedLeaveQueryVariables>;
+export const GetLeaveStatusDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetLeaveStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveStatus"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}}]}}]}}]} as unknown as DocumentNode<GetLeaveStatusQuery, GetLeaveStatusQueryVariables>;
+export const UserApprovedLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"userApprovedLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveRequest_aggregate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}},{"kind":"ObjectField","name":{"kind":"Name","value":"status"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"EnumValue","value":"Approved"}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"aggregate"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"sum"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"duration"}}]}}]}}]}}]}}]} as unknown as DocumentNode<UserApprovedLeaveQuery, UserApprovedLeaveQueryVariables>;
+export const GetUserLeaveDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUserLeave"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"leaveRequest"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"userId"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"start"}},{"kind":"Field","name":{"kind":"Name","value":"end"}},{"kind":"Field","name":{"kind":"Name","value":"details"}},{"kind":"Field","name":{"kind":"Name","value":"type"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"readBy"}},{"kind":"Field","name":{"kind":"Name","value":"duration"}},{"kind":"Field","name":{"kind":"Name","value":"user"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"firstName"}},{"kind":"Field","name":{"kind":"Name","value":"lastName"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_type"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"value"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}},{"kind":"Field","name":{"kind":"Name","value":"leave_status"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"bgColor"}}]}}]}}]}}]} as unknown as DocumentNode<GetUserLeaveQuery, GetUserLeaveQueryVariables>;
 export const AddOrganizationOneDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"addOrganizationOne"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"object"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"organization_insert_input"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"insert_organization_one"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"object"},"value":{"kind":"Variable","name":{"kind":"Name","value":"object"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<AddOrganizationOneMutation, AddOrganizationOneMutationVariables>;
 export const GetOrganizationByNameDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrganizationByName"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"where"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"name"},"value":{"kind":"ObjectValue","fields":[{"kind":"ObjectField","name":{"kind":"Name","value":"_eq"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}}]}}]}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<GetOrganizationByNameQuery, GetOrganizationByNameQueryVariables>;
 export const GetOrganizationByIdDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"getOrganizationById"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"uuid"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"organization_by_pk"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"yearEnd"}},{"kind":"Field","name":{"kind":"Name","value":"holidayAllowance"}},{"kind":"Field","name":{"kind":"Name","value":"location"}}]}}]}}]} as unknown as DocumentNode<GetOrganizationByIdQuery, GetOrganizationByIdQueryVariables>;

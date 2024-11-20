@@ -1,9 +1,8 @@
 import { gql } from "@apollo/client";
 import { LeaveFragment } from "./fragment";
-
 export const getLeaveOne = gql`
   query GetLeave($id: uuid!) {
-    leave_request_by_pk(id: $id) {
+    leaveRequest_by_pk(id: $id) {
       id
       start
       end
@@ -28,7 +27,7 @@ export const getLeaveOne = gql`
 export const getLeaveAll = gql`
   ${LeaveFragment}
   query GetLeaveAll {
-    leave_request(order_by: { start: asc }) {
+    leaveRequest(order_by: { start: asc }) {
       id
       start
       end
@@ -56,7 +55,7 @@ export const getLeaveAll = gql`
 
 export const getLeaveTypes = gql`
   query GetLeaveTypes {
-    leave_type {
+    leaveType {
       value
       bgColor
     }
@@ -65,7 +64,7 @@ export const getLeaveTypes = gql`
 export const getPendingLeave = gql`
   ${LeaveFragment}
   query GetPendingLeave {
-    leave_request(where: { status: { _eq: Pending } }) {
+    leaveRequest(where: { status: { _eq: Pending } }) {
       id
       start
       end
@@ -86,7 +85,7 @@ export const getPendingLeave = gql`
 export const getApprovedLeave = gql`
   ${LeaveFragment}
   query GetApprovedLeave {
-    leave_request(where: { status: { _eq: Approved } }) {
+    leaveRequest(where: { status: { _eq: Approved } }) {
       id
       start
       end
@@ -106,7 +105,7 @@ export const getApprovedLeave = gql`
 
 export const getLeaveStatus = gql`
   query GetLeaveStatus {
-    leave_status {
+    leaveStatus {
       status
     }
   }
@@ -114,7 +113,7 @@ export const getLeaveStatus = gql`
 
 export const getUserApprovedLeave = gql`
   query userApprovedLeave($userId: uuid) {
-    leave_request_aggregate(
+    leaveRequest_aggregate(
       where: { userId: { _eq: $userId }, status: { _eq: Approved } }
     ) {
       aggregate {
@@ -129,7 +128,7 @@ export const getUserApprovedLeave = gql`
 export const getUserLeaveAll = gql`
   ${LeaveFragment}
   query GetUserLeave($userId: uuid!) {
-    leave_request(where: { userId: { _eq: $userId } }) {
+    leaveRequest(where: { userId: { _eq: $userId } }) {
       id
       start
       end

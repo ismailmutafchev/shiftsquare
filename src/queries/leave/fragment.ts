@@ -2,7 +2,7 @@
 import { gql } from '@apollo/client';
 
 export const LeaveFragment = gql`
-  fragment LeaveFragment on leave_request {
+  fragment LeaveFragment on leaveRequest {
     id
     created_at
     updated_at

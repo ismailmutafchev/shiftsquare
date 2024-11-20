@@ -36,7 +36,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
-export type LeaveAll = GetLeaveAllQuery["leave_request"];
+export type LeaveAll = GetLeaveAllQuery["leaveRequest"];
 export type Holiday = LeaveAll[0];
 
 export default function Absebce() {

@@ -14,13 +14,13 @@ import { useEffect } from "react";
 import { format } from "date-fns";
 import { Select } from "@headlessui/react";
 import { useForm } from "react-hook-form";
-import { Leave, Leave_Status_Enum } from "../../../gql/graphql";
+import { LeaveRequest, LeaveStatus_Enum } from "../../../gql/graphql";
 
 export default function RequestPreview({
   data,
 }: {
   data: {
-    data: Leave;
+    data: LeaveRequest;
     // eslint-disable-next-line
     modalHandler: (status: boolean) => void;
   };
@@ -156,7 +156,7 @@ export default function RequestPreview({
                 </p>
                 <Select
                   onChange={(e) =>
-                    setValue("status", e.target.value as Leave_Status_Enum)
+                    setValue("status", e.target.value as LeaveStatus_Enum)
                   }
                   name="status"
                   aria-label="Leave status"
