@@ -95,7 +95,8 @@ export default function Navigation({
   if (
     (permissions && permissions?.includes("admin")) ||
     permissions.includes("manager") ||
-    permissions.includes("supervisor")
+    permissions.includes("supervisor") ||
+    permissions.includes("owner")
   ) {
     navigation = [
       {

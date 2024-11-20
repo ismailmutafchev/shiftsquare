@@ -3,7 +3,7 @@ import { LeaveFragment } from "./fragment";
 
 export const getLeaveOne = gql`
   query GetLeave($id: uuid!) {
-    leave_by_pk(id: $id) {
+    leave_request_by_pk(id: $id) {
       id
       start
       end
@@ -28,7 +28,7 @@ export const getLeaveOne = gql`
 export const getLeaveAll = gql`
   ${LeaveFragment}
   query GetLeaveAll {
-    leave(order_by: { start: asc }) {
+    leave_request(order_by: { start: asc }) {
       id
       start
       end
@@ -65,7 +65,7 @@ export const getLeaveTypes = gql`
 export const getPendingLeave = gql`
   ${LeaveFragment}
   query GetPendingLeave {
-    leave(where: { status: { _eq: Pending } }) {
+    leave_request(where: { status: { _eq: Pending } }) {
       id
       start
       end
@@ -86,7 +86,7 @@ export const getPendingLeave = gql`
 export const getApprovedLeave = gql`
   ${LeaveFragment}
   query GetApprovedLeave {
-    leave(where: { status: { _eq: Approved } }) {
+    leave_request(where: { status: { _eq: Approved } }) {
       id
       start
       end
@@ -114,7 +114,7 @@ export const getLeaveStatus = gql`
 
 export const getUserApprovedLeave = gql`
   query userApprovedLeave($userId: uuid) {
-    leave_aggregate(
+    leave_request_aggregate(
       where: { userId: { _eq: $userId }, status: { _eq: Approved } }
     ) {
       aggregate {
@@ -129,7 +129,7 @@ export const getUserApprovedLeave = gql`
 export const getUserLeaveAll = gql`
   ${LeaveFragment}
   query GetUserLeave($userId: uuid!) {
-    leave(where: { userId: { _eq: $userId } }) {
+    leave_request(where: { userId: { _eq: $userId } }) {
       id
       start
       end

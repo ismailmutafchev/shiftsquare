@@ -30,7 +30,8 @@ function perimissionsCheck(isAuthenticated: boolean, permissions: any) {
   return (
     permissions.includes("admin") ||
     permissions.includes("manager") ||
-    permissions.includes("supervisor")
+    permissions.includes("supervisor") ||
+    permissions.includes("owner")
   );
 }
 
@@ -63,9 +64,6 @@ function App() {
           <Route path="/checkout" element={<CheckoutForm productId={productId} />} />
           <Route path="/return" element={<Return />} />
           {/* To be removed */}
-          <Route path="/onboarding" element={<Layout />}>
-            <Route index element={<Onboarding />} />
-          </Route>
           {onboarded === false ? (
             <Route path="/onboarding" element={<Layout />}>
               <Route index element={<Onboarding />} />

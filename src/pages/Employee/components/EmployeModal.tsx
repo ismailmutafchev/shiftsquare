@@ -13,19 +13,7 @@ import { getUserPositions } from "../../../queries/shift/queries.ts";
 import { useState } from "react";
 
 import axios from "axios";
-
-type UserProps = {
-  firstName: string;
-  lastName: string;
-  email: string;
-  contractedHours: number;
-  payDetails: {
-    payRate: number;
-    per: string;
-  };
-  startDate?: string;
-  positions?: { id: string }[];
-};
+import { User } from "../../../gql/graphql.ts";
 
 type UserPositionType = {
   positions: string[];
@@ -41,7 +29,7 @@ export function AddUser({ data }: any) {
     positions: [],
   });
 
-  const { register, handleSubmit } = useForm<UserProps>({
+  const { register, handleSubmit } = useForm<User>({
     defaultValues: {
       firstName: data?.data?.firstName || "",
       lastName: data?.data?.lastName || "",
@@ -51,6 +39,7 @@ export function AddUser({ data }: any) {
         payRate: data?.data?.payDetails?.payRate || "",
         per: data?.data?.payDetails?.per || "",
       },
+      leaveAllowance: data?.data?.leaveAllowance || "",
     },
   });
 

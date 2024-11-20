@@ -15,7 +15,8 @@ const Layout = () => {
   if (userLoading) {
     return <LoadingAnimation />;
   }
-
+  
+  // return public navigation
   if (profile === null || permissions.length === 0) {
     return (
       <div>
@@ -27,6 +28,7 @@ const Layout = () => {
 
   //return onboarding page
   if (
+    isAuthenticated &&
     !onboarded &&
     pathname !== "/" &&
     pathname !== "/about" &&
@@ -40,7 +42,6 @@ const Layout = () => {
   }
 
   // return public navigation
-
   if (
     !isAuthenticated ||
     pathname === "/" ||
@@ -54,17 +55,11 @@ const Layout = () => {
         <Outlet />
       </div>
     );
-    // return onboarding page
-  } else if (isAuthenticated && profile?.onboarded === false) {
-    return (
-      <div>
-        <Onboarding />
-      </div>
-    );
   } else if (
     permissions.includes("admin") ||
     permissions.includes("manager") ||
-    permissions.includes("supervisor")
+    permissions.includes("supervisor") || 
+    permissions.includes("owner")
   ) {
     return (
       <>
